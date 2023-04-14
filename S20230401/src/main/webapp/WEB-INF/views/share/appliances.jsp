@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="preset.jsp" %>
+<%@ include file="../preset.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -302,11 +302,11 @@
 				</a>
 			</div>
 			<div id="topmenu">
-				<a class="adv-hover menuitem" href="shareTotal">함께해요</a>
+				<a class="adv-hover menuitem" href="">함께해요</a>
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="">같이사요</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="">나눔해요</a>
+				<a class="adv-hover menuitem" href="total">나눔해요</a>
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="">커뮤니티</a>
 				<div class="menu-separator"></div>
@@ -332,10 +332,10 @@
 							<a class="submenuitem adv-hover" href="">기타</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">식품</a>
-							<a class="submenuitem adv-hover" href="">패션 / 잡화</a>
-							<a class="submenuitem adv-hover" href="">가전 / 가구</a>
-							<a class="submenuitem adv-hover" href="">기타</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/share/food">식품</a>
+							<a class="submenuitem adv-hover" href="fashion">패션 / 잡화</a>
+							<a class="submenuitem adv-hover" href="appliances">가전 / 가구</a>
+							<a class="submenuitem adv-hover" href="etc">기타</a>
 						</div>
 						<div class="submenu">
 							<a class="submenuitem adv-hover" href="">일상수다</a>
@@ -410,6 +410,11 @@
 			</svg>
 		</button>
 	</main>
+	
+	<div class="container">
+		<h1>가전제품</h1>
+	</div>
+	
 	<aside id="rightside">
 		
 	</aside>
