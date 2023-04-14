@@ -399,6 +399,10 @@
 	</aside>
 	<main>
 		
+		<c:forEach var="article" items="${togetherRecentList }">
+			<p>${article.art_id } ${article.brd_id } ${article.art_title }</p>
+		</c:forEach>
+		
 		<button id="scrollToTop" class="adv-hover">
 			<svg style="fill: var(--subtheme); stroke: var(--subtheme); stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round;" width="20" height="10" viewBox="0 0 32 16">
 				<path d="M 15 1 L 1 15 31 15 Z"/>

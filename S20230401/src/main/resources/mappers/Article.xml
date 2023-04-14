@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java501.S20230401.ArticleMapper">
+	<select id="hgGetSummaryRECENT" resultType="Article">
+		SELECT * FROM
+			(SELECT * FROM ARTICLE
+			WHERE TRUNC(BRD_ID / 100) * 100 = #{boardNum}
+				  AND ISDELETE = 0
+				  AND ART_ISNOTICE = 0
+			ORDER BY ART_REGDATE DESC)
+		WHERE ROWNUM <= 5
+	</select>
+	<select id="hgGetSummaryPOPULAR" resultType="Article">
+		
+	</select>
+</mapper>
