@@ -20,6 +20,7 @@ public class HomeController {
 	
 	@RequestMapping(value = "/")
 	public String index(Model model) {
+		System.out.println("hgGetSummary" + SummaryType.RECENT.toString());
 		List<Article> togetherRecentList = as.getArticleSummary(1000, SummaryType.RECENT);
 		model.addAttribute("togetherRecentList", togetherRecentList);
 		return "index";

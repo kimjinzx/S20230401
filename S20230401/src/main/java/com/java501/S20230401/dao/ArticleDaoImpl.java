@@ -18,7 +18,6 @@ public class ArticleDaoImpl implements ArticleDao {
 	@Override
 	public List<Article> getArticleSummary(int boardNum, SummaryType summaryType) {
 		List<Article> articleList = null;
-		System.out.println("hgGetSummary" + summaryType.toString());
 		articleList = session.selectList("hgGetSummary" + summaryType.toString(), boardNum);
 		return articleList;
 	}
