@@ -308,7 +308,7 @@
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="">나눔해요</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="">커뮤니티</a>
+				<a class="adv-hover menuitem" href="/bj_communityTotalList">커뮤니티</a>
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="">정보공유</a>
 				<div class="menu-separator"></div>

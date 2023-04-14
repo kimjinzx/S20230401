@@ -23,4 +23,13 @@ public class Article {
 	private int 	art_isnotice;
 	private int 	isdelete;
 	private int 	report_id;
+	
+	private String 	search;	
+	private String 	keyword;
+	private String 	pageNum;
+	private int		start;
+	private int 	end;
+		// TODO Auto-generated method stub
+		
+	
 }
