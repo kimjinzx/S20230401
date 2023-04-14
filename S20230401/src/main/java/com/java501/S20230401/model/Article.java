@@ -2,10 +2,13 @@ package com.java501.S20230401.model;
 
 import java.util.Date;
 
+import javax.persistence.Id;
+
 import lombok.Data;
 
 @Data
 public class Article {
+	@Id
 	private int 	art_id;
 	private int 	brd_id;
 	private String 	art_title;
