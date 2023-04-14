@@ -11,7 +11,4 @@
 			ORDER BY ART_REGDATE DESC)
 		WHERE ROWNUM <= 5
 	</select>
-	<select id="hgGetSummaryPOPULAR" resultType="Article">
-		
-	</select>
 </mapper>
