@@ -23,4 +23,6 @@ public class Article {
 	private int 	art_isnotice;
 	private int 	isdelete;
 	private int 	report_id;
+	
+	private int start;		private int end;
 }
