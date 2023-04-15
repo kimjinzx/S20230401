@@ -549,10 +549,31 @@
 		
 	</aside>
 	<main>
-		<c:forEach var="board" items="${articles }">
+		<c:forEach var="board" items="${articles }" varStatus="i">
 			<div class="board-summary">
 				<div class="board-summary-title">
-					<span>함께해요</span>
+					<span>
+						<c:choose>
+							<c:when test="${i == 0 }">
+								함께해요
+							</c:when>
+							<c:when test="${i == 1 }">
+								같이사요
+							</c:when>
+							<c:when test="${i == 2 }">
+								나눔해요
+							</c:when>
+							<c:when test="${i == 3 }">
+								커뮤니티
+							</c:when>
+							<c:when test="${i == 4 }">
+								정보공유
+							</c:when>
+							<c:otherwise>
+								고객센터
+							</c:otherwise>
+						</c:choose>
+					</span>
 					<a href="">
 						<svg viewBox="0 0 10 20">
 							<path d="M 2.5 2.5 L 7.5 10 2.5 17.5"/>
