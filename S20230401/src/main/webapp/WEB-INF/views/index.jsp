@@ -282,6 +282,7 @@
 		justify-content: flex-start;
 		align-items: stretch;
 		margin: 50px 5px;
+		border-bottom: 5px solid var(--subtheme);
 	}
 	div.board-summary > div.board-summary-title {
 		background-color: var(--theme);
