@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java501.S20230401.ArticleMemberMapper">
+	<select id="hgGetSummaryRECENT" parameterType="int" resultType="ArticleMember">
+		<![CDATA[
+			SELECT * FROM (
+				SELECT A.ART_ID, A.BRD_ID, A.ART_TITLE, MEM_ID, A.ART_REGDATE, A.ART_CONTENT, A.ART_TAG1, A.ART_TAG2, A.ART_TAG3
+						, A.ART_TAG4, A.ART_TAG5, A.TRD_ID, A.ART_GOOD, A.ART_BAD, A.ART_READ, A.ART_ISNOTICE, A.ISDELETE AS ART_ISDELETE
+						, A.REPORT_ID AS ART_REPORT_ID, M.MEM_USERNAME, M.MEM_PASSWORD, M.MEM_NICKNAME, M.MEM_EMAIL, M.MEM_TEL
+						, M.MEM_REGION1, M.MEM_REGION2, M.MEM_AUTHORITY, M.MEM_REGDATE, M.MEM_IMAGE, M.MEM_GENDER, M.MEM_NAME
+						, M.MEM_BIRTHDAY, M.MEM_LATEST, M.ISDELETE AS MEM_ISDELETE, M.REPORT_ID AS MEM_REPORT_ID
+				FROM ARTICLE A JOIN MEMBER M USING(MEM_ID)
+				WHERE TRUNC(BRD_ID / 100) * 100 = #{boardNum}
+					  AND A.ISDELETE = 0
+					  AND ART_ISNOTICE = 0
+				ORDER BY ART_REGDATE DESC)
+			WHERE ROWNUM <= 5
+		]]>
+	</select>
+	<select id="hgGetSummaryPOPULAR" parameterType="int" resultType="ArticleMember">
+		<![CDATA[
+			SELECT * FROM (
+				SELECT A.ART_ID, A.BRD_ID, A.ART_TITLE, MEM_ID, A.ART_REGDATE, A.ART_CONTENT, A.ART_TAG1, A.ART_TAG2, A.ART_TAG3
+						, A.ART_TAG4, A.ART_TAG5, A.TRD_ID, A.ART_GOOD, A.ART_BAD, A.ART_READ, A.ART_ISNOTICE, A.ISDELETE AS ART_ISDELETE
+						, A.REPORT_ID AS ART_REPORT_ID, M.MEM_USERNAME, M.MEM_PASSWORD, M.MEM_NICKNAME, M.MEM_EMAIL, M.MEM_TEL
+						, M.MEM_REGION1, M.MEM_REGION2, M.MEM_AUTHORITY, M.MEM_REGDATE, M.MEM_IMAGE, M.MEM_GENDER, M.MEM_NAME
+						, M.MEM_BIRTHDAY, M.MEM_LATEST, M.ISDELETE AS MEM_ISDELETE, M.REPORT_ID AS MEM_REPORT_ID
+				FROM ARTICLE A JOIN MEMBER M USING(MEM_ID)
+				WHERE TRUNC(BRD_ID / 100) * 100 = #{boardNum}
+					  AND A.ISDELETE = 0
+					  AND ART_ISNOTICE = 0
+					  AND ART_REGDATE > SYSDATE - 7
+				ORDER BY A.ART_GOOD DESC)
+			WHERE ROWNUM <= 5
+		]]>
+	</select>
+	<select id="hgCalculateGood" parameterType="ArticleMember" resultType="int">
+		SELECT COUNT(*) FROM HISTORY
+		WHERE TRD_ID IN (SELECT TRD_ID FROM TRADE WHERE MEM_ID = #{mem_id})
+				  AND HIS_SCORE = 1
+	</select>
+	<select id="hgCalculateNormal" parameterType="ArticleMember" resultType="int">
+		SELECT COUNT(*) FROM HISTORY
+		WHERE TRD_ID IN (SELECT TRD_ID FROM TRADE WHERE MEM_ID = #{mem_id})
+				  AND HIS_SCORE = 0
+	</select>
+	<select id="hgCalculateBad" parameterType="ArticleMember" resultType="int">
+		SELECT COUNT(*) FROM HISTORY
+		WHERE TRD_ID IN (SELECT TRD_ID FROM TRADE WHERE MEM_ID = #{mem_id})
+				  AND HIS_SCORE = -1
+	</select>
+	<select id="hgCalculateEnddate" parameterType="ArticleMember" resultType="java.util.Date">
+		SELECT TRD_ENDDATE FROM TRADE
+		WHERE TRD_ID = #{trd_id}
+	</select>
+	<select id="hgCountReply" parameterType="ArticleMember" resultType="int">
+		SELECT COUNT(*) FROM REPLY
+		WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
+	</select>
+</mapper>
