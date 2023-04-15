@@ -22,7 +22,7 @@
 	});
 	$(() => {
 		$('#scrollToTop').click(e => $(window).scrollTop(0));
-		$('#scrollToBottom').click(e => $(window).scrollTop($(document).height() - 1120));
+		$('#scrollToBottom').click(e => $(window).scrollTop($('body').prop('scrollHeight')));
 	});
 </script>
 <link href="https://unpkg.com/sanitize.css" rel="stylesheet">
