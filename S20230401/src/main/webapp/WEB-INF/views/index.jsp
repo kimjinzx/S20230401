@@ -275,14 +275,30 @@
 		align-items: center;
 	}
 </style>
+<script type="text/javascript">
+	$(() => {
+		$('.board-toggle').click(e => {
+			let parent = $(e.target).closest('.board-summary');
+			let children = parent.find('.board-summary-part');
+			children.toggle();
+		});
+	});
+</script>
 <style type="text/css">
+	main {
+		display: flex;
+		justify-content: center;
+		align-items: flex-start;
+		flex-wrap: wrap;
+	}
 	div.board-summary {
 		display: flex;
 		flex-direction: column;
 		justify-content: flex-start;
 		align-items: stretch;
-		margin: 50px 5px;
+		margin: 50px 10px;
 		border-bottom: 5px solid var(--subtheme);
+		width: calc(50% - 20px);
 	}
 	div.board-summary > div.board-summary-title {
 		background-color: var(--theme);
@@ -324,22 +340,60 @@
 		width: calc(100% - 10px);
 		margin: 5px;
 	}
-	div.board-summary-part > div.board-summary-subtitle {
-		border-bottom: 2px solid var(--subtheme);
+	div.board-summary > div.board-summary-section > div.board-summary-part:nth-child(1) {
+		display: block;
+	}
+	div.board-summary > div.board-summary-section > div.board-summary-part:nth-child(2) {
+		display: none;
+	}
+	button.board-toggle {
+		cursor: pointer;
+		border: 0;
+		outline: none;
+		background: transparent;
+		padding: 0;
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+	}
+	button.board-toggle > svg {
+		width: 12px;
+		height: 12px;
+		fill: none;
+		stroke: var(--subtheme);
+		stroke-width: 2px;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		margin-right: 2.5px;
+	}
+	button.board-toggle > div {
 		display: flex;
 		justify-content: flex-start;
 		align-items: center;
 		padding: 2.5px;
+		pointer-events: none;
 	}
-	div.board-summary-part > div.board-summary-subtitle > svg {
-		width: 24px;
-		height: 24px;
+	button.board-toggle[data-toggle="false"] > div:nth-child(2) {
+		display: flex;
+	}
+	button.board-toggle[data-toggle="false"] > div:nth-child(3) {
+		display: none;
+	}
+	button.board-toggle[data-toggle="true"] > div:nth-child(2) {
+		display: none;
+	}
+	button.board-toggle[data-toggle="true"] > div:nth-child(3) {
+		display: flex;
+	}
+	button.board-toggle > div > svg {
+		width: 16px;
+		height: 16px;
 		fill: var(--theme-font);
 		margin-right: 5px;
 	}
-	div.board-summary-part > div.board-summary-subtitle > span {
-		line-height: 24px;
-		font-size: 16px;
+	button.board-toggle > div > span {
+		line-height: 16px;
+		font-size: 14px;
 		font-weight: bold;
 		color: var(--subtheme);
 	}
@@ -580,27 +634,31 @@
 							<path d="M 2.5 2.5 L 7.5 10 2.5 17.5"/>
 						</svg>
 					</a>
+					<div style="flex-grow: 1; display: flex; justify-content: flex-end; align-items: center;">
+						<button class="board-toggle toggle">
+							<svg>
+								<path d="M 4 1 L 1 4 H 11"/>
+								<path d="M 8 11 L 11 8 H 1"/>
+							</svg>
+							<div>
+								<svg viewBox="0 0 24 24">
+									<path d="M9.682,18.75a.75.75,0,0,1,.75-.75,8.25,8.25,0,1,0-6.189-2.795V12.568a.75.75,0,0,1,1.5,0v4.243a.75.75,0,0,1-.751.75H.75a.75.75,0,0,1,0-1.5H3a9.75,9.75,0,1,1,7.433,3.44A.75.75,0,0,1,9.682,18.75Zm2.875-4.814L9.9,11.281a.754.754,0,0,1-.22-.531V5.55a.75.75,0,1,1,1.5,0v4.889l2.436,2.436a.75.75,0,1,1-1.061,1.06Z" transform="translate(1.568 2.25)"/>
+								</svg>
+								<span>최신 글</span>
+							</div>
+							<div>
+								<svg viewBox="0 0 512 512" style="fill: none; stroke: var(--theme-font);">
+									<path d="M112 320c0-93 124-165 96-272 66 0 192 96 192 272a144 144 0 01-288 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/>
+									<path d="M320 368c0 57.71-32 80-64 80s-64-22.29-64-80 40-86 32-128c42 0 96 70.29 96 128z" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/>
+								</svg>
+								<span>인기 글</span>
+							</div>
+						</button>
+					</div>
 				</div>
 				<div class="board-summary-section">
 					<c:forEach var="type" items="${articleTypes }">
 						<div class="board-summary-part">
-							<div class="board-summary-subtitle">
-								<c:choose>
-									<c:when test="${type == 'RECENT' }">
-										<svg viewBox="0 0 24 24">
-											<path d="M9.682,18.75a.75.75,0,0,1,.75-.75,8.25,8.25,0,1,0-6.189-2.795V12.568a.75.75,0,0,1,1.5,0v4.243a.75.75,0,0,1-.751.75H.75a.75.75,0,0,1,0-1.5H3a9.75,9.75,0,1,1,7.433,3.44A.75.75,0,0,1,9.682,18.75Zm2.875-4.814L9.9,11.281a.754.754,0,0,1-.22-.531V5.55a.75.75,0,1,1,1.5,0v4.889l2.436,2.436a.75.75,0,1,1-1.061,1.06Z" transform="translate(1.568 2.25)"/>
-										</svg>
-										<span>최신 글</span>
-									</c:when>
-									<c:otherwise>
-										<svg viewBox="0 0 512 512" style="fill: none; stroke: var(--theme-font);">
-											<path d="M112 320c0-93 124-165 96-272 66 0 192 96 192 272a144 144 0 01-288 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/>
-											<path d="M320 368c0 57.71-32 80-64 80s-64-22.29-64-80 40-86 32-128c42 0 96 70.29 96 128z" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/>
-										</svg>
-										<span>인기 글</span>
-									</c:otherwise>
-								</c:choose>
-							</div>
 							<c:forEach var="articleMember" items="${board[type] }">
 								<div class="board-summary-article">
 									<div class="article-part-lt">
