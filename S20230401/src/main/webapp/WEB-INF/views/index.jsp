@@ -528,7 +528,7 @@
 								</svg>
 							</button>
 							<div id="login-popup" class="popup-window">
-								<button id="login-button" class="subtheme-button adv-hover" click="location.href = '/login';">
+								<button id="login-button" class="subtheme-button adv-hover" onclick="location.href = '${pageContext.request.contextPath }/login';">
 									로그인
 								</button>
 							</div>
