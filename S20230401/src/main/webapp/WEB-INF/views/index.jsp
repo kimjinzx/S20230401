@@ -554,19 +554,19 @@
 				<div class="board-summary-title">
 					<span>
 						<c:choose>
-							<c:when test="${i == 0 }">
+							<c:when test="${i.index == 0 }">
 								함께해요
 							</c:when>
-							<c:when test="${i == 1 }">
+							<c:when test="${i.index == 1 }">
 								같이사요
 							</c:when>
-							<c:when test="${i == 2 }">
+							<c:when test="${i.index == 2 }">
 								나눔해요
 							</c:when>
-							<c:when test="${i == 3 }">
+							<c:when test="${i.index == 3 }">
 								커뮤니티
 							</c:when>
-							<c:when test="${i == 4 }">
+							<c:when test="${i.index == 4 }">
 								정보공유
 							</c:when>
 							<c:otherwise>
