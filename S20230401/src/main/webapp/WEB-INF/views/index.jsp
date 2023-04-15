@@ -448,7 +448,7 @@
 		</div>
 		<div id="topbar">
 			<div id="logo-div" class="full-height" style="display: flex; justify-content: flex-start; align-items: center; padding: 0 10px;">
-				<a id="logo" class="full-height" href="/">
+				<a id="logo" class="full-height" href="${pageContext.request.contextPath}/">
 					<div style="width: auto; display: flex; flex-direction: column; justify-content: center; align-items: flex-end;">
 						<img src="${pageContext.request.contextPath}/image/ShareGo_Img.png" style="height: 30px;">
 						<span style="font-size: 24px; font-weight: 900; margin: -5px 0 0 0;">ShareGo</span>
@@ -456,58 +456,58 @@
 				</a>
 			</div>
 			<div id="topmenu">
-				<a class="adv-hover menuitem" href="">함께해요</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/">함께해요</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="">같이사요</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/">같이사요</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="">나눔해요</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/">나눔해요</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="">커뮤니티</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/">커뮤니티</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="">정보공유</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/">정보공유</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="">고객센터</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/">고객센터</a>
 				<div id="dropdown">
 					<div style="width: 200px;"></div>
 					<div class="submenu-items">
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">밥 / 카페</a>
-							<a class="submenuitem adv-hover" href="">스포츠 / 운동</a>
-							<a class="submenuitem adv-hover" href="">쇼핑</a>
-							<a class="submenuitem adv-hover" href="">문화생활</a>
-							<a class="submenuitem adv-hover" href="">취미생활</a>
-							<a class="submenuitem adv-hover" href="">기타</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">밥 / 카페</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">스포츠 / 운동</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">쇼핑</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">문화생활</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">취미생활</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">기타</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">식료품</a>
-							<a class="submenuitem adv-hover" href="">의류 / 잡화</a>
-							<a class="submenuitem adv-hover" href="">생활용품</a>
-							<a class="submenuitem adv-hover" href="">해외배송</a>
-							<a class="submenuitem adv-hover" href="">기타</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">식료품</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">의류 / 잡화</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">생활용품</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">해외배송</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">기타</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">식품</a>
-							<a class="submenuitem adv-hover" href="">패션 / 잡화</a>
-							<a class="submenuitem adv-hover" href="">가전 / 가구</a>
-							<a class="submenuitem adv-hover" href="">기타</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">식품</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">패션 / 잡화</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">가전 / 가구</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">기타</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">일상수다</a>
-							<a class="submenuitem adv-hover" href="">자랑하기</a>
-							<a class="submenuitem adv-hover" href="">홍보하기</a>
-							<a class="submenuitem adv-hover" href="">질문 / 요청</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">일상수다</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">자랑하기</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">홍보하기</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">질문 / 요청</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">동네정보</a>
-							<a class="submenuitem adv-hover" href="">구매정보</a>
-							<a class="submenuitem adv-hover" href="">신규점포</a>
-							<a class="submenuitem adv-hover" href="">지역활동</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">동네정보</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">구매정보</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">신규점포</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">지역활동</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">공지</a>
-							<a class="submenuitem adv-hover" href="">Q&A</a>
-							<a class="submenuitem adv-hover" href="">이벤트</a>
-							<a class="submenuitem adv-hover" href="">문의 / 건의</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">공지</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">Q&A</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">이벤트</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/">문의 / 건의</a>
 						</div>
 					</div>
 					<div style="width: 200px;"></div>
@@ -575,7 +575,7 @@
 							</c:otherwise>
 						</c:choose>
 					</span>
-					<a href="">
+					<a href="${pageContext.request.contextPath}/">
 						<svg viewBox="0 0 10 20">
 							<path d="M 2.5 2.5 L 7.5 10 2.5 17.5"/>
 						</svg>
@@ -699,7 +699,7 @@
 										</c:if>
 									</div>
 									<div class="article-part-b">
-										<a href="">
+										<a href="${pageContext.request.contextPath}/">
 											${articleMember.art_title }
 										</a>
 									</div>
