@@ -6,320 +6,12 @@
 <meta charset="UTF-8">
 <title>메인 페이지 ▒ ShareGo</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/initializer.js"></script>
-<script type="text/javascript">
-	$(window).scroll(() => {
-		let scrollTop = $(window).scrollTop();
-		let header = $('header');
-		let footer = $('footer');
-		if (header != null) {
-			if (scrollTop > 21 && !header.hasClass('fix-header')) {
-				header.addClass('fix-header');
-			}
-			else if (scrollTop <= 21 && header.hasClass('fix-header')) {
-				header.removeClass('fix-header');
-			}
-		}
-		if (footer != null) {
-			if (scrollTop < $('body').height() - $(window).height() - footer.height()) {
-				$('#scrollToTop').css('bottom', '60px');
-				$('#scrollToBottom').css('bottom', '10px');
-			} else {
-				let interval = scrollTop - ($('body').height() - $(window).height() - footer.height());
-				$('#scrollToTop').css('bottom', (interval + 60) + 'px');
-				$('#scrollToBottom').css('bottom', (interval + 10) + 'px');
-			}
-		}
-	});
-	$(() => {
-		$('#scrollToTop').click(e => $(window).scrollTop(0));
-		$('#scrollToBottom').click(e => $(window).scrollTop($('body').height() - $(window).height()));
-	});
-</script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/initializer.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/layout.js"></script>
 <link href="https://unpkg.com/sanitize.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/preference.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/presets.css">
-<style type="text/css">
-	body {
-		width: 100%;
-		display: grid;
-		grid-template-columns: 200px 1fr 200px;
-		grid-template-rows: 100px 1fr 200px;
-		grid-template-areas:
-			"header header header"
-			"leftside main rightside"
-			"footer footer footer";
-	}
-	header {
-		grid-area: header;
-		height: 100px;
-		background-color: var(--theme);
-		border-bottom: 0.5px solid #CCCCCC;
-		z-index: 99;
-	}
-	aside {
-		background-color: var(--backtheme);
-	}
-	aside#leftside {
-		grid-area: leftside;
-	}
-	main {
-		grid-area: main;
-		background-color: var(--theme);
-	}
-	aside#rightside {
-		grid-area: rightside;
-	}
-	footer {
-		grid-area: footer;
-		height: 200px;
-		border-top: 0.5px solid #CCCCCC;
-		background-color: var(--theme);
-	}
-	
-	header > div#usernav {
-		width: 100%;
-		display: flex;
-		justify-content: flex-end;
-		align-items: center;
-		background-color: var(--backtheme);
-	}
-	header > div#usernav > a {
-		font-size: 14px;
-		color: var(--subtheme);
-		font-weight: bold;
-		margin: 0 5px;
-	}
-	header > div#topbar > div#logo-div, header > div#topbar > div#top-right { width: 200px; }
-	header > div#topbar > div#top-right {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-	header > div#topbar {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		height: calc(100% - 21px);
-	}
-	header > div#topbar > div#topmenu {
-		display: flex;
-		height: 100%;
-		justify-content: flex-start;
-		align-items: stretch;
-	}
-	header > div#topbar > div#topmenu > div.menu-separator {
-		width: 0;
-		height: 20px;
-		border: 1px solid #888888;
-		opacity: 0.25;
-		margin: 29.5px 0;
-	}
-	header > div#topbar > div#topmenu > a.menuitem {
-		display: block;
-		font-size: 18px;
-		background-color: var(--theme);
-		padding: 0 10px;
-		line-height: 79px;
-		font-weight: bold;
-		width: 120px;
-		text-align: center;
-	}
-	div#dropdown {
-		display: flex;
-		justify-content: space-between;
-		align-items: flex-start;
-		position: absolute;
-		top: 100px;
-		left: 0;
-		width: 100%;
-		height: 0px;
-		background-color: var(--theme);
-		border-bottom: 0.5px solid #CCCCCC;
-		transition: height .125s cubic-bezier(.5,1,.5,1);
-		overflow: hidden;
-	}
-	header > div#topbar > div#topmenu > a.menuitem:hover ~ div#dropdown,
-	header > div#topbar > div#topmenu > div.menu-separator:hover ~ div#dropdown,
-	header > div#topbar > div#topmenu > div#dropdown:hover {
-		height: 192.5px;
-	}
-	header > div#topbar > div#topmenu > div#dropdown > div.submenu-items {
-		display: flex;
-		justify-content: flex-start;
-		align-items: stretch;
-	}
-	header > div#topbar > div#topmenu > div#dropdown > div.submenu-items > div.submenu {
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-start;
-		align-items: stretch;
-		width: 120px;
-		margin: 0 1px;
-	}
-	header > div#topbar > div#topmenu > div#dropdown > div.submenu-items > div.submenu > a.submenuitem {
-		display: block;
-		width: 100%;
-		height: 32px;
-		line-height: 32px;
-		font-size: 16px;
-		background-color: var(--theme);
-		text-align: center;
-	}
-	.fix-header {
-		top: -21px;
-		position: fixed;
-		grid-area: none;
-		width: 100%;
-	}
-	
-	/* Dark And Light Mode Switcher */
-	#viewMode {
-		border: 2px solid var(--subtheme-font);
-		border-radius: 14.5px;
-		width: 54px;
-		height: 29px;
-		background-color: var(--subtheme);
-		position: relative;
-	}
-	#viewModeButton {
-		border: 0;
-		background-color: var(--subtheme-font);
-		width: 20px;
-		height: 20px;
-		border-radius: 10px;
-		position: absolute;
-		top: 2.5px;
-		left: 2.5px;
-		transition: left .25s cubic-bezier(.5, 1, .5, 1);
-	}
-	#viewMode[data-toggle="true"] > #viewModeButton {
-		left: 27.5px;
-	}
-	
-	/* User Info Popup */
-	div.popup-group {
-		position: relative;
-	}
-	div.popup-group > button.togglePopup {
-		width: 50px;
-		height: 50px;
-		overflow: hidden;
-	}
-	div.popup-group > button.togglePopup > * {
-		pointer-events: none;
-	}
-	div.popup-group > div.popup-window {
-		position: absolute;
-		padding: 10px 20px;
-		border-radius: 5px;
-		background-color: var(--theme);
-		border: 2px solid #CCCCCC;
-		top: 64.5px;
-		right: 0px;
-	}
-	
-	/* User Information Popup */
-	button#userInfo {
-		padding: 0;
-		background-color: var(--theme);
-		outline: none;
-		border: none;
-		cursor: pointer;
-	}
-	div#user-profile {
-		width: 50px;
-		height: 50px;
-		background-color: white;
-		border-radius: 25px;
-		overflow: hidden;
-		pointer-events: none;
-		border: 2px solid var(--subtheme);
-	}
-	div#user-profile > img {
-		width: 46px;
-		height: 46px;
-		pointer-events: none;
-	}
-	div#userInfo-popup {
-		padding: 0;
-	}
-	div#userInfo-popup > div {
-		width: 100%;
-		height: 100%;
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-start;
-		align-items: stretch;
-	}
-	
-	/* Buttons */
-	button.theme-button {
-		background-color: var(--theme);
-		color: var(--theme-font);
-		font-weight: bold;
-		padding: 0;
-		border-radius: 5px;
-		outline: none;
-		border: 2px solid var(--subtheme);
-		cursor: pointer;
-	}
-	button.subtheme-button {
-		background-color: var(--subtheme);
-		color: var(--subtheme-font);
-		font-weight: bold;
-		padding: 0;
-		border-radius: 5px;
-		outline: none;
-		border: 0;
-		cursor: pointer;
-	}
-	button#login-button {
-		width: 100px;
-		height: 32px;
-		line-height: 32px;
-		text-align: center;
-		font-size: 16px;
-	}
-	button.init-button {
-		border: 0;
-		background-color: var(--theme);
-		padding: 0;
-		margin: 0;
-		outline: none;
-		cursor: pointer;
-	}
-	button > svg {
-		pointer-events: none;
-	}
-	button#scrollToTop, button#scrollToBottom {
-		position: fixed;
-		width: 40px;
-		height: 40px;
-		outline: none;
-		border: 0.5px solid var(--subtheme);
-		border-radius: 10px;
-		background-color: var(--theme);
-		cursor: pointer;
-		opacity: 0.5;
-		box-shadow: 0 5px 5px var(--theme-font);
-	}
-	button#scrollToTop {
-		bottom: 60px;
-		right: 10px;
-	}
-	button#scrollToBottom {
-		bottom: 10px;
-		right: 10px;
-	}
-	
-	/* Footer */
-	#footer-info {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-</style>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/preference.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/presets.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/layout.css">
 <script type="text/javascript">
 	$(() => {
 		$('.board-toggle').click(e => {
@@ -511,6 +203,14 @@
 		padding: 1.25px 2.5px;
 		font-weight: bold;
 		border-radius: 2.5px;
+	}
+	div.board-summary-article > div.article-part-rt > span.article-enddate-end {
+		background-color: var(--theme);
+		color: var(--theme-font);
+		padding: 1.25px 2.5px;
+		font-weight: bold;
+		border-radius: 2.5px;
+		border: 2px solid var(--subtheme);
 	}
 	div.board-summary-article > div.article-part-rt > svg {
 		width: 12px;
@@ -794,33 +494,36 @@
 									</div>
 									<div class="article-part-rt">
 										<c:if test="${articleMember.trd_id != 0 }">
-											<span class="article-enddate">
+											<span class="article-enddate${now.time - articleMember.trd_enddate.time >= 0 ? '-end' : '' }">
 												<c:choose>
 													<c:when test="${articleMember.trd_enddate == null }">
 														기한 없음
 													</c:when>
-													<c:when test="${((now.time - articleMember.trd_enddate.time) / 1000) < 60 }">
+													<c:when test="${now.time - articleMember.trd_enddate.time >= 0 }">
+														마감
+													</c:when>
+													<c:when test="${((articleMember.trd_enddate.time - now.time) / 1000) < 60 }">
 														<fmt:formatNumber pattern="0초 남음">
-															${((now.time - articleMember.trd_enddate.time) / 1000) - ((now.time - articleMember.trd_enddate.time) / 1000) % 1 }
+															${((articleMember.trd_enddate.time - now.time) / 1000) - ((articleMember.trd_enddate.time - now.time) / 1000) % 1 }
 														</fmt:formatNumber>
 													</c:when>
-													<c:when test="${((now.time - articleMember.trd_enddate.time) / 1000 / 60) < 60 }">
+													<c:when test="${((articleMember.trd_enddate.time - now.time) / 1000 / 60) < 60 }">
 														<fmt:formatNumber pattern="0분 남음">
-															${((now.time - articleMember.trd_enddate.time) / 1000 / 60) - ((now.time - articleMember.trd_enddate.time) / 1000 / 60) % 1 }
+															${((articleMember.trd_enddate.time - now.time) / 1000 / 60) - ((articleMember.trd_enddate.time - now.time) / 1000 / 60) % 1 }
 														</fmt:formatNumber>
 													</c:when>
-													<c:when test="${((now.time - articleMember.trd_enddate.time) / 1000 / 60 / 60) < 24 }">
+													<c:when test="${((articleMember.trd_enddate.time - now.time) / 1000 / 60 / 60) < 24 }">
 														<fmt:formatNumber pattern="0시간 남음">
-															${((now.time - articleMember.trd_enddate.time) / 1000 / 60 / 60) - ((now.time - articleMember.trd_enddate.time) / 1000 / 60 / 60) % 1 }
+															${((articleMember.trd_enddate.time - now.time) / 1000 / 60 / 60) - ((articleMember.trd_enddate.time - now.time) / 1000 / 60 / 60) % 1 }
 														</fmt:formatNumber>
 													</c:when>
-													<c:when test="${((now.time - articleMember.trd_enddate.time) / 1000 / 60 / 60 / 24) < 7 }">
+													<c:when test="${((articleMember.trd_enddate.time - now.time) / 1000 / 60 / 60 / 24) < 7 }">
 														<fmt:formatNumber pattern="0일 남음">
-															${((now.time - articleMember.trd_enddate.time) / 1000 / 60 / 60 / 24) - ((now.time - articleMember.trd_enddate.time) / 1000 / 60 / 60 / 24) % 1 }
+															${((articleMember.trd_enddate.time - now.time) / 1000 / 60 / 60 / 24) - ((articleMember.trd_enddate.time - now.time) / 1000 / 60 / 60 / 24) % 1 }
 														</fmt:formatNumber>
 													</c:when>
 													<c:otherwise>
-														<fmt:formatDate value="${articleMember.trd_enddate }" pattern="~ yyyy-MM-dd"/>
+														<fmt:formatDate value="${articleMember.trd_enddate }" pattern="~ yy-MM-dd"/>
 													</c:otherwise>
 												</c:choose>
 											</span>
