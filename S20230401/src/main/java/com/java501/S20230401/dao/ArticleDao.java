@@ -8,9 +8,8 @@ import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.ArticleMember;
 import com.java501.S20230401.util.SummaryType;
 
-@Repository
 public interface ArticleDao {
 
-	List<ArticleMember> getArticleSummary(int boardNum, SummaryType summaryType);
+	public List<ArticleMember> getArticleSummary(int boardNum, SummaryType summaryType);
 
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.java501.S20230401.dao.MemberDao;
 import com.java501.S20230401.model.Member;
+import com.java501.S20230401.model.MemberDetails;
 
 import lombok.RequiredArgsConstructor;
 
