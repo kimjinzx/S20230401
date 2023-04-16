@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java501.S20230401.ArticleMapper">
+
+	<select id="articleTotal" resultType="int">
+		select Count(*) FROM article	
+	</select>
+	
+	<select id="shArticleListAll" parameterMap="Article" resultMap="Article">
+	 <![CDATA[
+		SELECT *
+		FROM
+		(
+   			SELECT rownum rn, a.*
+    		FROM
+        			(SELECT * FROM article WHERE brd_id >=1500 and brd_id <1511 order by art_id) a
+		)
+		WHERE rn BETWEEN #{start} and #{end}
+ 	 ]]>	
+	</select>
+
+</mapper>

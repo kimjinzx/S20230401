@@ -24,5 +24,8 @@ public class Article {
 	private int 	isdelete;
 	private int 	report_id;
 	
+	//조회용
+	private String 	pageNum;
+	
 	private int start;		private int end;
 }

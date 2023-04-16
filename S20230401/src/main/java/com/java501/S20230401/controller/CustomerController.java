@@ -32,12 +32,12 @@ public class CustomerController {
 		article.setEnd(page.getEnd());		// 시작시 10
 		
 		List<Article> listArticle = as.listArticle(article);
-		System.out.println("ArticleController list listArticle.size()->"+listArticle.size());
+		System.out.println("CustomerController list listArticle.size()->"+listArticle.size());
 		
 		model.addAttribute("totalArticle", totalArticle);
 		model.addAttribute("listArticle", listArticle);
 		model.addAttribute("page", page);
 		// 설정해둔 view resolver로 리턴
-		return "list";
+		return "CustomerList";
 	}
 }

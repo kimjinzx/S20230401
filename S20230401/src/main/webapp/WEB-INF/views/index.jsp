@@ -350,7 +350,7 @@
 							<a class="submenuitem adv-hover" href="">지역활동</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">공지</a>
+							<a class="submenuitem adv-hover" href="/board/customer">공지</a>
 							<a class="submenuitem adv-hover" href="">Q&A</a>
 							<a class="submenuitem adv-hover" href="">이벤트</a>
 							<a class="submenuitem adv-hover" href="">문의 / 건의</a>
