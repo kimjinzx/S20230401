@@ -348,19 +348,22 @@
 	}
 	button.board-toggle {
 		cursor: pointer;
-		border: 0;
+		border: 0.5px solid var(--subtheme);
+		border-radius: 2.5px;
 		outline: none;
-		background: transparent;
-		padding: 0;
+		background: var(--theme);
+		padding: 0 2.5px;
 		display: flex;
 		justify-content: flex-end;
 		align-items: center;
+		align-self: flex-end;
 	}
 	button.board-toggle > svg {
 		width: 12px;
 		height: 12px;
 		fill: none;
-		stroke: var(--subtheme);
+		stroke: var(--theme-font);
+		opacity: 0.5;
 		stroke-width: 2px;
 		stroke-linecap: round;
 		stroke-linejoin: round;
@@ -373,16 +376,16 @@
 		padding: 2.5px;
 		pointer-events: none;
 	}
-	button.board-toggle[data-toggle="false"] > div:nth-child(2) {
+	button.board-toggle[data-toggle="false"] > div:nth-child(1) {
 		display: flex;
 	}
-	button.board-toggle[data-toggle="false"] > div:nth-child(3) {
+	button.board-toggle[data-toggle="false"] > div:nth-child(2) {
+		display: none;
+	}
+	button.board-toggle[data-toggle="true"] > div:nth-child(1) {
 		display: none;
 	}
 	button.board-toggle[data-toggle="true"] > div:nth-child(2) {
-		display: none;
-	}
-	button.board-toggle[data-toggle="true"] > div:nth-child(3) {
 		display: flex;
 	}
 	button.board-toggle > div > svg {
@@ -635,11 +638,7 @@
 						</svg>
 					</a>
 					<div style="flex-grow: 1; display: flex; justify-content: flex-end; align-items: center;">
-						<button class="board-toggle toggle">
-							<svg>
-								<path d="M 4 1 L 1 4 H 11"/>
-								<path d="M 8 11 L 11 8 H 1"/>
-							</svg>
+						<button class="board-toggle toggle adv-hover">
 							<div>
 								<svg viewBox="0 0 24 24">
 									<path d="M9.682,18.75a.75.75,0,0,1,.75-.75,8.25,8.25,0,1,0-6.189-2.795V12.568a.75.75,0,0,1,1.5,0v4.243a.75.75,0,0,1-.751.75H.75a.75.75,0,0,1,0-1.5H3a9.75,9.75,0,1,1,7.433,3.44A.75.75,0,0,1,9.682,18.75Zm2.875-4.814L9.9,11.281a.754.754,0,0,1-.22-.531V5.55a.75.75,0,1,1,1.5,0v4.889l2.436,2.436a.75.75,0,1,1-1.061,1.06Z" transform="translate(1.568 2.25)"/>
@@ -653,6 +652,10 @@
 								</svg>
 								<span>인기 글</span>
 							</div>
+							<svg>
+								<path d="M 4 1 L 1 4 H 11"/>
+								<path d="M 8 11 L 11 8 H 1"/>
+							</svg>
 						</button>
 					</div>
 				</div>
