@@ -13,32 +13,32 @@ import lombok.Data;
 
 @Data
 public class MemberDetails implements UserDetails {
-	private final Member member;
+	private final MemberInfo memberInfo;
 	@Autowired
 	private CommDao cd;
 	
-	public MemberDetails(Member member) { this.member = member; }
+	public MemberDetails(MemberInfo memberInfo) { this.memberInfo = memberInfo; }
 	
 	@Override
 	public String getPassword() {
-		return member.getMem_password();
+		return memberInfo.getMem_password();
 	}
 	
 	@Override
 	public String getUsername() {
-		return member.getMem_username();
+		return memberInfo.getMem_username();
 	}
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<GrantedAuthority> collect = new ArrayList<>();
-		collect.add(() -> cd.getValueById(member.getMem_authority()));
+		collect.add(() -> cd.getValueById(memberInfo.getMem_authority()));
 		return collect;
 	}
 	
 	@Override
 	public boolean isEnabled() {
-		return member.getIsdelete() == 0;
+		return memberInfo.getIsdelete() == 0;
 	}
 	
 	@Override

@@ -2,7 +2,5 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.java501.S20230401.MemberMapper">
-	<select id="hgGetMemberByUsername" parameterType="int" resultType="Member">
-		SELECT * FROM MEMBER WHERE MEM_USERNAME = #{username}
-	</select>
+	
 </mapper>

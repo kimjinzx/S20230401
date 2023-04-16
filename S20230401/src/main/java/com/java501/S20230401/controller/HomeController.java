@@ -8,12 +8,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.ArticleMember;
+import com.java501.S20230401.model.Member;
+import com.java501.S20230401.model.MemberDetails;
 import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.util.SummaryType;
 
@@ -26,8 +30,11 @@ public class HomeController {
 	private final ArticleService as;
 	
 	@RequestMapping(value = "/")
-	public String index(Model model) {
+	public String index(@AuthenticationPrincipal MemberDetails memberDetails, Model model) {
 		model.addAttribute("now", new Date());
+		if (memberDetails != null) {
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		}
 		
 		List<Map.Entry<Integer, String>> boards = Arrays.asList(
 				new AbstractMap.SimpleEntry<Integer, String>(1000, "together"),

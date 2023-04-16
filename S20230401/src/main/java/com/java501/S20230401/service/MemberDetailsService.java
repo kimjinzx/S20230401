@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.java501.S20230401.dao.MemberDao;
 import com.java501.S20230401.model.Member;
 import com.java501.S20230401.model.MemberDetails;
+import com.java501.S20230401.model.MemberInfo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,8 +19,8 @@ public class MemberDetailsService implements UserDetailsService {
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Member member = md.findByMemberName(username);
-		if (member != null) return new MemberDetails(member);
+		MemberInfo memberInfo = md.findByMemberInfoName(username);
+		if (memberInfo != null) return new MemberDetails(memberInfo);
 		return null;
 	}
 }

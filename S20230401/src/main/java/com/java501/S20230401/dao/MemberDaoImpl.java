@@ -4,6 +4,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.java501.S20230401.model.Member;
+import com.java501.S20230401.model.MemberInfo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,5 +16,10 @@ public class MemberDaoImpl implements MemberDao {
 	@Override
 	public Member findByMemberName(String username) {
 		return session.selectOne("hgGetMemberByUsername", username);
+	}
+	
+	@Override
+	public MemberInfo findByMemberInfoName(String username) {
+		return session.selectOne("hgGetMemberInfoByUsername", username);
 	}
 }

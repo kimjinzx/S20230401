@@ -193,19 +193,54 @@
 	div.popup-group > button.togglePopup {
 		width: 50px;
 		height: 50px;
-		/*border-radius: 25px;
-		background-color: var(--subtheme);*/
 		overflow: hidden;
+	}
+	div.popup-group > button.togglePopup > * {
+		pointer-events: none;
 	}
 	div.popup-group > div.popup-window {
 		position: absolute;
 		padding: 10px 20px;
 		border-radius: 5px;
 		background-color: var(--theme);
-		/* border: 2px solid var(--theme-font); */
 		border: 2px solid #CCCCCC;
 		top: 64.5px;
 		right: 0px;
+	}
+	
+	/* User Information Popup */
+	button#userInfo {
+		padding: 0;
+		background-color: var(--theme);
+		outline: none;
+		border: none;
+		cursor: pointer;
+	}
+	div#user-profile {
+		width: 50px;
+		height: 50px;
+		background-color: white;
+		border-radius: 25px;
+		overflow: hidden;
+		pointer-events: none;
+		border: 2px solid var(--subtheme);
+	}
+	div#user-profile > img {
+		width: 46px;
+		height: 46px;
+		pointer-events: none;
+	}
+	div#userInfo-popup {
+		
+	}
+	div#userInfo-popup > div {
+		width: calc(100% - 20px);
+		height: calc(100% - 40px);
+		margin: 20px 10px;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: stretch;
 	}
 	
 	/* Buttons */
@@ -577,7 +612,7 @@
 				<div></div>
 				<div class="popup-group">
 					<c:choose>
-						<c:when test="${1 == 1 }">
+						<c:when test="${memberInfo == null }">
 							<button id="login" class="togglePopup init-button">
 								<svg width="40" height="40" viewBox="0 0 512 512" style="margin: 5px;">
 									<path d="M258.9 48C141.92 46.42 46.42 141.92 48 258.9c1.56 112.19 92.91 203.54 205.1 205.1 117 1.6 212.48-93.9 210.88-210.88C462.44 140.91 371.09 49.56 258.9 48zm126.42 327.25a4 4 0 01-6.14-.32 124.27 124.27 0 00-32.35-29.59C321.37 329 289.11 320 256 320s-65.37 9-90.83 25.34a124.24 124.24 0 00-32.35 29.58 4 4 0 01-6.14.32A175.32 175.32 0 0180 259c-1.63-97.31 78.22-178.76 175.57-179S432 158.81 432 256a175.32 175.32 0 01-46.68 119.25z"/>
@@ -592,10 +627,37 @@
 						</c:when>
 						<c:otherwise>
 							<button id="userInfo" class="togglePopup adv-hover">
-								
+								<div id="user-profile">
+									<img src="${pageContext.request.contextPath }/uploads/profile/${memberInfo.mem_image }" onerror="this.onerror=null; this.src='${pageContext.request.contextPath }/image/abstract-user.svg';">
+								</div>
 							</button>
 							<div id="userInfo-popup" class="popup-window">
-								
+								<div>
+									<div style="display: flex; justify-content: flex-start; align-items: center; margin-bottom: 5px;">
+										<div style="width: 75px; height: 75px; border-radius: 50%; margin-right: 10px; overflow: hidden; box-shadow: 0 2.5px 2.5px var(--theme-font);">
+											<img class="full-width full-height" src="${pageContext.request.contextPath }/uploads/profile/${memberInfo.mem_image }" onerror="this.onerror=null; this.src='${pageContext.request.contextPath }/image/anonymous.png';">
+										</div>
+										<h2>${memberInfo.mem_nickname }</h2>
+										
+									</div>
+									<div style="display: flex; justify-content: space-between; align-items: center;">
+										<div style="display: flex; justify-content: center; align-items: center; flex-grow: 1;">
+											
+											<span>${memberInfo.his_good }</span>
+										</div>
+										<div style="display: flex; justify-content: center; align-items: center; flex-grow: 1;">
+											
+											<span>${memberInfo.his_normal }</span>
+										</div>
+										<div style="display: flex; justify-content: center; align-items: center; flex-grow: 1;">
+											
+											<span>${memberInfo.his_bad }</span>
+										</div>
+									</div>
+									<button style="width: 240px; height: 32px; font-size: 16px; font-weight: bold; border-radius: 0 0 5px 5px;" class="subtheme-button" onclick="location.href = '${pageContext.request.contextPath }/logout';">
+										로그아웃
+									</button>
+								</div>
 							</div>
 						</c:otherwise>
 					</c:choose>
@@ -666,7 +728,7 @@
 								<div class="board-summary-article">
 									<div class="article-part-lt">
 										<div class="article-member-image">
-											<img src="uploads/profile/${articleMember.mem_image }" onerror="this.onerror=null; this.src='${pageContext.request.contextPath }/image/anonymous.png';">
+											<img src="${pageContext.request.contextPath }/uploads/profile/${articleMember.mem_image }" onerror="this.onerror=null; this.src='${pageContext.request.contextPath }/image/anonymous.png';">
 										</div>
 										<span>${articleMember.mem_nickname }</span>
 										<span class="text-separator">|</span>
