@@ -50,4 +50,10 @@ public class HomeController {
 		model.addAttribute("articles", articles);
 		return "index";
 	}
+	
+	@RequestMapping(value = "/login")
+	public String memberLogin() {
+		
+		return "loginForm";
+	}
 }

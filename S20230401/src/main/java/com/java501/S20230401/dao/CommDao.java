@@ -4,5 +4,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CommDao {
-
+	public String getValueById(int comm_id);
 }
