@@ -302,7 +302,7 @@
 				</a>
 			</div>
 			<div id="topmenu">
-				<a class="adv-hover menuitem" href="list${Article }Article?currentPage=1">함께해요</a>
+				<a class="adv-hover menuitem" href="listArticle?currentPage=1">함께해요</a>
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="">같이사요</a>
 				<div class="menu-separator"></div>
@@ -317,12 +317,12 @@
 					<div style="width: 200px;"></div>
 					<div class="submenu-items">
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="list${Article }Article?currentPage=1">밥 / 카페</a>
-							<a class="submenuitem adv-hover" href="list${Article }Article?currentPage=1">스포츠 / 운동</a>
-							<a class="submenuitem adv-hover" href="list${Article }Article?currentPage=1">쇼핑</a>
-							<a class="submenuitem adv-hover" href="list${Article }Article?currentPage=1">문화생활</a>
-							<a class="submenuitem adv-hover" href="list${Article }Article?currentPage=1">취미생활</a>
-							<a class="submenuitem adv-hover" href="list${Article }Article?currentPage=1">기타</a>
+							<a class="submenuitem adv-hover" href="listEatingArticle?currentPage=1">밥 / 카페</a>
+							<a class="submenuitem adv-hover" href="listSportsArticle?currentPage=1">스포츠 / 운동</a>
+							<a class="submenuitem adv-hover" href="listShoppingArticle?currentPage=1">쇼핑</a>
+							<a class="submenuitem adv-hover" href="listCurtureArticle?currentPage=1">문화생활</a>
+							<a class="submenuitem adv-hover" href="listHobbyArticle?currentPage=1">취미생활</a>
+							<a class="submenuitem adv-hover" href="listEtcArticle?currentPage=1">기타</a>
 						</div>
 						<div class="submenu">
 							<a class="submenuitem adv-hover" href="">식료품</a>
@@ -401,10 +401,12 @@
 			<h1>함께 해요 게시판 </h1>
 	<p>(게시글 수 : ${totalArticle})
 	<p><form action="/writeArticle" >
-		<input type="button" id="writeArticle" value="글쓰기">
-	<hr>	
-	
+		<input type="button" id="writeArticle" value="글쓰기">	<hr>
 	</form>
+	
+	
+	
+	
 	
 	<c:set var="num" value="${page.total-page.start+1 }"></c:set>
 		
@@ -425,6 +427,7 @@
 			<th>글쓴이</th>
 			<th>조회수</th>
 			<th>추천수</th>
+			<th>댓글수</th>
 			
 		</tr>
 		<c:forEach var="art" items="${listArticle }">
@@ -439,11 +442,13 @@
 				<td>${art.art_regdate }</td>
 				<td>${art.trd_loc }</td>			
 				<td>${art.trd_max }</td>			
-				<td>${art.trd_minage }</td>			
-				<td>${art.trd_maxage }</td>			
+				<td>${art.trd_minage }세</td>			
+				<td>${art.trd_maxage }세</td>			
 				<td>${art.mem_nickname }</td>
 				<td>${art.art_read }</td>
 				<td>${art.art_good }</td>
+				<td>${art.repCount }</td>
+				
 			</tr>
 			<c:set var="num" value="${num - 1 }"></c:set>
 		</c:forEach>

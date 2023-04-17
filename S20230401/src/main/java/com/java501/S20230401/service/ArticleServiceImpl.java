@@ -12,7 +12,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
-	
+
 	private final ArticleDao ad;
 
 	@Override
@@ -20,10 +20,9 @@ public class ArticleServiceImpl implements ArticleService {
 		System.out.println("ArticleService Start total...");
 		int totArticleCnt = ad.totalArticle();
 		System.out.println("ArticleServiceImpl totalArticle totArticleCnt-> " + totArticleCnt);
-		
+
 		return totArticleCnt;
 	}
-	
 
 	@Override
 	public List<Article> listArticle(Article article) {
@@ -39,7 +38,7 @@ public class ArticleServiceImpl implements ArticleService {
 		System.out.println("ArticleService Start total...");
 		int totEatingArticleCnt = ad.totalEatingArticle();
 		System.out.println("ArticleServiceImpl totalArticle totEatingArticleCnt-> " + totEatingArticleCnt);
-		
+
 		return totEatingArticleCnt;
 	}
 
@@ -48,7 +47,7 @@ public class ArticleServiceImpl implements ArticleService {
 		System.out.println("ArticleService Start total...");
 		int totSportsArticleCnt = ad.totalSportsArticle();
 		System.out.println("ArticleServiceImpl totalArticle totSportsArticleCnt-> " + totSportsArticleCnt);
-		
+
 		return totSportsArticleCnt;
 	}
 
@@ -57,7 +56,7 @@ public class ArticleServiceImpl implements ArticleService {
 		System.out.println("ArticleService Start total...");
 		int totShoppingArticleCnt = ad.totalShoppingArticle();
 		System.out.println("ArticleServiceImpl totalArticle totShoppingArticleCnt-> " + totShoppingArticleCnt);
-		
+
 		return totShoppingArticleCnt;
 	}
 
@@ -66,7 +65,7 @@ public class ArticleServiceImpl implements ArticleService {
 		System.out.println("ArticleService Start total...");
 		int totCurtureArticleCnt = ad.totalCurtureArticle();
 		System.out.println("ArticleServiceImpl totalArticle totCurtureArticleCnt-> " + totCurtureArticleCnt);
-		
+
 		return totCurtureArticleCnt;
 	}
 
@@ -75,7 +74,7 @@ public class ArticleServiceImpl implements ArticleService {
 		System.out.println("ArticleService Start total...");
 		int totHobbyArticleCnt = ad.totalHobbyArticle();
 		System.out.println("ArticleServiceImpl totalArticle totHobbyArticleCnt-> " + totHobbyArticleCnt);
-		
+
 		return totHobbyArticleCnt;
 	}
 
@@ -84,10 +83,10 @@ public class ArticleServiceImpl implements ArticleService {
 		System.out.println("ArticleService Start total...");
 		int totEtcArticleCnt = ad.totalEtcArticle();
 		System.out.println("ArticleServiceImpl totalArticle totEtcArticleCnt-> " + totEtcArticleCnt);
-		
+
 		return totEtcArticleCnt;
 	}
-	
+
 	@Override
 	public List<Article> listEatingArticle(Article article) {
 		List<Article> articleEatingList = null;
@@ -106,7 +105,6 @@ public class ArticleServiceImpl implements ArticleService {
 		return articleSportsList;
 	}
 
-	
 	@Override
 	public List<Article> listCurtureArticle(Article article) {
 		List<Article> articleCurtureList = null;

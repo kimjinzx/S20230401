@@ -58,8 +58,21 @@ public class Article {
 	private Date 	mem_birthday;
 	private Date 	mem_latest;
 
+	// reply
+	
+	private int 	rep_id;
+	private String 	rep_content;
+	private Date 	rep_regdate;
+	private int 	rep_good;
+	private int 	rep_bad;
+	private int 	rep_parent;
+	private int 	rep_step;
+	
 	// PAGING
 	private String pageNum;
 	private int start;
 	private int end;
+	
+	// 조회용
+	private int repCount;
 }

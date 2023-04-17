@@ -400,25 +400,56 @@
 	<main>
 			<h1>함께 해요 게시판</h1>
 			<h2>스포츠 & 운동</h2>
-	<p>(게시글 수 : ${totalSportsArticle}) <hr>
+	<p>(게시글 수 : ${totalSportsArticle})
+	
+	<c:set var="num" value="${page.total-page.start+1 }"></c:set>
+		
+	<p><form action="/writeArticle" >
+		<input type="button" id="writeArticle" value="글쓰기">
+	<hr>	
+	
+	</form>
 	
 	<c:set var="num" value="${page.total-page.start+1 }"></c:set>
 		
 	<table>
 		<tr>
-			<th>글번호</th>
-			<th>제목</th>
+			<th>거래상태</th>
 			<th>태그1</th>
-			<th>추천수</th>
+			<th>태그2</th>
+			<th>태그3</th>
+			<th>태그4</th>
+			<th>태그5</th>
+			<th>제목</th>
+			<th>작성시간</th>
+			<th>장소</th>
+			<th>모집인원</th>
+			<th>최소연령</th>			
+			<th>최대연령</th>
+			<th>글쓴이</th>
 			<th>조회수</th>
+			<th>추천수</th>
+			<th>댓글수</th>
+			
 		</tr>
 		<c:forEach var="art" items="${listArticle }">
 			<tr>
-				<td>${num }</td>
-				<td><a href="detailArticle?art_id=${art.art_id }">${art.art_title }</a></td>
+				<td>${art.comm_value }</td>
 				<td>${art.art_tag1 }</td>
-				<td>${art.art_good }</td>
+				<td>${art.art_tag2 }</td>
+				<td>${art.art_tag3 }</td>
+				<td>${art.art_tag4 }</td>
+				<td>${art.art_tag5 }</td>
+				<td><a href="detailArticle?art_id=${art.art_id }">${art.art_title }</a></td>
+				<td>${art.art_regdate }</td>
+				<td>${art.trd_loc }</td>			
+				<td>${art.trd_max }</td>			
+				<td>${art.trd_minage }</td>			
+				<td>${art.trd_maxage }</td>			
+				<td>${art.mem_nickname }</td>
 				<td>${art.art_read }</td>
+				<td>${art.art_good }</td>
+				<td>${art.repCount }</td>
 			</tr>
 			<c:set var="num" value="${num - 1 }"></c:set>
 		</c:forEach>

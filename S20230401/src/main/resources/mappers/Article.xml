@@ -46,115 +46,147 @@
 		<!-- 순수 SQL문만 작성해야 함. ';' 이런것도 안씀 -->
 	</select>
 
+
 	<select id="tkArticleListAll" parameterType="Article"
 		resultType="Article">
-		SELECT A.ART_TAG1,
-		A.ART_TAG2, A.ART_TAG3, A.ART_TAG4, A.ART_TAG5, A.ART_TITLE,
-		A.ART_REGDATE, A.ART_READ, A.ART_READ, M.MEM_ID, M.MEM_NICKNAME,
-		T.TRD_ID, T.TRD_LOC, T.TRD_MAX, T.TRD_STATUS, C.COMM_ID, C.COMM_VALUE,
-		T.TRD_MINAGE, T.TRD_MAXAGE
-		FROM ARTICLE A, TRADE T, COMM C, MEMBER M
-		WHERE A.TRD_ID = T.TRD_ID
-		AND T.TRD_STATUS = C.COMM_ID
-		AND M.MEM_ID = A.MEM_ID
-		AND substr(A.brd_id, 0,2)=10
+		SELECT  A.ART_TAG1, A.ART_TAG2, A.ART_TAG3, A.ART_TAG4,
+				A.ART_TAG5, A.ART_TITLE,A.ART_REGDATE, A.ART_READ, A.ART_READ,
+				M.MEM_ID, M.MEM_NICKNAME,
+				T.TRD_ID, T.TRD_LOC, T.TRD_MAX, T.TRD_STATUS,
+				C.COMM_ID, C.COMM_VALUE,
+				T.TRD_MINAGE, T.TRD_MAXAGE
+              , reply_count(A.ART_ID, A.BRD_ID)  repCount
+		FROM    ARTICLE A,
+				TRADE T, COMM C, MEMBER M
+		WHERE   A.TRD_ID = T.TRD_ID
+		AND     T.TRD_STATUS =	C.COMM_ID
+		AND     M.MEM_ID = A.MEM_ID
+		AND     substr(a.brd_id, 0,2)=10
 		ORDER BY A.BRD_ID
-	</select>
 
+	</select>
 	<select id="tkArticleEatingListAll" parameterType="Article"
 		resultType="Article">
-		SELECT
-		*
-		FROM
-		(
-		SELECT rownum rn, a.*
-		FROM
-		(select * FROM article
-		where brd_id=1010 ORDER BY art_id) a
-		)
-		WHERE rn BETWEEN
-		#{start} AND
-		#{end}
+		SELECT 	A.ART_TAG1,	A.ART_TAG2, A.ART_TAG3, A.ART_TAG4,
+				A.ART_TAG5, A.ART_TITLE, A.ART_REGDATE, A.ART_READ, A.ART_READ,
+				M.MEM_ID, M.MEM_NICKNAME,
+				T.TRD_ID, T.TRD_LOC, T.TRD_MAX, T.TRD_STATUS,
+				C.COMM_ID, C.COMM_VALUE,
+				T.TRD_MINAGE, T.TRD_MAXAGE
+				, reply_count(A.ART_ID, A.BRD_ID) repCount
+		FROM ARTICLE A,
+		TRADE T, COMM C, MEMBER M
+		WHERE A.TRD_ID = T.TRD_ID
+		AND T.TRD_STATUS =
+		C.COMM_ID
+		AND M.MEM_ID = A.MEM_ID
+		AND brd_id=1010
+		ORDER BY A.BRD_ID
 	</select>
 
 	<select id="tkArticleSportsListAll" parameterType="Article"
 		resultType="Article">
-		SELECT
-		*
-		FROM
-		(
-		SELECT rownum rn, a.*
-		FROM
-		(select * FROM article
-		where brd_id=1020 ORDER BY art_id) a
-		)
-		WHERE rn BETWEEN
-		#{start} AND
-		#{end}
+		SELECT A.ART_TAG1,
+		A.ART_TAG2, A.ART_TAG3, A.ART_TAG4,
+		A.ART_TAG5, A.ART_TITLE,
+		A.ART_REGDATE, A.ART_READ, A.ART_READ,
+		M.MEM_ID, M.MEM_NICKNAME,
+		T.TRD_ID, T.TRD_LOC, T.TRD_MAX, T.TRD_STATUS,
+		C.COMM_ID, C.COMM_VALUE,
+		T.TRD_MINAGE, T.TRD_MAXAGE
+		, reply_count(A.ART_ID, A.BRD_ID) repCount
+		FROM ARTICLE A,
+		TRADE T, COMM C, MEMBER M
+		WHERE A.TRD_ID = T.TRD_ID
+		AND T.TRD_STATUS =
+		C.COMM_ID
+		AND M.MEM_ID = A.MEM_ID
+		AND brd_id=1020
+		ORDER BY A.BRD_ID
 	</select>
 
 	<select id="tkArticleShoppingListAll" parameterType="Article"
 		resultType="Article">
-		SELECT
-		*
-		FROM
-		(
-		SELECT rownum rn, a.*
-		FROM
-		(select * FROM article
-		where brd_id=1030 ORDER BY art_id) a
-		)
-		WHERE rn BETWEEN
-		#{start} AND
-		#{end}
+		SELECT A.ART_TAG1,
+		A.ART_TAG2, A.ART_TAG3, A.ART_TAG4,
+		A.ART_TAG5, A.ART_TITLE,
+		A.ART_REGDATE, A.ART_READ, A.ART_READ,
+		M.MEM_ID, M.MEM_NICKNAME,
+		T.TRD_ID, T.TRD_LOC, T.TRD_MAX, T.TRD_STATUS,
+		C.COMM_ID, C.COMM_VALUE,
+		T.TRD_MINAGE, T.TRD_MAXAGE
+		, reply_count(A.ART_ID, A.BRD_ID) repCount
+		FROM ARTICLE A,
+		TRADE T, COMM C, MEMBER M
+		WHERE A.TRD_ID = T.TRD_ID
+		AND T.TRD_STATUS =
+		C.COMM_ID
+		AND M.MEM_ID = A.MEM_ID
+		AND brd_id=1030
+		ORDER BY A.BRD_ID
 	</select>
 
 	<select id="tkArticleCurtureListAll" parameterType="Article"
 		resultType="Article">
-		SELECT
-		*
-		FROM
-		(
-		SELECT rownum rn, a.*
-		FROM
-		(select * FROM article
-		where brd_id=1040 ORDER BY art_id) a
-		)
-		WHERE rn BETWEEN
-		#{start} AND
-		#{end}
+		SELECT A.ART_TAG1,
+		A.ART_TAG2, A.ART_TAG3, A.ART_TAG4,
+		A.ART_TAG5, A.ART_TITLE,
+		A.ART_REGDATE, A.ART_READ, A.ART_READ,
+		M.MEM_ID, M.MEM_NICKNAME,
+		T.TRD_ID, T.TRD_LOC, T.TRD_MAX, T.TRD_STATUS,
+		C.COMM_ID, C.COMM_VALUE,
+		T.TRD_MINAGE, T.TRD_MAXAGE
+		, reply_count(A.ART_ID, A.BRD_ID) repCount
+		FROM ARTICLE A,
+		TRADE T, COMM C, MEMBER M
+		WHERE A.TRD_ID = T.TRD_ID
+		AND T.TRD_STATUS =
+		C.COMM_ID
+		AND M.MEM_ID = A.MEM_ID
+		AND brd_id=1040
+		ORDER BY A.BRD_ID
 	</select>
 
 	<select id="tkArticleHobbyListAll" parameterType="Article"
 		resultType="Article">
-		SELECT
-		*
-		FROM
-		(
-		SELECT rownum rn, a.*
-		FROM
-		(select * FROM article
-		where brd_id=1050 ORDER BY art_id) a
-		)
-		WHERE rn BETWEEN
-		#{start} AND
-		#{end}
+		SELECT A.ART_TAG1,
+		A.ART_TAG2, A.ART_TAG3, A.ART_TAG4,
+		A.ART_TAG5, A.ART_TITLE,
+		A.ART_REGDATE, A.ART_READ, A.ART_READ,
+		M.MEM_ID, M.MEM_NICKNAME,
+		T.TRD_ID, T.TRD_LOC, T.TRD_MAX, T.TRD_STATUS,
+		C.COMM_ID, C.COMM_VALUE,
+		T.TRD_MINAGE, T.TRD_MAXAGE
+		, reply_count(A.ART_ID, A.BRD_ID) repCount
+		FROM ARTICLE A,
+		TRADE T, COMM C, MEMBER M
+		WHERE A.TRD_ID = T.TRD_ID
+		AND T.TRD_STATUS =
+		C.COMM_ID
+		AND M.MEM_ID = A.MEM_ID
+		AND brd_id=1050
+		ORDER BY A.BRD_ID
 	</select>
 
 	<select id="tkArticleEtcListAll" parameterType="Article"
 		resultType="Article">
-		SELECT
-		*
-		FROM
-		(
-		SELECT rownum rn, a.*
-		FROM
-		(select * FROM article
-		where brd_id=1060 ORDER BY art_id) a
-		)
-		WHERE rn BETWEEN
-		#{start} AND
-		#{end}
+		SELECT A.ART_TAG1,
+		A.ART_TAG2, A.ART_TAG3, A.ART_TAG4,
+		A.ART_TAG5, A.ART_TITLE,
+		A.ART_REGDATE, A.ART_READ, A.ART_READ,
+		M.MEM_ID, M.MEM_NICKNAME,
+		T.TRD_ID, T.TRD_LOC, T.TRD_MAX, T.TRD_STATUS,
+		C.COMM_ID, C.COMM_VALUE,
+		T.TRD_MINAGE, T.TRD_MAXAGE
+		, reply_count(A.ART_ID, A.BRD_ID) repCount
+		FROM ARTICLE A,
+		TRADE T, COMM C, MEMBER M
+		WHERE A.TRD_ID = T.TRD_ID
+		AND T.TRD_STATUS =
+		C.COMM_ID
+		AND M.MEM_ID = A.MEM_ID
+		AND brd_id=1060
+		ORDER BY A.BRD_ID
 	</select>
 
 </mapper>

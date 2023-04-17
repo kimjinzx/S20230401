@@ -302,7 +302,7 @@
 				</a>
 			</div>
 			<div id="topmenu">
-				<a class="adv-hover menuitem" href="contextPath/board/list${Article }Article">함께해요</a>
+				<a class="adv-hover menuitem" href="contextPath/board/listArticle">함께해요</a>
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="">같이사요</a>
 				<div class="menu-separator"></div>
@@ -317,12 +317,12 @@
 					<div style="width: 200px;"></div>
 					<div class="submenu-items">
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="contextPath/board/list${Article }Article">밥 / 카페</a>
-							<a class="submenuitem adv-hover" href="contextPath/board/list${Article }Article">스포츠 / 운동</a>
-							<a class="submenuitem adv-hover" href="contextPath/board/list${Article }Article">쇼핑</a>
-							<a class="submenuitem adv-hover" href="contextPath/board/list${Article }Article">문화생활</a>
-							<a class="submenuitem adv-hover" href="contextPath/board/list${Article }Article">취미생활</a>
-							<a class="submenuitem adv-hover" href="contextPath/board/list${Article }Article">기타</a>
+							<a class="submenuitem adv-hover" href="contextPath/board/listEatingArticle">밥 / 카페</a>
+							<a class="submenuitem adv-hover" href="contextPath/board/listSportsArticle">스포츠 / 운동</a>
+							<a class="submenuitem adv-hover" href="contextPath/board/listShoppingArticle">쇼핑</a>
+							<a class="submenuitem adv-hover" href="contextPath/board/listCurtureArticle">문화생활</a>
+							<a class="submenuitem adv-hover" href="contextPath/board/listHobbyArticle">취미생활</a>
+							<a class="submenuitem adv-hover" href="contextPath/board/listEtcArticle">기타</a>
 						</div>
 						<div class="submenu">
 							<a class="submenuitem adv-hover" href="">식료품</a>

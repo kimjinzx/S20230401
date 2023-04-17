@@ -21,7 +21,7 @@ public interface ArticleService {
 	List<Article> 	listCurtureArticle(Article article);
 	List<Article> 	listHobbyArticle(Article article);
 	List<Article> 	listEtcArticle(Article article);
-	
+
 	
 
 }

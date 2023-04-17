@@ -19,7 +19,7 @@ public class TogetherController {
 	
 	private final ArticleService as;
 
-	@RequestMapping(value = "contextPath/board/listTotalArticle")
+	@RequestMapping(value = "contextPath/board/listArticle")
 	public String articleList(Article article, String currentPage, Model model) {
 		System.out.println("articleList controller Start");
 		
@@ -27,21 +27,23 @@ public class TogetherController {
 		int totalArticle = as.totalArticle();
 		System.out.println("EmpController totalArticle => " + totalArticle);
 		
+		// 게시글 별 댓글 수
+	//	List<Article> totalRepCountList = as.totalRepCount(article);
+		
 		// Paging 작업
 		Paging page = new Paging(totalArticle, currentPage);
 		article.setStart(page.getStart()); // 시작시 1
 		article.setEnd(page.getEnd());
 		
 		List<Article> listArticle = as.listArticle(article);
-		System.out.println("EmpController list listEmp.size()=> " + listArticle.size());
 
-		model.addAttribute("Article", "Total");
+		//model.addAttribute("totalRepCountList", totalRepCountList);
 		model.addAttribute("totalArticle", totalArticle);
 		model.addAttribute("listArticle", listArticle);
 		model.addAttribute("page", page);
 		
 		
-		return "together/listTotalArticle";
+		return "together/listArticle";
 	}
 	
 	@RequestMapping(value = "contextPath/board/listEatingArticle")
@@ -60,7 +62,6 @@ public class TogetherController {
 		List<Article> listEatingArticle = as.listEatingArticle(article);
 		System.out.println("EmpController list listEmp.size()=> " + listEatingArticle.size());
 
-		model.addAttribute("Article", "Eating");
 		model.addAttribute("totalEatingArticle", totalEatingArticle);
 		model.addAttribute("listArticle", listEatingArticle);
 		model.addAttribute("page", page);
@@ -85,8 +86,7 @@ public class TogetherController {
 		List<Article> listSportsArticle = as.listSportsArticle(article);
 		System.out.println("EmpController list listEmp.size()=> " + listSportsArticle.size());
 		
-		model.addAttribute("Article", "Sports");
-		model.addAttribute("totalArticle", totalSportsArticle);
+		model.addAttribute("totalSportsArticle", totalSportsArticle);
 		model.addAttribute("listArticle", listSportsArticle);
 		model.addAttribute("page", page);
 		
@@ -110,7 +110,6 @@ public class TogetherController {
 		List<Article> listShoppingArticle = as.listShoppingArticle(article);
 		System.out.println("EmpController list listEmp.size()=> " + listShoppingArticle.size());
 
-		model.addAttribute("Article", "Shopping");
 		model.addAttribute("totalShoppingArticle", totalShoppingArticle);
 		model.addAttribute("listArticle", listShoppingArticle);
 		model.addAttribute("page", page);
@@ -135,7 +134,7 @@ public class TogetherController {
 		List<Article> listCurtureArticle = as.listCurtureArticle(article);
 		System.out.println("EmpController list listEmp.size()=> " + listCurtureArticle.size());
 
-		model.addAttribute("Article", "Curture");
+
 		model.addAttribute("totalCurtureArticle", totalCurtureArticle);
 		model.addAttribute("listArticle", listCurtureArticle);
 		model.addAttribute("page", page);
@@ -160,7 +159,6 @@ public class TogetherController {
 		List<Article> listHobbyArticle = as.listHobbyArticle(article);
 		System.out.println("EmpController list listEmp.size()=> " + listHobbyArticle.size());
 
-		model.addAttribute("Article", "Hobby");
 		model.addAttribute("totalHobbyArticle", totalHobbyArticle);
 		model.addAttribute("listArticle", listHobbyArticle);
 		model.addAttribute("page", page);
@@ -185,7 +183,6 @@ public class TogetherController {
 		List<Article> listEtcArticle = as.listEtcArticle(article);
 		System.out.println("EmpController list listEmp.size()=> " + listEtcArticle.size());
 
-		model.addAttribute("Article", "Etc");
 		model.addAttribute("totalEtcArticle", totalEtcArticle);
 		model.addAttribute("listArticle", listEtcArticle);
 		model.addAttribute("page", page);
@@ -193,5 +190,4 @@ public class TogetherController {
 		
 		return "together/listEtcArticle";
 	}
-
 }
