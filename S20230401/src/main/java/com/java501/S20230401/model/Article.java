@@ -75,4 +75,5 @@ public class Article {
 	
 	// 조회용
 	private int repCount;
+	private int rest_regdate;
 }

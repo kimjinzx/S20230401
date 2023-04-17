@@ -19,7 +19,7 @@ public class TogetherController {
 	
 	private final ArticleService as;
 
-	@RequestMapping(value = "contextPath/board/listArticle")
+	@RequestMapping(value = "contextPath/board/listArticle/total")
 	public String articleList(Article article, String currentPage, Model model) {
 		System.out.println("articleList controller Start");
 		
@@ -43,10 +43,10 @@ public class TogetherController {
 		model.addAttribute("page", page);
 		
 		
-		return "together/listArticle";
+		return "together/listTotalArticle";
 	}
 	
-	@RequestMapping(value = "contextPath/board/listEatingArticle")
+	@RequestMapping(value = "contextPath/board/listArticle/eating")
 	public String articleEatingList(Article article, String currentPage, Model model) {
 		System.out.println("articleList controller Start");
 		
@@ -70,7 +70,7 @@ public class TogetherController {
 		return "together/listEatingArticle";
 	}
 	
-	@RequestMapping(value = "contextPath/board/listSportsArticle")
+	@RequestMapping(value = "contextPath/board/listArticle/sports")
 	public String articleSportsList(Article article, String currentPage, Model model) {
 		System.out.println("articleList controller Start");
 		
@@ -94,7 +94,7 @@ public class TogetherController {
 		return "together/listSportsArticle";
 	}
 	
-	@RequestMapping(value = "contextPath/board/listShoppingArticle")
+	@RequestMapping(value = "contextPath/board/listArticle/shopping")
 	public String articleShoppingList(Article article, String currentPage, Model model) {
 		System.out.println("articleList controller Start");
 		
@@ -118,7 +118,7 @@ public class TogetherController {
 		return "together/listShoppingArticle";
 	}
 	
-	@RequestMapping(value = "contextPath/board/listCurtureArticle")
+	@RequestMapping(value = "contextPath/board/listArticle/curture")
 	public String articleCurtureList(Article article, String currentPage, Model model) {
 		System.out.println("articleList controller Start");
 		
@@ -143,7 +143,7 @@ public class TogetherController {
 		return "together/listCurtureArticle";
 	}
 	
-	@RequestMapping(value = "contextPath/board/listHobbyArticle")
+	@RequestMapping(value = "contextPath/board/listArticle/hobby")
 	public String articleHobbyList(Article article, String currentPage, Model model) {
 		System.out.println("articleList controller Start");
 		
@@ -167,7 +167,7 @@ public class TogetherController {
 		return "together/listHobbyArticle";
 	}
 	
-	@RequestMapping(value = "contextPath/board/listEtcArticle")
+	@RequestMapping(value = "contextPath/board/listArticle/etc")
 	public String articleEtcList(Article article, String currentPage, Model model) {
 		System.out.println("articleList controller Start");
 		

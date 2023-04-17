@@ -49,8 +49,8 @@
 
 	<select id="tkArticleListAll" parameterType="Article"
 		resultType="Article">
-		SELECT  A.ART_TAG1, A.ART_TAG2, A.ART_TAG3, A.ART_TAG4,
-				A.ART_TAG5, A.ART_TITLE,A.ART_REGDATE, A.ART_READ, A.ART_READ,
+        		SELECT  A.ART_TAG1, A.ART_TAG2, A.ART_TAG3, A.ART_TAG4,
+				A.ART_TAG5, A.ART_TITLE, trunc(sysdate-A.ART_REGDATE) as REST_REGDATE, A.ART_READ, A.ART_READ,
 				M.MEM_ID, M.MEM_NICKNAME,
 				T.TRD_ID, T.TRD_LOC, T.TRD_MAX, T.TRD_STATUS,
 				C.COMM_ID, C.COMM_VALUE,
