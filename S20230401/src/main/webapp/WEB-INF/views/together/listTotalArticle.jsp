@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="preset.jsp" %>
+<%@ include file="../preset.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -302,7 +302,7 @@
 				</a>
 			</div>
 			<div id="topmenu">
-				<a class="adv-hover menuitem" href="together/list">함께해요</a>
+				<a class="adv-hover menuitem" href="list${Article }Article?currentPage=1">함께해요</a>
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="">같이사요</a>
 				<div class="menu-separator"></div>
@@ -317,12 +317,12 @@
 					<div style="width: 200px;"></div>
 					<div class="submenu-items">
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="together/list/eating">밥 / 카페</a>
-							<a class="submenuitem adv-hover" href="">스포츠 / 운동</a>
-							<a class="submenuitem adv-hover" href="">쇼핑</a>
-							<a class="submenuitem adv-hover" href="">문화생활</a>
-							<a class="submenuitem adv-hover" href="">취미생활</a>
-							<a class="submenuitem adv-hover" href="">기타</a>
+							<a class="submenuitem adv-hover" href="list${Article }Article?currentPage=1">밥 / 카페</a>
+							<a class="submenuitem adv-hover" href="list${Article }Article?currentPage=1">스포츠 / 운동</a>
+							<a class="submenuitem adv-hover" href="list${Article }Article?currentPage=1">쇼핑</a>
+							<a class="submenuitem adv-hover" href="list${Article }Article?currentPage=1">문화생활</a>
+							<a class="submenuitem adv-hover" href="list${Article }Article?currentPage=1">취미생활</a>
+							<a class="submenuitem adv-hover" href="list${Article }Article?currentPage=1">기타</a>
 						</div>
 						<div class="submenu">
 							<a class="submenuitem adv-hover" href="">식료품</a>
@@ -398,7 +398,67 @@
 		
 	</aside>
 	<main>
+			<h1>함께 해요 게시판 </h1>
+	<p>(게시글 수 : ${totalArticle})
+	<p><form action="/writeArticle" >
+		<input type="button" id="writeArticle" value="글쓰기">
+	<hr>	
+	
+	</form>
+	
+	<c:set var="num" value="${page.total-page.start+1 }"></c:set>
 		
+	<table>
+		<tr>
+			<th>거래상태</th>
+			<th>태그1</th>
+			<th>태그2</th>
+			<th>태그3</th>
+			<th>태그4</th>
+			<th>태그5</th>
+			<th>제목</th>
+			<th>작성시간</th>
+			<th>장소</th>
+			<th>모집인원</th>
+			<th>최소연령</th>			
+			<th>최대연령</th>
+			<th>글쓴이</th>
+			<th>조회수</th>
+			<th>추천수</th>
+			
+		</tr>
+		<c:forEach var="art" items="${listArticle }">
+			<tr>
+				<td>${art.comm_value }</td>
+				<td>${art.art_tag1 }</td>
+				<td>${art.art_tag2 }</td>
+				<td>${art.art_tag3 }</td>
+				<td>${art.art_tag4 }</td>
+				<td>${art.art_tag5 }</td>
+				<td><a href="detailArticle?art_id=${art.art_id }">${art.art_title }</a></td>
+				<td>${art.art_regdate }</td>
+				<td>${art.trd_loc }</td>			
+				<td>${art.trd_max }</td>			
+				<td>${art.trd_minage }</td>			
+				<td>${art.trd_maxage }</td>			
+				<td>${art.mem_nickname }</td>
+				<td>${art.art_read }</td>
+				<td>${art.art_good }</td>
+			</tr>
+			<c:set var="num" value="${num - 1 }"></c:set>
+		</c:forEach>
+	</table>	
+	
+	<c:if test="${page.startPage > page.pageBlock }">
+		<a href="listArticle?currentPage=${page.startPage-page.pageBlock}">[이전]</a>
+	</c:if>
+	<c:forEach var="i" begin="${page.startPage}" end="${page.endPage}">
+		<a href="listArticle?currentPage=${i}">[${i}]</a>
+	</c:forEach>
+	<c:if test="${page.endPage < page.totalPage }">
+		<a href="listArticle?currentPage=${page.startPage+page.pageBlock}">[다음]</a>
+	</c:if>	
+	
 		<button id="scrollToTop" class="adv-hover">
 			<svg style="fill: var(--subtheme); stroke: var(--subtheme); stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round;" width="20" height="10" viewBox="0 0 32 16">
 				<path d="M 15 1 L 1 15 31 15 Z"/>

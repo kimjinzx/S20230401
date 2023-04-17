@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class Member {
+	
 	private int 	mem_id;
 	private String 	mem_username;
 	private String 	mem_password;
@@ -23,4 +24,8 @@ public class Member {
 	private Date 	mem_latest;
 	private int 	isdelete;
 	private int 	report_id;
+	
+	private String pageNum;
+	private int start;
+	private int end;
 }

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.java501.S20230401.ArticleMapper">
+
+	<select id="ArticleTotal" resultType="int">
+		<!-- id는 무조건 유일한 값이어야 함. 겹치면 안된다! -->
+		select Count(*) FROM article where substr(brd_id, 0,2)=10
+		<!-- 순수 SQL문만 작성해야 함. ';' 이런것도 안씀 -->
+	</select>
+
+	<select id="ArticleEatingTotal" resultType="int">
+		<!-- id는 무조건 유일한 값이어야 함. 겹치면 안된다! -->
+		select Count(*) FROM article where brd_id=1010
+		<!-- 순수 SQL문만 작성해야 함. ';' 이런것도 안씀 -->
+	</select>
+
+	<select id="ArticleSportsTotal" resultType="int">
+		<!-- id는 무조건 유일한 값이어야 함. 겹치면 안된다! -->
+		select Count(*) FROM article where brd_id=1020
+		<!-- 순수 SQL문만 작성해야 함. ';' 이런것도 안씀 -->
+	</select>
+
+	<select id="ArticleShoppingTotal" resultType="int">
+		<!-- id는 무조건 유일한 값이어야 함. 겹치면 안된다! -->
+		select Count(*) FROM article where brd_id=1030
+		<!-- 순수 SQL문만 작성해야 함. ';' 이런것도 안씀 -->
+	</select>
+
+	<select id="ArticleCurtureTotal" resultType="int">
+		<!-- id는 무조건 유일한 값이어야 함. 겹치면 안된다! -->
+		select Count(*) FROM article where brd_id=1040
+		<!-- 순수 SQL문만 작성해야 함. ';' 이런것도 안씀 -->
+	</select>
+
+	<select id="ArticleHobbyTotal" resultType="int">
+		<!-- id는 무조건 유일한 값이어야 함. 겹치면 안된다! -->
+		select Count(*) FROM article where brd_id=1050
+		<!-- 순수 SQL문만 작성해야 함. ';' 이런것도 안씀 -->
+	</select>
+	<select id="ArticleEtcTotal" resultType="int">
+		<!-- id는 무조건 유일한 값이어야 함. 겹치면 안된다! -->
+		select Count(*) FROM article where brd_id=1060
+		<!-- 순수 SQL문만 작성해야 함. ';' 이런것도 안씀 -->
+	</select>
+
+	<select id="tkArticleListAll" parameterType="Article"
+		resultType="Article">
+		SELECT A.ART_TAG1,
+		A.ART_TAG2, A.ART_TAG3, A.ART_TAG4, A.ART_TAG5, A.ART_TITLE,
+		A.ART_REGDATE, A.ART_READ, A.ART_READ, M.MEM_ID, M.MEM_NICKNAME,
+		T.TRD_ID, T.TRD_LOC, T.TRD_MAX, T.TRD_STATUS, C.COMM_ID, C.COMM_VALUE,
+		T.TRD_MINAGE, T.TRD_MAXAGE
+		FROM ARTICLE A, TRADE T, COMM C, MEMBER M
+		WHERE A.TRD_ID = T.TRD_ID
+		AND T.TRD_STATUS = C.COMM_ID
+		AND M.MEM_ID = A.MEM_ID
+		AND substr(A.brd_id, 0,2)=10
+		ORDER BY A.BRD_ID
+	</select>
+
+	<select id="tkArticleEatingListAll" parameterType="Article"
+		resultType="Article">
+		SELECT
+		*
+		FROM
+		(
+		SELECT rownum rn, a.*
+		FROM
+		(select * FROM article
+		where brd_id=1010 ORDER BY art_id) a
+		)
+		WHERE rn BETWEEN
+		#{start} AND
+		#{end}
+	</select>
+
+	<select id="tkArticleSportsListAll" parameterType="Article"
+		resultType="Article">
+		SELECT
+		*
+		FROM
+		(
+		SELECT rownum rn, a.*
+		FROM
+		(select * FROM article
+		where brd_id=1020 ORDER BY art_id) a
+		)
+		WHERE rn BETWEEN
+		#{start} AND
+		#{end}
+	</select>
+
+	<select id="tkArticleShoppingListAll" parameterType="Article"
+		resultType="Article">
+		SELECT
+		*
+		FROM
+		(
+		SELECT rownum rn, a.*
+		FROM
+		(select * FROM article
+		where brd_id=1030 ORDER BY art_id) a
+		)
+		WHERE rn BETWEEN
+		#{start} AND
+		#{end}
+	</select>
+
+	<select id="tkArticleCurtureListAll" parameterType="Article"
+		resultType="Article">
+		SELECT
+		*
+		FROM
+		(
+		SELECT rownum rn, a.*
+		FROM
+		(select * FROM article
+		where brd_id=1040 ORDER BY art_id) a
+		)
+		WHERE rn BETWEEN
+		#{start} AND
+		#{end}
+	</select>
+
+	<select id="tkArticleHobbyListAll" parameterType="Article"
+		resultType="Article">
+		SELECT
+		*
+		FROM
+		(
+		SELECT rownum rn, a.*
+		FROM
+		(select * FROM article
+		where brd_id=1050 ORDER BY art_id) a
+		)
+		WHERE rn BETWEEN
+		#{start} AND
+		#{end}
+	</select>
+
+	<select id="tkArticleEtcListAll" parameterType="Article"
+		resultType="Article">
+		SELECT
+		*
+		FROM
+		(
+		SELECT rownum rn, a.*
+		FROM
+		(select * FROM article
+		where brd_id=1060 ORDER BY art_id) a
+		)
+		WHERE rn BETWEEN
+		#{start} AND
+		#{end}
+	</select>
+
+</mapper>
