@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java501.S20230401.model.dgCommMapper">
+
+	<resultMap type="Comm" id="dgCommMap">
+		<id 	column="comm_id" 	property="comm_id"/><!-- PK -->
+		<result column="comm_value" property="comm_value"/>
+	</resultMap>
+</mapper>

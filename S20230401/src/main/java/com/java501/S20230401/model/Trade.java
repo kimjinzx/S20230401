@@ -17,4 +17,9 @@ public class Trade {
 	private int 	trd_gender;
 	private int 	trd_minage;
 	private int 	trd_maxage;
+	
+	// 참조
+	private Member 	member;
+	private Comm 	comm;
+	private Region 	region;
 }

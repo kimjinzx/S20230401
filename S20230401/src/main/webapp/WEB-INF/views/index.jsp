@@ -306,7 +306,7 @@
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="">같이사요</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/share/total">나눔해요</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/share?brd_id=1200">나눔해요</a>
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="">커뮤니티</a>
 				<div class="menu-separator"></div>
@@ -332,10 +332,10 @@
 							<a class="submenuitem adv-hover" href="">기타</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/share/food">식품</a>
-							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/share/fashion">패션 / 잡화</a>
-							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/share/appliances">가전 / 가구</a>
-							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/share/etc">기타</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/share?brd_id=1210">식품</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/share?brd_id=1220">패션 / 잡화</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/share?brd_id=1230">가전 / 가구</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/share?brd_id=1240">기타</a>
 						</div>
 						<div class="submenu">
 							<a class="submenuitem adv-hover" href="">일상수다</a>

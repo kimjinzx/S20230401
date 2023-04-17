@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java501.S20230401.model.dgArticleMapper">
+	
+	<resultMap type="Article" id="dgArticleMap">
+		<id 	column="art_id" 		property="art_id"/> <!-- PK	 -->
+		<id 	column="brd_id" 		property="brd_id"/>
+		<result column="art_title" 		property="art_title"/>
+		<result column="mem_id" 		property="mem_id"/>
+		<result column="art_regdate" 	property="art_regdate"/>
+		<result column="art_content" 	property="art_content"/>
+		<result column="art_tag1" 		property="art_tag1"/>
+		<result column="art_tag2" 		property="art_tag2"/>
+		<result column="art_tag3" 		property="art_tag3"/>
+		<result column="art_tag4" 		property="art_tag4"/>
+		<result column="art_tag5" 		property="art_tag5"/>
+		<result column="trd_id" 		property="trd_id"/>
+		<result column="art_good" 		property="art_good"/>
+		<result column="art_bad" 		property="art_bad"/>
+		<result column="art_read" 		property="art_read"/>
+		<result column="art_isnotice" 	property="art_isnotice"/>
+		<result column="isdelete" 		property="isdelete"/>
+		<result column="report_id" 		property="report_id"/>
+		<collection property="member" 	resultMap="com.java501.S20230401.model.dgMemberMapper.dgMemberMap"/>
+		<collection property="board" 	resultMap="com.java501.S20230401.model.dgBoardMapper.dgBoardMap"/>
+		<collection property="trade" 	resultMap="com.java501.S20230401.model.dgTradeMapper.dgTradeMap"/>
+	</resultMap>
+	
+	<!-- 전체 카운트 -->
+	<select id="dgAllArtCnt" resultType="int" parameterType="Article">
+		<![CDATA[
+			Select 	count(*)
+			From 	article
+			Where 	brd_id
+			BETWEEN #{brd_id} and #{brd_id}+99
+			]]>
+	</select>
+
+	
+	<!-- 전체 조회 -->
+	<select id="dgAllArticleList" resultMap="dgArticleMap" parameterType="Article">
+		SELECT  *
+		FROM    (SELECT ROWNUM AS RN, A.*
+		         FROM   (SELECT *
+		                 FROM ( SELECT  * 
+		                        FROM    ARTICLE
+		                        JOIN    (   SELECT  B.*, C.COMM_VALUE 
+		                                    FROM    BOARD B JOIN COMM C 
+		                                    ON      BRD_ID IN COMM_ID
+		                                ) USING(BRD_ID)
+		                 		JOIN	MEMBER 	USING(MEM_ID)
+		                 		JOIN 	TRADE 	USING(TRD_ID)
+		                       ) 
+		                 WHERE      BRD_ID
+		                 BETWEEN	#{brd_id} and #{brd_id}+99
+		                 ORDER BY   ART_REGDATE DESC) A)
+		WHERE 	RN BETWEEN #{start} and #{end}
+	</select>
+
+	<!-- 게시판 카운트 -->
+	<select id="dgArtCnt" resultType="int" parameterType="Article">
+		SELECT 	COUNT(*)
+		FROM 	ARTICLE
+		WHERE 	brd_id = #{brd_id}
+	</select>
+	
+	
+	<!-- 게시판 조회 -->
+	<select id="dgArticleList" resultMap="dgArticleMap" parameterType="Article">
+		SELECT  *
+		FROM    (SELECT ROWNUM AS RN, A.*
+		         FROM   (SELECT *
+		                 FROM ( SELECT  * 
+		                        FROM    ARTICLE
+		                        JOIN    (   SELECT  *
+		                                    FROM    BOARD JOIN COMM
+		                                    ON      BRD_ID IN COMM_ID ) USING(BRD_ID)
+		                 		JOIN	MEMBER 	USING(MEM_ID)
+		                 		JOIN 	TRADE 	USING(TRD_ID)
+		                       ) 
+		                 WHERE      BRD_ID = #{brd_id}
+		                 ORDER BY   ART_REGDATE DESC) A)
+		WHERE 	RN BETWEEN #{start} and #{end}
+	</select>
+	
+	<!-- 게시글 조회 -->
+	<select id="dgDetailArticle" resultMap="dgArticleMap" parameterType="Article">
+		SELECT  *
+		FROM   (SELECT *
+		        FROM   ARTICLE
+		        JOIN  (SELECT    *
+		               FROM      BOARD JOIN COMM
+		               ON        BRD_ID IN COMM_ID) USING(BRD_ID)
+		        JOIN   MEMBER  USING(MEM_ID)
+		        JOIN   TRADE   USING(TRD_ID))
+		WHERE   ART_ID = #{art_id} AND BRD_ID = #{brd_id}
+	</select>
+
+</mapper>

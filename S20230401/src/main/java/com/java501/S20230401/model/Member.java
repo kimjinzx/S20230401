@@ -23,4 +23,7 @@ public class Member {
 	private Date 	mem_latest;
 	private int 	isdelete;
 	private int 	report_id;
+	
+	// 참고
+	private Comm 	comm;
 }

@@ -8,4 +8,7 @@ public class Board {
 	private int read_auth;
 	private int write_auth;
 	private int reply_auth;
+	
+	// 참조
+	private Comm comm;
 }

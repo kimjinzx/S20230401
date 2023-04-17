@@ -4,6 +4,19 @@
 	<typeAliases>
 		<!-- typeAlias 각자 만들어 쓰기 -->
 		<!-- alias의 값은 DTO 이름과 동일하게 -->
-		
+		<typeAlias type="com.java501.S20230401.model.Article" 	alias="Article"/>
+		<typeAlias type="com.java501.S20230401.model.Board" 	alias="Board"/>
+		<typeAlias type="com.java501.S20230401.model.Comm" 		alias="Comm"/>
+		<typeAlias type="com.java501.S20230401.model.Favorite" 	alias="Favorite"/>
+		<typeAlias type="com.java501.S20230401.model.History" 	alias="History"/>
+		<typeAlias type="com.java501.S20230401.model.Join" 		alias="Join"/>
+		<typeAlias type="com.java501.S20230401.model.Member" 	alias="Member"/>
+		<typeAlias type="com.java501.S20230401.model.Message" 	alias="Message"/>
+		<typeAlias type="com.java501.S20230401.model.Nickname" 	alias="Nickname"/>
+		<typeAlias type="com.java501.S20230401.model.Region" 	alias="Region"/>
+		<typeAlias type="com.java501.S20230401.model.Reply" 	alias="Reply"/>
+		<typeAlias type="com.java501.S20230401.model.Report" 	alias="Report"/>
+		<typeAlias type="com.java501.S20230401.model.Trade" 	alias="Trade"/>
+		<typeAlias type="com.java501.S20230401.model.Waiting" 	alias="Waiting"/>
 	</typeAliases>
 </configuration>
