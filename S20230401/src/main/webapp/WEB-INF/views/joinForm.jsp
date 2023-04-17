@@ -107,6 +107,33 @@
 		background-color: var(--subtheme);
 		color: var(--subtheme-font);
 	}
+	
+	div.popup-group {
+		position: relative;
+		height: 32px;
+		margin-bottom: 10px;
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+	}
+	div.popup-group > button.togglePopup {
+		width: 100px;
+		height: 32px;
+		overflow: hidden;
+		margin: 0;
+		margin-left: 10px;
+	}
+	div.popup-group > button.togglePopup > * {
+		pointer-events: none;
+	}
+	div.popup-group > div.popup-window {
+		position: absolute;
+		border-radius: 2.5px;
+		background-color: var(--theme);
+		border: 2px solid #CCCCCC;
+		top: 24px;
+		left: 0px;
+	}
 </style>
 </head>
 <body>
@@ -127,7 +154,7 @@
 					<div class="input-box">
 						<label for="username">아이디</label>
 						<input type="text" id="username" name="username" required>
-						<button class="theme-button adv-hover" style="margin: 0; font-size: 16px; font-weight: bold; padding: 2.5px 5px;">중복 확인</button>
+						<button type="button" class="theme-button adv-hover" style="margin: 0; font-size: 16px; font-weight: bold; padding: 2.5px 5px;">중복 확인</button>
 						<br>
 						<span class="joinErrorMessage"></span>
 					</div>
@@ -208,8 +235,27 @@
 							<input type="file" id="image-file" name="image-file" style="height: auto; display: none;">
 							<span style="opacity: 0.5; font-size: 12px;">5 MB 이하의 파일만 업로드 할 수 있습니다</span>
 							<div style="display: flex; justify-content: flex-start; align-items: stretch;">
-								<button style="font-size: 14px;" class="subtheme-button" onclick="document.getElementById('image-file').click();">업로드</button>
-								<button style="margin-left: 10px; font-size: 14px;" class="theme-button">초기화</button>
+								<button type="button" style="font-size: 14px;" class="subtheme-button" onclick="document.getElementById('image-file').click();">업로드</button>
+								<button type="button" style="margin-left: 10px; font-size: 14px;" class="theme-button" onclick="$('#image-file').val(''); $('#user-profile').attr('src', '');">초기화</button>
+							</div>
+						</div>
+					</div>
+					<div class="input-box">
+						<label for="region-box">관심지역</label>
+						<div id="region-box" style="margin-left: 10px;">
+							<div class="popup-group">
+								<span style="font-size: 14px; font-weight: bold;">1순위 </span>
+								<button type="button" id="region1" class="togglePopup theme-button"></button>
+								<div id="region1-popup" class="popup-window">
+									
+								</div>
+							</div>
+							<div class="popup-group">
+								<span style="font-size: 14px; font-weight: bold;">2순위 </span>
+								<button type="button" id="region2" class="togglePopup theme-button"></button>
+								<div id="region2-popup" class="popup-window">
+									
+								</div>
 							</div>
 						</div>
 					</div>
