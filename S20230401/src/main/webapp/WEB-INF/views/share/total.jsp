@@ -414,7 +414,7 @@
 				<c:forEach var="article" items="${articleList}">
 					<tr>
 						<td rowspan="3">
-							사진
+							사진 없슈
 						</td>
 						<td>
 							${article.board.comm.comm_value }
