@@ -63,4 +63,10 @@ public class HomeController {
 		
 		return "loginForm";
 	}
+	
+	@RequestMapping(value = "/join")
+	public String memberJoin(Model model) {
+		model.addAttribute("now", new Date());
+		return "joinForm";
+	}
 }

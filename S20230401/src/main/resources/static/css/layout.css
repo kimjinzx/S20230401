@@ -199,6 +199,7 @@ div#user-profile > img {
 	width: 46px;
 	height: 46px;
 	pointer-events: none;
+	object-fit: cover;
 }
 div#userInfo-popup {
 	padding: 0;
