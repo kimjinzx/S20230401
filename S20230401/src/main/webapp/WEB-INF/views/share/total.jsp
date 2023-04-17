@@ -280,6 +280,17 @@
 		justify-content: space-between;
 		align-items: center;
 	}
+	.btn{
+		width: auto
+		height: 30px;
+		font-size:12px;
+		font-family: 'Nanum Gothic';
+		color: white;
+		text-align: center;
+		background: #0193F8;
+		border: solid 1px grey;
+		border-radius: 14px;
+	}
 </style>
 </head>
 <body>
@@ -402,35 +413,44 @@
 	<div class="container">
 		<h1>나눔해요 게시판</h1>
 		총 글 : ${totalArt }
-		<div class="board_category">
+		<div class="board_category" align="center" style="font-size: 60px">
 			<span><a href="${pageContext.request.contextPath}/board/share?brd_id=1200">전체</a></span>
 			<span><a href="${pageContext.request.contextPath}/board/share?brd_id=1210">식품</a></span>
 			<span><a href="${pageContext.request.contextPath}/board/share?brd_id=1220">패션</a></span>
 			<span><a href="${pageContext.request.contextPath}/board/share?brd_id=1230">가전</a></span>
 			<span><a href="${pageContext.request.contextPath}/board/share?brd_id=1240">기타</a></span>
 		</div>
-		<div class="board_list">
+		<div class="board_list" align="center" style="font-size: 18px">
 			<table border="1">
 				<c:forEach var="article" items="${articleList}">
 					<tr>
 						<td rowspan="3">
 							사진 없슈
 						</td>
+						<td colspan="3">카테고리 : ${article.brd_name }</td>
+						<td>태그</td>
 						<td>
-							${article.board.comm.comm_value }
+							<c:set var="tagArray">${article.art_tag1},${article.art_tag2},${article.art_tag3},${article.art_tag4},${article.art_tag5}</c:set>
+							<%-- <button class="btn">${article.art_tag1}</button>
+							<button class="btn">${article.art_tag2}</button>
+							<button class="btn">${article.art_tag3}</button>
+							<button class="btn">${article.art_tag4}</button>
+							<button class="btn">${article.art_tag5}</button> --%>
+							<c:forTokens var="tag" items="${tagArray }" delims=",">
+								<c:if test="${tag != '' }">
+									<button class="btn" type="button">${tag}</button>
+								</c:if>
+							</c:forTokens>
 						</td>
-						
 					</tr>
 					<tr>
-						<td colspan="7"><a href="${pageContext.request.contextPath}/article/share?art_id=${article.art_id}&brd_id=${article.brd_id}">${article.art_title}</a></td>
+						<td colspan="9"><a href="${pageContext.request.contextPath}/article/share?art_id=${article.art_id}&brd_id=${article.brd_id}">${article.art_title}</a></td>
 					</tr>
 					<tr>
 						<td>가격 : ${article.trade.trd_cost }원</td>
 						<td>${article.member.mem_nickname }</td>
-						<td>
-							<c:if test="${article.member.mem_gender == 201}">남자</c:if>
-							<c:if test="${article.member.mem_gender == 202}">여자</c:if>
-						</td>
+						<td>성별 : ${article.gen_name }</td>
+						<td>상태 : ${article.status_name }</td>
 						<td><fmt:formatDate value="${article.art_regdate }" pattern="D"/>일 전</td>
 						<td>조회 ${article.art_read }</td>
 						<td>추천 ${article.art_good }</td>

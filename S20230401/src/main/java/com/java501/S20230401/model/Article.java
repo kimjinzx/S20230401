@@ -35,6 +35,12 @@ public class Article {
 	// 1 : N 관계
 	private List<Reply> reply;
 	
+	// comm 테이블 - 식별
+	private String 	brd_name; 	// 게시판 이름
+	private String	gen_name; 	// 멤버 성별
+	private String 	status_name;// 거래 상태
+	
+	
 	// Search용 필드
 	private String 	search;
 	private String 	keyWord;

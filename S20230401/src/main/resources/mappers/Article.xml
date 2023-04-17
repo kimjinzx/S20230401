@@ -22,6 +22,9 @@
 		<result column="art_isnotice" 	property="art_isnotice"/>
 		<result column="isdelete" 		property="isdelete"/>
 		<result column="report_id" 		property="report_id"/>
+		<result column="gen_name" 		property="gen_name"/>
+		<result column="brd_name" 		property="brd_name"/>
+		<result column="status_name" 	property="status_name"/>
 		<collection property="member" 	resultMap="com.java501.S20230401.model.dgMemberMapper.dgMemberMap"/>
 		<collection property="board" 	resultMap="com.java501.S20230401.model.dgBoardMapper.dgBoardMap"/>
 		<collection property="trade" 	resultMap="com.java501.S20230401.model.dgTradeMapper.dgTradeMap"/>
@@ -45,12 +48,18 @@
 		         FROM   (SELECT *
 		                 FROM ( SELECT  * 
 		                        FROM    ARTICLE
-		                        JOIN    (   SELECT  B.*, C.COMM_VALUE 
-		                                    FROM    BOARD B JOIN COMM C 
+		                        JOIN    (   SELECT  C1.COMM_VALUE AS BRD_NAME, B.*
+		                                    FROM    BOARD B JOIN COMM C1
 		                                    ON      BRD_ID IN COMM_ID
-		                                ) USING(BRD_ID)
-		                 		JOIN	MEMBER 	USING(MEM_ID)
-		                 		JOIN 	TRADE 	USING(TRD_ID)
+		                                )USING(BRD_ID)
+		                        JOIN	(   SELECT  C2.COMM_VALUE AS GEN_NAME, M.*
+		                                    FROM    MEMBER M JOIN COMM C2
+		                                    ON      MEM_GENDER IN COMM_ID
+		                                )USING(MEM_ID)
+		                        JOIN 	(   SELECT  C3.COMM_VALUE AS STATUS_NAME, T.*
+		                                    FROM    TRADE T JOIN COMM C3
+		                                    ON      TRD_STATUS IN COMM_ID
+		                                )USING(TRD_ID)
 		                       ) 
 		                 WHERE      BRD_ID
 		                 BETWEEN	#{brd_id} and #{brd_id}+99
@@ -73,12 +82,19 @@
 		         FROM   (SELECT *
 		                 FROM ( SELECT  * 
 		                        FROM    ARTICLE
-		                        JOIN    (   SELECT  *
-		                                    FROM    BOARD JOIN COMM
-		                                    ON      BRD_ID IN COMM_ID ) USING(BRD_ID)
-		                 		JOIN	MEMBER 	USING(MEM_ID)
-		                 		JOIN 	TRADE 	USING(TRD_ID)
-		                       ) 
+		                        JOIN    (   SELECT  C1.COMM_VALUE AS BRD_NAME, B.*
+		                                    FROM    BOARD B JOIN COMM C1
+		                                    ON      BRD_ID IN COMM_ID
+		                                )USING(BRD_ID)
+		                        JOIN	(   SELECT  C2.COMM_VALUE AS GEN_NAME, M.*
+		                                    FROM    MEMBER M JOIN COMM C2
+		                                    ON      MEM_GENDER IN COMM_ID
+		                                )USING(MEM_ID)
+		                        JOIN 	(   SELECT  C3.COMM_VALUE AS STATUS_NAME, T.*
+		                                    FROM    TRADE T JOIN COMM C3
+		                                    ON      TRD_STATUS IN COMM_ID
+		                                )USING(TRD_ID)
+		                       )
 		                 WHERE      BRD_ID = #{brd_id}
 		                 ORDER BY   ART_REGDATE DESC) A)
 		WHERE 	RN BETWEEN #{start} and #{end}
@@ -88,12 +104,20 @@
 	<select id="dgDetailArticle" resultMap="dgArticleMap" parameterType="Article">
 		SELECT  *
 		FROM   (SELECT *
-		        FROM   ARTICLE
-		        JOIN  (SELECT    *
-		               FROM      BOARD JOIN COMM
-		               ON        BRD_ID IN COMM_ID) USING(BRD_ID)
-		        JOIN   MEMBER  USING(MEM_ID)
-		        JOIN   TRADE   USING(TRD_ID))
+		        FROM    ARTICLE
+                JOIN    (   SELECT  C1.COMM_VALUE AS BRD_NAME, B.*
+                            FROM    BOARD B JOIN COMM C1
+                            ON      BRD_ID IN COMM_ID
+                        )USING(BRD_ID)
+                JOIN	(   SELECT  C2.COMM_VALUE AS GEN_NAME, M.*
+                            FROM    MEMBER M JOIN COMM C2
+                            ON      MEM_GENDER IN COMM_ID
+                        )USING(MEM_ID)
+                JOIN 	(   SELECT  C3.COMM_VALUE AS STATUS_NAME, T.*
+                            FROM    TRADE T JOIN COMM C3
+                            ON      TRD_STATUS IN COMM_ID
+                        )USING(TRD_ID)
+		        )
 		WHERE   ART_ID = #{art_id} AND BRD_ID = #{brd_id}
 	</select>
 

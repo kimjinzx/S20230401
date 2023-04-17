@@ -22,4 +22,5 @@ public class Trade {
 	private Member 	member;
 	private Comm 	comm;
 	private Region 	region;
+	
 }

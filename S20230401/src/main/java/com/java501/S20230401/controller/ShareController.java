@@ -70,20 +70,21 @@ public class ShareController {
 		model.addAttribute("page", page);
 		model.addAttribute("totalArt", totalArt);
 		
-		switch (category) {
-			case 1200:
-				return "share/total";
-			case 1210:
-				return "share/food";
-			case 1220:
-				return "share/fashion";
-			case 1230:
-				return "share/appliances";
-			case 1240:
-				return "share/etc";
-			default:
-				return "share/total";
-		}
+//		switch (category) {
+//			case 1200:
+//				return "share/total";
+//			case 1210:
+//				return "share/food";
+//			case 1220:
+//				return "share/fashion";
+//			case 1230:
+//				return "share/appliances";
+//			case 1240:
+//				return "share/etc";
+//			default:
+//				return "share/total";
+//		}
+		return "share/total";
 	}
 	// 나눔해요 - 식품
 	@RequestMapping(value = "board/food/share")
