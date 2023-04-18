@@ -39,6 +39,7 @@ public class Article {
 	private String 	brd_name; 	// 게시판 이름
 	private String	gen_name; 	// 멤버 성별
 	private String 	status_name;// 거래 상태
+	private int 	rep_cnt;	// 댓글 갯수
 	
 	
 	// Search용 필드

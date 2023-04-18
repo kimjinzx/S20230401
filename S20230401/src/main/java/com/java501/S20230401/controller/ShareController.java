@@ -1,17 +1,17 @@
 package com.java501.S20230401.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.java501.S20230401.model.Article;
-import com.java501.S20230401.model.Member;
+import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.service.ArticleService;
+import com.java501.S20230401.service.CommService;
 import com.java501.S20230401.service.MemberService;
 import com.java501.S20230401.service.Paging;
 
@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ShareController {
 	private final ArticleService articleService;
 	private final MemberService memberService;
+	private final CommService commService;
 	
 	// 나눔해요
 	@RequestMapping(value = "board/share")
@@ -34,9 +35,17 @@ public class ShareController {
 		int totalArt = 0;
 		List<Article> articleList = null;
 		
+		// 현재 카테고리 이름 식별
+		System.out.println(category);
+		String categoryName = commService.categoryName(category);
+		
+		// 현재 카테고리 목록 가져오기
+		int comm_id = ((int)category / 100) * 100;
+		List<Comm> commList = commService.commList(comm_id);
+		
 		
 		// 페이징
-		if(category == 1200)
+		if(category % 100 == 0)
 			totalArt = articleService.allTotalArt(article); // 나눔해요 전체 글 갯수
 		else
 			totalArt = articleService.totalArt(article); // 카테고리 글 갯수
@@ -48,44 +57,43 @@ public class ShareController {
 		log.info("시작 : {}",article.getStart());
 		log.info("끝 : {}",article.getEnd());
 		
-		if(category == 1200)
+		if(category % 100 == 0)
 			articleList = articleService.allArticleList(article); // 나눔해요 전체 글
 		else
 			articleList = articleService.articleList(article); // 카테고리 글
 		
-		// 글 날짜 수정
-		//Date today = new Date();
-		//String currentTime = new SimpleDateFormat("yyyyMMdd").format(new Date());
-		
 		// 며칠전?
 		for(Article art : articleList) {
 			long diffMin = new Date().getTime() - art.getArt_regdate().getTime();
-			//String diff = Long.toString(diffMin);
-			//String regDate = art.getArt_regdate().substring(0, 10);
-			//art.setArt_regdate(regDate);
 			art.setArt_regdate(new Date(diffMin));
 		}
 		
 		model.addAttribute("articleList", articleList);
 		model.addAttribute("page", page);
 		model.addAttribute("totalArt", totalArt);
+		model.addAttribute("category", category);
+		model.addAttribute("categoryName", categoryName);
+		model.addAttribute("commList", commList);
 		
-//		switch (category) {
-//			case 1200:
-//				return "share/total";
-//			case 1210:
-//				return "share/food";
-//			case 1220:
-//				return "share/fashion";
-//			case 1230:
-//				return "share/appliances";
-//			case 1240:
-//				return "share/etc";
-//			default:
-//				return "share/total";
-//		}
 		return "share/total";
 	}
+	// writeForm 이동
+	@RequestMapping(value = "board/share/write")
+	public String writeForm(Article article, Model model) {
+		int category = article.getBrd_id();
+		model.addAttribute("category", category);
+		return "share/writeForm";
+	}
+	// 글쓰기
+	@PostMapping(value = "board/share/writeArticle")
+	public String writeArticle(Article article, Model model) {
+
+		//int writeResult = articleService.writeArticle(article);
+		
+		model.addAttribute("article", article);
+		return "redirect:share/total";
+	}
+	
 	// 나눔해요 - 식품
 	@RequestMapping(value = "board/food/share")
 	public String foodPage(Article article, String currentPage, Model model) {

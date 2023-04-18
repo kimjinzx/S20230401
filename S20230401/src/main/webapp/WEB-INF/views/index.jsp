@@ -302,34 +302,34 @@
 				</a>
 			</div>
 			<div id="topmenu">
-				<a class="adv-hover menuitem" href="">함께해요</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/together?brd_id=1000">함께해요</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="">같이사요</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/dutchpay?brd_id=1100">같이사요</a>
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/share?brd_id=1200">나눔해요</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="">커뮤니티</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/community?brd_id=1300">커뮤니티</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="">정보공유</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/information?brd_id=1400">정보공유</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="">고객센터</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/customer?brd_id=1500">고객센터</a>
 				<div id="dropdown">
 					<div style="width: 200px;"></div>
 					<div class="submenu-items">
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">밥 / 카페</a>
-							<a class="submenuitem adv-hover" href="">스포츠 / 운동</a>
-							<a class="submenuitem adv-hover" href="">쇼핑</a>
-							<a class="submenuitem adv-hover" href="">문화생활</a>
-							<a class="submenuitem adv-hover" href="">취미생활</a>
-							<a class="submenuitem adv-hover" href="">기타</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?brd_id=1010">밥 / 카페</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?brd_id=1020">스포츠 / 운동</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?brd_id=1030">쇼핑</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?brd_id=1040">문화생활</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?brd_id=1050">취미생활</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?brd_id=1060">기타</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">식료품</a>
-							<a class="submenuitem adv-hover" href="">의류 / 잡화</a>
-							<a class="submenuitem adv-hover" href="">생활용품</a>
-							<a class="submenuitem adv-hover" href="">해외배송</a>
-							<a class="submenuitem adv-hover" href="">기타</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/dutchpay?brd_id=1110">식료품</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/dutchpay?brd_id=1120">의류 / 잡화</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/dutchpay?brd_id=1130">생활용품</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/dutchpay?brd_id=1140">해외배송</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/dutchpay?brd_id=1150">기타</a>
 						</div>
 						<div class="submenu">
 							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/share?brd_id=1210">식품</a>
@@ -338,22 +338,22 @@
 							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/share?brd_id=1240">기타</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">일상수다</a>
-							<a class="submenuitem adv-hover" href="">자랑하기</a>
-							<a class="submenuitem adv-hover" href="">홍보하기</a>
-							<a class="submenuitem adv-hover" href="">질문 / 요청</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/community?brd_id=1310">일상수다</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/community?brd_id=1320">자랑하기</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/community?brd_id=1330">홍보하기</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/community?brd_id=1340">질문 / 요청</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">동네정보</a>
-							<a class="submenuitem adv-hover" href="">구매정보</a>
-							<a class="submenuitem adv-hover" href="">신규점포</a>
-							<a class="submenuitem adv-hover" href="">지역활동</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/information?brd_id=1410">동네정보</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/information?brd_id=1420">구매정보</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/information?brd_id=1430">신규점포</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/information?brd_id=1440">지역활동</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">공지</a>
-							<a class="submenuitem adv-hover" href="">Q&A</a>
-							<a class="submenuitem adv-hover" href="">이벤트</a>
-							<a class="submenuitem adv-hover" href="">문의 / 건의</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/customer?brd_id=1510">공지</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/customer?brd_id=1520">Q&A</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/customer?brd_id=1530">이벤트</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/customer?brd_id=1540">문의 / 건의</a>
 						</div>
 					</div>
 					<div style="width: 200px;"></div>
