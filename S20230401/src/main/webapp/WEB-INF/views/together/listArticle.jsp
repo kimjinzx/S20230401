@@ -302,7 +302,7 @@
 				</a>
 			</div>
 			<div id="topmenu">
-				<a class="adv-hover menuitem" href="total?currentPage=1">함께해요</a>
+				<a class="adv-hover menuitem" href="?brd_id=1000">함께해요</a>
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="">같이사요</a>
 				<div class="menu-separator"></div>
@@ -317,12 +317,12 @@
 					<div style="width: 200px;"></div>
 					<div class="submenu-items">
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="eating?currentPage=1">밥 / 카페</a>
-							<a class="submenuitem adv-hover" href="sports?currentPage=1">스포츠 / 운동</a>
-							<a class="submenuitem adv-hover" href="shopping?currentPage=1">쇼핑</a>
-							<a class="submenuitem adv-hover" href="curture?currentPage=1">문화생활</a>
-							<a class="submenuitem adv-hover" href="hobby?currentPage=1">취미생활</a>
-							<a class="submenuitem adv-hover" href="etc?currentPage=1">기타</a>
+							<a class="submenuitem adv-hover" href="?brd_id=1010">밥 / 카페</a>
+							<a class="submenuitem adv-hover" href="?brd_id=1020">스포츠 / 운동</a>
+							<a class="submenuitem adv-hover" href="?brd_id=1030">쇼핑</a>
+							<a class="submenuitem adv-hover" href="?brd_id=1040">문화생활</a>
+							<a class="submenuitem adv-hover" href="?brd_id=1050">취미생활</a>
+							<a class="submenuitem adv-hover" href="?brd_id=1060">기타</a>
 						</div>
 						<div class="submenu">
 							<a class="submenuitem adv-hover" href="">식료품</a>
@@ -399,15 +399,21 @@
 	</aside>
 	<main>
 			<h1>함께 해요 게시판 </h1>
-	<p>(게시글 수 : ${totalArticle})
+	
+	<!-- 7개만 나오는 이유는 trd_id가 없는 애들은 안나오기 때문이다. -->
 	<p><form action="/writeArticle" >
 		<input type="button" id="writeArticle" value="글쓰기">	<hr>
 	</form>
+	<p>
+	<h4><a href="?brd_id=1000">전체</a></h4>
+	<h4><a href="?brd_id=1010">밥 & 카페</a></h4>
+	<h4><a href="?brd_id=1020">스포츠</a></h4>
+	<h4><a href="?brd_id=1030">쇼핑</a></h4>
+	<h4><a href="?brd_id=1040">문화생활</a></h4>
+	<h4><a href="?brd_id=1050">	취미생활</a></h4>
+	<h4><a href="?brd_id=1060">기타</a></h4>
 	
-	
-	
-	
-	
+
 	<c:set var="num" value="${page.total-page.start+1 }"></c:set>
 		
 	<table>
@@ -438,7 +444,7 @@
 				<td>${art.art_tag3 }</td>
 				<td>${art.art_tag4 }</td>
 				<td>${art.art_tag5 }</td>
-				<td><a href="detailArticle?art_id=${art.art_id }">${art.art_title }</a></td>
+				<td><a href="detailArticle?brd_id=${art.brd_id}&art_id=${art.art_id}">${art.art_title }</a></td>
 				<td>${art.rest_regdate }일 전</td>
 				<td>${art.trd_loc }</td>			
 				<td>${art.trd_max }</td>			
