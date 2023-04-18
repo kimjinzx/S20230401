@@ -1,21 +1,21 @@
 package com.java501.S20230401.controller;
 
+import java.io.File;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -58,9 +58,6 @@ public class MemberController {
 	
 	@PostMapping(value = "/joinProc")
 	public String memberJoinProcess(@RequestParam(value = "image-file", required = false) MultipartFile file, @RequestParam Map<String, String> params, MultipartHttpServletRequest request) {
-		for (Map.Entry<String, String> entry : params.entrySet()) {
-			System.out.println(entry.getKey() + " : " + (entry.getValue() == null ? "NULL" : entry.getValue()));
-		}
 		Member member = new Member();
 		member.setMem_username(params.get("username"));
 		member.setMem_password(new BCryptPasswordEncoder().encode(params.get("password")));
@@ -83,12 +80,24 @@ public class MemberController {
 				else member.setMem_region2(regionCode);
 			}
 		}
-		// 프로필 사진 저장과 member.set 이미지 할 부분
-		
-		//
-		System.out.println(member.toString());
+		String savedName = file.getOriginalFilename();
+		String realPath = request.getSession().getServletContext().getRealPath("/uploads/profile");
+		try {
+			savedName = uploadFile(realPath, savedName, file.getBytes());
+			member.setMem_image(savedName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		int result = ms.registMember(member);
 		return "redirect:/";
+	}
+	
+	private String uploadFile(String realPath, String originalName, byte[] fileData) throws Exception {
+		UUID uuid = UUID.randomUUID();
+		String savedName = uuid.toString() + "_" + originalName;
+		File target = new File(realPath, savedName);
+		FileCopyUtils.copy(fileData, target);
+		return savedName;
 	}
 	
 	@ResponseBody

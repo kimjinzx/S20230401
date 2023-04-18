@@ -137,7 +137,7 @@
 						<span id="loginErrorMessage">${message }</span>
 					</div>
 					<button id="login-button" class="subtheme-button adv-hover" type="submit">로그인</button>
-					<button id="join-button" class="theme-button adv-hover" type="button" onclick="">회원가입</button>
+					<button id="join-button" class="theme-button adv-hover" type="button" onclick="location.href = '${pageContext.request.contextPath}/join';">회원가입</button>
 					<div id="login-forgot">
 						로그인 정보를 잊어버렸나요? <a href="">아이디 찾기</a> / <a href="">비밀번호 재설정</a>
 					</div>

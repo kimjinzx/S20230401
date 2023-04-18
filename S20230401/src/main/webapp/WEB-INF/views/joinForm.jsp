@@ -462,11 +462,15 @@
 								<input type="hidden" id="region1-value" name="region1-value">
 								<button type="button" id="region1" class="togglePopup theme-button"></button>
 								<div id="region1-popup" class="popup-window">
+									<div style="position: relative;">
+										<button type="button" class="subitem-header adv-hover" onclick="$('#region1-value').removeAttr('value'); $('#region1').text(''); $('#region1-popup').toggle();">없음</button>
+									</div>
 									<c:forEach var="region" items="${superRegions }">
 										<div style="position: relative;">
 											<button type="button" class="subitem-header adv-hover" onclick="$('#region1-value').val(${region.reg_id}); $('#region1').text('${region.reg_name }'); $('#region1-popup').toggle();">${region.reg_name }</button>
 											<c:if test="${not empty regions[region] }">
 												<div class="subitem-list">
+													<button type="button" class="adv-hover" onclick="$('#region1-value').removeAttr('value'); $('#region1').text(''); $('#region1-popup').toggle();">없음</button>
 													<c:forEach var="subRegion" items="${regions[region] }">
 														<button type="button" class="adv-hover" onclick="$('#region1-value').val(${subRegion.reg_id}); $('#region1').text('${subRegion.reg_name }'); $('#region1-popup').toggle();">${subRegion.reg_name }</button>
 													</c:forEach>
@@ -481,11 +485,15 @@
 								<input type="hidden" id="region2-value" name="region2-value">
 								<button type="button" id="region2" class="togglePopup theme-button"></button>
 								<div id="region2-popup" class="popup-window">
+									<div style="position: relative;">
+										<button type="button" class="subitem-header adv-hover" onclick="$('#region2-value').removeAttr('value'); $('#region2').text(''); $('#region2-popup').toggle();">없음</button>
+									</div>
 									<c:forEach var="region" items="${superRegions }">
 										<div style="position: relative;">
 											<button type="button" class="subitem-header adv-hover" onclick="$('#region2-value').val(${region.reg_id}); $('#region2').text('${region.reg_name }'); $('#region2-popup').toggle();">${region.reg_name }</button>
 											<c:if test="${not empty regions[region] }">
 												<div class="subitem-list">
+													<button type="button" class="adv-hover" onclick="$('#region2-value').removeAttr('value'); $('#region2').text(''); $('#region2-popup').toggle();">없음</button>
 													<c:forEach var="subRegion" items="${regions[region] }">
 														<button type="button" class="adv-hover" onclick="$('#region2-value').val(${subRegion.reg_id}); $('#region2').text('${subRegion.reg_name }'); $('#region2-popup').toggle();">${subRegion.reg_name }</button>
 													</c:forEach>
