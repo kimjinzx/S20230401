@@ -11,4 +11,22 @@
 	<select id="hgGetMemberByNickname" parameterType="java.lang.String" resultType="Member">
 		SELECT * FROM MEMBER WHERE MEM_NICKNAME = #{nickname}
 	</select>
+	<insert id="hgRegistMember" parameterType="Member">
+		INSERT INTO MEMBER(MEM_ID, MEM_USERNAME, MEM_PASSWORD, MEM_NICKNAME,
+						   MEM_EMAIL, MEM_TEL, MEM_REGION1, MEM_REGION2,
+						   MEM_AUTHORITY, MEM_REGDATE, MEM_IMAGE, MEM_GENDER,
+						   MEM_NAME, MEM_BIRTHDAY, MEM_LATEST, ISDELETE)
+					VALUES ((SELECT MAX(MEM_ID) + 1 FROM MEMBER), #{mem_username, jdbcType=VARCHAR}, #{mem_password, jdbcType=VARCHAR}, #{mem_nickname, jdbcType=VARCHAR},
+							#{mem_email, jdbcType=VARCHAR}, #{mem_tel, jdbcType=VARCHAR}, #{mem_region1, jdbcType=NUMERIC}, #{mem_region2, jdbcType=NUMERIC},
+							101, SYSDATE, #{mem_image, jdbcType=VARCHAR}, #{mem_gender, jdbcType=NUMERIC}, #{mem_name, jdbcType=VARCHAR},
+							#{mem_birthday, jdbcType=TIMESTAMP}, SYSDATE, 0)
+<!-- 		INSERT INTO MEMBER(MEM_ID, MEM_USERNAME, MEM_PASSWORD, MEM_NICKNAME,
+						   MEM_EMAIL, MEM_TEL, MEM_REGION1, MEM_REGION2,
+						   MEM_AUTHORITY, MEM_REGDATE, MEM_IMAGE, MEM_GENDER,
+						   MEM_NAME, MEM_BIRTHDAY, MEM_LATEST, ISDELETE)
+					VALUES (MEM_ID_SEQ.NEXTVAL, #{mem_username, jdbcType=VARCHAR}, #{mem_password, jdbcType=VARCHAR}, #{mem_nickname, jdbcType=VARCHAR},
+							#{mem_email, jdbcType=VARCHAR}, #{mem_tel, jdbcType=VARCHAR}, #{mem_region1, jdbcType=NUMERIC}, #{mem_region2, jdbcType=NUMERIC},
+							101, SYSDATE, #{mem_image, jdbcType=VARCHAR}, #{mem_gender, jdbcType=NUMERIC}, #{mem_name, jdbcType=VARCHAR},
+							#{mem_birthday, jdbcType=TIMESTAMP}, SYSDATE, 0) -->
+	</insert>
 </mapper>

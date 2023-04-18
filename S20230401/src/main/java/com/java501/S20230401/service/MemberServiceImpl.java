@@ -24,4 +24,9 @@ public class MemberServiceImpl implements MemberService {
 		}
 		return member;
 	}
+	
+	@Override
+	public int registMember(Member member) {
+		return md.registMember(member);
+	}
 }

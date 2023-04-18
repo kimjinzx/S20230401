@@ -10,4 +10,5 @@ public interface MemberDao {
 	public Member findByMemberEmail(String email);
 	public Member findByMemberNickname(String nickname);
 	public MemberInfo findByMemberInfoName(String username);
+	public int registMember(Member member);
 }

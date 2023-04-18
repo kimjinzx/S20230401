@@ -15,8 +15,65 @@
 	var check1 = false;
 	var check2 = false;
 	var check3 = false;
+	const idCheck = () => {
+		let len = $('#username').val().length;
+		if ($('#username').val() == '' || $('#username').val() == null) return false;
+		let check = len >= 6 && len <= 12;
+		if (!check) {
+			$('#usernameMsg').css('color', window.getComputedStyle(document.documentElement, null).getPropertyValue('--warning'));
+			$('#usernameMsg').text('비밀번호는 8 글자 이상 20글자 이하로 설정하세요');
+		}
+		return true;
+	};
+	const pwCheck = () => {
+		let value = $('#password').val();
+		let len = $('#password').size;
+		if (len < 8 || len > 20) {
+			if ($('#password').val() == '' || $('#password').val() == null) return false;
+			$('#passwordMsg').css('color', window.getComputedStyle(document.documentElement, null).getPropertyValue('--warning'));
+			$('#passwordMsg').text('비밀번호는 8 글자 이상 20글자 이하로 설정하세요');
+			return false;
+		}
+		let regex1 = /[a-zA-Z]/g;
+		let charCheck1 = (value.match(regex1) || []).length > 0;
+		if (!charCheck1) {
+			$('#passwordMsg').css('color', window.getComputedStyle(document.documentElement, null).getPropertyValue('--warning'));
+			$('#passwordMsg').text('비밀번호에 적어도 하나 이상의 문자를 넣어주세요');
+			return false;
+		}
+		let regex2 = /[0-9]/g;
+		let charCheck2 = (value.match(regex2) || []).length > 0;
+		if (!charCheck2) {
+			$('#passwordMsg').css('color', window.getComputedStyle(document.documentElement, null).getPropertyValue('--warning'));
+			$('#passwordMsg').text('비밀번호에 적어도 하나 이상의 숫자를 넣어주세요');
+			return false;
+		}
+		let regex3 = /[^a-zA-Z0-9]/g;
+		let charCheck3 = (value.match(regex3) || []).length > 0;
+		if (!charCheck3) {
+			$('#passwordMsg').css('color', window.getComputedStyle(document.documentElement, null).getPropertyValue('--warning'));
+			$('#passwordMsg').text('비밀번호에 적어도 하나 이상의 특수 문자를 넣어주세요');
+			return false;
+		}
+		$('#passwordMsg').css('color', window.getComputedStyle(document.documentElement, null).getPropertyValue('--confirm'));
+		$('#passwordMsg').text('사용 가능한 비밀번호 입니다');
+		return true;
+	};
+	const pwConfirmCheck = () => {
+		let check = $('#password').val() == $('#passwordConfirm').val();
+		if (!check) {
+			if ($('#password').val() == '' || $('#password').val() == null) return false;
+			$('#passwordConfirmMsg').css('color', window.getComputedStyle(document.documentElement, null).getPropertyValue('--warning'));
+			$('#passwordConfirmMsg').text('입력된 비밀번호와 다릅니다');
+			return false;
+		}
+		$('#passwordConfirmMsg').css('color', window.getComputedStyle(document.documentElement, null).getPropertyValue('--confirm'));
+		$('#passwordConfirmMsg').text('확인되었습니다');
+		return true;
+	};
 	const wholeSomeCheck = () => {
 		let result = check1 && check2 && check3;
+		result = result && idCheck() && pwCheck() && pwConfirmCheck();
 		if (result) $('#join-button').removeAttr('disabled');
 		else $('#join-button').attr('disabled', true);
 		return result;
@@ -64,6 +121,12 @@
 	};
 	
 	$(() => {
+		$('input[type="text"]').keydown(e => {
+			if (e.keyCode == 32) e.preventDefault();
+		});
+		$('input[type="password"]').keydown(e => {
+			if (e.keyCode == 32) e.preventDefault();
+		});
 		wholeSomeCheck();
 		$('#image-file').change(e => {
 			let extLoc = e.target.value.lastIndexOf('.');
@@ -90,7 +153,6 @@
 					 color: window.getComputedStyle(document.documentElement, null)
 					 			  .getPropertyValue('--confirm')},
 					'usernameMsg');
-			alert(returnValue);
 			check1 = !returnValue;
 			wholeSomeCheck();
 		});
@@ -312,13 +374,13 @@
 					</div>
 					<div class="input-box">
 						<label for="password">비밀번호</label>
-						<input type="password" id="password" name="password" required>
+						<input type="password" id="password" name="password" onkeyup="pwCheck();" onblur="pwCheck();" required>
 						<br>
 						<span id="passwordMsg" class="joinErrorMessage"></span>
 					</div>
 					<div class="input-box">
 						<label for="passwordConfirm">비밀번호 확인</label>
-						<input type="password" id="passwordConfirm" name="passwordConfirm" required>
+						<input type="password" id="passwordConfirm" name="passwordConfirm" onkeyup="pwConfirmCheck();" onblur="pwConfirmCheck();" required>
 						<br>
 						<span id="passwordConfirmMsg" class="joinErrorMessage"></span>
 					</div>
@@ -373,7 +435,7 @@
 								<label style="font-size: 20px; margin-left: 5px" for="gender-male">남</label>
 							</div>
 							<div style="height: 50px; display: flex; justify-content: center; align-items: center;">
-								<input style="width: 16px; height: 16px;" type="radio" id="gender-female" name="gender" value="FEMALE" checked>
+								<input style="width: 16px; height: 16px;" type="radio" id="gender-female" name="gender" value="FEMALE">
 								<label style="font-size: 20px; margin-left: 5px" for="gender-female">여</label>
 							</div>
 						</div>

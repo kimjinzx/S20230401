@@ -32,4 +32,9 @@ public class MemberDaoImpl implements MemberDao {
 	public MemberInfo findByMemberInfoName(String username) {
 		return session.selectOne("hgGetMemberInfoByUsername", username);
 	}
+	
+	@Override
+	public int registMember(Member member) {
+		return session.insert("hgRegistMember", member);
+	}
 }
