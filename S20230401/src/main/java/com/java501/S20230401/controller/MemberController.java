@@ -88,6 +88,10 @@ public class MemberController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		// 이메일로 인증메일 보내져야함...
+		// 그거 안했는데 왜 찐막임 이 개새끼야 이 씨발 진짜 븅신 어휴
+		
+		// 여기 안에다 써라 개새끼야
 		int result = ms.registMember(member);
 		return "redirect:/";
 	}
