@@ -11,6 +11,16 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/preference.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/presets.css">
 <script type="text/javascript">
+	var returnValue;
+	var check1 = false;
+	var check2 = false;
+	var check3 = false;
+	const wholeSomeCheck = () => {
+		let result = check1 && check2 && check3;
+		if (result) $('#join-button').removeAttr('disabled');
+		else $('#join-button').attr('disabled', true);
+		return result;
+	};
 	const readImage = input => {
 		if (input.files && input.files[0]) {
 			const reader = new FileReader();
@@ -21,10 +31,94 @@
 			reader.readAsDataURL(input.files[0]);
 		}
 	};
+	const isExist = (keyword, searchType, existJson, emptyJson, target = null) =>{
+		let sendData = JSON.stringify({type: searchType, value: keyword});
+		$.ajax({
+			url: '${pageContext.request.contextPath}/getMember',
+			data: sendData,
+			type: 'POST',
+			dataType: 'json',
+			contentType: 'application/json;charset=UTF-8',
+			async: false,
+			success: function(data) {
+				let exist = data.value == null ? false : true;
+				if (exist) {
+					if (target == null) {
+						alert(existJson.msg);
+					} else {
+						$('#' + target).css('color', existJson.color);
+						$('#' + target).text(existJson.msg);
+					}
+					returnValue = true;
+				} else {
+					if (target == null) {
+						alert(emptyJson.msg);
+					} else {
+						$('#' + target).css('color', emptyJson.color);
+						$('#' + target).text(emptyJson.msg);
+					}
+					returnValue = false;
+				}
+			}
+		});
+	};
+	
 	$(() => {
+		wholeSomeCheck();
 		$('#image-file').change(e => {
-			if (e.target.files[0].size / 1024 / 1024 > 5) return;
+			let extLoc = e.target.value.lastIndexOf('.');
+			let fileType = e.target.value.substring(extLoc + 1, e.target.length).toLowerCase();
+			let types = ['png', 'gif', 'jpg', 'jpeg', 'svg', 'bmp', 'webp'];
+			let check = types.some(item => item == fileType);
+			if (!check) {
+				e.target.value = null;
+				return;
+			}
+			if (e.target.files[0].size / 1024 / 1024 > 5) {
+				e.target.value = null;
+				return;
+			}
 			readImage(e.target);
+		});
+		$('#username-button').click(e => {
+			isExist($('#username').val(),
+				    'username',
+					{msg: '이미 존재하는 아이디입니다',
+					 color: window.getComputedStyle(document.documentElement, null)
+								  .getPropertyValue('--warning')},
+					{msg: '사용 가능한 아이디입니다',
+					 color: window.getComputedStyle(document.documentElement, null)
+					 			  .getPropertyValue('--confirm')},
+					'usernameMsg');
+			alert(returnValue);
+			check1 = !returnValue;
+			wholeSomeCheck();
+		});
+		$('#nickname').blur(e => {
+			isExist($('#nickname').val(),
+					'nickname',
+					{msg: '이미 존재하는 닉네임입니다',
+					 color: window.getComputedStyle(document.documentElement, null)
+					 			  .getPropertyValue('--warning')},
+					{msg: '사용 가능한 닉네임입니다',
+					 color: window.getComputedStyle(document.documentElement, null)
+					 			  .getPropertyValue('--confirm')},
+					'nicknameMsg');
+			check2 = !returnValue;
+			wholeSomeCheck();
+		});
+		$('#email').blur(e => {
+			isExist($('#email').val(),
+					'email',
+					{msg: '이미 존재하는 이메일입니다',
+					 color: window.getComputedStyle(document.documentElement, null)
+					 			  .getPropertyValue('--warning')},
+					{msg: '사용 가능한 이메일입니다',
+					 color: window.getComputedStyle(document.documentElement, null)
+					 			  .getPropertyValue('--confirm')},
+					'emailMsg');
+			check3 = !returnValue;
+			wholeSomeCheck();
 		});
 	});
 </script>
@@ -90,6 +184,11 @@
 		text-align: center;
 		font-size: 20px;
 		font-weight: bold;
+		cursor: pointer;
+	}
+	button#join-button:disabled {
+		opacity: 0.5;
+		cursor: default;
 	}
 	button.theme-button, button.subtheme-button {
 		outline: none;
@@ -110,14 +209,14 @@
 	
 	div.popup-group {
 		position: relative;
+		margin: 5px 0;
 		height: 32px;
-		margin-bottom: 10px;
 		display: flex;
 		justify-content: flex-start;
 		align-items: center;
 	}
 	div.popup-group > button.togglePopup {
-		width: 100px;
+		width: 120px;
 		height: 32px;
 		overflow: hidden;
 		margin: 0;
@@ -131,8 +230,61 @@
 		border-radius: 2.5px;
 		background-color: var(--theme);
 		border: 2px solid #CCCCCC;
-		top: 24px;
-		left: 0px;
+		bottom: 32px;
+		left: 44px;
+	}
+	
+	button#region1, button#region2 {
+		font-size: 14px;
+		font-weight: bold;
+	}
+	div#region1-popup, div#region2-popup {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: stretch;
+		border: 2px solid var(--subtheme);
+		font-size: 14px;
+		font-weight: bold;
+	}
+	div.popup-window > div > button {
+		width: 116px;
+		border: none;
+		outline: none;
+		font-size: 14px;
+		font-weight: bold;
+	}
+	div.popup-window > div > button {
+		background-color: var(--theme);
+	}
+	
+	button.subitem-header ~ div.subitem-list {
+		display: none;
+		position: absolute;
+		bottom: 0px;
+		left: 116px;
+		background-color: var(--theme);
+		border: 2px solid var(--subtheme);
+		max-height: 300px;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+	button.subitem-header:hover ~ div.subitem-list,
+	button.subitem-header ~ div.subitem-list:hover {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: stretch;
+	}
+	div.subitem-list > button {
+		width: 116px;
+		border: none;
+		outline: none;
+		font-size: 14px;
+		font-weight: bold;
+	}
+	div.subitem-list > button {
+		background-color: var(--theme);
 	}
 </style>
 </head>
@@ -154,33 +306,33 @@
 					<div class="input-box">
 						<label for="username">아이디</label>
 						<input type="text" id="username" name="username" required>
-						<button type="button" class="theme-button adv-hover" style="margin: 0; font-size: 16px; font-weight: bold; padding: 2.5px 5px;">중복 확인</button>
+						<button id="username-button" type="button" class="theme-button adv-hover" style="margin: 0; font-size: 16px; font-weight: bold; padding: 2.5px 5px;">중복 확인</button>
 						<br>
-						<span class="joinErrorMessage"></span>
+						<span id="usernameMsg" class="joinErrorMessage"></span>
 					</div>
 					<div class="input-box">
 						<label for="password">비밀번호</label>
 						<input type="password" id="password" name="password" required>
 						<br>
-						<span class="joinErrorMessage"></span>
+						<span id="passwordMsg" class="joinErrorMessage"></span>
 					</div>
 					<div class="input-box">
 						<label for="passwordConfirm">비밀번호 확인</label>
 						<input type="password" id="passwordConfirm" name="passwordConfirm" required>
 						<br>
-						<span class="joinErrorMessage"></span>
+						<span id="passwordConfirmMsg" class="joinErrorMessage"></span>
 					</div>
 					<div class="input-box">
 						<label for="nickname">닉네임</label>
 						<input type="text" id="nickname" name="nickname" required>
 						<br>
-						<span class="joinErrorMessage"></span>
+						<span id="nicknameMsg" class="joinErrorMessage"></span>
 					</div>
 					<div class="input-box">
 						<label for="email">이메일</label>
 						<input type="email" id="email" name="email" required>
 						<br>
-						<span class="joinErrorMessage"></span>
+						<span id="emailMsg" class="joinErrorMessage"></span>
 					</div>
 					<div class="input-box">
 						<label for="tel1">전화번호</label>
@@ -232,7 +384,7 @@
 							<img id="user-profile" style="width: 75px; height: 75px; object-fit: cover;" src="${pageContext.request.contextPath }/image/abstract-user.svg" onerror="this.onerror = null; this.src = '${pageContext.request.contextPath }/image/abstract-user.svg';">
 						</div>
 						<div style="flex-grow: 1; flex-direction: column; justify-content: space-evenly; align-items: flex-start;">
-							<input type="file" id="image-file" name="image-file" style="height: auto; display: none;">
+							<input type="file" id="image-file" name="image-file" accept="image/png, image/gif, image/jpeg, image/svg, image/webp, image/bmp" style="height: auto; display: none;">
 							<span style="opacity: 0.5; font-size: 12px;">5 MB 이하의 파일만 업로드 할 수 있습니다</span>
 							<div style="display: flex; justify-content: flex-start; align-items: stretch;">
 								<button type="button" style="font-size: 14px;" class="subtheme-button" onclick="document.getElementById('image-file').click();">업로드</button>
@@ -245,16 +397,40 @@
 						<div id="region-box" style="margin-left: 10px;">
 							<div class="popup-group">
 								<span style="font-size: 14px; font-weight: bold;">1순위 </span>
+								<input type="hidden" id="region1-value" name="region1-value">
 								<button type="button" id="region1" class="togglePopup theme-button"></button>
 								<div id="region1-popup" class="popup-window">
-									
+									<c:forEach var="region" items="${superRegions }">
+										<div style="position: relative;">
+											<button type="button" class="subitem-header adv-hover" onclick="$('#region1-value').val(${region.reg_id}); $('#region1').text('${region.reg_name }'); $('#region1-popup').toggle();">${region.reg_name }</button>
+											<c:if test="${not empty regions[region] }">
+												<div class="subitem-list">
+													<c:forEach var="subRegion" items="${regions[region] }">
+														<button type="button" class="adv-hover" onclick="$('#region1-value').val(${subRegion.reg_id}); $('#region1').text('${subRegion.reg_name }'); $('#region1-popup').toggle();">${subRegion.reg_name }</button>
+													</c:forEach>
+												</div>
+											</c:if>
+										</div>
+									</c:forEach>
 								</div>
 							</div>
 							<div class="popup-group">
 								<span style="font-size: 14px; font-weight: bold;">2순위 </span>
+								<input type="hidden" id="region2-value" name="region2-value">
 								<button type="button" id="region2" class="togglePopup theme-button"></button>
 								<div id="region2-popup" class="popup-window">
-									
+									<c:forEach var="region" items="${superRegions }">
+										<div style="position: relative;">
+											<button type="button" class="subitem-header adv-hover" onclick="$('#region2-value').val(${region.reg_id}); $('#region2').text('${region.reg_name }'); $('#region2-popup').toggle();">${region.reg_name }</button>
+											<c:if test="${not empty regions[region] }">
+												<div class="subitem-list">
+													<c:forEach var="subRegion" items="${regions[region] }">
+														<button type="button" class="adv-hover" onclick="$('#region2-value').val(${subRegion.reg_id}); $('#region2').text('${subRegion.reg_name }'); $('#region2-popup').toggle();">${subRegion.reg_name }</button>
+													</c:forEach>
+												</div>
+											</c:if>
+										</div>
+									</c:forEach>
 								</div>
 							</div>
 						</div>

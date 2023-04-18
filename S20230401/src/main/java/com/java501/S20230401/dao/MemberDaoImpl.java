@@ -14,8 +14,18 @@ public class MemberDaoImpl implements MemberDao {
 	private final SqlSession session;
 	
 	@Override
-	public Member findByMemberName(String username) {
+	public Member findByMemberUsername(String username) {
 		return session.selectOne("hgGetMemberByUsername", username);
+	}
+	
+	@Override
+	public Member findByMemberEmail(String email) {
+		return session.selectOne("hgGetMemberByEmail", email);
+	}
+	
+	@Override
+	public Member findByMemberNickname(String nickname) {
+		return session.selectOne("hgGetMemberByNickname", nickname);
 	}
 	
 	@Override

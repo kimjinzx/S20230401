@@ -62,30 +62,4 @@ public class HomeController {
 		model.addAttribute("articles", articles);
 		return "index";
 	}
-	
-	@RequestMapping(value = "/login")
-	public String memberLogin() {
-		
-		return "loginForm";
-	}
-	
-	@RequestMapping(value = "/join")
-	public String memberJoin(Model model) {
-		model.addAttribute("now", new Date());
-		return "joinForm";
-	}
-	
-	@PostMapping(value = "/joinProc")
-	public String memberJoinProcess(@RequestParam MultipartFile file, HttpServletRequest request) {
-		/*log.info("request={}", request);
-        log.info("itemName={}", itemName);
-        log.info("multipartFile={}", file);
-
-        if (!file.isEmpty()) {
-            String fullPath = fileDir + file.getOriginalFilename();
-            log.info("파일 저장 fullPath={}", fullPath);
-            file.transferTo(new File(fullPath));
-        }*/
-		return "redirect:/";
-	}
 }

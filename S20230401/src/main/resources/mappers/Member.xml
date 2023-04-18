@@ -2,5 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.java501.S20230401.MemberMapper">
-	
+	<select id="hgGetMemberByUsername" parameterType="java.lang.String" resultType="Member">
+		SELECT * FROM MEMBER WHERE MEM_USERNAME = #{username}
+	</select>
+	<select id="hgGetMemberByEmail" parameterType="java.lang.String" resultType="Member">
+		SELECT * FROM MEMBER WHERE MEM_EMAIL = #{email}
+	</select>
+	<select id="hgGetMemberByNickname" parameterType="java.lang.String" resultType="Member">
+		SELECT * FROM MEMBER WHERE MEM_NICKNAME = #{nickname}
+	</select>
 </mapper>
