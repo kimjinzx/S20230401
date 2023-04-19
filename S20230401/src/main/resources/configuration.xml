@@ -6,6 +6,10 @@
 	<typeAliases>
 			<typeAlias alias="Article"
 			type="com.java501.S20230401.model.Article" />
+			<typeAlias alias="Region"
+			type="com.java501.S20230401.model.Region" />
+			<typeAlias alias="Comm"
+			type="com.java501.S20230401.model.Comm" />
 
 
 

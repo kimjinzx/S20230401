@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.java501.S20230401.model.Article;
+import com.java501.S20230401.model.Comm;
+import com.java501.S20230401.model.Region;
 import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.Paging;
 
@@ -20,7 +22,7 @@ public class TogetherController {
 	
 	private final ArticleService as;
 
-	@RequestMapping(value = "listArticle")
+	@RequestMapping(value = "/board/together")
 	public String articleList(Article article, String currentPage, Model model) {
 		System.out.println("articleList controller Start");
 		System.out.println("articleList controller getBrd_id->"+article.getBrd_id() );
@@ -46,7 +48,7 @@ public class TogetherController {
 		return "together/listArticle";
 	}
 	
-	@GetMapping(value = "detailArticle")
+	@GetMapping(value = "/board/detailArticle")
 	public String detailEmp(Article article, Model model) {
 		System.out.println("ArticleController Start detailArticle...");
 
@@ -56,6 +58,21 @@ public class TogetherController {
 		model.addAttribute("article", detailArticle);
 
 		return "together/detailArticle";
+	}
+	
+	@GetMapping(value = "/board/writeFormArticle")
+	public String writeFormArticle(Model model) {
+		System.out.println("ArticleController Start writeFormArticle...");
+
+		List<Comm> categoryList = as.categoryName();
+		System.out.println("ArticleController category => " + categoryList);
+		model.addAttribute("category", categoryList);
+		
+		List<Region> regionList = as.regionName();
+		System.out.println("ArticleController category => " + regionList);
+		model.addAttribute("region", regionList);
+		
+		return "together/writeFormArticle";
 	}
 
 }

@@ -6,7 +6,7 @@
 <mapper namespace="com.java501.S20230401.ArticleMapper">
 
 	<select id="ArticleTotalCnt" resultType="int">
-		select Count(*) FROM article where substr(brd_id, 0,2)=10
+		select Count(*) FROM article where brd_id between 1010 and 1060
 	</select>
 
 	<select id="ArticleBoardCnt" parameterType="Article"  resultType="int">
@@ -26,7 +26,7 @@
 		WHERE    A.TRD_ID = T.TRD_ID
 		AND      T.TRD_STATUS =	C.COMM_ID
 		AND      M.MEM_ID = A.MEM_ID
-		AND      substr(a.brd_id, 0,2)=10
+		AND      a.brd_id between 1010 and 1060
 		ORDER BY A.BRD_ID
 
 	</select>

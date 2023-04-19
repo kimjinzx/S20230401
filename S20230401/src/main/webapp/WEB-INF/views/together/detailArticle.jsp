@@ -9,7 +9,7 @@
 </head>
 <body>
 	<h2>상세게시글</h2>
-	<input type="button" value="목록" onclick="location.href='listArticle?brd_id=1000'">
+	<input type="button" value="목록" onclick="location.href='together?brd_id=1000'">
 	
 	<table>
 	<c:forEach var="art" items="${article }">

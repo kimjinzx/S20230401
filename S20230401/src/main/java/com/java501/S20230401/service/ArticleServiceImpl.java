@@ -5,7 +5,11 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.java501.S20230401.dao.ArticleDao;
+import com.java501.S20230401.dao.CommDao;
+import com.java501.S20230401.dao.RegionDao;
 import com.java501.S20230401.model.Article;
+import com.java501.S20230401.model.Comm;
+import com.java501.S20230401.model.Region;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 public class ArticleServiceImpl implements ArticleService {
 
 	private final ArticleDao ad;
+	private final RegionDao rd;
+	private final CommDao cd;
 
 	@Override
 	public int totalArticle(Article article) {
@@ -40,6 +46,27 @@ public class ArticleServiceImpl implements ArticleService {
 		List<Article> detailArticle = null;
 		detailArticle = ad.detailArticle(article);
 		return detailArticle;
+	}
+
+
+	@Override
+	public List<Region> regionName() {
+		List<Region> regionName = null;
+		System.out.println("ArticleServiceImpl regionName start...");
+		regionName = rd.regionName();
+		System.out.println("ArticleServiceImpl regionName.size()=> " + regionName.size());
+		
+		return regionName;
+	}
+
+
+	@Override
+	public List<Comm> categoryName() {
+		List<Comm> commName = null;
+		System.out.println("ArticleServiceImpl categoryName start...");
+		commName = cd.commName();
+		System.out.println("ArticleServiceImpl commName.size()=> " + commName.size());
+		return commName;
 	}
 
 

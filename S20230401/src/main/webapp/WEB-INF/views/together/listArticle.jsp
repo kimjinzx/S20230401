@@ -401,16 +401,15 @@
 			<h1>함께 해요 게시판 </h1>
 	
 	<!-- 7개만 나오는 이유는 trd_id가 없는 애들은 안나오기 때문이다. -->
-	<p><form action="/writeArticle" >
-		<input type="button" id="writeArticle" value="글쓰기">	<hr>
-	</form>
+		<input type="button" value="글쓰기" onclick="location.href='writeFormArticle'">
+	
 	<p>
 	<h4><a href="?brd_id=1000">전체</a></h4>
 	<h4><a href="?brd_id=1010">밥 & 카페</a></h4>
 	<h4><a href="?brd_id=1020">스포츠</a></h4>
 	<h4><a href="?brd_id=1030">쇼핑</a></h4>
 	<h4><a href="?brd_id=1040">문화생활</a></h4>
-	<h4><a href="?brd_id=1050">	취미생활</a></h4>
+	<h4><a href="?brd_id=1050">취미생활</a></h4>
 	<h4><a href="?brd_id=1060">기타</a></h4>
 	
 
