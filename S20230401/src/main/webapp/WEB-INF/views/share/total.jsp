@@ -281,14 +281,14 @@
 		align-items: center;
 	}
 	.btn{
-		width: auto
-		height: 30px;
+		width: auto;
+		height: 25px;
 		font-size:12px;
 		font-family: 'Nanum Gothic';
 		color: white;
 		text-align: center;
 		background: #0193F8;
-		border: solid 1px grey;
+		border: solid 1px #0193F8;
 		border-radius: 14px;
 	}
 </style>
@@ -424,18 +424,35 @@
 				</c:forEach>
 			</div>
 			
+			<div class="board-btns" style="margin-top:20px; margin-bottom:20px; clear: both;">
+				<div class="btns-left" style="float: left;">
+					<span><button>벋뜬1</button></span>
+					<span><button>벋뜬2</button></span>
+					<span><button>벋뜬3</button></span>
+				</div>
+				<div class="btns-right" style="float: right;">
+					<span>
+						<c:if test="${category % 100 != 0}">
+							<button onclick="location.href='${pageContext.request.contextPath}/board/share/write?brd_id=${category}'">글쓰기</button>
+						</c:if>
+					</span>
+				</div>
+			</div>
+			
 			<div class="notice-customer"></div>
 			<div class="notice-board"></div>
 			
 			<div class="board-articleList" style="margin-left: 150px; width: 100%;">
 				<c:forEach var="article" items="${articleList}">
-					<div class="article-view">
+					<div class="article-view" style="clear: both;">
 						<div class="view-preview" style="float: left">
-							<img alt="사진 없슈" src="">
+							<span><img style="width: 120px; height: 100px" alt="${article.member.mem_image}" src="${pageContext.request.contextPath}/image/share/${article.member.mem_image}"></span>
 						</div>
 						<div class="view-inner"  style="float: left">
 							<div class="view-top">
-								<button class="btn">${article.status_name}</button>
+								<c:if test="${article.status_name != null}">
+									<button class="btn">${article.status_name}</button>
+								</c:if>
 								<span class="category-name">${article.brd_name}</span>
 								<span class="tag-value">
 									<c:forEach begin="1" end="5" varStatus="status">
@@ -447,8 +464,8 @@
 								</span>
 							</div>
 							<div class="view-bottom">
-								<span class="article-title"><a href="${pageContext.request.contextPath}/article/share?art_id=${article.art_id}&brd_id=${article.brd_id}">${article.art_title}</a></span>
-									<c:if test="${article.rep_cnt != 0}">
+								<span class="article-title"><a href="${pageContext.request.contextPath}/board/share/article?art_id=${article.art_id}&brd_id=${article.brd_id}">${article.art_title}</a></span>
+									<c:if test="${article.rep_cnt != null && article.rep_cnt != 0}">
 										<span class="article-replycnt">[${article.rep_cnt }]</span>
 									</c:if><br>
 								<span>${article.trade.trd_cost}원</span>
@@ -464,20 +481,7 @@
 					</div>
 				</c:forEach>
 			</div>
-			<div class="board-btns">
-				<div class="btns-left" style="float: left;">
-					<span><button>벋뜬1</button></span>
-					<span><button>벋뜬2</button></span>
-					<span><button>벋뜬3</button></span>
-				</div>
-				<div class="btns-right" style="float: right;">
-					<span>
-						<c:if test="${category % 100 != 0}">
-							<button onclick="location.href='${pageContext.request.contextPath}/board/share/write?brd_id=${category}'">글쓰기</button>
-						</c:if>
-					</span>
-				</div>
-			</div>
+			
 			<div class="board-search" style="clear: both;">
 			
 			</div>

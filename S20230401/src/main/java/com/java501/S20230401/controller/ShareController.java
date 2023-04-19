@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Comm;
@@ -45,18 +46,13 @@ public class ShareController {
 		
 		
 		// 페이징
-		if(category % 100 == 0)
-			totalArt = articleService.allTotalArt(article); // 나눔해요 전체 글 갯수
-		else
-			totalArt = articleService.totalArt(article); // 카테고리 글 갯수
+		totalArt = articleService.allTotalArt(article); // 나눔해요 전체 글 갯수
 		
 		Paging page = new Paging(totalArt, currentPage);
 		article.setStart(page.getStart());
 		article.setEnd(page.getEnd());
 		
-		log.info("시작 : {}",article.getStart());
-		log.info("끝 : {}",article.getEnd());
-		
+		// 게시글 뿌리기
 		if(category % 100 == 0)
 			articleList = articleService.allArticleList(article); // 나눔해요 전체 글
 		else
@@ -90,42 +86,68 @@ public class ShareController {
 
 		//int writeResult = articleService.writeArticle(article);
 		
+		
+		log.info("제목은 나옴? [ {} ] 비었으면 안나옴", article.getArt_title());
+		
+		log.info("유저 이름 나옴? [ {} ] 비었으면 안나옴", article.getMember().getMem_username());
+		
 		model.addAttribute("article", article);
 		return "redirect:share/total";
 	}
 	
-	// 나눔해요 - 식품
-	@RequestMapping(value = "board/food/share")
-	public String foodPage(Article article, String currentPage, Model model) {
-		
-		//int totalArt = articleService.totalArt(article);
-		//Paging page = new Paging(totalArt, currentPage);
-		//article.setStart(page.getStart());
-		//article.setEnd(page.getEnd());
-		
-		//List<Article> articleList = articleService.articleList(article);
-		return "share/food";
-	}
-	// 나눔해요 - 패션/잡화
-	@RequestMapping(value = "board/fashion/share")
-	public String fashionPage(Article article, String currentPage, Model model) {
-		return "share/fashion";
-	}
-	// 나눔해요 - 가전/가구
-	@RequestMapping(value = "board/appliances/share")
-	public String appliancesPage(Article article, String currentPage, Model model) {
-		return "share/appliances";
-	}
-	// 나눔해요 - 기타
-	@RequestMapping(value = "board/etc/share")
-	public String etcPage(Article article, String currentPage, Model model) {
-		return "share/etc";
-	}
-	// 게시글 조회
-	@RequestMapping(value = "article/share")
+	// 게시글, 댓글 조회
+	@RequestMapping(value = "board/share/article")
 	public String detailArticle(Article article, Model model) {
 		Article detailArticle = articleService.detailArticle(article);
 		model.addAttribute("article", detailArticle);
 		return "share/article";
+	}
+	
+	// 게시글 - 댓글 쓰기
+	@PostMapping(value = "board/share/replyForm")
+	public String replyForm(Article article, Model model, RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute("article", article);
+		return "redirect:/board/share/article";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// 카테고리 연결
+	@RequestMapping(value = "board/together")
+	public String togetherPage(Article article, String currentPage, Model model, RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute("article", article);
+		redirectAttributes.addFlashAttribute("currentPage", currentPage);
+		return "redirect:/board/share?brd_id="+article.getBrd_id();
+	}
+	@RequestMapping(value = "board/dutchpay")
+	public String dutchpayPage(Article article, String currentPage, Model model, RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute("article", article);
+		redirectAttributes.addFlashAttribute("currentPage", currentPage);
+		return "redirect:/board/share?brd_id="+article.getBrd_id();
+	}
+	@RequestMapping(value = "board/community")
+	public String communityPage(Article article, String currentPage, Model model, RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute("article", article);
+		redirectAttributes.addFlashAttribute("currentPage", currentPage);
+		return "redirect:/board/share?brd_id="+article.getBrd_id();
+	}
+	@RequestMapping(value = "board/information")
+	public String informationPage(Article article, String currentPage, Model model, RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute("article", article);
+		redirectAttributes.addFlashAttribute("currentPage", currentPage);
+		return "redirect:/board/share?brd_id="+article.getBrd_id();
+	}
+	@RequestMapping(value = "board/customer")
+	public String customerPage(Article article, String currentPage, Model model, RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute("article", article);
+		redirectAttributes.addFlashAttribute("currentPage", currentPage);
+		return "redirect:/board/share?brd_id="+article.getBrd_id();
 	}
 }

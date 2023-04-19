@@ -7,10 +7,10 @@ import lombok.Data;
 
 @Data
 public class Article {
-	private int 	art_id;
-	private int 	brd_id;
+	private Integer art_id;
+	private Integer brd_id;
 	private String 	art_title;
-	private int 	mem_id;
+	private Integer mem_id;
 	private Date 	art_regdate;
 	private String	art_content;
 	private String 	art_tag1;
@@ -18,13 +18,13 @@ public class Article {
 	private String 	art_tag3;
 	private String 	art_tag4;
 	private String 	art_tag5;
-	private int 	trd_id;
-	private int 	art_good;
-	private int 	art_bad;
-	private int 	art_read;
-	private int 	art_isnotice;
-	private int 	isdelete;
-	private int 	report_id;
+	private Integer trd_id;
+	private Integer art_good;
+	private Integer art_bad;
+	private Integer art_read;
+	private Integer art_isnotice;
+	private Integer isdelete;
+	private Integer report_id;
 	
 	// 참조
 	private Member 	member;
@@ -39,13 +39,13 @@ public class Article {
 	private String 	brd_name; 	// 게시판 이름
 	private String	gen_name; 	// 멤버 성별
 	private String 	status_name;// 거래 상태
-	private int 	rep_cnt;	// 댓글 갯수
+	private Integer rep_cnt;	// 댓글 갯수
 	
 	
 	// Search용 필드
 	private String 	search;
 	private String 	keyWord;
 	private String 	pageNum;
-	private int 	start;
-	private int 	end;
+	private Integer start;
+	private Integer end;
 }

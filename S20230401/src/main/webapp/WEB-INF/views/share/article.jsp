@@ -11,7 +11,7 @@
 					<div class="view-content">
 					
 						<div class="view-member">
-							<span><img alt="회원 프사" src=""></span>
+							<span><img alt="회원 프사" src="${pageContext.request.contextPath}/image/share/${article.member.mem_image}"></span>
 							<span>${article.member.mem_nickname}</span>
 							<span>${article.member.mem_gender}</span>
 						</div>
@@ -52,8 +52,8 @@
 										<span>
 											${article.trade.trd_cost > 0 ? article.trade.trd_cost : '무료나눔'}
 										</span><br>
-										<span>장소 :${article.trade.trd_loc }</span>
-										
+										<span>상세장소 :${article.trade.trd_loc}</span>
+										<span>지역제한 :${article.trade.region.reg_name}</span>
 										<span>조회 ${article.art_read}</span>
 										<span>추천 ${article.art_good}</span>
 										<span>비추천 ${article.art_bad}</span><br>
@@ -87,10 +87,17 @@
 								<span>댓글(${article.rep_cnt})</span>
 								<div class="reply-list">
 									
+									<br>
+									<br>
+									<br>
+									<br>
+									<br>
 								</div>
 								
 								<div class="reply-write">
-									<form action="article/share/reply">
+									<form action="${pageContext.request.contextPath}/board/share/replyForm" method="post">
+										<span><input type="hidden" name="brd_id" value="${article.brd_id}"></span>
+										<span><input type="hidden" name="art_id" value="${article.art_id}"></span>
 										<span><input type="text" name="rep_content" placeholder="댓글을 작성하세요."></span>
 										<span><input type="submit" value="등록"></span>
 									</form>

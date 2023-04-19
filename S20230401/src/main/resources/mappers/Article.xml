@@ -5,7 +5,7 @@
 	
 	<resultMap type="Article" id="dgArticleMap">
 		<id 	column="art_id" 		property="art_id"/> <!-- PK	 -->
-		<id 	column="brd_id" 		property="brd_id"/>
+		<id 	column="brd_id" 		property="brd_id"/>	<!-- PK -->
 		<result column="art_title" 		property="art_title"/>
 		<result column="mem_id" 		property="mem_id"/>
 		<result column="art_regdate" 	property="art_regdate"/>
@@ -31,17 +31,30 @@
 		<collection property="trade" 	resultMap="com.java501.S20230401.model.dgTradeMapper.dgTradeMap"/>
 	</resultMap>
 	
+		<!-- 게시판 카운트 -->
+<!--<select id="dgArtCnt" resultType="int" parameterType="Article">
+		<![CDATA[
+			SELECT 	COUNT(*)
+			FROM 	ARTICLE
+			WHERE 	brd_id = #{brd_id}
+		]]>
+	</select> -->
+	
 	<!-- 전체 카운트 -->
 	<select id="dgAllArtCnt" resultType="int" parameterType="Article">
-		<![CDATA[
-			Select 	count(*)
-			From 	article
-			Where 	brd_id
-			BETWEEN #{brd_id} and #{brd_id}+99
-			]]>
+		Select 	count(*)
+		From 	article
+		Where 	brd_id 
+		<choose>
+			<when test="brd_id % 100 != 0">
+				= #{brd_id}
+			</when>
+			<otherwise>
+				BETWEEN #{brd_id} and #{brd_id}+99
+			</otherwise>
+		</choose>
 	</select>
 
-	
 	<!-- 전체 조회 -->
 	<select id="dgAllArticleList" resultMap="dgArticleMap" parameterType="Article">
 		SELECT  *
@@ -57,10 +70,12 @@
 		                                    FROM    MEMBER M JOIN COMM C2
 		                                    ON      MEM_GENDER IN COMM_ID
 		                                 )USING(MEM_ID)
-		                        JOIN 	(   SELECT  C3.COMM_VALUE AS STATUS_NAME, T.*
-		                                    FROM    TRADE T JOIN COMM C3
-		                                    ON      TRD_STATUS IN COMM_ID
-		                                 )USING(TRD_ID)
+				                LEFT OUTER JOIN 	(   SELECT  C3.COMM_VALUE AS STATUS_NAME, T.*, R.REG_NAME
+				                                        FROM    TRADE T LEFT OUTER JOIN COMM C3
+				                                        ON      T.TRD_STATUS = C3.COMM_ID
+				                                        LEFT OUTER JOIN REGION R
+				                                        ON      T.REG_ID = R.REG_ID
+				                         )USING(TRD_ID)
 		                        LEFT OUTER JOIN    (    SELECT COUNT(*) AS REP_CNT, ART_ID, BRD_ID
 		                                                FROM REPLY
 		                                                GROUP BY (ART_ID, BRD_ID)
@@ -73,13 +88,6 @@
 		WHERE 	RN BETWEEN #{start} and #{end}
 	</select>
 
-	<!-- 게시판 카운트 -->
-	<select id="dgArtCnt" resultType="int" parameterType="Article">
-		SELECT 	COUNT(*)
-		FROM 	ARTICLE
-		WHERE 	brd_id = #{brd_id}
-	</select>
-	
 	
 	<!-- 게시판 조회 -->
 	<select id="dgArticleList" resultMap="dgArticleMap" parameterType="Article">
@@ -96,10 +104,12 @@
 		                                    FROM    MEMBER M JOIN COMM C2
 		                                    ON      MEM_GENDER IN COMM_ID
 		                                )USING(MEM_ID)
-		                        JOIN 	(   SELECT  C3.COMM_VALUE AS STATUS_NAME, T.*
-		                                    FROM    TRADE T JOIN COMM C3
-		                                    ON      TRD_STATUS IN COMM_ID
-		                                )USING(TRD_ID)
+				                LEFT OUTER JOIN 	(   SELECT  C3.COMM_VALUE AS STATUS_NAME, T.*, R.REG_NAME
+				                                        FROM    TRADE T LEFT OUTER JOIN COMM C3
+				                                        ON      T.TRD_STATUS = C3.COMM_ID
+				                                        LEFT OUTER JOIN REGION R
+				                                        ON      T.REG_ID = R.REG_ID
+				                         )USING(TRD_ID)
 		                        LEFT OUTER JOIN    (    SELECT COUNT(*) AS REP_CNT, ART_ID, BRD_ID
 		                                                FROM REPLY
 		                                                GROUP BY (ART_ID, BRD_ID)
@@ -124,10 +134,12 @@
                             FROM    MEMBER M JOIN COMM C2
                             ON      MEM_GENDER IN COMM_ID
                         )USING(MEM_ID)
-                JOIN 	(   SELECT  C3.COMM_VALUE AS STATUS_NAME, T.*
-                            FROM    TRADE T JOIN COMM C3
-                            ON      TRD_STATUS IN COMM_ID
-                        )USING(TRD_ID)
+                LEFT OUTER JOIN 	(   SELECT  C3.COMM_VALUE AS STATUS_NAME, T.*, R.REG_NAME
+                                        FROM    TRADE T LEFT OUTER JOIN COMM C3
+                                        ON      T.TRD_STATUS = C3.COMM_ID
+                                        LEFT OUTER JOIN REGION R
+                                        ON      T.REG_ID = R.REG_ID
+                         )USING(TRD_ID)
                 LEFT OUTER JOIN    (    SELECT COUNT(*) AS REP_CNT, ART_ID, BRD_ID
                                         FROM REPLY
                                         GROUP BY (ART_ID, BRD_ID)

@@ -17,6 +17,6 @@
 		<result column="trd_maxage" 	property="trd_maxage"/>
 		<collection property="member" 	resultMap="com.java501.S20230401.model.dgMemberMapper.dgMemberMap"/>
 		<collection property="comm" 	resultMap="com.java501.S20230401.model.dgCommMapper.dgCommMap"/>
-		<!-- <collection property="region" 	resultMap="dgRegionMap"/> -->
+		<collection property="region" 	resultMap="com.java501.S20230401.model.dgRegionMapper.dgRegionMap"/>
 	</resultMap>
 </mapper>
