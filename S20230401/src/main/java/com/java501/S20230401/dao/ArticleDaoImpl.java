@@ -70,4 +70,15 @@ public class ArticleDaoImpl implements ArticleDao {
 		return detailArticle;
 	}
 
+	@Override
+	public int favoriteCount(Article a) {
+		int favoriteCount = 0;
+		try {
+			favoriteCount = session.selectOne("tkFavoriteCount", a);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return favoriteCount;
+	}
+
 }

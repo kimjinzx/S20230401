@@ -6,60 +6,62 @@
 <mapper namespace="com.java501.S20230401.ArticleMapper">
 
 	<select id="ArticleTotalCnt" resultType="int">
-		select Count(*) FROM article where brd_id between 1010 and 1060
+		select Count(*) FROM
+		article where brd_id between 1010 and 1060
 	</select>
 
-	<select id="ArticleBoardCnt" parameterType="Article"  resultType="int">
+	<select id="ArticleBoardCnt" parameterType="Article"
+		resultType="int">
 		select Count(*) FROM article where brd_id=#{brd_id}
 	</select>
 
 
-	<select id="tkArticleListAll" parameterType="Article" resultType="Article">
-        SELECT   A.ART_TAG1, A.ART_TAG2, A.ART_TAG3, A.ART_TAG4, A.ART_ID, A.BRD_ID
-				,A.ART_TAG5, A.ART_TITLE, trunc(sysdate-A.ART_REGDATE) as REST_REGDATE, A.ART_READ
-				,M.MEM_ID, M.MEM_NICKNAME
-				,T.TRD_ID, T.TRD_LOC, T.TRD_MAX, T.TRD_STATUS
-				,C.COMM_ID, C.COMM_VALUE
-				,T.TRD_MINAGE, T.TRD_MAXAGE
-                ,reply_count(A.ART_ID, A.BRD_ID)  repCount
-		FROM     ARTICLE A, TRADE T, COMM C, MEMBER M
-		WHERE    A.TRD_ID = T.TRD_ID
-		AND      T.TRD_STATUS =	C.COMM_ID
-		AND      M.MEM_ID = A.MEM_ID
-		AND      a.brd_id between 1010 and 1060
-		ORDER BY A.BRD_ID
+	<select id="tkArticleListAll" parameterType="Article"
+		resultType="Article">
+		select      a.*, m.*, c.*
+             		, t.trd_id, t.trd_status, t.trd_max, trunc(sysdate - A.ART_REGDATE) as REST_REGDATE
+            		, t.trd_cost, t.trd_loc, t.trd_gender, t.trd_minage, t.trd_maxage
+            		, reply_count(A.ART_ID, A.BRD_ID)  repCount
+		from         article a  LEFT JOIN trade t 	ON(a.trd_id = t.trd_id)
+                     			LEFT JOIN Member m 	ON(a.mem_id = m.mem_id)
+                     			LEFT JOIN Comm c 	ON(t.trd_status = c.comm_id)
+		where        a.brd_id between 1010 and 1060
+		order by     brd_id
+	</select>
 
+	<select id="tkArticleListBoard" parameterType="Article"
+		resultType="Article">
+		select      a.*, m.*, c.*
+             		, t.trd_id, t.trd_status, t.trd_max, trunc(sysdate - A.ART_REGDATE) as REST_REGDATE
+            		, t.trd_cost, t.trd_loc, t.trd_gender, t.trd_minage, t.trd_maxage
+            		, reply_count(A.ART_ID, A.BRD_ID)  repCount
+		from         article a 	LEFT JOIN trade t 	ON(a.trd_id = t.trd_id)
+                     			LEFT JOIN Member m 	ON(a.mem_id = m.mem_id)
+                     			LEFT JOIN Comm c 	ON(t.trd_status = c.comm_id)
+		where        a.brd_id = #{brd_id}
+		order by     brd_id
+	</select>
+
+
+	<select id="tkArticleDetail" parameterType="Article"
+		resultType="Article">
+		SELECT 		a.*, t.*, c.*, m.*, reply_count(A.ART_ID, A.BRD_ID) repCount
+		FROM 		ARTICLE A, TRADE T, COMM C, MEMBER M
+		WHERE 		A.TRD_ID = T.TRD_ID
+		AND 		T.TRD_STATUS = C.COMM_ID
+		AND 		M.MEM_ID = A.MEM_ID
+		AND 		a.brd_id = #{brd_id}
+		AND 		a.art_id = #{art_id}
+		ORDER BY	A.BRD_ID
 	</select>
 	
-		<select id="tkArticleListBoard" parameterType="Article"	resultType="Article">
-        SELECT   A.ART_TAG1, A.ART_TAG2, A.ART_TAG3, A.ART_TAG4, A.ART_ID, A.BRD_ID
-				,A.ART_TAG5, A.ART_TITLE, trunc(sysdate-A.ART_REGDATE) as REST_REGDATE, A.ART_READ
-				,M.MEM_ID, M.MEM_NICKNAME
-				,T.TRD_ID, T.TRD_LOC, T.TRD_MAX, T.TRD_STATUS
-				,C.COMM_ID, C.COMM_VALUE
-				,T.TRD_MINAGE, T.TRD_MAXAGE
-                ,reply_count(A.ART_ID, A.BRD_ID)  repCount
-		FROM     ARTICLE A ,TRADE T, COMM C, MEMBER M
-		WHERE    A.TRD_ID = T.TRD_ID
-		AND      T.TRD_STATUS =	C.COMM_ID
-		AND      M.MEM_ID = A.MEM_ID
-		AND      a.brd_id = #{brd_id}
-		ORDER BY A.BRD_ID
-
+		<select id="tkFavoriteCount" parameterType="Article" resultType="int">
+		select      count(*)
+		from        favorite f left Join article a on(a.art_id = f.art_id and a.brd_id = f.brd_id)
+                       		   left join member  m on(f.mem_id = m.mem_id)
+        where		a.art_id = #{art_id}
+		and			a.brd_id = #{brd_id}
+		group by    a.art_id, a.brd_id
 	</select>
 	
-
-	<select id="tkArticleDetail" parameterType="Article" resultType="Article">
-		SELECT *
-		FROM   ARTICLE A
-             , TRADE   T
-             , COMM    C
-             , MEMBER  M
- 		WHERE A.TRD_ID   = T.TRD_ID
-		AND   T.TRD_STATUS = C.COMM_ID
-		AND   M.MEM_ID     = A.MEM_ID
-		AND   a.brd_id = #{brd_id}
-		AND   a.art_id = #{art_id}
-		ORDER BY		A.BRD_ID
-	</select>
 </mapper>

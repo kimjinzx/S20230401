@@ -404,13 +404,13 @@
 		<input type="button" value="글쓰기" onclick="location.href='writeFormArticle'">
 	
 	<p>
-	<h4><a href="?brd_id=1000">전체</a></h4>
-	<h4><a href="?brd_id=1010">밥 & 카페</a></h4>
-	<h4><a href="?brd_id=1020">스포츠</a></h4>
-	<h4><a href="?brd_id=1030">쇼핑</a></h4>
-	<h4><a href="?brd_id=1040">문화생활</a></h4>
-	<h4><a href="?brd_id=1050">취미생활</a></h4>
-	<h4><a href="?brd_id=1060">기타</a></h4>
+	<input type="button" value="전체" 	onclick="location.href='together?brd_id=1000'">
+	<input type="button" value="밥 & 카페" onclick="location.href='together?brd_id=1010'">
+	<input type="button" value="스포츠" 	onclick="location.href='together?brd_id=1020'">
+	<input type="button" value="쇼핑" 	onclick="location.href='together?brd_id=1030'">
+	<input type="button" value="문화생활" 	onclick="location.href='together?brd_id=1040'">
+	<input type="button" value="취미생활" 	onclick="location.href='together?brd_id=1050'">
+	<input type="button" value="기타" 	onclick="location.href='together?brd_id=1060'">
 	
 
 	<c:set var="num" value="${page.total-page.start+1 }"></c:set>
@@ -430,8 +430,10 @@
 			<th>최소연령</th>			
 			<th>최대연령</th>
 			<th>글쓴이</th>
+			<th>프로필 사진 </th>
 			<th>조회수</th>
 			<th>추천수</th>
+			<th>관심수</th>
 			<th>댓글수</th>
 			
 		</tr>
@@ -450,8 +452,10 @@
 				<td>${art.trd_minage }세</td>			
 				<td>${art.trd_maxage }세</td>			
 				<td>${art.mem_nickname }</td>
+				<td><img src="${pageContext.request.contextPath}/image/picture/${art.mem_image}" width ="50" height ="50" alt="사진이 없습니다"></td>
 				<td>${art.art_read }</td>
 				<td>${art.art_good }</td>
+				<td>${art.favoriteCount}</td>
 				<td>${art.repCount }</td>
 				
 			</tr>

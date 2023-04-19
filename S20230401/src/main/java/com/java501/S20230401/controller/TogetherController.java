@@ -27,17 +27,23 @@ public class TogetherController {
 		System.out.println("articleList controller Start");
 		System.out.println("articleList controller getBrd_id->"+article.getBrd_id() );
 		
-		// 전체 게시글 갯수 Count
+		// 전체 게시글 개수 Count
 		int totalArticle = as.totalArticle(article);
 		System.out.println("ArticleController totalArticle => " + totalArticle);
-
+		
+		// 게시글 리스트 작업
+		List<Article> listArticle = as.listArticle(article);
+		
+		// 게시글 별 관심목록 개수 Count
+		for (Article a : listArticle) {
+			int favoriteCount = as.favoriteCount(a);
+			a.setFavoriteCount(favoriteCount);
+		}
 		
 		// Paging 작업
 		Paging page = new Paging(totalArticle, currentPage);
 		article.setStart(page.getStart()); // 시작시 1
 		article.setEnd(page.getEnd());
-		
-		List<Article> listArticle = as.listArticle(article);
 		
 		model.addAttribute("article", article);
 		model.addAttribute("totalArticle", totalArticle);

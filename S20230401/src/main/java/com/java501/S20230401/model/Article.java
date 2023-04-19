@@ -61,8 +61,8 @@ public class Article {
 	// reply
 	
 	private Integer 	rep_id;
-	private String 	rep_content;
-	private Date 	rep_regdate;
+	private String 		rep_content;
+	private Date 		rep_regdate;
 	private Integer 	rep_good;
 	private Integer 	rep_bad;
 	private Integer 	rep_parent;
@@ -77,4 +77,5 @@ public class Article {
 	private Integer repCount;
 	private Integer artCount;
 	private Integer rest_regdate;
+	private Integer favoriteCount;
 }

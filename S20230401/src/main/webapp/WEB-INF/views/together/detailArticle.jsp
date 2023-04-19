@@ -64,6 +64,10 @@
 		<tr>
 			<th>내용</th>
 			<td>${art.art_content }</td>
+		</tr>	
+		<tr>
+			<th>댓글 수</th>
+			<td>${art.repCount }</td>
 		</tr>					
 	
 	</c:forEach>

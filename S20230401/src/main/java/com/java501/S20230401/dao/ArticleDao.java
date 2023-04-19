@@ -16,5 +16,8 @@ public interface ArticleDao {
 	List<Article> detailArticle(Article article);
 
 
+	int favoriteCount(Article a);
+
+
 
 }

@@ -15,6 +15,8 @@ public interface ArticleService {
 
 	List<Region> 	regionName();
 	List<Comm> 		categoryName();
+
+	int 			favoriteCount(Article a);
 	
 
 

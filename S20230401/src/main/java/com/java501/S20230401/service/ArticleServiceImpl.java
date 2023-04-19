@@ -70,4 +70,11 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 
+	@Override
+	public int favoriteCount(Article a) {
+		int favoriteCount = ad.favoriteCount(a);
+		return favoriteCount;
+	}
+
+
 }
