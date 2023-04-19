@@ -42,6 +42,7 @@ public class EmailController {
 	@GetMapping(value = "/MemberAuthentication")
 	public String authentication(@RequestParam String v) {
 		Authentications auth = as.getAuthentication(v);
+		// 아래에 링크 만료 여부에 따른 액션 넣기...
 		if (auth != null) {
 			ms.setAuthority(auth.getMem_id(), 103);
 		}
