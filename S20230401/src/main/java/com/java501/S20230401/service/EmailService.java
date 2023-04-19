@@ -1,5 +1,8 @@
 package com.java501.S20230401.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Random;
 
 import javax.mail.MessagingException;
@@ -25,7 +28,7 @@ public class EmailService {
 	private final MemberService memberService;
 	private final AuthenticationsService as;
 	
-	public String sendMail(EmailMessage msg, String type, String contextPath) {
+	public String sendMail(EmailMessage msg, String type, String baseUrl) {
 		String authNum;
 		while (as.getAuthentication(authNum = createCode()) != null);
 		MimeMessage mimeMessage = mailSender.createMimeMessage();
@@ -36,7 +39,7 @@ public class EmailService {
 			MimeMessageHelper mmh = new MimeMessageHelper(mimeMessage, false, "UTF-8");
 			mmh.setTo(msg.getTo());
 			mmh.setSubject(msg.getSubject());
-			mmh.setText(setContext(authNum, type, contextPath), true);
+			mmh.setText(setContext(authNum, type, baseUrl), true);
 			mailSender.send(mimeMessage);
 			log.info("Successfully sended message");
 			return authNum;
@@ -64,6 +67,10 @@ public class EmailService {
 		Context context = new Context();
 		context.setVariable("contextPath", contextPath);
 		context.setVariable("code", code);
+		DateFormat dtf = new SimpleDateFormat("yyyy년 M월 d일 H시 m분");
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DATE, 1);
+		context.setVariable("expire", dtf.format(cal.getTime()));
 		return templateEngine.process(type, context);
 	}
 }

@@ -1,6 +1,8 @@
 package com.java501.S20230401.controller;
 
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -99,7 +101,8 @@ public class MemberController {
 	
 	private String uploadFile(String realPath, String originalName, byte[] fileData) throws Exception {
 		UUID uuid = UUID.randomUUID();
-		String savedName = uuid.toString() + "_" + originalName;
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu_MM_dd_HH_mm_ss");
+		String savedName = uuid.toString() + "_" + dtf.format(LocalDateTime.now()) + "_" + originalName;
 		File target = new File(realPath, savedName);
 		FileCopyUtils.copy(fileData, target);
 		return savedName;

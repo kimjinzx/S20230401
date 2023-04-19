@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.support.RequestContextUtils;
@@ -32,9 +31,10 @@ public class EmailController {
 		Map<String, ?> flashMap = RequestContextUtils.getInputFlashMap(request);
 		Member member = (Member)flashMap.get("member");
 		String emailAddress = member.getMem_email();
+		String rawUrl = request.getRequestURL().toString();
+		String baseUrl = rawUrl.replace("/mail/JoinAuthentification", "");
 		EmailMessage msg = EmailMessage.builder().to(emailAddress).subject("[ShareGo] 회원가입 인증을 완료해주세요").build();
-		String contextPath = request.getSession().getServletContext().getContextPath();
-		String code = es.sendMail(msg, "thymeleaf/join", contextPath);
+		String code = es.sendMail(msg, "thymeleaf/join", baseUrl);
 		as.setAuthentication(member, code);
 		return "redirect:/";
 	}
