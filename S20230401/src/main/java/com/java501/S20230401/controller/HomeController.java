@@ -62,4 +62,9 @@ public class HomeController {
 		model.addAttribute("articles", articles);
 		return "index";
 	}
+	@RequestMapping(value = "/writeTest")
+	public String writeTest() {
+		
+		return "writeTest";
+	}
 }
