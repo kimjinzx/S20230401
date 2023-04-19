@@ -19,12 +19,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.java501.S20230401.model.Member;
 import com.java501.S20230401.model.Region;
 import com.java501.S20230401.service.CommService;
 import com.java501.S20230401.service.MemberService;
 import com.java501.S20230401.service.RegionService;
+import com.java501.S20230401.util.EmailMessage;
 import com.java501.S20230401.util.MemberSearchKeyword;
 
 import lombok.RequiredArgsConstructor;
@@ -57,7 +59,7 @@ public class MemberController {
 	}
 	
 	@PostMapping(value = "/joinProc")
-	public String memberJoinProcess(@RequestParam(value = "image-file", required = false) MultipartFile file, @RequestParam Map<String, String> params, MultipartHttpServletRequest request) {
+	public String memberJoinProcess(@RequestParam(value = "image-file", required = false) MultipartFile file, @RequestParam Map<String, String> params, MultipartHttpServletRequest request, RedirectAttributes redirectAttributes) {
 		Member member = new Member();
 		member.setMem_username(params.get("username"));
 		member.setMem_password(new BCryptPasswordEncoder().encode(params.get("password")));
@@ -88,12 +90,11 @@ public class MemberController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		// 이메일로 인증메일 보내져야함...
-		// 그거 안했는데 왜 찐막임 이 개새끼야 이 씨발 진짜 븅신 어휴
-		
-		// 여기 안에다 써라 개새끼야
 		int result = ms.registMember(member);
-		return "redirect:/";
+		Member readMember = ms.getMember(member.getMem_username(), MemberSearchKeyword.USERNAME);
+		readMember.setMem_password(null);
+		redirectAttributes.addFlashAttribute("member", readMember);
+		return "redirect:/mail/JoinAuthentification";
 	}
 	
 	private String uploadFile(String realPath, String originalName, byte[] fileData) throws Exception {
@@ -115,4 +116,6 @@ public class MemberController {
 		resp.put("value", member);
 		return resp;
 	}
+	
+	
 }

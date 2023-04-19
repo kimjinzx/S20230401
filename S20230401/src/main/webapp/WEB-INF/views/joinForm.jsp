@@ -353,7 +353,7 @@
 <body>
 	<div class="container">
 		<div id="joinBox">
-			<form action="/joinProc" method="post" enctype="multipart/form-data">
+			<form id="join-form" action="/joinProc" method="post" enctype="multipart/form-data">
 				<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }">
 				<input type="hidden" id="redirectLink" name="redirectLink" value="${redirect }">
 				<div class="form-group">

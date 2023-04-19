@@ -29,4 +29,14 @@ public class MemberServiceImpl implements MemberService {
 	public int registMember(Member member) {
 		return md.registMember(member);
 	}
+	
+	@Override
+	public Member getMemberById(int mem_id) {
+		return md.getMemberById(mem_id);
+	}
+	
+	@Override
+	public void setAuthority(Integer mem_id, int authority) {
+		md.setAuthority(mem_id, authority);
+	}
 }

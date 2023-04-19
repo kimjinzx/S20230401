@@ -11,4 +11,6 @@ public interface MemberDao {
 	public Member findByMemberNickname(String nickname);
 	public MemberInfo findByMemberInfoName(String username);
 	public int registMember(Member member);
+	public Member getMemberById(int mem_id);
+	public void setAuthority(Integer mem_id, int authority);
 }

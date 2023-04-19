@@ -28,9 +28,9 @@ spring:
       prefix: /WEB-INF/views/
       suffix: .jsp
   thymeleaf:
-    prefix: resources/templates
+    prefix: classpath:/templates/
     suffix: .html
-    view-names: mail/*
+    view-names: thymeleaf/*
   
   mail:
     host: smtp.gmail.com
