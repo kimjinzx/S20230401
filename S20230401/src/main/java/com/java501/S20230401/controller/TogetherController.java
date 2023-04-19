@@ -59,6 +59,10 @@ public class TogetherController {
 		System.out.println("ArticleController Start detailArticle...");
 
 		List<Article> detailArticle = as.detailArticle(article);
+		for (Article a : detailArticle) {
+			int favoriteCount = as.favoriteCount(a);
+			a.setFavoriteCount(favoriteCount);
+		}
 		System.out.println("ArticleController detailArticle => " + detailArticle);
 		
 		model.addAttribute("article", detailArticle);

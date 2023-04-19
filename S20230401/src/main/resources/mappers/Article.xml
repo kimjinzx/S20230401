@@ -45,14 +45,15 @@
 
 	<select id="tkArticleDetail" parameterType="Article"
 		resultType="Article">
-		SELECT 		a.*, t.*, c.*, m.*, reply_count(A.ART_ID, A.BRD_ID) repCount
-		FROM 		ARTICLE A, TRADE T, COMM C, MEMBER M
-		WHERE 		A.TRD_ID = T.TRD_ID
-		AND 		T.TRD_STATUS = C.COMM_ID
-		AND 		M.MEM_ID = A.MEM_ID
-		AND 		a.brd_id = #{brd_id}
+        select  	a.*, c.*, m.*, reply_count(A.ART_ID, A.BRD_ID) repCount
+        		   , t.trd_id, t.trd_status, t.trd_max, trunc(sysdate - A.ART_REGDATE) as REST_REGDATE
+            	   , t.trd_cost, t.trd_loc, t.trd_gender, t.trd_minage, t.trd_maxage
+        from    	article a 	left join trade t on (A.TRD_ID = T.TRD_ID)
+                          		left join member m on (a.mem_id = m.mem_id)
+                          		left join comm c on (t.trd_status = c.comm_id)
+        where 		a.brd_id = #{brd_id}
 		AND 		a.art_id = #{art_id}
-		ORDER BY	A.BRD_ID
+        order by 	a.brd_id
 	</select>
 	
 		<select id="tkFavoriteCount" parameterType="Article" resultType="int">
