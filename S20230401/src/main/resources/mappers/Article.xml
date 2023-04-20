@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java501.S20230401.ArticleMapper">
+	<insert id="hgInsertArticle" parameterType="Article">
+		<!-- INSERT INTO ARTICLE (ART_ID, BRD_ID, ART_TITLE, MEM_ID, ART_REGDATE, ART_CONTENT,
+							 ART_TAG1, ART_TAG2, ART_TAG3, ART_TAG4, ART_TAG5, TRD_ID, ART_GOOD,
+							 ART_BAD, ART_READ, ART_ISNOTICE, ISDELETE, REPORT_ID)
+		VALUES ((SELECT MAX(ART_ID) + 1 FROM ARTICLE WHERE BRD_ID = #{brd_id}), #{brd_id},
+				#{art_title, jdbcType=VARCHAR}, #{mem_id}, SYSDATE, #{art_content, jdbcType=VARCHAR},
+				#{art_tag1, jdbcType=VARCHAR}, #{art_tag2, jdbcType=VARCHAR}, #{art_tag3, jdbcType=VARCHAR},
+				#{art_tag4, jdbcType=VARCHAR}, #{art_tag5, jdbcType=VARCHAR}, #{trd_id, jdbcType=NUMERIC},
+				0, 0, 0, 0, 0, NULL) -->
+		INSERT INTO ARTICLE (ART_ID, BRD_ID, ART_TITLE, MEM_ID, ART_REGDATE, ART_CONTENT,
+							 ART_TAG1, ART_TAG2, ART_TAG3, ART_TAG4, ART_TAG5, TRD_ID, ART_GOOD,
+							 ART_BAD, ART_READ, ART_ISNOTICE, ISDELETE, REPORT_ID)
+		VALUES ((SELECT MAX(ART_ID) + 1 FROM ARTICLE WHERE BRD_ID = #{brd_id}), #{brd_id},
+				#{art_title, jdbcType=VARCHAR}, #{mem_id}, SYSDATE, #{art_content, jdbcType=VARCHAR},
+				#{art_tag1, jdbcType=VARCHAR}, #{art_tag2, jdbcType=VARCHAR}, #{art_tag3, jdbcType=VARCHAR},
+				#{art_tag4, jdbcType=VARCHAR}, #{art_tag5, jdbcType=VARCHAR}, NULL,
+				0, 0, 0, 0, 0, NULL)
+	</insert>
+	<select id="hgGetArticleById" parameterType="Article" resultType="Article">
+		SELECT * FROM ARTICLE
+		WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
+	</select>
+</mapper>

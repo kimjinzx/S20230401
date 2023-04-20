@@ -9,6 +9,7 @@ public class Article {
 	private int 	art_id;
 	private int 	brd_id;
 	private String 	art_title;
+	private String	art_content;
 	private int 	mem_id;
 	private Date 	art_regdate;
 	private String 	art_tag1;
