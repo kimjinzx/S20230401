@@ -76,5 +76,31 @@ public class ArticleServiceImpl implements ArticleService {
 		return favoriteCount;
 	}
 
+	@Override
+	public List<Article> replyList(Article article) {
+		List<Article> replyList = ad.replyList(article);
+		return replyList;
+	}
+
+	@Override
+	public int insertTrade(Article article) {
+		
+		int insertTrade = ad.insertTrade(article);
+		System.out.println("ArticleServiceImpl insertTrade.size()-> " + insertTrade);
+		return insertTrade;
+	}
+
+	@Override
+	public int insertArticle(Article article) {
+		
+		int insertArticle = ad.insertArticle(article);
+		System.out.println("ArticleServiceImpl insertArticle.size()-> " + insertArticle);
+		return insertArticle;
+	}
+
+
+
+
+
 
 }

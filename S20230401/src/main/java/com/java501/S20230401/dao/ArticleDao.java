@@ -7,16 +7,15 @@ import com.java501.S20230401.model.Article;
 public interface ArticleDao {
 
 
-	int totalArticle(Article article);
-
+	int 			totalArticle(Article article);
+	List<Article> 	listArticle(Article article);
+	List<Article> 	detailArticle(Article article);
+	int 			favoriteCount(Article a);
+	List<Article> 	replyList(Article a);
+	int 			insertArticle(Article article);
+	int 			insertTrade(Article article);
 	
-	List<Article> listArticle(Article article);
-
-
-	List<Article> detailArticle(Article article);
-
-
-	int favoriteCount(Article a);
+	
 
 
 

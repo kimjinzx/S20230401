@@ -16,28 +16,29 @@
 	</select>
 
 
-	<select id="tkArticleListAll" parameterType="Article"
-		resultType="Article">
-		select      a.*, m.*, c.*
+	<select id="tkArticleListAll" parameterType="Article" resultType="Article">
+		select      a.*, m.*, c.*, r.*
              		, t.trd_id, t.trd_status, t.trd_max, trunc(sysdate - A.ART_REGDATE) as REST_REGDATE
             		, t.trd_cost, t.trd_loc, t.trd_gender, t.trd_minage, t.trd_maxage
             		, reply_count(A.ART_ID, A.BRD_ID)  repCount
-		from         article a  LEFT JOIN trade t 	ON(a.trd_id = t.trd_id)
+		from         article a  LEFT JOIN trade  t 	ON(a.trd_id = t.trd_id)
                      			LEFT JOIN Member m 	ON(a.mem_id = m.mem_id)
-                     			LEFT JOIN Comm c 	ON(t.trd_status = c.comm_id)
+                     			LEFT JOIN Comm   c 	ON(t.trd_status = c.comm_id)
+                     			LEFT JOIN REGION R  ON(t.reg_id = r.reg_id)
 		where        a.brd_id between 1010 and 1060
 		order by     brd_id
 	</select>
 
 	<select id="tkArticleListBoard" parameterType="Article"
 		resultType="Article">
-		select      a.*, m.*, c.*
+		select      a.*, m.*, c.*, r.*
              		, t.trd_id, t.trd_status, t.trd_max, trunc(sysdate - A.ART_REGDATE) as REST_REGDATE
             		, t.trd_cost, t.trd_loc, t.trd_gender, t.trd_minage, t.trd_maxage
             		, reply_count(A.ART_ID, A.BRD_ID)  repCount
-		from         article a 	LEFT JOIN trade t 	ON(a.trd_id = t.trd_id)
+		from         article a 	LEFT JOIN trade  t 	ON(a.trd_id = t.trd_id)
                      			LEFT JOIN Member m 	ON(a.mem_id = m.mem_id)
-                     			LEFT JOIN Comm c 	ON(t.trd_status = c.comm_id)
+                     			LEFT JOIN Comm   c 	ON(t.trd_status = c.comm_id)
+                     			LEFT JOIN REGION R  ON(t.reg_id = r.reg_id)
 		where        a.brd_id = #{brd_id}
 		order by     brd_id
 	</select>
@@ -45,18 +46,19 @@
 
 	<select id="tkArticleDetail" parameterType="Article"
 		resultType="Article">
-        select  	a.*, c.*, m.*, reply_count(A.ART_ID, A.BRD_ID) repCount
+        select  	a.*, c.*, m.*, r.*, reply_count(A.ART_ID, A.BRD_ID) repCount
         		   , t.trd_id, t.trd_status, t.trd_max, trunc(sysdate - A.ART_REGDATE) as REST_REGDATE
             	   , t.trd_cost, t.trd_loc, t.trd_gender, t.trd_minage, t.trd_maxage
         from    	article a 	left join trade t on (A.TRD_ID = T.TRD_ID)
                           		left join member m on (a.mem_id = m.mem_id)
                           		left join comm c on (t.trd_status = c.comm_id)
+                          		LEFT JOIN REGION R  ON(t.reg_id = r.reg_id)
         where 		a.brd_id = #{brd_id}
 		AND 		a.art_id = #{art_id}
         order by 	a.brd_id
 	</select>
 	
-		<select id="tkFavoriteCount" parameterType="Article" resultType="int">
+	<select id="tkFavoriteCount" parameterType="Article" resultType="int">
 		select      count(*)
 		from        favorite f left Join article a on(a.art_id = f.art_id and a.brd_id = f.brd_id)
                        		   left join member  m on(f.mem_id = m.mem_id)
@@ -64,5 +66,31 @@
 		and			a.brd_id = #{brd_id}
 		group by    a.art_id, a.brd_id
 	</select>
+
+	<select id="tkReplyList" parameterType="Article" resultType="Article">
+		select      r.*, a.*, m.*
+		from        reply r left Join article a on(a.art_id = r.art_id  and a.brd_id = r.brd_id)
+                    		left join member  m on(r.mem_id = m.mem_id)
+		where 		a.brd_id = #{brd_id}
+		and   		a.art_id = #{art_id}
+	</select>
 	
+	<insert id ="insertTrade" parameterType="Article">
+		insert into trade 
+				values (trd_id_seq.nextval, 1, '401', #{trd_max}, #{trd_enddate, jdbcType=DATE}
+				, 0, #{reg_id, jdbcType=NUMERIC}, #{trd_loc, jdbcType=VARCHAR}, #{trd_gender, jdbcType=NUMERIC}
+				, #{trd_minage, jdbcType=NUMERIC}, #{trd_maxage, jdbcType=NUMERIC})
+			<selectKey resultType="int" keyProperty="trd_id" order="AFTER">
+				select trd_id_seq.currval from dual;
+			</selectKey>
+
+	
+	</insert>
+	<insert id="insertArticle" parameterType="Article">
+		insert into article 
+			values ((Select max(art_id) + 1 from article where brd_id =#{brd_id})
+            , #{brd_id}, #{art_title}, 1, sysdate, #{art_content}, #{art_tag1, jdbcType=VARCHAR}, #{art_tag2, jdbcType=VARCHAR}
+            , #{art_tag3, jdbcType=VARCHAR}, #{art_tag4, jdbcType=VARCHAR}, #{art_tag5, jdbcType=VARCHAR}, #{trd_id, jdbcType=NUMERIC}
+            , 0, 0, 0, 0, 0, null)
+	</insert>
 </mapper>

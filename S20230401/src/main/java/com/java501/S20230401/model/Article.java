@@ -69,13 +69,17 @@ public class Article {
 	private Integer 	rep_step;
 	
 	// PAGING
-	private String pageNum;
-	private Integer start;
-	private Integer end;
+	private String 		pageNum;
+	private Integer 	start;
+	private Integer 	end;
+	
+	// Region
+	private String 		reg_name;
+	private Integer 	reg_parent;
 	
 	// 조회용
-	private Integer repCount;
-	private Integer artCount;
-	private Integer rest_regdate;
-	private Integer favoriteCount;
+	private Integer 	repCount;
+	private Integer 	artCount;
+	private Integer 	rest_regdate;
+	private Integer 	favoriteCount;
 }

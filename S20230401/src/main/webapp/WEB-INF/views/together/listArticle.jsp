@@ -302,7 +302,7 @@
 				</a>
 			</div>
 			<div id="topmenu">
-				<a class="adv-hover menuitem" href="?brd_id=1000">함께해요</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/together?category=1000">함께해요</a>
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="">같이사요</a>
 				<div class="menu-separator"></div>
@@ -317,12 +317,12 @@
 					<div style="width: 200px;"></div>
 					<div class="submenu-items">
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="?brd_id=1010">밥 / 카페</a>
-							<a class="submenuitem adv-hover" href="?brd_id=1020">스포츠 / 운동</a>
-							<a class="submenuitem adv-hover" href="?brd_id=1030">쇼핑</a>
-							<a class="submenuitem adv-hover" href="?brd_id=1040">문화생활</a>
-							<a class="submenuitem adv-hover" href="?brd_id=1050">취미생활</a>
-							<a class="submenuitem adv-hover" href="?brd_id=1060">기타</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1010">밥 / 카페</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1020">스포츠 / 운동</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1030">쇼핑</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1040">문화생활</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1050">취미생활</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1060">기타</a>
 						</div>
 						<div class="submenu">
 							<a class="submenuitem adv-hover" href="">식료품</a>
@@ -400,17 +400,16 @@
 	<main>
 			<h1>함께 해요 게시판 </h1>
 	
-	<!-- 7개만 나오는 이유는 trd_id가 없는 애들은 안나오기 때문이다. -->
-		<input type="button" value="글쓰기" onclick="location.href='writeFormArticle'">
+		<input type="button" value="글쓰기" onclick="${pageContext.request.contextPath}location.href='writeFormArticle'">
 	
 	<p>
-	<input type="button" value="전체" 	onclick="location.href='together?brd_id=1000'">
-	<input type="button" value="밥 & 카페" onclick="location.href='together?brd_id=1010'">
-	<input type="button" value="스포츠" 	onclick="location.href='together?brd_id=1020'">
-	<input type="button" value="쇼핑" 	onclick="location.href='together?brd_id=1030'">
-	<input type="button" value="문화생활" 	onclick="location.href='together?brd_id=1040'">
-	<input type="button" value="취미생활" 	onclick="location.href='together?brd_id=1050'">
-	<input type="button" value="기타" 	onclick="location.href='together?brd_id=1060'">
+	<input type="button" value="전체" 	onclick="${pageContext.request.contextPath}location.href='together?category=1000'">
+	<input type="button" value="밥 & 카페" onclick="${pageContext.request.contextPath}location.href='together?category=1010'">
+	<input type="button" value="스포츠" 	onclick="${pageContext.request.contextPath}location.href='together?category=1020'">
+	<input type="button" value="쇼핑" 	onclick="${pageContext.request.contextPath}location.href='together?category=1030'">
+	<input type="button" value="문화생활" 	onclick="${pageContext.request.contextPath}location.href='together?category=1040'">
+	<input type="button" value="취미생활" 	onclick="${pageContext.request.contextPath}location.href='together?category=1050'">
+	<input type="button" value="기타" 	onclick="${pageContext.request.contextPath}location.href='together?category=1060'">
 	
 
 	<c:set var="num" value="${page.total-page.start+1 }"></c:set>

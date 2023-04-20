@@ -72,13 +72,53 @@ public class ArticleDaoImpl implements ArticleDao {
 
 	@Override
 	public int favoriteCount(Article a) {
-		int favoriteCount = 0;
+		Integer favoriteCount = 0;
 		try {
 			favoriteCount = session.selectOne("tkFavoriteCount", a);
+			if (favoriteCount == null) {
+				favoriteCount = 0;
+			}
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			System.out.println("ArticleDaoImpl favoriteCount => " + e.getMessage());
 		}
 		return favoriteCount;
 	}
+	
+
+	@Override
+	public List<Article> replyList(Article article) {
+		List<Article> replyList = null;
+		try {
+			replyList = session.selectList("tkReplyList", article);
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl replyList => " + e.getMessage());
+		}
+		return replyList;
+	}
+	
+	@Override
+	public int insertTrade(Article article) {
+		// TODO Auto-generated method stub
+		int insertTrade = 0;
+		try {
+			insertTrade = session.insert("insertTrade", article);
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl insertTrade => " + e.getMessage());
+		}
+		return insertTrade;
+	}
+
+	@Override
+	public int insertArticle(Article article) {
+		int insertArticle = 0;
+		try {
+			insertArticle = session.insert("insertArticle", article);
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl insertArticle => " + e.getMessage());
+		}
+		return insertArticle;
+	}
+
+
 
 }

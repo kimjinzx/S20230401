@@ -302,7 +302,7 @@
 				</a>
 			</div>
 			<div id="topmenu">
-				<a class="adv-hover menuitem" href="board/together?brd_id=1000">함께해요</a>
+				<a class="adv-hover menuitem" href="board/together?category=1000">함께해요</a>
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="">같이사요</a>
 				<div class="menu-separator"></div>
@@ -317,12 +317,12 @@
 					<div style="width: 200px;"></div>
 					<div class="submenu-items">
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="board/together?brd_id=1010">밥 / 카페</a>
-							<a class="submenuitem adv-hover" href="board/together?brd_id=1020">스포츠 / 운동</a>
-							<a class="submenuitem adv-hover" href="board/together?brd_id=1030">쇼핑</a>
-							<a class="submenuitem adv-hover" href="board/together?brd_id=1040">문화생활</a>
-							<a class="submenuitem adv-hover" href="board/together?brd_id=1050">취미생활</a>
-							<a class="submenuitem adv-hover" href="board/together?brd_id=1060">기타</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1010">밥 / 카페</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1020">스포츠 / 운동</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1030">쇼핑</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1040">문화생활</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1050">취미생활</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1060">기타</a>
 						</div>
 						<div class="submenu">
 							<a class="submenuitem adv-hover" href="">식료품</a>

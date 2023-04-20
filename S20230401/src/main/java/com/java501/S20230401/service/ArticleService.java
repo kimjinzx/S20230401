@@ -17,6 +17,13 @@ public interface ArticleService {
 	List<Comm> 		categoryName();
 
 	int 			favoriteCount(Article a);
+
+	List<Article> 	replyList(Article article);
+
+	int 			insertArticle(Article article);
+	int 			insertTrade(Article article);
+	
+
 	
 
 
