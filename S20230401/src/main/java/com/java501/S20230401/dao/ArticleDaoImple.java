@@ -75,6 +75,18 @@ public class ArticleDaoImple implements ArticleDao {
 		}
 		return detailArticle;
 	}
+	
+	// 게시글 조회수 증가
+	@Override
+	public int readPlusArticle(Article article) {
+		int result = 0;
+		try {
+			result = session.update("dgReadPlusArticle", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 
 }

@@ -1,6 +1,5 @@
 package com.java501.S20230401.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -11,10 +10,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Comm;
+import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.CommService;
 import com.java501.S20230401.service.MemberService;
 import com.java501.S20230401.service.Paging;
+import com.java501.S20230401.service.ReplyService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,12 +28,14 @@ public class ShareController {
 	private final ArticleService articleService;
 	private final MemberService memberService;
 	private final CommService commService;
+	private final ReplyService replyService;
 	
 	// 나눔해요
 	@RequestMapping(value = "board/share")
-	public String totalPage(Article article, String currentPage, Model model) {
+	public String totalPage(Article article, Integer category, String currentPage, Model model) {
 		//article.setBrd_id(1200);
-		int category = article.getBrd_id();
+		
+		article.setBrd_id(category);
 		int totalArt = 0;
 		List<Article> articleList = null;
 		
@@ -52,17 +55,20 @@ public class ShareController {
 		article.setStart(page.getStart());
 		article.setEnd(page.getEnd());
 		
+		// 게시글 조회
+		articleList = articleService.allArticleList(article);
+		
 		// 게시글 뿌리기
-		if(category % 100 == 0)
-			articleList = articleService.allArticleList(article); // 나눔해요 전체 글
-		else
-			articleList = articleService.articleList(article); // 카테고리 글
+//		if(category % 100 == 0)
+//			articleList = articleService.allArticleList(article); // 나눔해요 전체 글
+//		else
+//			articleList = articleService.articleList(article); // 카테고리 글
 		
 		// 며칠전?
-		for(Article art : articleList) {
-			long diffMin = new Date().getTime() - art.getArt_regdate().getTime();
-			art.setArt_regdate(new Date(diffMin));
-		}
+//		for(Article art : articleList) {
+//			long diffMin = new Date().getTime() - art.getArt_regdate().getTime();
+//			art.setArt_regdate(new Date(diffMin));
+//		}
 		
 		model.addAttribute("articleList", articleList);
 		model.addAttribute("page", page);
@@ -97,17 +103,32 @@ public class ShareController {
 	
 	// 게시글, 댓글 조회
 	@RequestMapping(value = "board/share/article")
-	public String detailArticle(Article article, Model model) {
+	public String detailArticle(Article article, Model model, Integer category) {
+		// 조회수 증가
+		int result = articleService.readPlusArticle(article);
+		System.out.println(result);
+		// 글 조회
 		Article detailArticle = articleService.detailArticle(article);
+		// 댓글 조회
+		List<Reply> replyList = replyService.replyList(article);
+		
+		
 		model.addAttribute("article", detailArticle);
+		model.addAttribute("replyList", replyList);
+		model.addAttribute("category", category);
+		
 		return "share/article";
 	}
 	
 	// 게시글 - 댓글 쓰기
 	@PostMapping(value = "board/share/replyForm")
-	public String replyForm(Article article, Model model, RedirectAttributes redirectAttributes) {
-		redirectAttributes.addFlashAttribute("article", article);
-		return "redirect:/board/share/article";
+	public String replyForm(Reply reply, Model model, Integer category) {
+		//RedirectAttributes redirectAttributes, 
+		//redirectAttributes.addFlashAttribute("article", article);
+		
+		// 댓글 작성
+		int result = replyService.writeReply(reply);
+		return "redirect:/board/share/article?art_id="+reply.getArt_id()+"&brd_id="+reply.getBrd_id()+"&category="+category;
 	}
 	
 	
@@ -119,35 +140,40 @@ public class ShareController {
 	
 	
 	
+	// 메인
+	@RequestMapping(value = "/")
+	public String indexPage() {
+		return "redirect:/board/share?category=999";
+	}
 	// 카테고리 연결
 	@RequestMapping(value = "board/together")
-	public String togetherPage(Article article, String currentPage, Model model, RedirectAttributes redirectAttributes) {
+	public String togetherPage(Article article, String currentPage, Model model, Integer category, RedirectAttributes redirectAttributes) {
 		redirectAttributes.addFlashAttribute("article", article);
 		redirectAttributes.addFlashAttribute("currentPage", currentPage);
-		return "redirect:/board/share?brd_id="+article.getBrd_id();
+		return "redirect:/board/share?category="+category;
 	}
 	@RequestMapping(value = "board/dutchpay")
-	public String dutchpayPage(Article article, String currentPage, Model model, RedirectAttributes redirectAttributes) {
+	public String dutchpayPage(Article article, String currentPage, Model model, Integer category, RedirectAttributes redirectAttributes) {
 		redirectAttributes.addFlashAttribute("article", article);
 		redirectAttributes.addFlashAttribute("currentPage", currentPage);
-		return "redirect:/board/share?brd_id="+article.getBrd_id();
+		return "redirect:/board/share?category="+category;
 	}
 	@RequestMapping(value = "board/community")
-	public String communityPage(Article article, String currentPage, Model model, RedirectAttributes redirectAttributes) {
+	public String communityPage(Article article, String currentPage, Model model, Integer category, RedirectAttributes redirectAttributes) {
 		redirectAttributes.addFlashAttribute("article", article);
 		redirectAttributes.addFlashAttribute("currentPage", currentPage);
-		return "redirect:/board/share?brd_id="+article.getBrd_id();
+		return "redirect:/board/share?category="+category;
 	}
 	@RequestMapping(value = "board/information")
-	public String informationPage(Article article, String currentPage, Model model, RedirectAttributes redirectAttributes) {
+	public String informationPage(Article article, String currentPage, Model model, Integer category, RedirectAttributes redirectAttributes) {
 		redirectAttributes.addFlashAttribute("article", article);
 		redirectAttributes.addFlashAttribute("currentPage", currentPage);
-		return "redirect:/board/share?brd_id="+article.getBrd_id();
+		return "redirect:/board/share?category="+category;
 	}
 	@RequestMapping(value = "board/customer")
-	public String customerPage(Article article, String currentPage, Model model, RedirectAttributes redirectAttributes) {
+	public String customerPage(Article article, String currentPage, Model model, Integer category, RedirectAttributes redirectAttributes) {
 		redirectAttributes.addFlashAttribute("article", article);
 		redirectAttributes.addFlashAttribute("currentPage", currentPage);
-		return "redirect:/board/share?brd_id="+article.getBrd_id();
+		return "redirect:/board/share?category="+category;
 	}
 }

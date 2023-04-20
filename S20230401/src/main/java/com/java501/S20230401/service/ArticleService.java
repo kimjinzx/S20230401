@@ -11,4 +11,5 @@ public interface ArticleService {
 	int totalArt(Article article);
 	List<Article> articleList(Article article);
 	Article detailArticle(Article article);
+	int readPlusArticle(Article article);
 }

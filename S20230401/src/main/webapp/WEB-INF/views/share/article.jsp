@@ -11,7 +11,7 @@
 					<div class="view-content">
 					
 						<div class="view-member">
-							<span><img alt="회원 프사" src="${pageContext.request.contextPath}/image/share/${article.member.mem_image}"></span>
+							<span><img alt="회원 프사" src="${pageContext.request.contextPath}/image/share/${article.member.mem_image}" style="width: 120px; height: 120px;"></span>
 							<span>${article.member.mem_nickname}</span>
 							<span>${article.member.mem_gender}</span>
 						</div>
@@ -22,7 +22,8 @@
 							
 								<div class="article-category">
 									<span class="category-name">${article.brd_name}</span>
-									<span><button >목록</button></span>
+									<input type="hidden" value="${category}">
+									<span><button onclick="location.href='${pageContext.request.contextPath}/board/share?category=${category}';">목록</button></span>
 								</div>
 								<hr />
 								
@@ -78,26 +79,38 @@
 								
 								<span>${article.member.mem_nickname}</span>
 								<span>${article.gen_name}</span>
-								<span><button class="btn" type="button"><fmt:formatDate value="${article.art_regdate}" pattern="D"/>일 전</button></span>
+								<span><button class="btn" type="button"><fmt:formatDate value="${article.art_regdate}" pattern="yy-MM-dd :HH:mm:ss"/></button></span>
 								
 								
 							</div>
 							
 							<div class="article-reply">
 								<span>댓글(${article.rep_cnt})</span>
-								<div class="reply-list">
-									
-									<br>
-									<br>
-									<br>
-									<br>
-									<br>
-								</div>
+								<c:forEach var="reply" items="${replyList}">
+									<div class="reply-list" style="display: flex;">
+										<div class="reply-image">
+											<span><img alt="회원 프사" src="${pageContext.request.contextPath}/image/share/${reply.member.mem_image}" style="width: 80px; height: 80px;"></span>
+										</div>
+										<div class="reply-view"">
+											<div style="flex-direction: column;">
+												<span>${reply.member.mem_nickname}</span>
+												<span>작성일 : <fmt:formatDate value="${reply.rep_regdate}" pattern="yy-MM-dd :HH:mm:ss"/></span>
+												<span>최종 접속일 : <fmt:formatDate value="${reply.member.mem_latest}" pattern="yy-MM-dd :HH:mm:ss"/></span>
+												<span><button>작성버튼</button></span>
+												<span><button>삭제버튼</button></span>
+											</div>
+											<div class="reply-content">
+												<span>${reply.rep_content}</span>
+											</div>
+										</div>
+									</div>
+								</c:forEach>
 								
 								<div class="reply-write">
 									<form action="${pageContext.request.contextPath}/board/share/replyForm" method="post">
 										<span><input type="hidden" name="brd_id" value="${article.brd_id}"></span>
 										<span><input type="hidden" name="art_id" value="${article.art_id}"></span>
+										<span><input type="hidden" name="category" value="${category}"></span>
 										<span><input type="text" name="rep_content" placeholder="댓글을 작성하세요."></span>
 										<span><input type="submit" value="등록"></span>
 									</form>
