@@ -1,5 +1,7 @@
 package com.java501.S20230401.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
@@ -25,5 +27,10 @@ public class CommDaoImpl implements CommDao {
 	@Override
 	public String getValueById(int comm_id) {
 		return session.selectOne("hgCommGetValue", comm_id);
+	}
+	
+	@Override
+	public List<Comm> getCategoryListBySuper(Integer superId) {
+		return session.selectList("hgGetCategoryListBySuper", superId);
 	}
 }

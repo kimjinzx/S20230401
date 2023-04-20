@@ -21,4 +21,15 @@ public class ArticleServiceImpl implements ArticleService {
 		List<ArticleMember> articleList = ad.getArticleSummary(boardNum, summaryType);
 		return articleList;
 	}
+	
+	@Override
+	public int insertArticle(Article article) {
+		int result = ad.insertArticle(article);
+		return result;
+	}
+	
+	@Override
+	public Article getArticleById(Article searcher) {
+		return ad.getArticleById(searcher);
+	}
 }

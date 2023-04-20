@@ -12,4 +12,8 @@ public interface ArticleDao {
 
 	public List<ArticleMember> getArticleSummary(int boardNum, SummaryType summaryType);
 
+	public int insertArticle(Article article);
+
+	public Article getArticleById(Article searcher);
+
 }

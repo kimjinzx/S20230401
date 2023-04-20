@@ -40,4 +40,14 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return articleList;
 	}
+	
+	@Override
+	public int insertArticle(Article article) {
+		return session.insert("hgInsertArticle", article);
+	}
+	
+	@Override
+	public Article getArticleById(Article searcher) {
+		return session.selectOne("hgGetArticleById", searcher);
+	}
 }
