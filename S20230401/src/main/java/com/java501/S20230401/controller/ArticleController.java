@@ -114,7 +114,7 @@ public class ArticleController {
 									  @AuthenticationPrincipal MemberDetails memberDetails) {
 		article.setMem_id(memberDetails.getMemberInfo().getMem_id());
 		System.out.println(articleEditor);
-		//int result = as.insertArticle(article);
+		int result = as.insertArticle(article);
 		return "redirect:/board/" + boardName + "?brd_id=" + brd_idLink;
 	}
 	
