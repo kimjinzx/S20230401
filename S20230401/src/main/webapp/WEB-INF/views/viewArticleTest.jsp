@@ -10,18 +10,6 @@
 <link href="https://unpkg.com/sanitize.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/preference.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/presets.css">
-<!-- <script type="text/javascript">
-	$(() => {
-		$('img').load(() => {
-			let reader = new FileReader();
-			reader.readAsDataURL(this.src);
-			let img = this;
-			reader.onload = function() {
-				img.attr('src', reader.result);
-			};
-		});
-	});
-</script> -->
 </head>
 <body>
 	<p>${article.art_title }</p>
