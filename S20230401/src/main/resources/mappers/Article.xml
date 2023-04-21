@@ -4,21 +4,38 @@
 
 <mapper namespace="com.java501.S20230401.ArticleMapper">
 
-	<select id="articleTotal" resultType="int">
-		select Count(*) FROM article	
+	<select id="noticeTotal" resultType="int">
+	<![CDATA[
+		select Count(*) FROM article WHERE brd_id >=1500 and brd_id <1511
+	]]>
 	</select>
 	
-	<select id="shArticleListAll" parameterMap="Article" resultMap="Article">
+	<select id="shArticleListNotice" parameterType="Article" resultType="Article">
 	 <![CDATA[
 		SELECT *
 		FROM
 		(
    			SELECT rownum rn, a.*
     		FROM
-        			(SELECT * FROM article WHERE brd_id >=1500 and brd_id <1511 order by art_id) a
+        			(SELECT * 
+        			 FROM article join member using(mem_id) 
+        			 WHERE brd_id >=1500 and brd_id <1511 order by art_id desc) a
 		)
 		WHERE rn BETWEEN #{start} and #{end}
  	 ]]>	
 	</select>
-
+	
+	<select id="shNoticeSelOne" parameterType="Article" resultType="Article">
+	  <![CDATA[
+        SELECT *
+        FROM
+	        (SELECT *
+	        FROM article join member using(mem_id)
+	        WHERE brd_id >=1500 and brd_id <1511)
+	    WHERE art_id = #{art_id}
+	  ]]>
+	</select>
+	
+    
+	
 </mapper>

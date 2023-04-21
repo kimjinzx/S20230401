@@ -6,16 +6,19 @@ import lombok.Data;
 
 @Data
 public class Reply {
-	private int 	art_id;
-	private int 	brd_id;
-	private int 	rep_id;
-	private int 	mem_id;
+	private Integer 	art_id; 
+	private Integer 	brd_id; 
+	private Integer 	rep_id;
+	private Integer 	mem_id;
 	private String 	rep_content;
 	private Date 	rep_regdate;
-	private int 	rep_good;
-	private int 	rep_bad;
-	private int 	rep_parent;
-	private int 	rep_step;
-	private int 	isdelete;
-	private int 	report_id;
+	private Integer 	rep_good;
+	private Integer 	rep_bad;
+	private Integer 	rep_parent;
+	private Integer 	rep_step;
+	private Integer 	isdelete;
+	private Integer 	report_id;
+	private Integer		rep_cnt;
+	private String		mem_nickname;
+	private String		mem_image;
 }

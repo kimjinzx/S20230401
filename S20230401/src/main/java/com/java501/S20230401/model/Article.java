@@ -6,26 +6,33 @@ import lombok.Data;
 
 @Data
 public class Article {
-	private int 	art_id;
-	private int 	brd_id;
-	private String 	art_title;
-	private int 	mem_id;
-	private Date 	art_regdate;
-	private String 	art_tag1;
-	private String 	art_tag2;
-	private String 	art_tag3;
-	private String 	art_tag4;
-	private String 	art_tag5;
-	private int 	trd_id;
-	private int 	art_good;
-	private int 	art_bad;
-	private int 	art_read;
-	private int 	art_isnotice;
-	private int 	isdelete;
-	private int 	report_id;
+	private Integer 	art_id;
+	private Integer 	brd_id;
+	private String 		art_title;
+	private Integer 	mem_id;
+	private Date 		art_regdate;
+	private String 		art_content;
+	private String 		art_tag1;
+	private String 		art_tag2;
+	private String 		art_tag3;
+	private String 		art_tag4;
+	private String 		art_tag5;
+	private Integer 	trd_id;
+	private Integer 	art_good;
+	private Integer 	art_bad;
+	private Integer 	art_read;
+	private Integer 	art_isnotice;
+	private Integer 	isdelete;
+	private Integer 	report_id;
+	
+	// 조인
+	private String 		mem_nickname;
+	private String 		mem_image;
+	
 	
 	//조회용
-	private String 	pageNum;
+	private String 		pageNum;
 	
-	private int start;		private int end;
+	private Integer 	start;
+	private Integer 	end;
 }

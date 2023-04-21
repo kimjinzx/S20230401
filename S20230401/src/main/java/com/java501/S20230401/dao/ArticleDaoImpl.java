@@ -17,32 +17,46 @@ public class ArticleDaoImpl implements ArticleDao {
 	private final SqlSession  session;
 	
 	@Override
-	public int totalArticle() {
-		int totArticleCount = 0;
+	public Integer totalNotice() {
+		int totNoticeCount = 0;
 		System.out.println("ArticleDaoImpl Start total...");
 		
 		try {
-			totArticleCount = session.selectOne("articleTotal");
-			System.out.println("ArticleDaoImpl totalArticle totArticleCount->" +totArticleCount);
+			totNoticeCount = session.selectOne("noticeTotal");
+			System.out.println("ArticleDaoImpl totalNotice totNoticeCount->" +totNoticeCount);
 			
 		} catch (Exception e) {
-			System.out.println("ArticleDaoImpl totalArticle Exception->"+e.getMessage());
+			System.out.println("ArticleDaoImpl totalNotice Exception->"+e.getMessage());
 		}
-		return totArticleCount;
+		return totNoticeCount;
 	}
 
 	@Override
-	public List<Article> listArticle(Article article) {
-		List<Article> articleList = null;
-		System.out.println("ArticleDaoImpl listArticle Start ..." );
+	public List<Article> listNotice(Article article) {
+		List<Article> noticeList = null;
+		System.out.println("ArticleDaoImpl listNotice Start ..." );
 		try {
 			//                             Map ID        parameter
-			articleList = session.selectList("shArticleListAll", article);
-			System.out.println("ArticleDaoImpl listArticle articleList.size()->"+articleList.size());
+			noticeList = session.selectList("shArticleListNotice", article);
+			System.out.println("ArticleDaoImpl listNotice articleList.size()->"+noticeList.size());
 		} catch (Exception e) {
-			System.out.println("ArticleDaoImpl listArticle e.getMessage()->"+e.getMessage());
+			System.out.println("ArticleDaoImpl listNotice e.getMessage()->"+e.getMessage());
 		}
-		return articleList;	
+		return noticeList;	
 	}
-	
+
+	@Override
+	public Article detailNotice(Article article) {
+		System.out.println("ArticleDaoImpl detail start...");
+		Article noticeDetail = new Article();
+		try {
+			
+			noticeDetail = session.selectOne("shNoticeSelOne", article);
+		
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl detail Exception->"+e.getMessage());
+		}
+		return noticeDetail;
+	}
+
 }

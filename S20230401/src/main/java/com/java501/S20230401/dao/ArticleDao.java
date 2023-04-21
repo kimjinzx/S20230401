@@ -5,6 +5,8 @@ import java.util.List;
 import com.java501.S20230401.model.Article;
 
 public interface ArticleDao {
-	int				totalArticle();
-	List<Article>	listArticle(Article article);
+	Integer			totalNotice();
+	List<Article>	listNotice(Article article);
+	Article 		detailNotice(Article article);
+	
 }
