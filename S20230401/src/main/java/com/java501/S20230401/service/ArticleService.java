@@ -11,12 +11,12 @@ public interface ArticleService {
 	int 			totalArticle(Article article);
 
 	List<Article> 	listArticle(Article article);
-	List<Article> 	detailArticle(Article article);
+	Article 	detailArticle(Article article);
 
 	List<Region> 	regionName();
 	List<Comm> 		categoryName();
 
-	int 			favoriteCount(Article a);
+//	int 			favoriteCount(Article a);
 
 	List<Article> 	replyList(Article article);
 

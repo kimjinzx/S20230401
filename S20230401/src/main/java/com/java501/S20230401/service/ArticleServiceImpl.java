@@ -42,8 +42,8 @@ public class ArticleServiceImpl implements ArticleService {
 
 
 	@Override
-	public List<Article> detailArticle(Article article) {
-		List<Article> detailArticle = null;
+	public Article detailArticle(Article article) {
+		Article detailArticle = null;
 		detailArticle = ad.detailArticle(article);
 		return detailArticle;
 	}
@@ -70,11 +70,11 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 
-	@Override
-	public int favoriteCount(Article a) {
-		int favoriteCount = ad.favoriteCount(a);
-		return favoriteCount;
-	}
+//	@Override
+//	public int favoriteCount(Article a) {
+//		int favoriteCount = ad.favoriteCount(a);
+//		return favoriteCount;
+//	}
 
 	@Override
 	public List<Article> replyList(Article article) {

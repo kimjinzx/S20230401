@@ -34,12 +34,6 @@ public class TogetherController {
 		// 게시글 리스트 작업
 		List<Article> listArticle = as.listArticle(article);
 
-		// 게시글 별 관심목록 개수 Count
-		for (Article a : listArticle) {
-			int favoriteCount = as.favoriteCount(a);
-			a.setFavoriteCount(favoriteCount);
-		}
-
 		// Paging 작업
 		Paging page = new Paging(totalArticle, currentPage);
 		article.setStart(page.getStart()); // 시작시 1
@@ -58,20 +52,12 @@ public class TogetherController {
 		System.out.println("ArticleController Start detailArticle...");
 
 		// 상세게시글 요소 구현
-		List<Article> detailArticle = as.detailArticle(article);
-
-		// 게시글 별 댓글 갯수 (상세 게시글)
-		for (Article a : detailArticle) {
-			int favoriteCount = as.favoriteCount(a);
-			a.setFavoriteCount(favoriteCount);
-		}
+		Article detailArticle = as.detailArticle(article);
 		model.addAttribute("detailArticle", detailArticle);
 
 		// 게시글 별 댓글 리스트
 		List<Article> replyList = as.replyList(article);
 		model.addAttribute("replyList", replyList);
-
-		System.out.println("ArticleController detailArticle => " + detailArticle.size());
 
 		return "together/detailArticle";
 	}

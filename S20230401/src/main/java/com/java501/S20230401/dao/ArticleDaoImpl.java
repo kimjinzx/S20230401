@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.java501.S20230401.model.Article;
 
@@ -61,30 +59,30 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 
 	@Override
-	public List<Article> detailArticle(Article article) {
-		List<Article> detailArticle = null;
+	public Article detailArticle(Article article) {
+		Article detailArticle = null;
 		System.out.println("ArticleDaoImpl detailArticle Start...");
 		try {
-			detailArticle = session.selectList("tkArticleDetail", article);
+			detailArticle = session.selectOne("tkArticleDetail", article);
 		} catch (Exception e) {
 			System.out.println("ArticleDaoImpl detailArticle e.getMessage()->" + e.getMessage());
 		}
 		return detailArticle;
 	}
 
-	@Override
-	public int favoriteCount(Article a) {
-		Integer favoriteCount = 0;
-		try {
-			favoriteCount = session.selectOne("tkFavoriteCount", a);
-			if (favoriteCount == null) {
-				favoriteCount = 0;
-			}
-		} catch (Exception e) {
-			System.out.println("ArticleDaoImpl favoriteCount => " + e.getMessage());
-		}
-		return favoriteCount;
-	}
+//	@Override
+//	public int favoriteCount(Article a) {
+//		Integer favoriteCount = 0;
+//		try {
+//			favoriteCount = session.selectOne("tkFavoriteCount", a);
+//			if (favoriteCount == null) {
+//				favoriteCount = 0;
+//			}
+//		} catch (Exception e) {
+//			System.out.println("ArticleDaoImpl favoriteCount => " + e.getMessage());
+//		}
+//		return favoriteCount;
+//	}
 	
 
 	@Override

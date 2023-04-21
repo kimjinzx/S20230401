@@ -22,75 +22,74 @@
 	<p>
 	<input type="button" value="목록" 	onclick="location.href='together?category=1000';">
 	<input type="button" value="수정하기" 	>
-	<input type="button" value="삭제하기"  onclick="location.href='${pageContext.request.contextPath }/board/deleteArticle?brd_id=${detailArticle[0].brd_id }&art_id=${detailArticle[0].art_id }';">
+	<input type="button" value="삭제하기"  onclick="location.href='${pageContext.request.contextPath }/board/deleteArticle?brd_id=${detailArticle.brd_id }&art_id=${detailArticle.art_id }';">
 	
 	<table>
-	<c:forEach var="art" items="${detailArticle }">
 		<tr>
 			<th>거래상태</th>
-			<td>${art.comm_value }
+			<td>${detailArticle.comm_value }
 		</tr>
 		<tr>
 			<th>제목</th>
-			<td>${art.art_title}</td>
+			<td>${detailArticle.art_title}</td>
 		</tr>
 		<tr>
 			<th>작성자</th>
-			<td>${art.mem_nickname }</td>
+			<td>${detailArticle.mem_nickname }</td>
 		</tr>
 		
 		<tr>
 			<th>태그1</th>
-			<td>${art.art_tag1 }</td>
+			<td>${detailArticle.art_tag1 }</td>
 		</tr>
 		<tr>
 			<th>태그2</th>
-			<td>${art.art_tag2 }</td>
+			<td>${detailArticle.art_tag2 }</td>
 		</tr>
 		<tr>
 			<th>태그3</th>
-			<td>${art.art_tag3 }</td>
+			<td>${detailArticle.art_tag3 }</td>
 		</tr>
 		<tr>
 			<th>태그4</th>
-			<td>${art.art_tag4 }</td>
+			<td>${detailArticle.art_tag4 }</td>
 		</tr>
 		<tr>
 			<th>태그5</th>
-			<td>${art.art_tag5 }</td>
+			<td>${detailArticle.art_tag5 }</td>
 		</tr>
 		<tr>
 			<th>장소</th>
-			<td>${art.trd_loc }</td>
+			<td>${detailArticle.trd_loc }</td>
 		</tr>
 		<tr>
 			<th>지역제한</th>
-			<td>${art.reg_name }</td>
+			<td>${detailArticle.reg_name }</td>
 		</tr>
 		<tr>
 			<th>모집인원</th>
-			<td>${art.trd_max }</td>
+			<td>${detailArticle.trd_max }</td>
 		</tr>
 		<tr>
 			<th>최소나이</th>
-			<td>${art.trd_minage }</td>
+			<td>${detailArticle.trd_minage }</td>
 		</tr>
 		<tr>
 			<th>최대나이</th>
-			<td>${art.trd_maxage }</td>
+			<td>${detailArticle.trd_maxage }</td>
 		</tr>
 		<tr>
 			<th>추천수</th>
-			<td>${art.art_good }</td>
+			<td>${detailArticle.art_good }</td>
 		</tr>
 		<tr>
 			<th>작성 시간</th>
-			<td>${art.rest_regdate }일 전</td>
+			<td>${detailArticle.rest_regdate }일 전</td>
 		</tr>
 		<tr>
 			<th>마감 일자 </th>
 			<td>
-			<c:set var="date" value="${art.trd_finish }"/>
+			<c:set var="date" value="${detailArticle.trd_finish }"/>
 			<c:choose>
 				<c:when test="${date eq null}"></c:when>
 				<c:otherwise>${date }까지</c:otherwise>
@@ -99,10 +98,10 @@
 		</tr>
 		<tr>
 			<th>조회수</th>
-			<td>${art.art_read }</td>
+			<td>${detailArticle.art_read }</td>
 		<tr>
 			<th>관심목록 수</th>
-			<td>${art.favoriteCount }</td>
+			<td>${detailArticle.favoriteCount }</td>
 		</tr>
 		<tr>
 			<td></td>
@@ -110,11 +109,11 @@
 			<input 	   type="button" value="신청하기" 	onclick="location.href='"></th>
 		<tr>
 			<th>내용</th>
-      		<td>${art.art_content }</td>
+      		<td>${detailArticle.art_content }</td>
 		</tr>
 		<tr>
 			<th>댓글</th>
-			<td>(${art.repCount })</td>
+			<td>(${detailArticle.repCount })</td>
 		</tr>
 		<tr>
 			<td></td>
@@ -124,7 +123,6 @@
 			<td></td>	
 			<td><input type="button" value="작성"></td>
 		</tr>
-	</c:forEach>
 	
 	
 	<c:forEach var="reply" items="${replyList }">

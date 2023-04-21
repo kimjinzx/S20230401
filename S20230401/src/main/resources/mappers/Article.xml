@@ -25,6 +25,7 @@
             		, t.trd_cost, t.trd_loc, t.trd_gender, t.trd_minage, t.trd_maxage
             		, to_char(t.trd_enddate, 'YYYY-MM-DD') as trd_finish
             		, reply_count(A.ART_ID, A.BRD_ID)  repCount
+            		, favorite_count(a.art_id, a.brd_id) favoriteCount
 		from         article a  LEFT JOIN trade  t 	ON(a.trd_id = t.trd_id)
                      			LEFT JOIN Member m 	ON(a.mem_id = m.mem_id)
                      			LEFT JOIN Comm   c 	ON(t.trd_status = c.comm_id)
@@ -40,6 +41,7 @@
             		, t.trd_cost, t.trd_loc, t.trd_gender, t.trd_minage, t.trd_maxage
             		, to_char(t.trd_enddate, 'YYYY-MM-DD') as trd_finish
             		, reply_count(A.ART_ID, A.BRD_ID)  repCount
+            		, favorite_count(a.art_id, a.brd_id) favoriteCount
 		from         article a 	LEFT JOIN trade  t 	ON(a.trd_id = t.trd_id)
                      			LEFT JOIN Member m 	ON(a.mem_id = m.mem_id)
                      			LEFT JOIN Comm   c 	ON(t.trd_status = c.comm_id)
@@ -55,6 +57,7 @@
         		   , t.trd_id, t.trd_status, t.trd_max, trunc(sysdate - a.art_regdate) as rest_regdate
             	   , t.trd_cost, t.trd_loc, t.trd_gender, t.trd_minage, t.trd_maxage
             	   , to_char(t.trd_enddate, 'YYYY-MM-DD') as trd_finish
+            	   , favorite_count(a.art_id, a.brd_id) favoriteCount
         from    	article a 	left join trade t on (A.TRD_ID = T.TRD_ID)
                           		left join member m on (a.mem_id = m.mem_id)
                           		left join comm c on (t.trd_status = c.comm_id)
@@ -64,14 +67,14 @@
         order by 	a.brd_id
 	</select>
 	
-	<select id="tkFavoriteCount" parameterType="Article" resultType="int">
+<!-- 	<select id="tkFavoriteCount" parameterType="Article" resultType="int">
 		select      count(*)
 		from        favorite f left Join article a on(a.art_id = f.art_id and a.brd_id = f.brd_id)
                        		   left join member  m on(f.mem_id = m.mem_id)
         where		a.art_id = #{art_id}
 		and			a.brd_id = #{brd_id}
 		group by    a.art_id, a.brd_id
-	</select>
+	</select> -->
 
 	<select id="tkReplyList" parameterType="Article" resultType="Article">
 		select      r.*, a.*, m.*
