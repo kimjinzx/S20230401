@@ -26,7 +26,7 @@
                      			LEFT JOIN Comm   c 	ON(t.trd_status = c.comm_id)
                      			LEFT JOIN REGION R  ON(t.reg_id = r.reg_id)
 		where        a.brd_id between 1010 and 1060
-		order by     brd_id
+		order by     a.art_regdate desc
 	</select>
 
 	<select id="tkArticleListBoard" parameterType="Article"
@@ -40,7 +40,7 @@
                      			LEFT JOIN Comm   c 	ON(t.trd_status = c.comm_id)
                      			LEFT JOIN REGION R  ON(t.reg_id = r.reg_id)
 		where        a.brd_id = #{brd_id}
-		order by     brd_id
+		order by     a.art_regdate desc
 	</select>
 
 
@@ -81,15 +81,15 @@
 				, 0, #{reg_id, jdbcType=NUMERIC}, #{trd_loc, jdbcType=VARCHAR}, #{trd_gender, jdbcType=NUMERIC}
 				, #{trd_minage, jdbcType=NUMERIC}, #{trd_maxage, jdbcType=NUMERIC})
 			<selectKey resultType="int" keyProperty="trd_id" order="AFTER">
-				select trd_id_seq.currval from dual;
+				select trd_id_seq.currval from dual
 			</selectKey>
 
 	
 	</insert>
 	<insert id="insertArticle" parameterType="Article">
 		insert into article 
-			values ((Select max(art_id) + 1 from article where brd_id =#{brd_id})
-            , #{brd_id}, #{art_title}, 1, sysdate, #{art_content}, #{art_tag1, jdbcType=VARCHAR}, #{art_tag2, jdbcType=VARCHAR}
+			values ((Select max(art_id) + 1 from article where brd_id = #{brd_id})
+            , #{brd_id}, #{art_title}, 1, sysdate, #{art_content, jdbcType=VARCHAR}, #{art_tag1, jdbcType=VARCHAR}, #{art_tag2, jdbcType=VARCHAR}
             , #{art_tag3, jdbcType=VARCHAR}, #{art_tag4, jdbcType=VARCHAR}, #{art_tag5, jdbcType=VARCHAR}, #{trd_id, jdbcType=NUMERIC}
             , 0, 0, 0, 0, 0, null)
 	</insert>

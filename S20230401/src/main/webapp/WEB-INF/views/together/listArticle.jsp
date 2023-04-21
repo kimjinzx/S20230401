@@ -424,6 +424,7 @@
 			<th>태그5</th>
 			<th>제목</th>
 			<th>작성시간</th>
+			<th>지역제한</th>
 			<th>장소</th>
 			<th>모집인원</th>
 			<th>최소연령</th>			
@@ -446,7 +447,8 @@
 				<td>${art.art_tag5 }</td>
 				<td><a href="detailArticle?brd_id=${art.brd_id}&art_id=${art.art_id}">${art.art_title }</a></td>
 				<td>${art.rest_regdate }일 전</td>
-				<td>${art.trd_loc }</td>			
+				<td>${art.reg_name }</td>		
+				<td>${art.trd_loc }</td>
 				<td>${art.trd_max }</td>			
 				<td>${art.trd_minage }세</td>			
 				<td>${art.trd_maxage }세</td>			
