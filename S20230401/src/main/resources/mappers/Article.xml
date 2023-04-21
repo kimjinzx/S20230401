@@ -6,20 +6,24 @@
 <mapper namespace="com.java501.S20230401.ArticleMapper">
 
 	<select id="ArticleTotalCnt" resultType="int">
-		select Count(*) FROM
-		article where brd_id between 1010 and 1060
+		select Count(*) 
+		FROM article 
+		where brd_id between 1010 and 1060
 	</select>
 
 	<select id="ArticleBoardCnt" parameterType="Article"
 		resultType="int">
-		select Count(*) FROM article where brd_id=#{brd_id}
+		select Count(*) 
+		FROM article 
+		where brd_id=#{brd_id}
 	</select>
 
 
 	<select id="tkArticleListAll" parameterType="Article" resultType="Article">
 		select      a.*, m.*, c.*, r.*
-             		, t.trd_id, t.trd_status, t.trd_max, trunc(sysdate - A.ART_REGDATE) as REST_REGDATE
+             		, t.trd_id, t.trd_status, t.trd_max, trunc(sysdate - a.art_regdate) as rest_regdate
             		, t.trd_cost, t.trd_loc, t.trd_gender, t.trd_minage, t.trd_maxage
+            		, to_char(t.trd_enddate, 'YYYY-MM-DD') as trd_finish
             		, reply_count(A.ART_ID, A.BRD_ID)  repCount
 		from         article a  LEFT JOIN trade  t 	ON(a.trd_id = t.trd_id)
                      			LEFT JOIN Member m 	ON(a.mem_id = m.mem_id)
@@ -32,8 +36,9 @@
 	<select id="tkArticleListBoard" parameterType="Article"
 		resultType="Article">
 		select      a.*, m.*, c.*, r.*
-             		, t.trd_id, t.trd_status, t.trd_max, trunc(sysdate - A.ART_REGDATE) as REST_REGDATE
+             		, t.trd_id, t.trd_status, t.trd_max, trunc(sysdate - a.art_regdate) as rest_regdate
             		, t.trd_cost, t.trd_loc, t.trd_gender, t.trd_minage, t.trd_maxage
+            		, to_char(t.trd_enddate, 'YYYY-MM-DD') as trd_finish
             		, reply_count(A.ART_ID, A.BRD_ID)  repCount
 		from         article a 	LEFT JOIN trade  t 	ON(a.trd_id = t.trd_id)
                      			LEFT JOIN Member m 	ON(a.mem_id = m.mem_id)
@@ -47,8 +52,9 @@
 	<select id="tkArticleDetail" parameterType="Article"
 		resultType="Article">
         select  	a.*, c.*, m.*, r.*, reply_count(A.ART_ID, A.BRD_ID) repCount
-        		   , t.trd_id, t.trd_status, t.trd_max, trunc(sysdate - A.ART_REGDATE) as REST_REGDATE
+        		   , t.trd_id, t.trd_status, t.trd_max, trunc(sysdate - a.art_regdate) as rest_regdate
             	   , t.trd_cost, t.trd_loc, t.trd_gender, t.trd_minage, t.trd_maxage
+            	   , to_char(t.trd_enddate, 'YYYY-MM-DD') as trd_finish
         from    	article a 	left join trade t on (A.TRD_ID = T.TRD_ID)
                           		left join member m on (a.mem_id = m.mem_id)
                           		left join comm c on (t.trd_status = c.comm_id)
@@ -77,7 +83,7 @@
 	
 	<insert id ="insertTrade" parameterType="Article">
 		insert into trade 
-				values (trd_id_seq.nextval, 1, '401', #{trd_max}, #{trd_enddate, jdbcType=DATE}
+				values (trd_id_seq.nextval, 1, '401', #{trd_max}, #{trd_enddate}
 				, 0, #{reg_id, jdbcType=NUMERIC}, #{trd_loc, jdbcType=VARCHAR}, #{trd_gender, jdbcType=NUMERIC}
 				, #{trd_minage, jdbcType=NUMERIC}, #{trd_maxage, jdbcType=NUMERIC})
 			<selectKey resultType="int" keyProperty="trd_id" order="AFTER">
@@ -93,4 +99,14 @@
             , #{art_tag3, jdbcType=VARCHAR}, #{art_tag4, jdbcType=VARCHAR}, #{art_tag5, jdbcType=VARCHAR}, #{trd_id, jdbcType=NUMERIC}
             , 0, 0, 0, 0, 0, null)
 	</insert>
+	
+	<delete id="deleteArticle" parameterType="Article">
+		Delete from Article where art_id = #{art_id} and brd_id = #{brd_id}
+	</delete>
+	
+	<delete id="deleteTrade" parameterType="Article">
+		Delete from Trade where trd_id = #{trd_id}
+	</delete>
+	
+	
 </mapper>

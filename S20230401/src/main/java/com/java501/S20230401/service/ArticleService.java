@@ -20,8 +20,11 @@ public interface ArticleService {
 
 	List<Article> 	replyList(Article article);
 
-	int 			insertArticle(Article article);
-	int 			insertTrade(Article article);
+	int 			writeArticle(Article article);
+//	int 			insertTrade(Article article);
+
+	int 			deleteArticle(Article article);
+	
 	
 
 	

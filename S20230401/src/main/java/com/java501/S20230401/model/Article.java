@@ -1,5 +1,7 @@
 package com.java501.S20230401.model;
 
+
+
 import java.util.Date;
 
 import lombok.Data;
@@ -33,7 +35,7 @@ public class Article {
 	// TRADE
 	private Integer 	trd_status;
 	private Integer 	trd_max;
-	private Date 		trd_enddate;
+	private String 		trd_enddate;
 	private Integer 	trd_cost;
 	private Integer 	reg_id;
 	private String 		trd_loc;
@@ -82,4 +84,5 @@ public class Article {
 	private Integer 	artCount;
 	private Integer 	rest_regdate;
 	private Integer 	favoriteCount;
+	private String		trd_finish;
 }

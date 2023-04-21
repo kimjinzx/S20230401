@@ -11,18 +11,18 @@
 	<h2>상세게시글</h2>
 	
 	<p>
-	<input type="button" value="전체" 	onclick="location.href='together?category=1000'">
-	<input type="button" value="밥 & 카페" onclick="location.href='together?category=1010'">
-	<input type="button" value="스포츠" 	onclick="location.href='together?category=1020'">
-	<input type="button" value="쇼핑" 	onclick="location.href='together?category=1030'">
-	<input type="button" value="문화생활" 	onclick="location.href='together?category=1040'">
-	<input type="button" value="취미생활" 	onclick="location.href='together?category=1050'">
-	<input type="button" value="기타" 	onclick="location.href='together?category=1060'">
+	<input type="button" value="전체" 	onclick="${pageContext.request.contextPath}location.href='together?category=1000'">
+	<input type="button" value="밥 & 카페" onclick="${pageContext.request.contextPath}location.href='together?category=1010'">
+	<input type="button" value="스포츠" 	onclick="${pageContext.request.contextPath}location.href='together?category=1020'">
+	<input type="button" value="쇼핑" 	onclick="${pageContext.request.contextPath}location.href='together?category=1030'">
+	<input type="button" value="문화생활" 	onclick="${pageContext.request.contextPath}location.href='together?category=1040'">
+	<input type="button" value="취미생활" 	onclick="${pageContext.request.contextPath}location.href='together?category=1050'">
+	<input type="button" value="기타" 	onclick="${pageContext.request.contextPath}location.href='together?category=1060'">
 	
 	<p>
-	<input type="button" value="목록" 	onclick="location.href='together?category=1000'">
-	<input type="button" value="수정하기" 	onclick="location.href='">
-	<input type="button" value="삭제하기" 	onclick="location.href='">
+	<input type="button" value="목록" 	onclick="location.href='together?category=1000';">
+	<input type="button" value="수정하기" 	>
+	<input type="button" value="삭제하기"  onclick="location.href='${pageContext.request.contextPath }/board/deleteArticle?brd_id=${detailArticle[0].brd_id }&art_id=${detailArticle[0].art_id }';">
 	
 	<table>
 	<c:forEach var="art" items="${detailArticle }">
@@ -86,6 +86,16 @@
 		<tr>
 			<th>작성 시간</th>
 			<td>${art.rest_regdate }일 전</td>
+		</tr>
+		<tr>
+			<th>마감 일자 </th>
+			<td>
+			<c:set var="date" value="${art.trd_finish }"/>
+			<c:choose>
+				<c:when test="${date eq null}"></c:when>
+				<c:otherwise>${date }까지</c:otherwise>
+			</c:choose>
+			<td>
 		</tr>
 		<tr>
 			<th>조회수</th>

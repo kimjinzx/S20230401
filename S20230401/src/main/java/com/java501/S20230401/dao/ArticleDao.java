@@ -12,8 +12,9 @@ public interface ArticleDao {
 	List<Article> 	detailArticle(Article article);
 	int 			favoriteCount(Article a);
 	List<Article> 	replyList(Article a);
-	int 			insertArticle(Article article);
-	int 			insertTrade(Article article);
+	int 			writeArticle(Article article);
+//	int 			insertTrade(Article article);
+	int 			deleteArticle(Article article);
 	
 	
 

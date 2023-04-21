@@ -427,6 +427,7 @@
 			<th>지역제한</th>
 			<th>장소</th>
 			<th>모집인원</th>
+			<th>마감일자</th>
 			<th>최소연령</th>			
 			<th>최대연령</th>
 			<th>글쓴이</th>
@@ -449,7 +450,14 @@
 				<td>${art.rest_regdate }일 전</td>
 				<td>${art.reg_name }</td>		
 				<td>${art.trd_loc }</td>
-				<td>${art.trd_max }</td>			
+				<td>${art.trd_max }</td>	
+				<td>
+				<c:set var="date" value="${art.trd_finish }"/>
+				<c:choose>
+					<c:when test="${date eq null}"></c:when>
+					<c:otherwise>${date }까지</c:otherwise>
+				</c:choose>
+				</td>
 				<td>${art.trd_minage }세</td>			
 				<td>${art.trd_maxage }세</td>			
 				<td>${art.mem_nickname }</td>

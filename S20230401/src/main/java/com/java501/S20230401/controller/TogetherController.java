@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.java501.S20230401.model.Article;
@@ -25,8 +24,8 @@ public class TogetherController {
 	@RequestMapping(value = "/board/together")
 	public String articleList(Article article, int category, String currentPage, Model model) {
 		System.out.println("articleList controller Start");
-		System.out.println("articleList controller getBrd_id->" + article.getBrd_id());
 		article.setBrd_id(category);
+		System.out.println("articleList controller getBrd_id->" + article.getBrd_id());
 
 		// 전체 게시글 개수 Count
 		int totalArticle = as.totalArticle(article);
@@ -55,7 +54,7 @@ public class TogetherController {
 	}
 
 	@RequestMapping(value = "/board/detailArticle")
-	public String detailEmp(Article article, Model model) {
+	public String detailArticle(Article article, Model model) {
 		System.out.println("ArticleController Start detailArticle...");
 
 		// 상세게시글 요소 구현
@@ -84,7 +83,7 @@ public class TogetherController {
 		// 카테고리별 콤보박스
 		List<Comm> categoryList = as.categoryName();
 		System.out.println("ArticleController category => " + categoryList.size());
-		model.addAttribute("category", categoryList);
+		model.addAttribute("categories", categoryList);
 
 		// 지역별 콤보박스
 		List<Region> regionList = as.regionName();
@@ -98,19 +97,45 @@ public class TogetherController {
 	// 생성
 	// fetch? 수정
 	// delete? 삭제
-	public String writeEmp(Article article, Model model) {
+	public String writeArticle(Article article, Model model) {
 		System.out.println("ArticleController Start writeEmp...");
 		model.addAttribute("article", article);
-		
+
 		// Service, Dao, Mapper명[insertEmp]까지 => insert
-		int insertTrade   = as.insertTrade(article);
-		int insertArticle = as.insertArticle(article);
-		if (insertArticle > 0)
+		// insertTrade 실행 => article / Trade 을 한번에 등록
+		int writeArticle = as.writeArticle(article);
+
+		if (writeArticle > 0) {
 			return "redirect:/board/together?category=1000";
-		//
-		else {
+		} else {
 			model.addAttribute("msg", "입력실패");
 			return "forward:/board/writeFormArticle";
 		}
+//		if (insertTrade > 0) {		
+//			int insertArticle = as.insertArticle(article);
+//			if (insertArticle > 0) {
+//				return "redirect:/board/together?category=1000";
+//			} else {
+//				model.addAttribute("msg", "article 입력실패");
+//				return "forward:/board/writeFormArticle";
+//			}	
+//		} else {
+//			model.addAttribute("msg", "trade 입력실패");
+//			System.out.println(article);
+//			return "forward:/board/writeFormArticle";
+//		}
+
+	}
+
+	@RequestMapping(value = "/board/deleteArticle")
+	public String deleteArticle(Article article, Model model) {
+		System.out.println("EmpController Start delete...");
+
+		int result = as.deleteArticle(article);
+		
+		model.addAttribute("result", result);
+		model.addAttribute("delete", article);
+		return "redirect:/board/together?category=1000;";
+
 	}
 }

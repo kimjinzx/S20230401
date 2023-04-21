@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.java501.S20230401.model.Article;
 
@@ -96,29 +98,47 @@ public class ArticleDaoImpl implements ArticleDao {
 		return replyList;
 	}
 	
-	@Override
-	public int insertTrade(Article article) {
-		// TODO Auto-generated method stub
-		int insertTrade = 0;
-		try {
-			insertTrade = session.insert("insertTrade", article);
-		} catch (Exception e) {
-			System.out.println("ArticleDaoImpl insertTrade => " + e.getMessage());
-		}
-		return insertTrade;
-	}
+//	@Override
+//	public int insertTrade(Article article) {
+//		// TODO Auto-generated method stub
+//		int insertTrade = 0;
+//		try {
+//			insertTrade = session.insert("insertTrade", article);
+//		} catch (Exception e) {
+//			System.out.println("ArticleDaoImpl insertTrade => " + e.getMessage());
+//		}
+//		return insertTrade;
+//	}
 
 	@Override
-	public int insertArticle(Article article) {
+	public int writeArticle(Article article) {
+		int insertTrade = 0;
 		int insertArticle = 0;
+		
 		try {
-			insertArticle = session.insert("insertArticle", article);
+			insertTrade = session.insert("insertTrade", article);
+			if (insertTrade > 0) {
+				insertArticle = session.insert("insertArticle", article);				
+			}
 		} catch (Exception e) {
 			System.out.println("ArticleDaoImpl insertArticle => " + e.getMessage());
 		}
 		return insertArticle;
 	}
 
-
-
+	@Override
+	public int deleteArticle(Article article) {
+		int deleteArticle = 0;
+		int deleteTrade = 0;
+		
+		try {
+			deleteArticle = session.delete("deleteArticle", article);				
+			if (deleteArticle > 0) {
+				deleteTrade = session.delete("deleteTrade", article);
+			}
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl insertArticle => " + e.getMessage());
+		}
+		return deleteTrade;
+	}
 }

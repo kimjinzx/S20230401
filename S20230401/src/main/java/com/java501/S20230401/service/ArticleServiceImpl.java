@@ -82,20 +82,28 @@ public class ArticleServiceImpl implements ArticleService {
 		return replyList;
 	}
 
+//	@Override
+//	public int insertTrade(Article article) {
+//		
+//		int insertTrade = ad.insertTrade(article);
+//		System.out.println("ArticleServiceImpl insertTrade.size()-> " + insertTrade);
+//		return insertTrade;
+//	}
 	@Override
-	public int insertTrade(Article article) {
+	public int writeArticle(Article article) {
 		
-		int insertTrade = ad.insertTrade(article);
-		System.out.println("ArticleServiceImpl insertTrade.size()-> " + insertTrade);
-		return insertTrade;
+		int writeArticle = ad.writeArticle(article);
+		System.out.println("ArticleServiceImpl insertArticle.size()-> " + writeArticle);
+		return writeArticle;
 	}
 
+
 	@Override
-	public int insertArticle(Article article) {
+	public int deleteArticle(Article article) {
 		
-		int insertArticle = ad.insertArticle(article);
-		System.out.println("ArticleServiceImpl insertArticle.size()-> " + insertArticle);
-		return insertArticle;
+		int deleteArticle = ad.deleteArticle(article);
+		System.out.println("ArticleServiceImpl deleteArticle.size()=> " + deleteArticle);
+		return deleteArticle;
 	}
 
 
