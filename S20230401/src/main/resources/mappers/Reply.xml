@@ -33,7 +33,39 @@
 	</select>
 	
 	<!-- 댓글 작성  -->
-	<insert id="dgWriteReply" parameterType="Article">
-		
+	<insert id="dgWriteReply" parameterType="Reply">
+		INSERT 
+		INTO    REPLY(ART_ID, BRD_ID, REP_ID, MEM_ID, REP_CONTENT, REP_REGDATE, REP_GOOD, REP_BAD, REP_PARENT, REP_STEP, ISDELETE)
+		VALUES (#{art_id},
+		        #{brd_id},
+		       (SELECT  NVL(MAX(REP_ID),0)+1
+		        FROM    REPLY
+		        WHERE   ART_ID = #{art_id}
+		        AND     BRD_ID = #{brd_id}),
+		        #{mem_id},
+		        #{rep_content},
+		        SYSDATE,
+		        0,
+		        0,
+		        <choose>
+		        	<when test="#{rep_parent != 0}">
+		        		#{rep_parent}, 
+		        	</when>
+		        	<otherwise>
+		        		(SELECT  NVL(MAX(REP_ID),0)+1
+				         FROM    REPLY
+				         WHERE   ART_ID = #{art_id}
+				         AND     BRD_ID = #{brd_id}),
+		        	</otherwise>
+		        </choose>
+		        <choose>
+		        	<when test="#{rep_step != 0}">
+		        		#{rep_step}+1,
+		        	</when>
+		        	<otherwise>
+		        		0,
+		        	</otherwise>
+		        </choose>
+		        0)
 	</insert>
 </mapper>

@@ -106,7 +106,7 @@ public class ShareController {
 	public String detailArticle(Article article, Model model, Integer category) {
 		// 조회수 증가
 		int result = articleService.readPlusArticle(article);
-		System.out.println(result);
+		System.out.println("조회수 증가 : "+result);
 		// 글 조회
 		Article detailArticle = articleService.detailArticle(article);
 		// 댓글 조회
@@ -126,8 +126,25 @@ public class ShareController {
 		//RedirectAttributes redirectAttributes, 
 		//redirectAttributes.addFlashAttribute("article", article);
 		
+		
+		reply.setMem_id(21);
+		System.out.println("게시판 아이디 : "+reply.getBrd_id());
+		System.out.println("글번호 : "+reply.getArt_id());
+		System.out.println("댓글 번호(PK) : "+reply.getRep_id());
+		System.out.println("                              댓글 번호(PK)의 댓글 : "+reply.getRep_parent());
+		System.out.println("내용 : "+reply.getRep_content());
+		System.out.println("댓글 순서 : "+reply.getRep_step());
+
+		
 		// 댓글 작성
 		int result = replyService.writeReply(reply);
+		
+		if(result > 0)
+			System.out.println("성공");
+		else
+			System.out.println("실패");
+		
+		
 		return "redirect:/board/share/article?art_id="+reply.getArt_id()+"&brd_id="+reply.getBrd_id()+"&category="+category;
 	}
 	
