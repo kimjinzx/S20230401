@@ -27,9 +27,9 @@
 		        FROM   (SELECT  R.*, M.MEM_USERNAME, M.MEM_NICKNAME, M.MEM_EMAIL, M.MEM_AUTHORITY, M.MEM_IMAGE, M.MEM_LATEST
 		                FROM    REPLY R, MEMBER M
 		                WHERE   R.MEM_ID = M.MEM_ID(+))J
-		        ORDER BY J.REP_REGDATE ASC
+				WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
+		        ORDER BY J.REP_PARENT ASC, REP_ID ASC
 		        )
-		WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
 	</select>
 	
 	<!-- 댓글 작성  -->
