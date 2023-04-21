@@ -20,7 +20,7 @@ $(document).ready(() => {
 $(document).ready(() => {
 	$(".reply-inner").click(e => {
 		console.log(e.target.getAttribute('class')); // 클릭 이벤트 발생시 e.target의 클래스 출력
-		$(e.target).closest('.reply-detail').find(".reply-write").toggle();
+		$(e.target).closest('.reply-detail').find(".reply-replyWrite").toggle();
 	});
 });
 
@@ -143,7 +143,7 @@ $(document).ready(function() {
 									<span><button>삭제버튼</button></span>
 								</div>
 							</div>
-							<div class="reply-write" id="reply-write${status.index}" style="display: none; margin-left: 10%">
+							<div class="reply-replyWrite" style="display: none; margin-left: 10%">
 								<form action="${pageContext.request.contextPath}/board/share/replyForm" method="post">
 									<span><input type="hidden" name="brd_id" 	value="${article.brd_id}"></span>
 									<span><input type="hidden" name="art_id" 	value="${article.art_id}"></span>
@@ -157,6 +157,18 @@ $(document).ready(function() {
 							</div>
 						</div>
 					</c:forEach>
+					<div class="reply-write">
+						<form action="${pageContext.request.contextPath}/board/share/replyForm" method="post">
+							<span><input type="hidden" name="brd_id" 	value="${article.brd_id}"></span>
+							<span><input type="hidden" name="art_id" 	value="${article.art_id}"></span>
+							<span><input type="hidden" name="category" 	value="${category}"></span>
+<%-- 							<span><input type="hidden" name="rep_id" 	value="${reply.rep_id}"></span>
+							<span><input type="hidden" name="rep_parent"value="0"></span>
+							<span><input type="hidden" name="rep_step"	value="0"></span> --%>
+							<span><input type="text" name="rep_content" placeholder="댓글을 작성하세요."></span>
+							<span><input type="submit" value="등록"></span>
+						</form>
+					</div>
 				</div>
 				</div>
 			</div>

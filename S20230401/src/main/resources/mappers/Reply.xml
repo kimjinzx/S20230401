@@ -48,7 +48,7 @@
 		        0,
 		        0,
 		        <choose>
-		        	<when test="#{rep_parent != 0}">
+		        	<when test="rep_parent != null">
 		        		#{rep_parent}, 
 		        	</when>
 		        	<otherwise>
@@ -59,7 +59,7 @@
 		        	</otherwise>
 		        </choose>
 		        <choose>
-		        	<when test="#{rep_step != 0}">
+		        	<when test="rep_step != null">
 		        		#{rep_step}+1,
 		        	</when>
 		        	<otherwise>
