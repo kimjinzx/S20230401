@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -33,24 +34,19 @@ public class ShareController {
 	// 나눔해요
 	@RequestMapping(value = "board/share")
 	public String totalPage(Article article, Integer category, String currentPage, Model model) {
-		//article.setBrd_id(1200);
-		
 		article.setBrd_id(category);
 		int totalArt = 0;
 		List<Article> articleList = null;
 		
-		// 현재 카테고리 이름 식별
-		System.out.println(category);
-		String categoryName = commService.categoryName(category);
-		
-		// 현재 카테고리 목록 가져오기
+		// 접속한 게시판의 카테고리 목록 가져오기
 		int comm_id = ((int)category / 100) * 100;
 		List<Comm> commList = commService.commList(comm_id);
+
+		// 접속한 카테고리 이름 식별
+		String categoryName = commService.categoryName(category);
 		
-		
-		// 페이징
-		totalArt = articleService.allTotalArt(article); // 나눔해요 전체 글 갯수
-		
+		// 페이징 작업 (게시글 수)
+		totalArt = articleService.allTotalArt(article);
 		Paging page = new Paging(totalArt, currentPage);
 		article.setStart(page.getStart());
 		article.setEnd(page.getEnd());
@@ -162,33 +158,16 @@ public class ShareController {
 	public String indexPage() {
 		return "redirect:/board/share?category=999";
 	}
-	// 카테고리 연결
-	@RequestMapping(value = "board/together")
-	public String togetherPage(Article article, String currentPage, Model model, Integer category, RedirectAttributes redirectAttributes) {
-		redirectAttributes.addFlashAttribute("article", article);
-		redirectAttributes.addFlashAttribute("currentPage", currentPage);
-		return "redirect:/board/share?category="+category;
-	}
-	@RequestMapping(value = "board/dutchpay")
-	public String dutchpayPage(Article article, String currentPage, Model model, Integer category, RedirectAttributes redirectAttributes) {
-		redirectAttributes.addFlashAttribute("article", article);
-		redirectAttributes.addFlashAttribute("currentPage", currentPage);
-		return "redirect:/board/share?category="+category;
-	}
-	@RequestMapping(value = "board/community")
-	public String communityPage(Article article, String currentPage, Model model, Integer category, RedirectAttributes redirectAttributes) {
-		redirectAttributes.addFlashAttribute("article", article);
-		redirectAttributes.addFlashAttribute("currentPage", currentPage);
-		return "redirect:/board/share?category="+category;
-	}
-	@RequestMapping(value = "board/information")
-	public String informationPage(Article article, String currentPage, Model model, Integer category, RedirectAttributes redirectAttributes) {
-		redirectAttributes.addFlashAttribute("article", article);
-		redirectAttributes.addFlashAttribute("currentPage", currentPage);
-		return "redirect:/board/share?category="+category;
-	}
-	@RequestMapping(value = "board/customer")
-	public String customerPage(Article article, String currentPage, Model model, Integer category, RedirectAttributes redirectAttributes) {
+	// Share외의 다른 카테고리 연결
+	@RequestMapping(value = "board/{categoryConnect}")
+	public String togetherPage(	@PathVariable("categoryConnect")
+								String 	categoryConnect, 
+								Article article, 
+								String 	currentPage, 
+								Model 	model, 
+								Integer category, 
+								RedirectAttributes redirectAttributes) {
+		log.info("현재 {}에 접속 감지 카테고리 번호 : {}", categoryConnect, category);
 		redirectAttributes.addFlashAttribute("article", article);
 		redirectAttributes.addFlashAttribute("currentPage", currentPage);
 		return "redirect:/board/share?category="+category;
