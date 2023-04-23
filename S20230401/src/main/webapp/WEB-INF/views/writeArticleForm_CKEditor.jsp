@@ -8,11 +8,10 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/initializer.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/layout.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath }/js/quill/quill.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath }/js/quill/image-resize.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath }/js/quill/image-drop.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/ckeditor/ckeditor.js"></script>
 <script type="text/javascript">
 	function writeAction () {
+		$('#art_content').val(CKEDITOR.instances['articleEditor'].getData());
 		if ($('#art_title').val() == '' || $('#art_title').val() == null) {
 			return false;
 		}
@@ -27,47 +26,7 @@
 		}
 		return true;
 	}
-	const quillInit = (id) => {
-		let fontArray = [];
-		for (let i = 8; i <= 30; i++) fontArray[fontArray.length] = i + 'px';
-		var Size = Quill.import('attributors/style/size');
-		Size.whitelist = fontArray;
-		Quill.register(Size, true);
-		var option = {
-			modules: {
-				toolbar: [
-						[{size: fontArray}],
-						[{'color': [
-							'#FFFFFF', '#FF0000', '#FFFF00', '#00FF00', '#00FFFF', '#0000FF', '#FF00FF',
-							'#E0E0E0', '#E00000', '#E0E000', '#00E000', '#00E0E0', '#0000E0', '#E000E0',
-							'#C0C0C0', '#C00000', '#C0C000', '#00C000', '#00C0C0', '#0000C0', '#C000C0',
-							'#A0A0A0', '#A00000', '#A0A000', '#00A000', '#00A0A0', '#0000A0', '#A000A0',
-							'#808080', '#800000', '#808000', '#008000', '#008080', '#000080', '#800080',
-							'#606060', '#600000', '#606000', '#006000', '#006060', '#000060', '#600060',
-							'#404040', '#400000', '#404000', '#004000', '#004040', '#000040', '#400040',
-							'#202020', '#200000', '#202000', '#002000', '#002020', '#000020', '#200020',
-							'#000000', '#000000', '#000000', '#000000', '#000000', '#000000', '#000000'
-						]}],
-						['bold', 'italic', 'underline', 'strike'],
-						['image', 'video', 'link'],
-						[{list: 'ordered'}, {list: 'bullet'}]
-				],
-				imageResize: {
-					displaySize: true
-				},
-				imageDrop: true
-			},
-			placeholder: '내용을 입력해주세요',
-			theme: 'snow'
-		};
-		editor = new Quill('#' + id, option);
-	};
-	var editor;
 	$(() => {
-		// Load Editor
-		quillInit('articleEditor');
-		
-		// input keydown event
 		$('form input').keydown(e => {
 			if (e.keyCode == 13) e.preventDefault();
 		});
@@ -83,6 +42,11 @@
 				e.preventDefault();
 				if (e.target.value == '' || !e.target.value || e.target.value == null) return;
 				$(e.target).blur();
+				/*let elem = '<div class="tag-box-tag"><span class="tag-box-tag-value">' + e.target.value + '</span><button class="tag-box-tag-remove adv-hover" type="button"><svg class="tag-box-tag-remove-svg" width="10" height="10" viewBox="0 0 12 12" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M 2 2 L 10 10 M 10 2 L 2 10"/></svg></button></div>';
+				$('#tag-box').append(elem);
+				$('#tag-box').find('div.tag-box-tag:last-child > button.tag-box-tag-remove').click(e => {
+					$(e.target).parent().remove();
+				});*/
 				e.target.value = null;
 				$(e.target).focus();
 			} else if (e.keyCode == 13) e.preventDefault();
@@ -106,37 +70,26 @@
 			});
 			e.target.value = null;
 		});
-		editor.on('text-change', () => {
-			$('#art_content').val(editor.root.innerHTML);
+	});
+</script>
+<script type="text/javascript">
+	$(() => {
+		CKEDITOR.replace('articleEditor', {
+			uploadUrl : '${pageContext.request.contextPath}/board/${boardName}/imageUpload',
+			filebrowserUploadUrl : '${pageContext.request.contextPath}/board/${boardName}/imageUpload',
+			extraPlugins : [
+				'uploadimage'
+			],
+			removePlugins : [
+				'Title', 'resize', 'elementspath', 'sourcearea',
+				'cloudservices'
+			],
+			removeButtons : [
+				'Source', 'Anchor', 'Maximize'
+			],
+			height: 600,
+			language : "ko"
 		});
-		const selectLocalImage = () => {
-			const fileInput = document.createElement('input');
-			fileInput.setAttribute('type', 'file');
-			fileInput.click();
-			fileInput.addEventListener('change', e => {
-				const formData = new FormData();
-				const file = fileInput.files[0];
-				formData.append('uploadFile', file);
-				
-				$.ajax({
-					type: 'post',
-					enctype: 'multipart/form-data',
-					url: '/board/${boardName}/imageUpload',
-					data: formData,
-					//data: fileInput.value,
-					processData: false,
-					contentType: false,
-					dataType: 'json',
-					success: function(data) {
-						const range = editor.getSelection();
-						//data.uploadPath = data.uploadPath.replace(/\\/g, '/');
-						data.url = data.url.toString().replace(/\\/g, '/');
-						editor.insertEmbed(range.index, 'image', data.url);
-					}
-				});
-			});
-		};
-		editor.getModule('toolbar').addHandler('image', () => selectLocalImage());
 	});
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/writeArticleForm.js"></script>
@@ -144,9 +97,6 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/preference.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/presets.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/layout.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/js/quill/quill.core.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/js/quill/quill.snow.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/writeArticleForm.css">
 <style type="text/css">
 	div.form-group {
 		width: 100%;
@@ -158,6 +108,12 @@
 	#articleEditor {
 		height: 600px;
 		margin: 5px 0;
+	}
+	.ck-editor__editable {
+		height: 600px;
+	}
+	.ck-content {
+		font-size: 12px;
 	}
 	div.input-box {
 		margin: 10px 0;
@@ -243,35 +199,6 @@
 		margin: 5px 0;
 		cursor: pointer;
 	}
-</style>
-<style type="text/css">
-	.ql-picker-options {
-		max-height: 200px;
-		overflow-y: auto;
-	}
-	.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="8px"]::before { content: '8px'; font-size: 8px !important; }
-	.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="9px"]::before { content: '9px'; font-size: 9px !important; }
-	.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="10px"]::before { content: '10px'; font-size: 10px !important; }
-	.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="11px"]::before { content: '11px'; font-size: 11px !important; }
-	.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="12px"]::before { content: '12px'; font-size: 12px !important; }
-	.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="13px"]::before { content: '13px'; font-size: 13px !important; }
-	.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="14px"]::before { content: '14px'; font-size: 14px !important; }
-	.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="15px"]::before { content: '15px'; font-size: 15px !important; }
-	.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="16px"]::before { content: '16px'; font-size: 16px !important; }
-	.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="17px"]::before { content: '17px'; font-size: 17px !important; }
-	.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="18px"]::before { content: '18px'; font-size: 18px !important; }
-	.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="19px"]::before { content: '19px'; font-size: 19px !important; }
-	.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="20px"]::before { content: '20px'; font-size: 20px !important; }
-	.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="21px"]::before { content: '21px'; font-size: 21px !important; }
-	.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="22px"]::before { content: '22px'; font-size: 22px !important; }
-	.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="23px"]::before { content: '23px'; font-size: 23px !important; }
-	.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="24px"]::before { content: '24px'; font-size: 24px !important; }
-	.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="25px"]::before { content: '25px'; font-size: 25px !important; }
-	.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="26px"]::before { content: '26px'; font-size: 26px !important; }
-	.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="27px"]::before { content: '27px'; font-size: 27px !important; }
-	.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="28px"]::before { content: '28px'; font-size: 28px !important; }
-	.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="29px"]::before { content: '29px'; font-size: 29px !important; }
-	.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="30px"]::before { content: '30px'; font-size: 30px !important; }
 </style>
 </head>
 <body>
@@ -456,9 +383,9 @@
 					</div>
 				</div>
 				<input type="hidden" id="art_content" name="art_content" required>
-				<div id="articleEditor">
+				<textarea id="articleEditor" name="articleEditor">
 					
-				</div>
+				</textarea>
 				<div id="test-box">
 				</div>
 			</div>

@@ -73,16 +73,18 @@ public class ArticleController {
 									 MultipartHttpServletRequest request) throws Exception {
 		JSONObject jsonObject = null;
 		PrintWriter printWriter = null;
-		MultipartFile file = request.getFile("upload");
+		//MultipartFile file = request.getFile("upload");
+		MultipartFile file = request.getFile("uploadFile");
 		OutputStream out = null;
 		if (file != null) {
 			if (file.getSize() > 0 && !file.getName().isBlank() && !file.getName().isEmpty()) {
+				//System.out.println(file.getContentType());
 				if (file.getContentType().toLowerCase().startsWith("image/")) {
 					try {
 						String fileName = file.getOriginalFilename();
 						byte[] bytes = file.getBytes();
 						String uploadPath = request.getSession().getServletContext().getRealPath("/uploads/article");
-						System.out.println(uploadPath);
+						//System.out.println(uploadPath);
 						File uploadFile = new File(uploadPath);
 						if (!uploadFile.exists()) {
 							uploadFile.mkdir();
@@ -94,7 +96,7 @@ public class ArticleController {
 						out = new FileOutputStream(new File(uploadPath));
 						out.write(bytes);
 						String fileUrl = request.getContextPath() + "/uploads/article/" + uuid + "_" + dateStr + "_" + fileName;
-						System.out.println(fileUrl);
+						//System.out.println(fileUrl);
 						jsonObject = new JSONObject();
 						jsonObject.append("uploaded", 1);
 						jsonObject.append("fileName", fileName);
