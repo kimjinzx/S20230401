@@ -10,8 +10,8 @@ public class Reply {
 	private Integer 	brd_id; 
 	private Integer 	rep_id;
 	private Integer 	mem_id;
-	private String 	rep_content;
-	private Date 	rep_regdate;
+	private String 		rep_content;
+	private Date 		rep_regdate;
 	private Integer 	rep_good;
 	private Integer 	rep_bad;
 	private Integer 	rep_parent;

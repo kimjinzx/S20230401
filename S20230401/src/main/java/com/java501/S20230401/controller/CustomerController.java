@@ -27,40 +27,39 @@ public class CustomerController {
 	@Autowired
 	private final ReplyService rs;
 	
-	
-	@RequestMapping(value = "/board/customer/notice")
-	public String noticeList(Article article, int category, String currentPage, Model model) {
-		System.out.println("CustomerController Start noticeList..." );
+	@RequestMapping(value = "/board/customer")
+	public String customerList(Article article, int category, String currentPage, Model model) {
+		System.out.println("CustomerController Start customerList..." );
 		article.setBrd_id(category);
-		int totalNotice =  as.totalNotice();
-		System.out.println("CustomerController totalNotice=>" + totalNotice);
+		int totalCustomer =  as.totalCustomer();
+		System.out.println("CustomerController totalCustomer=>" + totalCustomer);
 		// Paging 작업
-		Paging page = new Paging(totalNotice, currentPage);
+		Paging page = new Paging(totalCustomer, currentPage);
 		// Parameter article --> Page만 추가 Setting
 		article.setStart(page.getStart());	// 시작시 1
 		article.setEnd(page.getEnd());		// 시작시 10
 		
-		List<Article> listNotice = as.listNotice(article);
-		System.out.println("CustomerController list listNotice.size()->"+listNotice.size());
+		List<Article> listCustomer = as.listCustomer(article);
+		System.out.println("CustomerController list listNotice.size()->"+listCustomer.size());
 		
-		model.addAttribute("totalNotice", totalNotice);
-		model.addAttribute("listNotice", listNotice);
+		model.addAttribute("totalCustomer", totalCustomer);
+		model.addAttribute("listCustomer", listCustomer);
 		model.addAttribute("page", page);
 		// 설정해둔 view resolver로 리턴
-		return "/customer/NoticeList";
+		return "/customer/CustomerIndex";
 	}
 	
-	@GetMapping(value = "/board/customer/detailNotice")
-	public String detailNotice(Article article, Model model) {
-		System.out.println("EmpController Start detailNotice...");
+	@GetMapping(value = "/board/customer/detailCustomer")
+	public String detailCustomer(Article article, Model model) {
+		System.out.println("CustomerController Start detailCustomer...");
 
 		
-//		1. ArticleService안에 detailNotice method 선언
+//		1. ArticleService안에 detailCustomer method 선언
 //		   1) parameter : brd_id
 //		   2) Return      Article
 //
-		Article noticeDetail = as.detailNotice(article);
-		model.addAttribute("article", noticeDetail);
+		Article customerDetail = as.detailCustomer(article);
+		model.addAttribute("article", customerDetail);
 		
 //		2. ArticleDao   detailNotice method 선언 
 ////		                    mapper ID   ,    Parameter
@@ -82,7 +81,7 @@ public class CustomerController {
 		System.out.println("댓글카운트"+replyCount);
 		System.out.println("댓글리스트"+replyList);
 		
-		return "/customer/detailNotice";
+		return "/customer/detailCustomer";
 		
 		
 		

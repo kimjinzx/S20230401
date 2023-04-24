@@ -6,9 +6,10 @@ import com.java501.S20230401.model.Article;
 
 public interface ArticleService {
 
+	Integer 			totalCustomer();
+	List<Article> 		listCustomer(Article article);
 	Integer 			totalNotice();
-	List<Article> 		listNotice(Article article);
-	Article 			detailNotice(Article article);
+	Article 			detailCustomer(Article article);
 	
 
 }

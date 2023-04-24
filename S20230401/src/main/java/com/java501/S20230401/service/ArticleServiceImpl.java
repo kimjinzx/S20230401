@@ -13,30 +13,39 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
 	private final ArticleDao	ad;
+
+	@Override
+	public Integer totalCustomer() {
+		System.out.println("ArticleServiceImpl Start totalCustomer..." );
+		int totCustomerCnt = ad.totalCustomer();
+		System.out.println("ArticleServiceImpl totalCustomer totCustomerCnt->" + totCustomerCnt);
+		return totCustomerCnt;
+	}
+	
+	@Override
+	public List<Article> listCustomer(Article article) {
+		List<Article> customerList = null;
+		System.out.println("ArticleServiceImpl listCustomer Start..." );
+		customerList = ad.listCustomer(article);
+		System.out.println("ArticleServiceImpl list customerList.size()->" +customerList.size());
+		return customerList;
+	}
 	
 	@Override
 	public Integer totalNotice() {
-		System.out.println("ArticleServiceImpl Start total..." );
+		System.out.println("ArticleServiceImpl Start totalNotice..." );
 		int totNoticeCnt = ad.totalNotice();
 		System.out.println("ArticleServiceImpl totalNotice totNoticeCnt->" + totNoticeCnt);
 		return totNoticeCnt;
 	}
 
 	@Override
-	public List<Article> listNotice(Article article) {
-		 List<Article> noticeList = null;
-		 System.out.println("ArticleServiceImpl listManager Start..." );
-		 noticeList = ad.listNotice(article);
-		 System.out.println("ArticleServiceImpl listEmp noticeList.size()->" +noticeList.size());
-		 return noticeList;
+	public Article detailCustomer(Article article) {
+		System.out.println("ArticleServiceImpl detailCustomer...");
+		Article customerDetail = null;
+		customerDetail = ad.detailCustomer(article);
+		return customerDetail;
 	}
 
-	@Override
-	public Article detailNotice(Article article) {
-		System.out.println("ArticleServiceImpl detail...");
-		Article noticeDetail = null;
-		noticeDetail = ad.detailNotice(article);
-		return noticeDetail;
-	}
 
 }

@@ -17,9 +17,38 @@ public class ArticleDaoImpl implements ArticleDao {
 	private final SqlSession  session;
 	
 	@Override
+	public Integer totalCustomer() {
+		int totCustomerCount = 0;
+		System.out.println("ArticleDaoImpl Start totalCustomer...");
+		
+		try {
+			totCustomerCount = session.selectOne("shArticleIndex");
+			System.out.println("ArticleDaoImpl totalCustomer totCustomerCount->" +totCustomerCount);
+			
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl totalCustomer Exception->"+e.getMessage());
+		}
+		return totCustomerCount;
+	}
+	
+	@Override
+	public List<Article> listCustomer(Article article) {
+		List<Article> customerList = null;
+		System.out.println("ArticleDaoImpl listCustomer Start ..." );
+		try {
+			//                             Map ID        parameter
+			customerList = session.selectList("shArticleListCustomer", article);
+			System.out.println("ArticleDaoImpl listCustomer articleList.size()->"+customerList.size());
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl listCustomer e.getMessage()->"+e.getMessage());
+		}
+		return customerList;	
+	}
+	
+	@Override
 	public Integer totalNotice() {
 		int totNoticeCount = 0;
-		System.out.println("ArticleDaoImpl Start total...");
+		System.out.println("ArticleDaoImpl Start totalNotice...");
 		
 		try {
 			totNoticeCount = session.selectOne("noticeTotal");
@@ -32,31 +61,17 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 
 	@Override
-	public List<Article> listNotice(Article article) {
-		List<Article> noticeList = null;
-		System.out.println("ArticleDaoImpl listNotice Start ..." );
+	public Article detailCustomer(Article article) {
+		System.out.println("ArticleDaoImpl detailCustomer start...");
+		Article customerDetail = new Article();
 		try {
-			//                             Map ID        parameter
-			noticeList = session.selectList("shArticleListNotice", article);
-			System.out.println("ArticleDaoImpl listNotice articleList.size()->"+noticeList.size());
-		} catch (Exception e) {
-			System.out.println("ArticleDaoImpl listNotice e.getMessage()->"+e.getMessage());
-		}
-		return noticeList;	
-	}
-
-	@Override
-	public Article detailNotice(Article article) {
-		System.out.println("ArticleDaoImpl detail start...");
-		Article noticeDetail = new Article();
-		try {
-			
-			noticeDetail = session.selectOne("shNoticeSelOne", article);
+			customerDetail = session.selectOne("shCustomerDetail", article);
 		
 		} catch (Exception e) {
 			System.out.println("ArticleDaoImpl detail Exception->"+e.getMessage());
 		}
-		return noticeDetail;
+		return customerDetail;
 	}
+
 
 }
