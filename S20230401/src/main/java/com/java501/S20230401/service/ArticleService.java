@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.ArticleMember;
+import com.java501.S20230401.model.MemberInfo;
 import com.java501.S20230401.util.SummaryType;
 
 public interface ArticleService {
@@ -12,4 +13,8 @@ public interface ArticleService {
 	public int insertArticle(Article article);
 
 	public Article getArticleById(Article searcher);
+
+	public MemberInfo getMemberInfoById(int mem_id);
+
+	public ArticleMember getArticleMemberById(Article searcher);
 }

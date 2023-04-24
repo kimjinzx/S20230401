@@ -20,11 +20,10 @@
 			return false;
 		}
 		let tagIndex = 1;
-		let tagValues = $('#tag-box').find('.tag-box-tag-value');
-		for (let tagPart of tagValues) {
-			let tag = tagPart.html();
+		$('.tag-box-tag').each((index, value) => {
+			let tag = $(value).find('.tag-box-tag-value').html();
 			$('#art_tag' + tagIndex++).val(tag);
-		}
+		});
 		return true;
 	}
 	const quillInit = (id) => {

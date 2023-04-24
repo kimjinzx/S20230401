@@ -25,8 +25,10 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.java501.S20230401.model.Article;
+import com.java501.S20230401.model.ArticleMember;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.MemberDetails;
+import com.java501.S20230401.model.MemberInfo;
 import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.CommService;
 
@@ -132,7 +134,9 @@ public class ArticleController {
 		Article searcher = new Article();
 		searcher.setArt_id(art_id);
 		searcher.setBrd_id(brd_id);
-		Article article = as.getArticleById(searcher);
+		ArticleMember article = as.getArticleMemberById(searcher);
+		MemberInfo writerInfo = as.getMemberInfoById(article.getMem_id());
+		model.addAttribute("writerInfo", writerInfo);
 		model.addAttribute("article", article);
 		model.addAttribute("brd_id", brd_id);
 		return "viewArticleTest";
