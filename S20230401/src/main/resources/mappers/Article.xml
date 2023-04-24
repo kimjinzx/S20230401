@@ -76,7 +76,7 @@ SELECT     ROWNUM RN, a.*, m.*, c.*, r.*
                        		   left join member  m on(f.mem_id = m.mem_id)
         where		a.art_id = #{art_id}
 		and			a.brd_id = #{brd_id}
-		group by    a.art_id, a.brd_id
+		group by    a.art_id, a.brd_id;
 	</select> -->
 
 	<select id="tkReplyList" parameterType="Article" resultType="Article">
