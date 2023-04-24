@@ -10,6 +10,7 @@ public interface CommService {
 	// 카테고리 목록 가져오기
 	List<Comm> commList(int comm_id);
 	
+	
 	public Comm getCommById(int comm_id);
 	public Comm getCommByName(String comm_value);
 	public String getValueById(int comm_id);

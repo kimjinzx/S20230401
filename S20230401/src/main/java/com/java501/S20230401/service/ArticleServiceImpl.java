@@ -31,7 +31,6 @@ public class ArticleServiceImpl implements ArticleService {
 	public int readPlusArticle(Article article) {	return ad.readPlusArticle(article);}
 
 	
-	
 	// 로그인 기능 추가
 	@Override
 	public List<ArticleMember> getArticleSummary(int boardNum, SummaryType summaryType) {

@@ -21,6 +21,7 @@ public class MemberServiceImpl implements MemberService {
 		return md.allMemberList(article);
 	}
 
+
 	
 	// 로그인
 	@Override

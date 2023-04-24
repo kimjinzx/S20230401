@@ -22,6 +22,8 @@ public class CommServiceImpl implements CommService {
 		return cd.commList(comm_id);
 	}
 	
+	
+	
 	// 로그인 기능
 	@Override
 	public Comm getCommById(int comm_id) {

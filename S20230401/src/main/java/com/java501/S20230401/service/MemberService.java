@@ -10,6 +10,7 @@ public interface MemberService {
 
 	List<Member> allMemberList(Article article);
 
+
 	// 로그인
 	public Member getMember(String keyword, MemberSearchKeyword type);
 	public int registMember(Member member);

@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 public class RegionServiceImpl implements RegionService {
 	private final RegionDao rd;
 	
+	
 	@Override
 	public Region getRegion(int regionCode) {
 		return rd.getRegion(regionCode);

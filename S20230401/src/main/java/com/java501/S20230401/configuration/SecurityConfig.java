@@ -18,20 +18,23 @@ public class SecurityConfig {
 	
 	@Bean
 	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.csrf().disable();
+//		http.csrf().disable();
+//		http.authorizeRequests().anyRequest().permitAll();
+//		return http.build();
+		http.csrf().disable(); // 추후 각주처리... POST 마다 CSRF TOKEN 값을 hidden type으로 넣어주면 됨...
 		http.authorizeRequests()
-		.antMatchers("/user/**").authenticated()
-		.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
-		.anyRequest().permitAll()
-		.and()
-		.formLogin()						// 로그인 페이지
-		.loginPage("/login")
-		.loginProcessingUrl("/loginProc")
-		.defaultSuccessUrl("/")
-		.and()
-		.logout()							// 로그아웃
-		.logoutSuccessUrl("/")
-		.invalidateHttpSession(true);
+			 .antMatchers("/user/**").authenticated()
+			 .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
+			 .anyRequest().permitAll()
+			 .and()
+			 .formLogin()
+			 .loginPage("/login")
+			 .loginProcessingUrl("/loginProc")
+			 .defaultSuccessUrl("/")
+			 .and()
+			 .logout()
+			 .logoutSuccessUrl("/")
+			 .invalidateHttpSession(true);
 		return http.build();
 	}
 }
