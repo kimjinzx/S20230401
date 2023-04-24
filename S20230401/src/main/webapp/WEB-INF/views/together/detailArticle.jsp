@@ -20,8 +20,8 @@
 	<input type="button" value="기타" 	onclick="${pageContext.request.contextPath}location.href='together?category=1060'">
 	
 	<p>
-	<input type="button" value="목록" 	onclick="location.href='together?category=1000';">
-	<input type="button" value="수정하기" 	>
+	<input type="button" value="목록" 	onclick="location.href='${pageContext.request.contextPath }together?category=1000';">
+	<input type="button" value="수정하기" 	onclick="location.href='${pageContext.request.contextPath }/board/updateFormArticle?brd_id=${detailArticle.brd_id }&art_id=${detailArticle.art_id }';">
 	<input type="button" value="삭제하기"  onclick="location.href='${pageContext.request.contextPath }/board/deleteArticle?brd_id=${detailArticle.brd_id }&art_id=${detailArticle.art_id }';">
 	
 	<table>
@@ -129,7 +129,7 @@
 			<table>
 			<tr>
 				<td>${reply.mem_nickname }
-				<td><img src="${pageContext.request.contextPath}/image/picture/${reply.mem_image}" width ="50" height ="50" alt="사진이 없습니다"></td>
+				<td><img src="${pageContext.request.contextPath}/image/picture/${reply.mem_image}" width ="50" height ="50" alt="-"></td>
 				<td>${reply.rep_content }</td>
 			</tr>
 			</table>				

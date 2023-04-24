@@ -90,11 +90,9 @@ public class ArticleServiceImpl implements ArticleService {
 //		return insertTrade;
 //	}
 	@Override
-	public int writeArticle(Article article) {
-		
-		int writeArticle = ad.writeArticle(article);
-		System.out.println("ArticleServiceImpl insertArticle.size()-> " + writeArticle);
-		return writeArticle;
+	public void writeArticle(Article article) {
+		ad.writeArticle(article);
+		System.out.println("ArticleServiceImpl article.getInsert_result() => " + article.getInsert_result());
 	}
 
 
@@ -107,8 +105,12 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 
-
-
+	@Override
+	public int updateArticle(Article article) {
+		int updateArticle = ad.updateArticle(article);
+		System.out.println("ArticleServiceImpl updateArticle.size()=> " + updateArticle);
+		return updateArticle;
+	}
 
 
 }

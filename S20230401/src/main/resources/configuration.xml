@@ -10,9 +10,6 @@
 			type="com.java501.S20230401.model.Region" />
 			<typeAlias alias="Comm"
 			type="com.java501.S20230401.model.Comm" />
-
-
-
-
+			
 	</typeAliases>
 </configuration>

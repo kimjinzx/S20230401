@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.java501.S20230401.model.Article;
 
@@ -95,48 +96,60 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return replyList;
 	}
-	
-//	@Override
-//	public int insertTrade(Article article) {
-//		// TODO Auto-generated method stub
-//		int insertTrade = 0;
-//		try {
-//			insertTrade = session.insert("insertTrade", article);
-//		} catch (Exception e) {
-//			System.out.println("ArticleDaoImpl insertTrade => " + e.getMessage());
-//		}
-//		return insertTrade;
-//	}
 
 	@Override
-	public int writeArticle(Article article) {
-		int insertTrade = 0;
-		int insertArticle = 0;
-		
+	public void writeArticle(Article article) {
+		System.out.println("ArticleDaoImpl wirteArticle start...");
 		try {
-			insertTrade = session.insert("insertTrade", article);
-			if (insertTrade > 0) {
-				insertArticle = session.insert("insertArticle", article);				
-			}
+			session.selectOne("insertArticle", article);
 		} catch (Exception e) {
 			System.out.println("ArticleDaoImpl insertArticle => " + e.getMessage());
 		}
-		return insertArticle;
 	}
 
 	@Override
 	public int deleteArticle(Article article) {
 		int deleteArticle = 0;
-		int deleteTrade = 0;
 		
 		try {
-			deleteArticle = session.delete("deleteArticle", article);				
-			if (deleteArticle > 0) {
-				deleteTrade = session.delete("deleteTrade", article);
-			}
+			deleteArticle = session.update("deleteArticle", article);				
 		} catch (Exception e) {
-			System.out.println("ArticleDaoImpl insertArticle => " + e.getMessage());
+			System.out.println("ArticleDaoImpl deleteArticle => " + e.getMessage());
 		}
-		return deleteTrade;
+		return deleteArticle;
 	}
+
+	@Override
+	public int updateArticle(Article article) {
+		int result = 0;
+		session.update("updateArticle", article);
+		result = article.getInsert_result();
+		return result;
+	}
+
+//	@Override
+//	@Transactional
+//	public int updateArticle(Article article) {
+//		int updateArticleCnt = 0;
+//		int updateTradeCnt = 0;
+//		int updateArticle = 0;
+//
+//		System.out.println("updateArticleDaoImpl Start...");
+//		System.out.println("updateArticleDaoImpl article->"+article);
+//		
+//		try {
+//			updateArticleCnt = session.update("updateTrade", article);  
+//			updateTradeCnt 	 = session.update("updateArticle", article);
+//			System.out.println("updateArticleDaoImpl updateArticleCnt->"+updateArticleCnt);
+//			System.out.println("updateArticleDaoImpl updateTradeCnt->"+updateTradeCnt);
+//			if (updateArticleCnt > 0 && updateTradeCnt > 0)	updateArticle = 1;
+//			else updateArticle = 0;
+//			System.out.println("updateArticleDaoImpl updateArticle->"+updateArticle);
+//				
+//		} catch (Exception e) {
+//			System.out.println("ArticleDaoImpl updateArticle => " + e.getMessage());
+//			updateArticle = 0;
+//		}
+//		return updateArticle;
+//	}
 }

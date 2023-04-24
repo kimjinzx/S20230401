@@ -85,4 +85,5 @@ public class Article {
 	private Integer 	rest_regdate;
 	private Integer 	favoriteCount;
 	private String		trd_finish;
+	private int			insert_result;
 }

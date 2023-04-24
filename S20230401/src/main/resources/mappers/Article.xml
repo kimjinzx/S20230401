@@ -6,65 +6,68 @@
 <mapper namespace="com.java501.S20230401.ArticleMapper">
 
 	<select id="ArticleTotalCnt" resultType="int">
-		select Count(*) 
-		FROM article 
-		where brd_id between 1010 and 1060
+		select 	Count(*) 
+		FROM   	article 
+		WHERE  	brd_id between 1010 and 1060
+		AND    	isdelete = 0
 	</select>
 
 	<select id="ArticleBoardCnt" parameterType="Article"
 		resultType="int">
-		select Count(*) 
-		FROM article 
-		where brd_id=#{brd_id}
+		SELECT 	Count(*) 
+		FROM 	article 
+		WHERE 	brd_id=#{brd_id}
+		AND 	isdelete = 0
 	</select>
 
 
 	<select id="tkArticleListAll" parameterType="Article" resultType="Article">
-		select      a.*, m.*, c.*, r.*
+SELECT     ROWNUM RN, a.*, m.*, c.*, r.*
              		, t.trd_id, t.trd_status, t.trd_max, trunc(sysdate - a.art_regdate) as rest_regdate
             		, t.trd_cost, t.trd_loc, t.trd_gender, t.trd_minage, t.trd_maxage
             		, to_char(t.trd_enddate, 'YYYY-MM-DD') as trd_finish
             		, reply_count(A.ART_ID, A.BRD_ID)  repCount
             		, favorite_count(a.art_id, a.brd_id) favoriteCount
-		from         article a  LEFT JOIN trade  t 	ON(a.trd_id = t.trd_id)
+		FROM         article a  LEFT JOIN trade  t 	ON(a.trd_id = t.trd_id)
                      			LEFT JOIN Member m 	ON(a.mem_id = m.mem_id)
                      			LEFT JOIN Comm   c 	ON(t.trd_status = c.comm_id)
                      			LEFT JOIN REGION R  ON(t.reg_id = r.reg_id)
-		where        a.brd_id between 1010 and 1060
-		order by     a.art_regdate desc
+		WHERE        a.brd_id between 1010 and 1060
+		AND			 a.isdelete = 0
+		ORDER BY     a.art_regdate desc
 	</select>
 
-	<select id="tkArticleListBoard" parameterType="Article"
-		resultType="Article">
-		select      a.*, m.*, c.*, r.*
+	<select id="tkArticleListBoard" parameterType="Article" resultType="Article">
+		SELECT      ROWNUM RN, a.*, m.*, c.*, r.*
              		, t.trd_id, t.trd_status, t.trd_max, trunc(sysdate - a.art_regdate) as rest_regdate
             		, t.trd_cost, t.trd_loc, t.trd_gender, t.trd_minage, t.trd_maxage
             		, to_char(t.trd_enddate, 'YYYY-MM-DD') as trd_finish
             		, reply_count(A.ART_ID, A.BRD_ID)  repCount
             		, favorite_count(a.art_id, a.brd_id) favoriteCount
-		from         article a 	LEFT JOIN trade  t 	ON(a.trd_id = t.trd_id)
+		FROM         article a 	LEFT JOIN trade  t 	ON(a.trd_id = t.trd_id)
                      			LEFT JOIN Member m 	ON(a.mem_id = m.mem_id)
                      			LEFT JOIN Comm   c 	ON(t.trd_status = c.comm_id)
                      			LEFT JOIN REGION R  ON(t.reg_id = r.reg_id)
-		where        a.brd_id = #{brd_id}
-		order by     a.art_regdate desc
+		WHERE        a.brd_id = #{brd_id}
+		AND			 a.isdelete = 0
+		ORDER BY     a.art_regdate desc
 	</select>
 
 
-	<select id="tkArticleDetail" parameterType="Article"
-		resultType="Article">
-        select  	a.*, c.*, m.*, r.*, reply_count(A.ART_ID, A.BRD_ID) repCount
+	<select id="tkArticleDetail" parameterType="Article" resultType="Article">
+        SELECT  	a.*, c.*, m.*, r.*, reply_count(A.ART_ID, A.BRD_ID) repCount
         		   , t.trd_id, t.trd_status, t.trd_max, trunc(sysdate - a.art_regdate) as rest_regdate
             	   , t.trd_cost, t.trd_loc, t.trd_gender, t.trd_minage, t.trd_maxage
             	   , to_char(t.trd_enddate, 'YYYY-MM-DD') as trd_finish
             	   , favorite_count(a.art_id, a.brd_id) favoriteCount
-        from    	article a 	left join trade t on (A.TRD_ID = T.TRD_ID)
-                          		left join member m on (a.mem_id = m.mem_id)
-                          		left join comm c on (t.trd_status = c.comm_id)
+        FROM    	article a 	LEFT JOIN trade  t 	ON (A.TRD_ID = T.TRD_ID)
+                          		LEFT JOIN member m  ON (a.mem_id = m.mem_id)
+                          		LEFT JOIN comm   c  ON (t.trd_status = c.comm_id)
                           		LEFT JOIN REGION R  ON(t.reg_id = r.reg_id)
-        where 		a.brd_id = #{brd_id}
+        WHERE 		a.brd_id = #{brd_id}
 		AND 		a.art_id = #{art_id}
-        order by 	a.brd_id
+		AND			a.isdelete = 0
+        ORDER BY 	a.brd_id
 	</select>
 	
 <!-- 	<select id="tkFavoriteCount" parameterType="Article" resultType="int">
@@ -77,14 +80,39 @@
 	</select> -->
 
 	<select id="tkReplyList" parameterType="Article" resultType="Article">
-		select      r.*, a.*, m.*
-		from        reply r left Join article a on(a.art_id = r.art_id  and a.brd_id = r.brd_id)
-                    		left join member  m on(r.mem_id = m.mem_id)
-		where 		a.brd_id = #{brd_id}
-		and   		a.art_id = #{art_id}
+		SELECT      r.*, a.*, m.*
+		FROM        reply r LEFT JOIN article a ON(a.art_id = r.art_id  and a.brd_id = r.brd_id)
+                    		LEFT JOIN member  m ON(r.mem_id = m.mem_id)
+		WHERE 		a.brd_id = #{brd_id}
+		AND   		a.art_id = #{art_id}
+		AND			r.isdelete = 0
 	</select>
 	
-	<insert id ="insertTrade" parameterType="Article">
+	<select id = "insertArticle" statementType="CALLABLE" parameterType="Article">
+		{
+		call Insert_Article(
+			1
+			, 401
+			, #{trd_max,       mode= IN,  jdbcType=NUMERIC}
+			, #{trd_enddate,   mode= IN,  jdbcType=DATE}
+			, #{trd_cost,      mode= IN,  jdbcType=NUMERIC}
+			, #{reg_id,        mode= IN,  jdbcType=NUMERIC}
+			, #{trd_loc,       mode= IN}
+			, #{trd_gender,    mode= IN,  jdbcType=NUMERIC}
+			, #{trd_minage,    mode= IN}
+			, #{trd_maxage,    mode= IN}
+			, #{brd_id,        mode= IN}
+			, #{art_title,     mode= IN}
+			, #{art_content,   mode= IN}
+			, #{art_tag1,      mode= IN,  jdbcType=VARCHAR}
+			, #{art_tag2,      mode= IN,  jdbcType=VARCHAR}
+			, #{art_tag3,      mode= IN,  jdbcType=VARCHAR}
+			, #{art_tag4,      mode= IN,  jdbcType=VARCHAR}
+			, #{art_tag5,      mode= IN,  jdbcType=VARCHAR}
+			, #{insert_result, mode= OUT, jdbcType=NUMERIC})
+		}
+	</select>
+<!-- 	<insert id ="insertTrade" parameterType="Article">
 		insert into trade 
 				values (trd_id_seq.nextval, 1, '401', #{trd_max}, #{trd_enddate}
 				, 0, #{reg_id, jdbcType=NUMERIC}, #{trd_loc, jdbcType=VARCHAR}, #{trd_gender, jdbcType=NUMERIC}
@@ -92,24 +120,75 @@
 			<selectKey resultType="int" keyProperty="trd_id" order="AFTER">
 				select trd_id_seq.currval from dual
 			</selectKey>
-
+	</insert> -->
 	
-	</insert>
-	<insert id="insertArticle" parameterType="Article">
+	<!-- <insert id="insertArticle" parameterType="Article">
 		insert into article 
 			values ((Select max(art_id) + 1 from article where brd_id = #{brd_id})
             , #{brd_id}, #{art_title}, 1, sysdate, #{art_content, jdbcType=VARCHAR}, #{art_tag1, jdbcType=VARCHAR}, #{art_tag2, jdbcType=VARCHAR}
             , #{art_tag3, jdbcType=VARCHAR}, #{art_tag4, jdbcType=VARCHAR}, #{art_tag5, jdbcType=VARCHAR}, #{trd_id, jdbcType=NUMERIC}
             , 0, 0, 0, 0, 0, null)
-	</insert>
+	</insert> -->
 	
-	<delete id="deleteArticle" parameterType="Article">
-		Delete from Article where art_id = #{art_id} and brd_id = #{brd_id}
-	</delete>
+ 	<update id="deleteArticle" parameterType="Article">
+		UPDATE article
+		SET    isdelete = 1
+		WHERE  brd_id = #{brd_id} 
+		AND    art_id = #{art_id}
+	</update>
 	
-	<delete id="deleteTrade" parameterType="Article">
+<!-- 
+ 	<delete id="deleteTrade" parameterType="Article">
 		Delete from Trade where trd_id = #{trd_id}
-	</delete>
+	</delete> -->
+<!-- 	<update id= "updateTrade" parameterType="Article">
+    	UPDATE 	 trade 
+    	SET		 reg_id 		= #{reg_id}
+    	   		,trd_loc 		= #{trd_loc}
+    	   		,trd_minage 	= #{trd_minage}
+    	   		,trd_maxage 	= #{trd_maxage}
+    	   		,trd_enddate 	= #{trd_enddate}
+    	WHERE 	 trd_id = #{trd_id}
+	</update>
 	
+	<update id="updateArticle" parameterType="Article">
+		UPDATE 		article 
+		SET			brd_id 		= #{brd_id}
+				   ,art_title 	= #{art_title}
+				   ,art_content = #{art_content}
+				   ,art_tag1 	= #{art_tag1}
+				   ,art_tag2 	= #{art_tag2}
+				   ,art_tag3 	= #{art_tag3}
+				   ,art_tag4 	= #{art_tag4}
+				   ,art_tag5 	= #{art_tag5} 
+ 		WHERE		art_id 		= #{art_id}
+ 		AND			brd_id 		= #{brd_id}
+	</update> -->
 	
+	<select id="updateArticle" parameterType="Article" statementType="CALLABLE">
+	{
+		call Update_Article(
+			  #{trd_id, 	   mode= IN}
+			, 1
+			, 401
+			, #{trd_max,       mode= IN,  jdbcType=NUMERIC}
+			, #{trd_enddate,   mode= IN,  jdbcType=DATE}
+			, #{trd_cost,      mode= IN,  jdbcType=NUMERIC}
+			, #{reg_id,        mode= IN,  jdbcType=NUMERIC}
+			, #{trd_loc,       mode= IN}
+			, #{trd_gender,    mode= IN,  jdbcType=NUMERIC}
+			, #{trd_minage,    mode= IN}
+			, #{trd_maxage,    mode= IN}
+			, #{art_id,		   mode= IN}
+			, #{brd_id,        mode= IN}
+			, #{art_title,     mode= IN}
+			, #{art_content,   mode= IN}
+			, #{art_tag1,      mode= IN,  jdbcType=VARCHAR}
+			, #{art_tag2,      mode= IN,  jdbcType=VARCHAR}
+			, #{art_tag3,      mode= IN,  jdbcType=VARCHAR}
+			, #{art_tag4,      mode= IN,  jdbcType=VARCHAR}
+			, #{art_tag5,      mode= IN,  jdbcType=VARCHAR}
+			, #{insert_result, mode= OUT, jdbcType=NUMERIC})
+		}
+	</select>
 </mapper>

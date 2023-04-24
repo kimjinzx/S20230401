@@ -400,16 +400,16 @@
 	<main>
 			<h1>함께 해요 게시판 </h1>
 	
-		<input type="button" value="글쓰기" onclick="${pageContext.request.contextPath}location.href='writeFormArticle'">
+	<input type="button" value="글쓰기"   onclick="${pageContext.request.contextPath}location.href='writeFormArticle'">
 	
 	<p>
-	<input type="button" value="전체" 	onclick="${pageContext.request.contextPath}location.href='together?category=1000'">
-	<input type="button" value="밥 & 카페" onclick="${pageContext.request.contextPath}location.href='together?category=1010'">
-	<input type="button" value="스포츠" 	onclick="${pageContext.request.contextPath}location.href='together?category=1020'">
-	<input type="button" value="쇼핑" 	onclick="${pageContext.request.contextPath}location.href='together?category=1030'">
-	<input type="button" value="문화생활" 	onclick="${pageContext.request.contextPath}location.href='together?category=1040'">
-	<input type="button" value="취미생활" 	onclick="${pageContext.request.contextPath}location.href='together?category=1050'">
-	<input type="button" value="기타" 	onclick="${pageContext.request.contextPath}location.href='together?category=1060'">
+	<input type="button" value="전체" 	onclick="location.href='${pageContext.request.contextPath}/board/together?category=1000'">
+	<input type="button" value="밥 & 카페" onclick="location.href='${pageContext.request.contextPath}/board/together?category=1010'">
+	<input type="button" value="스포츠" 	onclick="location.href='${pageContext.request.contextPath}/board/together?category=1020'">
+	<input type="button" value="쇼핑" 	onclick="location.href='${pageContext.request.contextPath}/board/together?category=1030'">
+	<input type="button" value="문화생활" 	onclick="location.href='${pageContext.request.contextPath}/board/together?category=1040'">
+	<input type="button" value="취미생활" 	onclick="location.href='${pageContext.request.contextPath}/board/together?category=1050'">
+	<input type="button" value="기타" 	onclick="location.href='${pageContext.request.contextPath}/board/together?category=1060'">
 	
 
 	<c:set var="num" value="${page.total-page.start+1 }"></c:set>
@@ -473,13 +473,13 @@
 	</table>	
 	
 	<c:if test="${page.startPage > page.pageBlock }">
-		<a href="listArticle?currentPage=${page.startPage-page.pageBlock}">[이전]</a>
+		<a href="${pageContext.request.contextPath}/board/together?category=${category }&currentPage=${page.startPage-page.pageBlock}">[이전]</a>
 	</c:if>
 	<c:forEach var="i" begin="${page.startPage}" end="${page.endPage}">
-		<a href="listArticle?currentPage=${i}">[${i}]</a>
+		<a href="${pageContext.request.contextPath}/board/together?category=${category }&currentPage=${i}">[${i}]</a>
 	</c:forEach>
 	<c:if test="${page.endPage < page.totalPage }">
-		<a href="listArticle?currentPage=${page.startPage+page.pageBlock}">[다음]</a>
+		<a href="${pageContext.request.contextPath}/board/together?category=${category }&currentPage=${page.startPage+page.pageBlock}">[다음]</a>
 	</c:if>	
 	
 		<button id="scrollToTop" class="adv-hover">
