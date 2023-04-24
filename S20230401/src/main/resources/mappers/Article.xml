@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.java501.S20230401.model.dgArticleMapper">
+<mapper namespace="com.java501.S20230401.model.ArticleMapper">
 	
 	<resultMap type="Article" id="dgArticleMap">
 		<id 	column="art_id" 		property="art_id"/> <!-- PK	 -->
@@ -26,9 +26,9 @@
 		<result column="brd_name" 		property="brd_name"/>
 		<result column="status_name" 	property="status_name"/>
 		<result column="rep_cnt" 		property="rep_cnt"/>
-		<collection property="member" 	resultMap="com.java501.S20230401.model.dgMemberMapper.dgMemberMap"/>
-		<collection property="board" 	resultMap="com.java501.S20230401.model.dgBoardMapper.dgBoardMap"/>
-		<collection property="trade" 	resultMap="com.java501.S20230401.model.dgTradeMapper.dgTradeMap"/>
+		<collection property="member" 	resultMap="com.java501.S20230401.model.MemberMapper.dgMemberMap"/>
+		<collection property="board" 	resultMap="com.java501.S20230401.model.BoardMapper.dgBoardMap"/>
+		<collection property="trade" 	resultMap="com.java501.S20230401.model.TradeMapper.dgTradeMap"/>
 	</resultMap>
 	
 		<!-- 게시판 카운트 -->

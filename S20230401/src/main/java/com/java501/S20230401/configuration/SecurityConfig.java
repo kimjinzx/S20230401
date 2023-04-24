@@ -19,7 +19,19 @@ public class SecurityConfig {
 	@Bean
 	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.csrf().disable();
-		http.authorizeRequests().anyRequest().permitAll();
+		http.authorizeRequests()
+		.antMatchers("/user/**").authenticated()
+		.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
+		.anyRequest().permitAll()
+		.and()
+		.formLogin()						// 로그인 페이지
+		.loginPage("/login")
+		.loginProcessingUrl("/loginProc")
+		.defaultSuccessUrl("/")
+		.and()
+		.logout()							// 로그아웃
+		.logoutSuccessUrl("/")
+		.invalidateHttpSession(true);
 		return http.build();
 	}
 }

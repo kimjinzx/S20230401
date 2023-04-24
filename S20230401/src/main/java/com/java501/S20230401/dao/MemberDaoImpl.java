@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Member;
+import com.java501.S20230401.model.MemberInfo;
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,4 +27,43 @@ public class MemberDaoImpl implements MemberDao {
 		return allMemberList;
 	}
 
+	
+	// 로그인 기능
+	@Override
+	public Member findByMemberUsername(String username) {
+		return session.selectOne("hgGetMemberByUsername", username);
+	}
+	
+	@Override
+	public Member findByMemberEmail(String email) {
+		return session.selectOne("hgGetMemberByEmail", email);
+	}
+	
+	@Override
+	public Member findByMemberNickname(String nickname) {
+		return session.selectOne("hgGetMemberByNickname", nickname);
+	}
+	
+	@Override
+	public MemberInfo findByMemberInfoName(String username) {
+		return session.selectOne("hgGetMemberInfoByUsername", username);
+	}
+	
+	@Override
+	public int registMember(Member member) {
+		return session.insert("hgRegistMember", member);
+	}
+	
+	@Override
+	public Member getMemberById(int mem_id) {
+		return session.selectOne("hgGetMemberById", mem_id);
+	}
+	
+	@Override
+	public void setAuthority(Integer mem_id, int authority) {
+		Member member = new Member();
+		member.setMem_id(mem_id);
+		member.setMem_authority(authority);
+		session.update("hgSetAuthority", member);
+	}
 }

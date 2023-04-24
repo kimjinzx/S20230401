@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.java501.S20230401.model.dgTradeMapper">
+<mapper namespace="com.java501.S20230401.model.TradeMapper">
 
 	<resultMap type="Trade" id="dgTradeMap">
 		<id 	column="trd_id" 		property="trd_id"/><!-- PK -->
@@ -15,8 +15,8 @@
 		<result column="trd_gender" 	property="trd_gender"/>
 		<result column="trd_minage" 	property="trd_minage"/>
 		<result column="trd_maxage" 	property="trd_maxage"/>
-		<collection property="member" 	resultMap="com.java501.S20230401.model.dgMemberMapper.dgMemberMap"/>
-		<collection property="comm" 	resultMap="com.java501.S20230401.model.dgCommMapper.dgCommMap"/>
-		<collection property="region" 	resultMap="com.java501.S20230401.model.dgRegionMapper.dgRegionMap"/>
+		<collection property="member" 	resultMap="com.java501.S20230401.model.MemberMapper.dgMemberMap"/>
+		<collection property="comm" 	resultMap="com.java501.S20230401.model.CommMapper.dgCommMap"/>
+		<collection property="region" 	resultMap="com.java501.S20230401.model.RegionMapper.dgRegionMap"/>
 	</resultMap>
 </mapper>

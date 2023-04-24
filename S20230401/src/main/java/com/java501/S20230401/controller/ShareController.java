@@ -154,10 +154,10 @@ public class ShareController {
 	
 	
 	// 메인
-	@RequestMapping(value = "/")
-	public String indexPage() {
-		return "redirect:/board/share?category=999";
-	}
+//	@RequestMapping(value = "/")
+//	public String indexPage() {
+//		return "redirect:/board/share?category=999";
+//	}
 	// Share외의 다른 카테고리 연결
 	@RequestMapping(value = "board/{categoryConnect}")
 	public String togetherPage(	@PathVariable("categoryConnect")

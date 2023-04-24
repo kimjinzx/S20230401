@@ -285,8 +285,8 @@
 <body>
 	<header>
 		<div id="usernav">
-			<!-- <a href="">로그인</a>
-			<a href="">회원가입</a>
+			<a href="">로그인</a>
+<!-- 				<a href="">회원가입</a>
 			<a href="">마이페이지</a> -->
 			<a href="">이용 약관</a>
 			<a href="">개인정보 취급 방침</a>
@@ -376,7 +376,7 @@
 								</svg>
 							</button>
 							<div id="login-popup" class="popup-window">
-								<button id="login-button" class="subtheme-button adv-hover" click="location.href = '/login';">
+								<button id="login-button" class="subtheme-button adv-hover" onclick="location.href = '/login';">
 									로그인
 								</button>
 							</div>

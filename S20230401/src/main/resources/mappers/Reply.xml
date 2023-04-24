@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.java501.S20230401.model.dgReplyMapper">
+<mapper namespace="com.java501.S20230401.model.ReplyMapper">
 
 	<resultMap type="Reply" id="dgReplyMap">
 		<id 	column="art_id" 		property="art_id"/>
@@ -16,8 +16,8 @@
 		<result column="rep_step" 		property="rep_step"/>
 		<result column="isdelete" 		property="isdelete"/>
 		<result column="report_id" 		property="report_id"/>
-		<collection property="member" 	resultMap="com.java501.S20230401.model.dgMemberMapper.dgMemberMap"/>
-		<collection property="board" 	resultMap="com.java501.S20230401.model.dgBoardMapper.dgBoardMap"/>
+		<collection property="member" 	resultMap="com.java501.S20230401.model.MemberMapper.dgMemberMap"/>
+		<collection property="board" 	resultMap="com.java501.S20230401.model.BoardMapper.dgBoardMap"/>
 	</resultMap>
 	
 	<!-- 댓글 조회 -->
