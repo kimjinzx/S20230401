@@ -321,7 +321,7 @@
 										</c:if>
 									</div>
 									<div class="article-part-b">
-										<a href="${pageContext.request.contextPath}/">
+										<a href="${pageContext.request.contextPath}/board/${boards[i.index].value }/${articleMember.art_id }?brd_id=${articleMember.brd_id }&category=${boards[i.index].key }">
 											${articleMember.art_title }
 										</a>
 									</div>

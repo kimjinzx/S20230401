@@ -58,6 +58,7 @@ public class HomeController {
 			}
 			articles.add(boardLists);
 		}
+		model.addAttribute("boards", boards);
 		model.addAttribute("articleTypes", new String[] { "RECENT", "POPULAR" });
 		model.addAttribute("articles", articles);
 		return "index";
