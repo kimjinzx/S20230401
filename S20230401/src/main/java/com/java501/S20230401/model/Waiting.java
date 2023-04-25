@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class Waiting {
-	private int 	trd_id;
-	private int 	mem_id;
+	private Integer 	trd_id;
+	private Integer 	mem_id;
 	private Date 	wait_date;
 }

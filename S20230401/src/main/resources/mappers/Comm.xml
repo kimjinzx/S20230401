@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java501.S20230401.CommMapper">
+	
+	<select id="JHCategory" resultType="Comm">
+		SELECT * FROM comm where comm_id between 1110 and 1150
+	</select>
+	
+	<select id="JHCategoryUd" resultType="Comm">
+		SELECT * FROM comm where comm_id between 1110 and 1150
+	</select>
+	
+</mapper>
+

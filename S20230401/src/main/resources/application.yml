@@ -1,5 +1,5 @@
 server:
-  port: 8888
+  port: 8891
 # Oracle Connect
 spring:
   # File Size
@@ -16,7 +16,7 @@ spring:
   # JPA Setting
   jpa:
     hibernate:
-      ddl-auto: none # none create
+      ddl-auto: create # none create
     properties:
       hibernate:
         default_batch_fetch_size: 500

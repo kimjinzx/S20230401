@@ -304,7 +304,7 @@
 			<div id="topmenu">
 				<a class="adv-hover menuitem" href="">함께해요</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="">같이사요</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath }/board/dutchpay?category=1100">같이사요</a>
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="">나눔해요</a>
 				<div class="menu-separator"></div>
@@ -325,11 +325,11 @@
 							<a class="submenuitem adv-hover" href="">기타</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">식료품</a>
-							<a class="submenuitem adv-hover" href="">의류 / 잡화</a>
-							<a class="submenuitem adv-hover" href="">생활용품</a>
-							<a class="submenuitem adv-hover" href="">해외배송</a>
-							<a class="submenuitem adv-hover" href="">기타</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/dutchpay?category=1110">식료품</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/dutchpay?category=1120">의류 / 잡화</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/dutchpay?category=1130">생활용품</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/dutchpay?category=1140">해외배송</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/dutchpay?category=1150">기타</a>
 						</div>
 						<div class="submenu">
 							<a class="submenuitem adv-hover" href="">식품</a>
