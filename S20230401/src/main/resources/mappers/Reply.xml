@@ -27,9 +27,11 @@
 		        FROM   (SELECT  R.*, M.MEM_USERNAME, M.MEM_NICKNAME, M.MEM_EMAIL, M.MEM_AUTHORITY, M.MEM_IMAGE, M.MEM_LATEST
 		                FROM    REPLY R, MEMBER M
 		                WHERE   R.MEM_ID = M.MEM_ID(+))J
-				WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
+				WHERE 	ART_ID = #{art_id}
+				AND 	BRD_ID = #{brd_id}
 		        ORDER BY J.REP_PARENT ASC, REP_STEP ASC
 		        )
+		WHERE 	ISDELETE = 0
 	</select>
 	
 	<!-- 댓글 작성  -->
@@ -68,4 +70,14 @@
 		        </choose>
 		        0)
 	</insert>
+	
+	<!-- 댓글 삭제 -->
+	<update id="dgDeleteReply" parameterType="Reply">
+		UPDATE  REPLY
+		SET     ISDELETE = 1
+		WHERE   BRD_ID = #{brd_id}
+		AND     ART_ID = #{art_id}
+		AND     REP_ID = #{rep_id}
+	</update>
+	
 </mapper>

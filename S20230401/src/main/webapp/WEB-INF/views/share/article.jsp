@@ -24,11 +24,14 @@ $(document).ready(() => {
 		});
 	});
 	
-	$(document).ready(function (){
+/* 	$(document).ready(function (){
 		$(".btns-delete").click(function(){
-			$(".btns-delete").closest('.reply-button').append('<button name="delete">버튼</button>');
+			location.href="";
 		});
-	});
+	}); */
+	function rep_delete(brd_id, art_id, rep_id) {
+		location.href = '${pageContext.request.contextPath}/board/share/delete?art_id='+art_id+'&brd_id='+brd_id+'&rep_id='+rep_id;
+	}
 	
 
 /*
@@ -146,7 +149,7 @@ $(document).ready(function() {
 								</div>
 								<div class="reply-button">
 									<span><button>작성버튼</button></span>
-									<span><button class="btns-delete">삭제버튼</button></span>
+									<span><button class="btns-delete" onclick="rep_delete(${article.brd_id},${article.art_id},${reply.rep_id})">삭제버튼</button></span>
 								</div>
 							</div>
 							<div class="reply-replyWrite" style="display: none; margin-left: 10%">

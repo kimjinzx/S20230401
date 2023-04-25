@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 public class ReplyDaoImpl implements ReplyDao {
 	private final SqlSession session;
 	
+	// 댓글 리스트
 	@Override
 	public List<Reply> replyShareList(Article article) {
 		List<Reply> replyList = null;
@@ -25,7 +26,7 @@ public class ReplyDaoImpl implements ReplyDao {
 		}
 		return replyList;
 	}
-
+	// 댓글 작성
 	@Override
 	public int writeReply(Reply reply) {
 		int reulst = 0;
@@ -35,6 +36,17 @@ public class ReplyDaoImpl implements ReplyDao {
 			e.printStackTrace();
 		}
 		return reulst;
+	}
+	// 댓글 삭제
+	@Override
+	public int deleteReply(Reply reply) {
+		int result = 0;
+		try {
+			result = session.update("dgDeleteReply", reply);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 
 }

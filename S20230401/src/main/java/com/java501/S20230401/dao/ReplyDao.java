@@ -12,5 +12,6 @@ public interface ReplyDao {
 
 	List<Reply> replyShareList(Article article);
 	int writeReply(Reply reply);
+	int deleteReply(Reply reply);
 
 }

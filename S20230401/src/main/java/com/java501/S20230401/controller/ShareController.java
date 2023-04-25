@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.annotation.JacksonInject.Value;
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.MemberDetails;
@@ -25,6 +26,7 @@ import com.java501.S20230401.service.Paging;
 import com.java501.S20230401.service.ReplyService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import lombok.extern.slf4j.Slf4j;
 
 // 나눔해요 페이지 계열 컨트롤러 : 양동균
@@ -172,7 +174,7 @@ public class ShareController {
 			reply.setMem_id(memberInfo.getMem_id());
 		}else {
 			// 로그인 안했을때 수정필요
-			return String.format("redirect:/board/share/%s/%s?category=%s", reply.getBrd_id(), reply.getArt_id(), category);
+			return String.format("redirect:/board/share/%s%s?category=%s", reply.getBrd_id(), reply.getArt_id(), category);
 		}
 		
 		System.out.println("게시판 아이디 : "+reply.getBrd_id());
@@ -189,10 +191,33 @@ public class ShareController {
 			System.out.println("성공");
 		else
 			System.out.println("실패");
-		return String.format("redirect:/board/share/%s/%s?category=%s", reply.getBrd_id(), reply.getArt_id(), category);
+		return String.format("redirect:/board/share/%s%s?category=%s", reply.getBrd_id(), reply.getArt_id(), category);
 	}
 	
-	
+	// 게시글 삭제
+	@RequestMapping(value = "board/share/delete")
+	public String deleteReply(	@AuthenticationPrincipal
+								MemberDetails memberDetails,
+								Reply reply,
+								RedirectAttributes redirectAttributes) {
+		MemberInfo memberInfo = null;
+		if(memberDetails != null) {
+			memberInfo = memberDetails.getMemberInfo(); 					// 유저 정보 저장
+			redirectAttributes.addFlashAttribute("memberInfo", memberInfo);	// 유저 정보 리턴
+			reply.setMem_id(memberInfo.getMem_id());
+		}else {
+			return String.format("redirect:/board/share/%s%s?category=%s", reply.getBrd_id(), reply.getArt_id(), reply.getBrd_id());
+		}
+		
+		int result = replyService.deleteReply(reply);
+		
+		if(result > 0)
+			System.out.println("성공");
+		else
+			System.out.println("실패");
+		
+		return String.format("redirect:/board/share/%s%s?category=%s", reply.getBrd_id(), reply.getArt_id(), reply.getBrd_id());
+	}
 	
 	
 	

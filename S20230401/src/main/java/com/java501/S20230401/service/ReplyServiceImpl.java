@@ -23,5 +23,9 @@ public class ReplyServiceImpl implements ReplyService {
 	public int writeReply(Reply reply) {
 		return replyDao.writeReply(reply);
 	}
+	@Override
+	public int deleteReply(Reply reply) {
+		return replyDao.deleteReply(reply);
+	}
 
 }
