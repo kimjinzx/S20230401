@@ -31,6 +31,7 @@ public class CustomerController {
 	public String customerList(Article article, int category, String currentPage, Model model) {
 		System.out.println("CustomerController Start customerList..." );
 		article.setBrd_id(category);
+		int brd_id = category;
 		int totalCustomer =  as.totalCustomer();
 		System.out.println("CustomerController totalCustomer=>" + totalCustomer);
 		// Paging 작업
@@ -39,13 +40,23 @@ public class CustomerController {
 		article.setStart(page.getStart());	// 시작시 1
 		article.setEnd(page.getEnd());		// 시작시 10
 		
-		List<Article> listCustomer = as.listCustomer(article);
-		System.out.println("CustomerController list listNotice.size()->"+listCustomer.size());
 		
-		model.addAttribute("totalCustomer", totalCustomer);
-		model.addAttribute("listCustomer", listCustomer);
-		model.addAttribute("page", page);
 		// 설정해둔 view resolver로 리턴
+		model.addAttribute("category", category);
+		model.addAttribute("totalCustomer", totalCustomer);
+		model.addAttribute("brd_id", brd_id);
+		model.addAttribute("page", page);
+		article.setBrd_id(brd_id);
+		System.out.println("brd_id --->" + brd_id);
+		if(brd_id == 1500) {
+			List<Article> listCustomer = as.listCustomer(article);
+			model.addAttribute("listCustomer", listCustomer);
+		}else {
+			List<Article> listCustomerMenu = as.listCustomerMenu(article);
+			System.out.println("컨트롤러 리스트커스터머메뉴"+ listCustomerMenu);
+			model.addAttribute("listCustomer", listCustomerMenu);
+		}
+			
 		return "/customer/CustomerIndex";
 	}
 	

@@ -9,6 +9,7 @@ public interface ArticleDao {
 	List<Article> 	listCustomer(Article article);
 	Article 		detailCustomer(Article article);
 	List<Article> 	listManager();
+	List<Article> listCustomerMenu(Article article);
 	
 	
 	

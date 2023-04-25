@@ -48,5 +48,12 @@ public class ArticleServiceImpl implements ArticleService {
 		return articleList;
 	}
 
+	@Override
+	public List<Article> listCustomerMenu(Article article) {
+		List<Article> listMenu = null;
+		listMenu = ad.listCustomerMenu(article);
+		return listMenu;
+	}
+
 
 }

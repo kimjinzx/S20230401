@@ -10,6 +10,7 @@ public interface ArticleService {
 	List<Article> 		listCustomer(Article article);
 	Article 			detailCustomer(Article article);
 	List<Article> 		listManager();
+	List<Article> listCustomerMenu(Article article);
 	
 	
 

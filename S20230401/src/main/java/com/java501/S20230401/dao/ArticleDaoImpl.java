@@ -64,5 +64,18 @@ public class ArticleDaoImpl implements ArticleDao {
 		return null;
 	}
 
+	@Override
+	public List<Article> listCustomerMenu(Article article) {
+		List<Article> listMenu = null;
+		try {
+			listMenu = session.selectList("shListCustomerMenu", article);
+			System.out.println("다오 리스트메뉴"+listMenu);
+		} catch (Exception e) {
+			System.out.println("메뉴에러"+e.getMessage());
+		}
+			
+		return listMenu;
+	}
+
 
 }
