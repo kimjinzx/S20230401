@@ -4,9 +4,26 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>${article.art_title } - ${boardScope } 게시판${currentPage != null ? ' ' + currentPage + ' 페이지' : ' 1 페이지' } ▒ ShareGo</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/initializer.js"></script>
+<script type="text/javascript">
+	const getReplyList = (art_id, brd_id) => {
+		let dataObj = {art_id : art_id, brd_id : brd_id};
+		let sendData = JSON.stringify(dataObj);
+		$.ajax({
+			url: '${pageContext.request.contextPath}/board/${boardName}/${article.art_id}/replies',
+			type: 'post',
+			data: sendData,
+			dataType: 'json',
+			traditional: true,
+			success: data => {
+				alert(data);
+				$('#reply-section').html(data);
+			}
+		});
+	};
+</script>
 <link href="https://unpkg.com/sanitize.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/preference.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/presets.css">
@@ -76,10 +93,47 @@
 		border-bottom: 2px solid var(--subtheme);
 	}
 </style>
+<!-- ignoring Style -->
+<style type="text/css">
+	/* Buttons */
+	button.theme-button {
+		background-color: var(--theme);
+		color: var(--theme-font);
+		font-weight: bold;
+		padding: 0;
+		border-radius: 5px;
+		outline: none;
+		border: 2px solid var(--subtheme);
+		cursor: pointer;
+	}
+	button.subtheme-button {
+		background-color: var(--subtheme);
+		color: var(--subtheme-font);
+		font-weight: bold;
+		padding: 0;
+		border-radius: 5px;
+		outline: none;
+		border: 0;
+		cursor: pointer;
+	}
+</style>
 </head>
 <body>
 	<div class="container">
+		<div style="height: 100px; display: flex; justify-content: flex-start; align-items: center; border: 2px solid var(--subtheme); border-radius: 10px; margin-bottom: 10px; padding: 0 10px">
+			<span style="font-size: 32px; font-weight: bold; color: var(--subtheme);">${boardScope }</span>
+		</div>
+		<div id="art_data" style="display: flex; justify-content: flex-end; align-items: center;">
+			<c:if test="${memberInfo.mem_id == article.mem_id }">
+				<button class="theme-button adv-hover" style="margin: 5px; padding: 2.5px 5px; font-size: 12px;" type="button">수정</button>
+				<button class="theme-button adv-hover" style="margin: 5px; padding: 2.5px 5px; font-size: 12px;" type="button">삭제</button>
+			</c:if>
+			<button class="subtheme-button adv-hover" style="margin: 5px; padding: 2.5px 5px; font-size: 12px;" type="button">목록</button>
+		</div>
 		<div id="art_title">
+			<c:if test="${board != null }">
+				<span style="font-size: 14px; font-weight: bold; padding: 2.5px 5px; border-radius: 5px; border: 0; background-color: var(--subtheme); color: var(--subtheme-font);">${board }</span>
+			</c:if>
 			<span>${article.art_title }</span>
 		</div>
 		<div id="art_info">
@@ -133,6 +187,18 @@
 			<div style="width: 50px; height: 50px; border-radius: 50%; margin: 10px; box-shadow: 0 2.5px 2.5px var(--theme-font); overflow: hidden;">
 				<img style="object-fit: cover; width: 50px; height: 50px;" src="${pageContext.request.contextPath }/uploads/profile/${article.mem_image }" onerror="this.onerror=null; this.src='${pageContext.request.contextPath }/image/anonymous.png';">
 			</div>
+		</div>
+		<div style="display: flex; justify-content: flex-start; align-items: center;">
+			<h2 style="color: var(--subtheme); margin: 10px;">댓글</h2>
+			<button type="button" class="theme-button adv-hover" style="padding: 2.5px; border: 0; display: flex; justify-content: center; align-items: center;" onclick="getReplyList(${article.art_id}, ${article.brd_id});">
+				<svg width="32" height="32" viewBox="0 0 512 512" style="pointer-events: none; stroke-width: 64px; stroke-linecap: round; stroke-linejoin: round; stroke-miterlimit: 10px; stroke: var(--subtheme); fill: none;">
+					<path d="M320 146s24.36-12-64-12a160 160 0 10160 160"/>
+					<path d="M256 58l80 80-80 80"/>
+				</svg>
+			</button>
+		</div>
+		<div id="reply-section">
+			
 		</div>
 	</div>
 </body>
