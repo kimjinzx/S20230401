@@ -37,8 +37,8 @@ public class ArticleDaoImpl implements ArticleDao {
 		System.out.println("ArticleDaoImpl listCustomer Start ..." );
 		try {
 			//                             Map ID        parameter
-			customerList = session.selectList("shArticleListCustomer", article);
-			System.out.println("ArticleDaoImpl listCustomer articleList.size()->"+customerList.size());
+			customerList = session.selectList("shListCustomer", article);
+			System.out.println("ArticleDaoImpl listCustomer customerList.size()->"+customerList.size());
 		} catch (Exception e) {
 			System.out.println("ArticleDaoImpl listCustomer e.getMessage()->"+e.getMessage());
 		}

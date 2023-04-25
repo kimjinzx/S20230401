@@ -61,9 +61,9 @@ public class CustomerController {
 		Article customerDetail = as.detailCustomer(article);
 		model.addAttribute("article", customerDetail);
 		
-//		2. ArticleDao   detailNotice method 선언 
+//		2. ArticleDao   detailCustomer method 선언 
 ////		                    mapper ID   ,    Parameter
-//		article = session.selectOne("shNoticeSelOne",    brd_id);
+//		article = session.selectOne("shCustomerDetail",    brd_id);
 		System.out.println("댓글 갯수세기 시작");
 		// 댓글 총갯수세기
 		// 댓글 목록

@@ -12,7 +12,7 @@
  	 ]]>	
 	</select>
 	
-	<select id="shArticleListCustomer" parameterType="Article" resultType="Article">
+	<select id="shListCustomer" parameterType="Article" resultType="Article">
 	 <![CDATA[
 		SELECT *
   		FROM 
@@ -40,20 +40,6 @@
 		FROM article
 		WHERE brd_id >=1500 and brd_id <1511
 	]]>
-	</select>
-	
-	<select id="shListNotice" parameterType="Article" resultType="Article">
-	 <![CDATA[
-   				 SELECT A.*, M.MEM_NICKNAME, M.MEM_IMAGE, NVL(R.REP_COUNT, 0) REP_COUNT
-				 FROM ARTICLE A
-				 LEFT JOIN MEMBER M ON A.MEM_ID = M.MEM_ID
-				 LEFT JOIN (SELECT ART_ID, BRD_ID, COUNT(*) REP_COUNT
-				 			FROM REPLY
-				 			GROUP BY ART_ID, BRD_ID) R
-				 			ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID)
-				 			WHERE A.BRD_ID >= 1500 AND A.BRD_ID < 1511
-        		 			ORDER BY a.art_id desc
- 	 ]]>	
 	</select>
 	
 	<select id="shCustomerDetail" parameterType="Article" resultType="Article">

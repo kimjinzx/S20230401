@@ -411,7 +411,7 @@
 		<tr><th>글번호</th><th>제목</th><th>작성자</th><th>프사</th><th>작성일</th><th>댓글수</th><th>조회수</th><th>추천수</th><th>비추천수</th></tr>
 		<c:forEach var="article" items="${listCustomer }">
 			<tr>
-			<td>${num }</td>
+			<td>${article.art_id }</td>
 			<td><a href="${pageContext.request.contextPath}/board/customer/detailCustomer?art_id=${article.art_id}&brd_id=${article.brd_id}">${article.art_title}</a></td>
 			<td>${article.mem_nickname }</td>
 			<td><img src="${pageContext.request.contextPath}/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
