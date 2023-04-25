@@ -38,6 +38,7 @@ import com.java501.S20230401.model.MemberDetails;
 import com.java501.S20230401.model.MemberInfo;
 import com.java501.S20230401.model.Region;
 import com.java501.S20230401.model.Reply;
+import com.java501.S20230401.model.ReplyMember;
 import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.CommService;
 import com.java501.S20230401.service.RegionService;
@@ -179,19 +180,16 @@ public class ArticleController {
 		return "viewArticle_Backup";
 	}
 	
-	@RequestMapping(value = "/board/{boardName}/{art_id}/replies")
+	@PostMapping(value = "/board/{boardName}/{art_id}/replies")
 	public String viewReply(@PathVariable String boardName,
 						    @PathVariable int art_id,
 						    @RequestBody Map<String, Object> data,
 						    Model model) {
-		for (Map.Entry<String, Object> entry : data.entrySet()) {
-			System.out.println(entry.getKey() + " : " + entry.getValue());
-		}
 		int brd_id = (int)data.get("brd_id");
 		Article article = new Article();
 		article.setArt_id(art_id);
 		article.setBrd_id(brd_id);
-		List<Reply> replies = reps.getReplyByArticle(article);
+		List<ReplyMember> replies = reps.getReplyByArticle(article);
 		model.addAttribute("replies", replies);
 		return "replyMiddleView";
 	}

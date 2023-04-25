@@ -15,14 +15,17 @@
 			url: '${pageContext.request.contextPath}/board/${boardName}/${article.art_id}/replies',
 			type: 'post',
 			data: sendData,
-			dataType: 'json',
+			dataType: 'html',
+			contentType: 'application/json',
 			traditional: true,
 			success: data => {
-				alert(data);
 				$('#reply-section').html(data);
 			}
 		});
 	};
+	$(() => {
+		getReplyList(${article.art_id}, ${article.brd_id});
+	});
 </script>
 <link href="https://unpkg.com/sanitize.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/preference.css">
@@ -188,7 +191,7 @@
 				<img style="object-fit: cover; width: 50px; height: 50px;" src="${pageContext.request.contextPath }/uploads/profile/${article.mem_image }" onerror="this.onerror=null; this.src='${pageContext.request.contextPath }/image/anonymous.png';">
 			</div>
 		</div>
-		<div style="display: flex; justify-content: flex-start; align-items: center;">
+		<div style="display: flex; justify-content: flex-start; align-items: center; border-bottom: 1px solid var(--subtheme);">
 			<h2 style="color: var(--subtheme); margin: 10px;">댓글</h2>
 			<button type="button" class="theme-button adv-hover" style="padding: 2.5px; border: 0; display: flex; justify-content: center; align-items: center;" onclick="getReplyList(${article.art_id}, ${article.brd_id});">
 				<svg width="32" height="32" viewBox="0 0 512 512" style="pointer-events: none; stroke-width: 64px; stroke-linecap: round; stroke-linejoin: round; stroke-miterlimit: 10px; stroke: var(--subtheme); fill: none;">
@@ -197,7 +200,7 @@
 				</svg>
 			</button>
 		</div>
-		<div id="reply-section">
+		<div id="reply-section" style="display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch; margin: 5px 0;">
 			
 		</div>
 	</div>

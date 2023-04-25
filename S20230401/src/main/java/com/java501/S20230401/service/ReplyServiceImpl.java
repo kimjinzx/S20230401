@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.java501.S20230401.dao.ReplyDao;
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Reply;
+import com.java501.S20230401.model.ReplyMember;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,7 +17,7 @@ public class ReplyServiceImpl implements ReplyService {
 	private final ReplyDao rd;
 	
 	@Override
-	public List<Reply> getReplyByArticle(Article article) {
+	public List<ReplyMember> getReplyByArticle(Article article) {
 		return rd.getReplyByArticle(article);
 	}
 }
