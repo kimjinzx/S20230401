@@ -8,6 +8,8 @@ import com.java501.S20230401.dao.ArticleDao;
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Member;
 import com.java501.S20230401.model.Reply;
+import com.java501.S20230401.model.ArticleMember;
+import com.java501.S20230401.util.SummaryType;
 
 import lombok.RequiredArgsConstructor;
 @Service
@@ -62,5 +64,20 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	
+	@Override
+	public List<ArticleMember> getArticleSummary(int boardNum, SummaryType summaryType) {
+		List<ArticleMember> articleList = ad.getArticleSummary(boardNum, summaryType);
+		return articleList;
+	}
 	
+	@Override
+	public int insertArticle(Article article) {
+		int result = ad.insertArticle(article);
+		return result;
+	}
+	
+	@Override
+	public Article getArticleById(Article searcher) {
+		return ad.getArticleById(searcher);
+	}
 }
