@@ -18,7 +18,7 @@
 		FROM article a
 		LEFT JOIN trade t ON a.trd_id = t.trd_id
 		LEFT JOIN comm c ON t.trd_status = c.comm_id
-		LEFT JOIN region r ON t.trd_loc = r.reg_id
+		LEFT JOIN region r ON t.reg_id = r.reg_id
 		LEFT JOIN member m ON a.mem_id = m.mem_id
 		WHERE a.brd_id between 1100 and 1200
 	</select>
@@ -37,7 +37,7 @@
 		FROM article a
 		LEFT JOIN trade t ON a.trd_id = t.trd_id
 		LEFT JOIN comm c ON t.trd_status = c.comm_id
-		LEFT JOIN region r ON t.trd_loc = r.reg_id
+		LEFT JOIN region r ON t.reg_id = r.reg_id
 		LEFT JOIN member m ON a.mem_id = m.mem_id
 		WHERE a.brd_id = 1110
 	</select>
@@ -56,7 +56,7 @@
 		FROM article a
 		LEFT JOIN trade t ON a.trd_id = t.trd_id
 		LEFT JOIN comm c ON t.trd_status = c.comm_id
-		LEFT JOIN region r ON t.trd_loc = r.reg_id
+		LEFT JOIN region r ON t.reg_id = r.reg_id
 		LEFT JOIN member m ON a.mem_id = m.mem_id
 		WHERE a.brd_id = 1120
 	</select>
@@ -75,7 +75,7 @@
 		FROM article a
 		LEFT JOIN trade t ON a.trd_id = t.trd_id
 		LEFT JOIN comm c ON t.trd_status = c.comm_id
-		LEFT JOIN region r ON t.trd_loc = r.reg_id
+		LEFT JOIN region r ON t.reg_id = r.reg_id
 		LEFT JOIN member m ON a.mem_id = m.mem_id
 		WHERE a.brd_id = 1130
 	</select>
@@ -94,7 +94,7 @@
 		FROM article a
 		LEFT JOIN trade t ON a.trd_id = t.trd_id
 		LEFT JOIN comm c ON t.trd_status = c.comm_id
-		LEFT JOIN region r ON t.trd_loc = r.reg_id
+		LEFT JOIN region r ON t.reg_id = r.reg_id
 		LEFT JOIN member m ON a.mem_id = m.mem_id
 		WHERE a.brd_id = 1140
 	</select>
@@ -113,7 +113,7 @@
 		FROM article a
 		LEFT JOIN trade t ON a.trd_id = t.trd_id
 		LEFT JOIN comm c ON t.trd_status = c.comm_id
-		LEFT JOIN region r ON t.trd_loc = r.reg_id
+		LEFT JOIN region r ON t.reg_id = r.reg_id
 		LEFT JOIN member m ON a.mem_id = m.mem_id
 		WHERE a.brd_id = 1150
 	</select>
@@ -130,7 +130,7 @@
 		FROM article a
 		LEFT JOIN trade t  ON a.trd_id = t.trd_id
 		LEFT JOIN comm c   ON t.trd_status = c.comm_id
-		LEFT JOIN region r ON t.trd_loc = r.reg_id
+		LEFT JOIN region r ON t.reg_id = r.reg_id
 		LEFT JOIN member m ON a.mem_id = m.mem_id
 		WHERE a.brd_id=#{brd_id} and a.art_id=#{art_id}
 	</select>
@@ -138,20 +138,21 @@
 	<select id="JHInsert" parameterType="Article_Trade_Reply" statementType="CALLABLE">
 		{
 			CALL insert_form(
-				401,
 				#{brd_id, 			mode=IN,  jdbcType=NUMERIC},
 				#{art_title, 		mode=IN,  jdbcType=VARCHAR},
 				#{art_regdate, 		mode=IN,  jdbcType=DATE},
-				#{trd_enddate, 		mode=IN,  jdbcType=DATE},
 				#{art_tag1, 		mode=IN,  jdbcType=VARCHAR},
 				#{art_tag2, 		mode=IN,  jdbcType=VARCHAR},
 				#{art_tag3, 		mode=IN,  jdbcType=VARCHAR},
 				#{art_tag4, 		mode=IN,  jdbcType=VARCHAR},
 				#{art_tag5, 		mode=IN,  jdbcType=VARCHAR},
+				#{art_content, 		mode=IN,  jdbcType=CLOB},
+				#{trd_status, 		mode=IN,  jdbcType=NUMERIC},
+				#{trd_enddate, 		mode=IN,  jdbcType=DATE},
 				#{trd_max, 			mode=IN,  jdbcType=NUMERIC},
 				#{trd_cost, 		mode=IN,  jdbcType=NUMERIC},
-				#{trd_loc, 			mode=IN,  jdbcType=NUMERIC},
-				#{art_content, 		mode=IN,  jdbcType=CLOB}
+				#{trd_loc, 			mode=IN,  jdbcType=VARCHAR},
+				#{reg_id, 			mode=IN,  jdbcType=NUMERIC}
 			)
 		}
 	</select>

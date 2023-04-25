@@ -43,6 +43,7 @@ public class ArticleDaoImpl implements ArticleDao {
 	@Override
 	public void dutchpayInsert2(Article_Trade_Reply atr) {
 		try {
+			System.out.println(atr);
 			session.selectOne("JHInsert",atr);
 		} catch (Exception e) {
 			System.out.println("ArticleServiceImpl dutchpayInsert2 Exception -> "+e.getMessage());

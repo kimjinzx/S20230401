@@ -9,12 +9,13 @@
 </head>
 <body>
 <h1>글작성</h1>
-<%-- <c:if test="${msg != null}">${msg }</c:if> --%>
 <form action="${pageContext.request.contextPath }/dutchpay/dutchpayWritePro" method="post" >
 
-<table> 
-		<tr><th>
-		</th></tr> 
+		<input type="hidden" name="mem_id" value="1">
+		<input type="hidden" name="trd_status" value="401">
+<table border="1"> 
+		
+		
 		<tr><th>제목</th><td><input type="text" name="art_title" required="required">
 		
 		<tr><th>카테고리</th><td>
@@ -26,23 +27,24 @@
 		</tr>
 		
 		<tr><th>태그</th>
-		<td><input type="text" name="art_tag1"  >
+		<td><input type="text" name="art_tag1" >
 			<input type="text" name="art_tag2" >
-			<input type="text" name="art_tag3" >
+			<input type="text" name="art_tag3" ><br>
 			<input type="text" name="art_tag4" >
-			<input type="text" name="art_tag5" >
-		</td></tr>
+			<input type="text" name="art_tag5" ></td></tr>
 		
-		<tr><th>가격</th><td><input     type="number" name="trd_cost"     required="required"></td></tr>
-		<tr><th>모집인원</th><td><input  type="number" name="trd_max" 	    required="required"></td></tr>
+		<tr><th>가격</th><td><input     type="number" name="trd_cost"     	required="required"></td></tr>
+		<tr><th>모집인원</th><td><input  type="number" name="trd_max" 	    	required="required"></td></tr>
+	    <!-- <tr><th>마감일자</th><td><input  type="date"   name="trd_enddate" 	    required="required"></td></tr> --> 
 		
 		<tr><th>지역</th><td>
-			<select name="loc">
+			<select name="reg_id">
 			<c:forEach var="L" items="${loc }">
 				<option value="${L.reg_id }">${L.reg_name }</option>
 			</c:forEach>
 			</select></td>
 		</tr>
+		<tr><th>거래 상세장소</th><td><input  type="text" name="trd_loc"></td></tr> 
 		<tr><th>내용</th><td>
 		 	<textarea rows="10" cols="50" name="art_content"></textarea>
 		

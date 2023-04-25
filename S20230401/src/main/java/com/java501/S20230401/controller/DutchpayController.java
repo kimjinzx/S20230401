@@ -4,9 +4,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.databind.annotation.JsonValueInstantiator;
 import com.java501.S20230401.model.Article_Trade_Reply;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Region;
@@ -59,6 +62,7 @@ public class DutchpayController {
 		for (Comm c : category) System.out.println(c.getComm_id() + " : " + c.getComm_value());
 		System.out.println("dutchpay/dutchpayWriteForm category.size()- >"+category.size());
 		List<Region> loc = as.loc1();
+		//for (Region l : loc) System.out.println(l.getReg_id() + " : " + l.getReg_name());
 		System.out.println("dutchpay/dutchpayWriteForm loc.size() ->"+loc.size());
 	
 		model.addAttribute("categories", category);
@@ -68,15 +72,13 @@ public class DutchpayController {
 	}
 	
 	@PostMapping(value = "dutchpay/dutchpayWritePro") // 글내용 삽입 (insert) 
-	public String insert(Article_Trade_Reply atr ,Model model) {
+	public String insert(Article_Trade_Reply atr ,RedirectAttributes ra) {
 		
 		System.out.println("start insert button");
 		System.out.println(atr);
 		System.out.println("controller insert brd_id  -> "+atr.getBrd_id());
-		System.out.println("controller insert art_id  -> "+atr.getArt_id());
-		System.out.println("controller insert trd_id  -> "+atr.getTrd_id());
 		as.dutchpayInsert1(atr);
-			model.addAttribute("atr", atr);
+			ra.addFlashAttribute("atr", atr);  //model.addAttribute와 다른점은 컨트롤러 내에서 매핑할 시 이렇게 사용하는게 좋음
 			int brd_id = atr.getBrd_id(); //확인 버튼 누르면 드롭다운(카테고리) 에서 고른 해당카테고리로 이동 
 			return "redirect:/board/dutchpay?category="+brd_id;
 		}

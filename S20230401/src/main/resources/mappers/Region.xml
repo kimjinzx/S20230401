@@ -5,11 +5,11 @@
 <mapper namespace="com.java501.S20230401.RegionMapper">
 
 	<select id="JHLoc" resultType="Region">
-		SELECT reg_name FROM region
+		SELECT * FROM region
 	</select>
 	
 	<select id="JHLocUd" resultType="Region">
-		SELECT reg_name FROM region
+		SELECT * FROM region
 	</select>
 	
 </mapper>
