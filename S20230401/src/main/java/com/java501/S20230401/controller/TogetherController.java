@@ -91,12 +91,13 @@ public class TogetherController {
 		// 프로시저 Insert_Article 이용 => 게시글 작성
 		as.writeArticle(article);
 		int insertResult = article.getInsert_result();
+		int brd_id 		 = article.getBrd_id();
 		System.out.println("article.getInsert_result() =>" + insertResult);
 
 		model.addAttribute("insertResult", insertResult);
 		model.addAttribute("article", article);
 		if (insertResult > 0) {
-			return "redirect:/board/together?category=1000";
+			return "redirect:/board/together?category="+brd_id;
 		} else {
 			model.addAttribute("msg", "입력실패");
 			return "forward:/board/writeFormArticle";
@@ -143,10 +144,11 @@ public class TogetherController {
 
 		// 게시글 수정 (프로시저 사용 => Update_Article)
 		int updateArticle = as.updateArticle(article);
+		int brd_id 		  = article.getBrd_id(); 
 		model.addAttribute("article", article);
 
 		if (updateArticle > 0) {
-			return "redirect:/board/together?category=1000";
+			return "redirect:/board/together?category="+brd_id;
 		} else {
 			model.addAttribute("msg", "입력실패");
 			return "forward:/board/updateFormArticle";

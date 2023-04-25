@@ -27,7 +27,7 @@
 	<table>
 		<tr>
 			<th>거래상태</th>
-			<td>${detailArticle.comm_value }
+			<td>${detailArticle.c1_comm_value }
 		</tr>
 		<tr>
 			<th>제목</th>
@@ -77,6 +77,17 @@
 		<tr>
 			<th>최대나이</th>
 			<td>${detailArticle.trd_maxage }</td>
+		</tr>
+		<tr>
+			<th>성별</th>
+			<td>
+			<c:set var="gender" value ="${detailArticle.c2_comm_id }"/>
+			<c:choose>
+				<c:when test="${gender eq 201 }">남성</c:when>
+				<c:when test="${gender eq 202 }">여성</c:when>
+				<c:otherwise>성별무관</c:otherwise>
+			</c:choose>	
+			</td>
 		</tr>
 		<tr>
 			<th>추천수</th>

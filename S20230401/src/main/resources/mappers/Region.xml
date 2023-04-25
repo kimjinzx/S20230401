@@ -9,6 +9,10 @@
 		select * from region
 	</select>
 
+	<select id="tkSelectParentRegion" resultType="Region">
+		select * from region
+		where reg_parent is null
+	</select>
 
 
 </mapper>

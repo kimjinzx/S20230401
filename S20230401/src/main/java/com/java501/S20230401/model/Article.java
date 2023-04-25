@@ -31,6 +31,10 @@ public class Article {
 	// COMM
 	private Integer 	comm_id;
 	private String 		comm_value;
+	private Integer 	c1_comm_id;
+	private String 		c1_comm_value;
+	private Integer 	c2_comm_id;
+	private String 		c2_comm_value;
 	
 	// TRADE
 	private Integer 	trd_status;

@@ -3,8 +3,8 @@ package com.java501.S20230401.dao;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
+import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.java501.S20230401.model.Article;
 
@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 public class ArticleDaoImpl implements ArticleDao {
 
 	private final SqlSession session;
+	private final SessionFactory sessionFactory;
 
 	@Override
 	public int totalArticle(Article article) {
@@ -107,6 +108,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 	}
 
+
 	@Override
 	public int deleteArticle(Article article) {
 		int deleteArticle = 0;
@@ -121,9 +123,14 @@ public class ArticleDaoImpl implements ArticleDao {
 
 	@Override
 	public int updateArticle(Article article) {
+		System.out.println("ArticleDaoImpl updateArticle start...");
 		int result = 0;
-		session.update("updateArticle", article);
-		result = article.getInsert_result();
+		try {
+			session.selectOne("updateArticle", article);
+			result = article.getInsert_result();
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl updateArticle => " + e.getMessage());
+		}
 		return result;
 	}
 
