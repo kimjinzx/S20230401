@@ -4,11 +4,11 @@
 
 <mapper namespace="com.java501.S20230401.ArticleMapper">
 	
-	<select id="shArticleIndex" parameterType="Article" resultType="Article">
+	<select id="shCustomerCount" resultType="int">
 	 <![CDATA[
 		SELECT Count(*)
 		FROM article
-		WHERE brd_id ={#brd_id} and brd_id < {#brd_id} + 100
+		WHERE brd_id >=1500 and brd_id <1600
  	 ]]>	
 	</select>
 	
@@ -34,14 +34,6 @@
  	 ]]>	
 	</select>
 		
-	<select id="noticeTotal" resultType="int">
-	<![CDATA[
-		SELECT Count(*)
-		FROM article
-		WHERE brd_id >=1500 and brd_id <1511
-	]]>
-	</select>
-	
 	<select id="shCustomerDetail" parameterType="Article" resultType="Article">
 	  <![CDATA[
         	 SELECT A.*, M.MEM_NICKNAME, M.MEM_IMAGE, NVL(R.REP_COUNT, 0) REP_COUNT
@@ -55,6 +47,6 @@
 	  ]]>
 	</select>
 
-    
+    <insert
 	
 </mapper>

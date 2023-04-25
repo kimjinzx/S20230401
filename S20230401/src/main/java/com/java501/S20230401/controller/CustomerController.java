@@ -82,10 +82,19 @@ public class CustomerController {
 		System.out.println("댓글리스트"+replyList);
 		
 		return "/customer/detailCustomer";
-		
-		
-		
 	}
+	
+	@RequestMapping(value = "/board/customer/customerWriteForm")
+	public String customerWriteForm(Model model) {
+		System.out.println("CustomerController customerWriteForm Start...");
+
+		List<Article> articleList = as.listManager();
+		System.out.println("CustomerController customerWriteForm customerList.size"+articleList.size());
+		model.addAttribute("articleMngList", articleList); // article Manager List
+		
+		return "customerWriteForm";
+	}
+	
 }
 	
 

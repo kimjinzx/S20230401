@@ -17,16 +17,16 @@ public class ArticleDaoImpl implements ArticleDao {
 	private final SqlSession  session;
 	
 	@Override
-	public Integer totalCustomer() {
+	public int totalCustomer() {
 		int totCustomerCount = 0;
 		System.out.println("ArticleDaoImpl Start totalCustomer...");
 		
 		try {
-			totCustomerCount = session.selectOne("shArticleIndex");
-			System.out.println("ArticleDaoImpl totalCustomer totCustomerCount->" +totCustomerCount);
+			totCustomerCount = session.selectOne("shCustomerCount");
+			System.out.println("ArticleDaoImpl shCustomerCount totCustomerCount->" +totCustomerCount);
 			
 		} catch (Exception e) {
-			System.out.println("ArticleDaoImpl totalCustomer Exception->"+e.getMessage());
+			System.out.println("ArticleDaoImpl shCustomerCount Exception->"+e.getMessage());
 		}
 		return totCustomerCount;
 	}
@@ -46,21 +46,6 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 	
 	@Override
-	public Integer totalNotice() {
-		int totNoticeCount = 0;
-		System.out.println("ArticleDaoImpl Start totalNotice...");
-		
-		try {
-			totNoticeCount = session.selectOne("noticeTotal");
-			System.out.println("ArticleDaoImpl totalNotice totNoticeCount->" +totNoticeCount);
-			
-		} catch (Exception e) {
-			System.out.println("ArticleDaoImpl totalNotice Exception->"+e.getMessage());
-		}
-		return totNoticeCount;
-	}
-
-	@Override
 	public Article detailCustomer(Article article) {
 		System.out.println("ArticleDaoImpl detailCustomer start...");
 		Article customerDetail = new Article();
@@ -71,6 +56,12 @@ public class ArticleDaoImpl implements ArticleDao {
 			System.out.println("ArticleDaoImpl detail Exception->"+e.getMessage());
 		}
 		return customerDetail;
+	}
+
+	@Override
+	public List<Article> listManager() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

@@ -418,7 +418,7 @@
 			<td style="font-size : 12px">
 			<fmt:formatDate value="${article.art_regdate }" pattern="yy-MM-dd"/>
 			</td>
-			<td>${replyCount}</td>
+			<td>${article.rep_count}</td>
 			<td>${article.art_read}</td>
 			<td>${article.art_good}</td>
 			<td>${article.art_bad}</td>
@@ -436,6 +436,12 @@
 	<c:if test="${page.endPage < page.totalPage }">
 		<a href="listCustomer?currentPage=${page.startPage+page.pageBlock}">[다음]</a>
 	</c:if>	
+	</div>
+	
+	<!-- 글쓰기 버튼 -->
+	
+	<div class="row" align="right">
+	<input type="button" value="글쓰기"  onclick="location.href='${pageContext.request.contextPath}/board/customer/customerWriteForm'">
 	</div>
 		
 		<button id="scrollToTop" class="adv-hover">

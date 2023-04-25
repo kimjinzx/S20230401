@@ -28,7 +28,7 @@ public class Article {
 	// 조인
 	private String 		mem_nickname;
 	private String 		mem_image;
-	private Integer		rep_cnt;
+	private Integer		rep_count;
 	
 	//조회용
 	private String 		pageNum;

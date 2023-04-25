@@ -415,7 +415,7 @@
 		<tr><td colspan="2">
 			<input type="button" value="수정" onclick="location.href=''">
 			<input type="button" value="삭제" onclick="location.href=''">
-			<input type="button" value="목록" onclick="location.href='${pageContext.request.contextPath}/board/customer?category=${category }'"></td>
+			<input type="button" value="목록" onclick="location.href='../CustomerIndex.jsp'"></td>
 		<tr><th>추천수</th><td>${article.art_good}</td></tr>
 		<tr><th>비추천수</th><td>${article.art_bad}</td></tr>
 	</table>

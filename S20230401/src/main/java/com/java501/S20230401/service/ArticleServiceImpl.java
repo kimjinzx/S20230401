@@ -15,7 +15,7 @@ public class ArticleServiceImpl implements ArticleService {
 	private final ArticleDao	ad;
 
 	@Override
-	public Integer totalCustomer() {
+	public int totalCustomer() {
 		System.out.println("ArticleServiceImpl Start totalCustomer..." );
 		int totCustomerCnt = ad.totalCustomer();
 		System.out.println("ArticleServiceImpl totalCustomer totCustomerCnt->" + totCustomerCnt);
@@ -32,19 +32,20 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 	
 	@Override
-	public Integer totalNotice() {
-		System.out.println("ArticleServiceImpl Start totalNotice..." );
-		int totNoticeCnt = ad.totalNotice();
-		System.out.println("ArticleServiceImpl totalNotice totNoticeCnt->" + totNoticeCnt);
-		return totNoticeCnt;
-	}
-
-	@Override
 	public Article detailCustomer(Article article) {
 		System.out.println("ArticleServiceImpl detailCustomer...");
 		Article customerDetail = null;
 		customerDetail = ad.detailCustomer(article);
 		return customerDetail;
+	}
+
+	@Override
+	public List<Article> listManager() {
+		List<Article> articleList = null;
+		System.out.println("ArticleServiceImpl listManager Start...");
+		articleList = ad.listManager();
+		System.out.println("ArticleServiceImpl listArticle articleList.size()->"+articleList.size());
+		return articleList;
 	}
 
 
