@@ -19,4 +19,5 @@
 		<collection property="comm" 	resultMap="com.java501.S20230401.model.CommMapper.dgCommMap"/>
 		<collection property="region" 	resultMap="com.java501.S20230401.model.RegionMapper.dgRegionMap"/>
 	</resultMap>
+	
 </mapper>

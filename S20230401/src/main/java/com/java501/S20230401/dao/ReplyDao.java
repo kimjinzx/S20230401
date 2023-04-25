@@ -10,7 +10,7 @@ import com.java501.S20230401.model.Reply;
 @Repository
 public interface ReplyDao {
 
-	List<Reply> replyList(Article article);
+	List<Reply> replyShareList(Article article);
 	int writeReply(Reply reply);
 
 }

@@ -7,18 +7,18 @@ import lombok.Data;
 
 @Data
 public class Article {
-	private Integer art_id;
-	private Integer brd_id;
+	private Integer art_id;			// PK
+	private Integer brd_id;			// PK
+	private Integer mem_id;			// FK
+	private Integer trd_id;			// FK
 	private String 	art_title;
-	private Integer mem_id;
-	private Date 	art_regdate;
 	private String	art_content;
+	private Date 	art_regdate;
 	private String 	art_tag1;
 	private String 	art_tag2;
 	private String 	art_tag3;
 	private String 	art_tag4;
 	private String 	art_tag5;
-	private Integer trd_id;
 	private Integer art_good;
 	private Integer art_bad;
 	private Integer art_read;

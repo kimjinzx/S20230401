@@ -7,13 +7,14 @@ import com.java501.S20230401.model.ArticleMember;
 import com.java501.S20230401.util.SummaryType;
 
 public interface ArticleService {
-
 	int allTotalArt(Article article);
 	List<Article> allArticleList(Article article);
-	int totalArt(Article article);
-	List<Article> articleList(Article article);
-	Article detailArticle(Article article);
-	int readPlusArticle(Article article);
+	
+	// 댓글
+	Article detailShareArticle(Article article);
+	int readShareArticle(Article article);
+	// 글쓰기
+	int writeShareArticle(Article article);
 	
 	
 	// 로그인

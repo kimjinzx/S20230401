@@ -3,6 +3,7 @@ package com.java501.S20230401.dao;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Repository;
 
 import com.java501.S20230401.model.Article;
@@ -24,7 +25,6 @@ public class ArticleDaoImpl implements ArticleDao {
 		int allArtCnt = 0;
 		try {
 			allArtCnt = session.selectOne("dgAllArtCnt", article);
-			log.info("Article 전체 게시판 카운트 : {}" ,allArtCnt);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -36,43 +36,41 @@ public class ArticleDaoImpl implements ArticleDao {
 		List<Article> allArticleList = null;
 		try {
 			allArticleList = session.selectList("dgAllArticleList", article);
-			log.info("Article 전체 게시판 조회 : {}", allArticleList);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return allArticleList;
 	}
-	
-	@Override
-	public int totalArt(Article article) {
-		int artCnt = 0;
-		try {
-			artCnt = session.selectOne("dgArtCnt", article);
-			log.info("Article 게시판 카운트 : {}", artCnt);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return artCnt;
-	}
-
-	@Override
-	public List<Article> articleList(Article article) {
-		List<Article> articleList = null;
-		try {
-			articleList = session.selectList("dgArticleList", article);
-			log.info("Article {} 게시판 조회", articleList);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return articleList;
-	}
+//	@Override
+//	public int totalArt(Article article) {
+//		int artCnt = 0;
+//		try {
+//			artCnt = session.selectOne("dgArtCnt", article);
+//			log.info("Article 게시판 카운트 : {}", artCnt);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return artCnt;
+//	}
+//
+//	@Override
+//	public List<Article> articleList(Article article) {
+//		List<Article> articleList = null;
+//		try {
+//			articleList = session.selectList("dgArticleList", article);
+//			log.info("Article {} 게시판 조회", articleList);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return articleList;
+//	}
 
 	// 게시글 조회 (art_id, brd_id)
 	@Override
-	public Article detailArticle(Article article) {
+	public Article detailShareArticle(Article article) {
 		Article detailArticle = null;
 		try {
-			detailArticle = session.selectOne("dgDetailArticle",article);
+			detailArticle = session.selectOne("dgDetailShareArticle",article);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -81,10 +79,10 @@ public class ArticleDaoImpl implements ArticleDao {
 	
 	// 게시글 조회수 증가
 	@Override
-	public int readPlusArticle(Article article) {
+	public int readShareArticle(Article article) {
 		int result = 0;
 		try {
-			result = session.update("dgReadPlusArticle", article);
+			result = session.update("dgReadShareArticle", article);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -123,5 +121,20 @@ public class ArticleDaoImpl implements ArticleDao {
 	@Override
 	public Article getArticleById(Article searcher) {
 		return session.selectOne("hgGetArticleById", searcher);
+	}
+
+	
+	// Share 글쓰기 /수동 commit, rollback
+	@Override
+	public int writeShareArticle(Article article) {
+		int result = 0;
+		log.info("뭐가 들었니 {}", article);
+		try {
+			result = session.insert("dgWriteShareArticle",article);
+			if(result>0) System.out.println("성공");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 }

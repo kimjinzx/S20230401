@@ -1,16 +1,22 @@
 package com.java501.S20230401.controller;
 
+import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Comm;
+import com.java501.S20230401.model.MemberDetails;
+import com.java501.S20230401.model.MemberInfo;
 import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.CommService;
@@ -33,7 +39,16 @@ public class ShareController {
 	
 	// 나눔해요
 	@RequestMapping(value = "board/share")
-	public String totalPage(Article article, Integer category, String currentPage, Model model) {
+	public String totalPage(@AuthenticationPrincipal
+							MemberDetails memberDetails,	// 세션의 로그인 유저 정보
+							Article article,
+							Integer category,
+							String currentPage,
+							Model model) {
+		// 유저 정보를 다시 리턴  //memberDetails.getMemberInfo() DB의 유저와 대조 & 권한 확인
+		if(memberDetails != null)
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		
 		article.setBrd_id(category);
 		int totalArt = 0;
 		List<Article> articleList = null;
@@ -54,18 +69,6 @@ public class ShareController {
 		// 게시글 조회
 		articleList = articleService.allArticleList(article);
 		
-		// 게시글 뿌리기
-//		if(category % 100 == 0)
-//			articleList = articleService.allArticleList(article); // 나눔해요 전체 글
-//		else
-//			articleList = articleService.articleList(article); // 카테고리 글
-		
-		// 며칠전?
-//		for(Article art : articleList) {
-//			long diffMin = new Date().getTime() - art.getArt_regdate().getTime();
-//			art.setArt_regdate(new Date(diffMin));
-//		}
-		
 		model.addAttribute("articleList", articleList);
 		model.addAttribute("page", page);
 		model.addAttribute("totalArt", totalArt);
@@ -75,39 +78,80 @@ public class ShareController {
 		
 		return "share/total";
 	}
+	
 	// writeForm 이동
 	@RequestMapping(value = "board/share/write")
-	public String writeForm(Article article, Model model) {
-		int category = article.getBrd_id();
+	public String writeForm(@AuthenticationPrincipal MemberDetails memberDetails, Article article, Model model, Integer category) {
+		if(memberDetails != null)
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		
 		model.addAttribute("category", category);
 		return "share/writeForm";
 	}
+	
+	
+	
 	// 글쓰기
-	@PostMapping(value = "board/share/writeArticle")
-	public String writeArticle(Article article, Model model) {
-
-		//int writeResult = articleService.writeArticle(article);
+	@PostMapping(value = "board/share/writeArticleForm")
+	public String writeArticleForm(	@AuthenticationPrincipal
+									MemberDetails memberDetails,
+									@RequestParam("trd_enddate")
+									@DateTimeFormat(pattern="yyyy-MM-dd")
+									Date trd_enddate,
+									Article article, 
+									RedirectAttributes redirectAttributes, 
+									Integer category) {
+		MemberInfo memberInfo = null;
+		redirectAttributes.addFlashAttribute("category", category);
+		
+		// 마감 날짜 저장
+		article.getTrade().setTrd_enddate(trd_enddate);
+		
+		if(memberDetails != null) {
+			memberInfo = memberDetails.getMemberInfo(); 					// 유저 정보 저장
+			redirectAttributes.addFlashAttribute("memberInfo", memberInfo);	// 유저 정보 리턴
+			article.setMem_id(memberInfo.getMem_id());
+		}else {
+			return "redirect:/board/share?category="+category;
+		}
 		
 		
 		log.info("제목은 나옴? [ {} ] 비었으면 안나옴", article.getArt_title());
+		log.info("글쓰기 안에 있음 {}", article);
 		
-		log.info("유저 이름 나옴? [ {} ] 비었으면 안나옴", article.getMember().getMem_username());
+		// 글쓰기 실행
+		int result = articleService.writeShareArticle(article);
 		
-		model.addAttribute("article", article);
-		return "redirect:share/total";
+		redirectAttributes.addFlashAttribute("article", article);
+		return "redirect:/board/share?category="+category;
 	}
 	
 	// 게시글, 댓글 조회
-	@RequestMapping(value = "board/share/article")
-	public String detailArticle(Article article, Model model, Integer category) {
+	@RequestMapping(value = "board/share/{commStr}")
+	public String detailShareArticle(	@PathVariable("commStr")
+										String commStr,
+										@AuthenticationPrincipal
+										MemberDetails memberDetails,
+										Article article,
+										Integer category,
+										Model model) {
+		// 유저 정보
+		if(memberDetails != null)
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());	// 유저 정보 리턴
+		
+		// url 데이터 변환
+		Integer brd_id = Integer.parseInt(commStr.substring(0, 4));
+		Integer art_id = Integer.parseInt(commStr.substring(4));
+		article.setArt_id(art_id);
+		article.setBrd_id(brd_id);
+		
 		// 조회수 증가
-		int result = articleService.readPlusArticle(article);
+		int result = articleService.readShareArticle(article);
 		System.out.println("조회수 증가 : "+result);
 		// 글 조회
-		Article detailArticle = articleService.detailArticle(article);
+		Article detailArticle = articleService.detailShareArticle(article);
 		// 댓글 조회
-		List<Reply> replyList = replyService.replyList(article);
-		
+		List<Reply> replyList = replyService.replyShareList(article);
 		
 		model.addAttribute("article", detailArticle);
 		model.addAttribute("replyList", replyList);
@@ -118,19 +162,25 @@ public class ShareController {
 	
 	// 게시글 - 댓글 쓰기
 	@PostMapping(value = "board/share/replyForm")
-	public String replyForm(Reply reply, Model model, Integer category) {
-		//RedirectAttributes redirectAttributes, 
-		//redirectAttributes.addFlashAttribute("article", article);
+	public String replyForm(@AuthenticationPrincipal MemberDetails memberDetails, Reply reply, Model model, Integer category, RedirectAttributes redirectAttributes) {
+		MemberInfo memberInfo = null;
+		redirectAttributes.addFlashAttribute("category", category);
 		
+		if(memberDetails != null) {
+			memberInfo = memberDetails.getMemberInfo(); 					// 유저 정보 저장
+			redirectAttributes.addFlashAttribute("memberInfo", memberInfo);	// 유저 정보 리턴
+			reply.setMem_id(memberInfo.getMem_id());
+		}else {
+			// 로그인 안했을때 수정필요
+			return String.format("redirect:/board/share/%s/%s?category=%s", reply.getBrd_id(), reply.getArt_id(), category);
+		}
 		
-		reply.setMem_id(21);
 		System.out.println("게시판 아이디 : "+reply.getBrd_id());
 		System.out.println("글번호 : "+reply.getArt_id());
 		System.out.println("댓글 번호(PK) : "+reply.getRep_id());
 		System.out.println("                              댓글 번호(PK)의 댓글 : "+reply.getRep_parent());
 		System.out.println("내용 : "+reply.getRep_content());
 		System.out.println("댓글 순서 : "+reply.getRep_step());
-
 		
 		// 댓글 작성
 		int result = replyService.writeReply(reply);
@@ -139,14 +189,8 @@ public class ShareController {
 			System.out.println("성공");
 		else
 			System.out.println("실패");
-		
-		
-		return "redirect:/board/share/article?art_id="+reply.getArt_id()+"&brd_id="+reply.getBrd_id()+"&category="+category;
+		return String.format("redirect:/board/share/%s/%s?category=%s", reply.getBrd_id(), reply.getArt_id(), category);
 	}
-	
-	
-	
-	
 	
 	
 	
@@ -165,7 +209,7 @@ public class ShareController {
 								Article article, 
 								String 	currentPage, 
 								Model 	model, 
-								Integer category, 
+								Integer category,
 								RedirectAttributes redirectAttributes) {
 		log.info("현재 {}에 접속 감지 카테고리 번호 : {}", categoryConnect, category);
 		redirectAttributes.addFlashAttribute("article", article);

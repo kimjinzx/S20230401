@@ -16,8 +16,8 @@ import lombok.RequiredArgsConstructor;
 public class ReplyServiceImpl implements ReplyService {
 	private final ReplyDao replyDao;
 	@Override
-	public List<Reply> replyList(Article article) {
-		return replyDao.replyList(article);
+	public List<Reply> replyShareList(Article article) {
+		return replyDao.replyShareList(article);
 	}
 	@Override
 	public int writeReply(Reply reply) {

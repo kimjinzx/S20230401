@@ -7,7 +7,7 @@ import com.java501.S20230401.model.Reply;
 
 public interface ReplyService {
 
-	List<Reply> replyList(Article article);
+	List<Reply> replyShareList(Article article);
 	int writeReply(Reply reply);
 
 }

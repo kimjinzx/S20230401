@@ -17,13 +17,19 @@ $(document).ready(() => {
 });
 */
 
-$(document).ready(() => {
-	$(".reply-inner").click(e => {
-		console.log(e.target.getAttribute('class')); // 클릭 이벤트 발생시 e.target의 클래스 출력
-		$(e.target).closest('.reply-detail').find(".reply-replyWrite").toggle();
+	$(document).ready(() => {
+		$(".reply-inner").click(e => {
+			console.log(e.target.getAttribute('class')); // 클릭 이벤트 발생시 e.target의 클래스 출력
+			$(e.target).closest('.reply-detail').find(".reply-replyWrite").toggle();
+		});
 	});
-});
-
+	
+	$(document).ready(function (){
+		$(".btns-delete").click(function(){
+			$(".btns-delete").closest('.reply-button').append('<button name="delete">버튼</button>');
+		});
+	});
+	
 
 /*
 $(document).ready(function() {
@@ -140,7 +146,7 @@ $(document).ready(function() {
 								</div>
 								<div class="reply-button">
 									<span><button>작성버튼</button></span>
-									<span><button>삭제버튼</button></span>
+									<span><button class="btns-delete">삭제버튼</button></span>
 								</div>
 							</div>
 							<div class="reply-replyWrite" style="display: none; margin-left: 10%">
@@ -158,16 +164,23 @@ $(document).ready(function() {
 						</div>
 					</c:forEach>
 					<div class="reply-write">
-						<form action="${pageContext.request.contextPath}/board/share/replyForm" method="post">
-							<span><input type="hidden" name="brd_id" 	value="${article.brd_id}"></span>
-							<span><input type="hidden" name="art_id" 	value="${article.art_id}"></span>
-							<span><input type="hidden" name="category" 	value="${category}"></span>
-<%-- 							<span><input type="hidden" name="rep_id" 	value="${reply.rep_id}"></span>
-							<span><input type="hidden" name="rep_parent"value="0"></span>
-							<span><input type="hidden" name="rep_step"	value="0"></span> --%>
-							<span><input type="text" name="rep_content" placeholder="댓글을 작성하세요."></span>
-							<span><input type="submit" value="등록"></span>
-						</form>
+						<c:choose>
+							<c:when test="${memberInfo != null}">
+								<form action="${pageContext.request.contextPath}/board/share/replyForm" method="post">
+									<span><input type="hidden" name="brd_id" 	value="${article.brd_id}"></span>
+									<span><input type="hidden" name="art_id" 	value="${article.art_id}"></span>
+									<span><input type="hidden" name="category" 	value="${category}"></span>
+		<%-- 							<span><input type="hidden" name="rep_id" 	value="${reply.rep_id}"></span>
+									<span><input type="hidden" name="rep_parent"value="0"></span>
+									<span><input type="hidden" name="rep_step"	value="0"></span> --%>
+									<span><input type="text" name="rep_content" placeholder="댓글을 작성하세요."></span>
+									<span><input type="submit" value="등록"></span>
+								</form>
+							</c:when>
+							<c:otherwise>
+								<span style="margin: 15%">본 게시물에 댓글을 작성하실 권한이 없습니다. 로그인 하신 후 댓글을 다실 수 있습니다. ShareGo <a href="${pageContext.request.contextPath }/login">로그인</a></span>
+							</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 				</div>

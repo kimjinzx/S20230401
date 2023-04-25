@@ -28,7 +28,6 @@ public class MemberDetails implements UserDetails {
 	public String getUsername() {
 		return memberInfo.getMem_username();
 	}
-	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<GrantedAuthority> collect = new ArrayList<>();

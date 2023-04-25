@@ -12,10 +12,11 @@ public interface ArticleDao {
 
 	int allTotalArt(Article article);
 	List<Article> allArticleList(Article article);
-	int totalArt(Article article);
-	List<Article> articleList(Article article);
-	Article detailArticle(Article article);
-	int readPlusArticle(Article article);
+	// 댓글
+	Article detailShareArticle(Article article);
+	int readShareArticle(Article article);
+	// 글쓰기
+	int writeShareArticle(Article article);
 
 	// 로그인
 	public List<ArticleMember> getArticleSummary(int boardNum, SummaryType summaryType);

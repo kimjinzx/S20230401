@@ -18,17 +18,17 @@ public class ArticleServiceImpl implements ArticleService {
 	private final ArticleDao ad;
 
 	@Override
-	public int allTotalArt(Article article) {return ad.allTotalArt(article);}
+	public int allTotalArt(Article article) { return ad.allTotalArt(article); }
 	@Override
-	public List<Article> allArticleList(Article article) {return ad.allArticleList(article);}
+	public List<Article> allArticleList(Article article) { return ad.allArticleList(article); }
+	// 댓글
 	@Override
-	public int totalArt(Article article) {return ad.totalArt(article);}
+	public Article detailShareArticle(Article article) { return ad.detailShareArticle(article); }
 	@Override
-	public List<Article> articleList(Article article) {return ad.articleList(article);}
+	public int readShareArticle(Article article) {	return ad.readShareArticle(article); }
+	// 글쓰기
 	@Override
-	public Article detailArticle(Article article) {	return ad.detailArticle(article);}
-	@Override
-	public int readPlusArticle(Article article) {	return ad.readPlusArticle(article);}
+	public int writeShareArticle(Article article) {	return ad.writeShareArticle(article);}
 
 	
 	// 로그인 기능 추가

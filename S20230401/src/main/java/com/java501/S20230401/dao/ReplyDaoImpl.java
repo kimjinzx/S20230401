@@ -16,10 +16,10 @@ public class ReplyDaoImpl implements ReplyDao {
 	private final SqlSession session;
 	
 	@Override
-	public List<Reply> replyList(Article article) {
+	public List<Reply> replyShareList(Article article) {
 		List<Reply> replyList = null;
 		try {
-			replyList = session.selectList("gdReplyList", article);
+			replyList = session.selectList("gdReplyShareList", article);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

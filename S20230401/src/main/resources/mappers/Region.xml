@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<<<<<<< HEAD
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.java501.S20230401.model.RegionMapper">
@@ -13,11 +12,6 @@
 	
 	
 	<!-- 로그인 -->
-=======
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.java501.S20230401.RegionMapper">
->>>>>>> branch 'mergedWork' of https://github.com/MayB-94/S20230401.git
 	<select id="hgGetRegion" parameterType="int" resultType="Region">
 		SELECT * FROM REGION WHERE REG_ID = #{regionCode}
 	</select>
