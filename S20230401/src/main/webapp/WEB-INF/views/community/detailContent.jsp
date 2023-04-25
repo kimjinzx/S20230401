@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="../preset.jsp" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -275,7 +274,6 @@
 		right: 10px;
 	}
 	
-	
 	/* Footer */
 	#footer-info {
 		display: flex;
@@ -399,68 +397,60 @@
 	<aside id="leftside">
 		
 	</aside>
-	<main  >
-	
+	<main>
 	
 		<div class="container" align="center">
-		<%-- <c:set var="num" value="${page.total-page.start+1 }"></c:set> --%>
-		<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1300'">전체목록</button>
-		<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1310'">일상수다</button>
-		<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1320'">자랑하기</button>
-		<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1330'">홍보하기</button>
-		<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1340'">질문/요청</button>
-		<button onclick="location.href='${pageContext.request.contextPath}/board/community/communityWrite'">글쓰기</button>
-		<table border="1">
-			<tr><th>글번호</th><th>카테고리</th><th>프로필</th><th>제목</th><th>태그</th><th>댓글수</th>
-			<th>조회수</th><th>추천</th><th>비추</th><th>작성일</th></tr>
-			<c:forEach var="article" items="${listArticle }">
-				<tr>
-				<td>${article.art_id }</td>
-				<%-- <td>${boardMap[article.brd_id]}</td> --%>
-				<td>${boardMap[article.brd_id]}</td>
+			<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1310'">일상수다</button>
+			<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1320'">자랑하기</button>
+			<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1330'">홍보하기</button>
+			<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1340'">질문/요청</button>
+			<table >
+				<tr><th>닉네임</th>
 				<td><img src="${pageContext.request.contextPath}/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
-						${article.mem_nickname }</td>
-				<td><a href="${pageContext.request.contextPath}/board/community/detailContent?art_id=${article.art_id }&brd_id=${article.brd_id }&category=${category }">${article.art_title}</a></td>
-				<td>
-				    <c:if test="${not empty article.art_tag1}">
-				        #${article.art_tag1}
-				    </c:if>
-				    <c:if test="${not empty article.art_tag2}">
-				        #${article.art_tag2}
-				    </c:if>
-				    <c:if test="${not empty article.art_tag3}">
-				        #${article.art_tag3}
-				    </c:if>
-				    <c:if test="${not empty article.art_tag4}">
-				        #${article.art_tag4}
-				    </c:if>
-				    <c:if test="${not empty article.art_tag5}">
-				        #${article.art_tag5}
-				    </c:if>
-				</td>
-				<td>${article.rep_cnt }</td>
-				<td>${article.art_read }</td>
-				<td>${article.art_good }</td>
-				<td>${article.art_bad }</td>
-				<%-- <td><fmt:formatDate value="${article.art_regdate}" pattern="MM.dd HH:mm" /></td> --%>
+				${article.mem_nickname}</td></tr>
+				<tr><th>제목</th><td>${article.art_title }</td></tr>
+				<tr><th>조회수</th><td>${article.art_read}</td>
+				<th>추천</th><th>${article.art_good }<br><button>추천</button></th>
+				<th>비추천</th><th>${article.art_bad }<br><button>비추천</button></th>
+				<tr><th>작성일</th>
 				<fmt:formatDate value="${article.art_regdate}" pattern="MM.dd" var="regdate" />
 				<fmt:formatDate value="${article.art_regdate}" pattern="hh:mm" var="regtime" />
 				<td style="font-size : 10px">${regdate }<br>${regtime}</td>
 				</tr>
-			</c:forEach>
-		</table>
-		
-		<c:if test ="${page.startPage > page.pageBlock }">
-			<a href="${pageContext.request.contextPath}/board/community?currentpage=${page.startPage-page.pageBlock }&category=${category}">[이전]</a>
-		</c:if>
-		<c:forEach var="i" begin="${page.startPage }" end="${page.endPage }">
-			<a href="${pageContext.request.contextPath}/board/community?currentPage=${i }&category=${brd_id}"	>[${i }]</a>
-		</c:forEach>
-		<c:if test="${page.endPage < page.totalPage }">
-			<a href="${pageContext.request.contextPath}/board/community?currentPage=${page.startPage+page.pageBlock }&category=${brd_id}">[다음]</a>
-		</c:if>
-	</div>
-	
+				<tr><th>내용</th><td>${article.art_content }</td></tr>
+				<tr><td colspan="2">
+					<input type="button" value="목록" 
+						onclick="location.href='${pageContext.request.contextPath}/board/community?category=${category }'">
+					<input type="button" value="수정" 
+						onclick="location.href='updateFormEmp?empno=${emp.empno}'">
+					<input type="button" value="삭제" 
+						onclick="location.href='deleteEmp?empno=${emp.empno}'">
+					</td>
+				</tr>	
+			</table>
+					
+				<p> ${reply.rep_cnt }개의 댓글  <button>댓글쓰기</button> </p>
+			<c:forEach var="reply" items="${replyMain }">
+			<table border="1" style="text-align: center;">
+				<tr><th>프사</th><th style="width: 100px;">작성자</th><th style="width: 300px;">댓글내용</th><th>작성시간</th><th>추천</th><th>비추천</th><th>최상위댓글번호</th><th>댓글순서</th></tr>
+				<tr>
+				<td><img src="${pageContext.request.contextPath}/${reply.mem_image }" alt="예시" style="max-height: 40px; max-width: 40px;"></td>
+				<td>${reply.mem_nickname }</td>
+				<td>${reply.rep_content }</td>
+				<fmt:formatDate value="${article.art_regdate}" pattern="MM.dd" var="regdate" />
+				<fmt:formatDate value="${article.art_regdate}" pattern="hh:mm" var="regtime" />
+				<td style="font-size : 10px">${regdate }<br>${regtime}</td>
+				<td>${reply.rep_good }<br><button>추천</button> </td>
+				<td>${reply.rep_bad }<br><button>비추천</button></td>
+				<td>${reply.rep_parent}</td>
+				<td>${reply.rep_step }
+				</tr>
+			
+				
+				
+			</table>
+			</c:forEach>	 
+		</div>
 	
 		<button id="scrollToTop" class="adv-hover">
 			<svg style="fill: var(--subtheme); stroke: var(--subtheme); stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round;" width="20" height="10" viewBox="0 0 32 16">

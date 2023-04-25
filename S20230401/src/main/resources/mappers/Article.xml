@@ -4,13 +4,83 @@
 
 <mapper namespace="S20230401/src/main/java/com/java501/S20230401/model/ArticleMapper">
 	
-	<select id="bjarticleIndex" resultType="Int">
-		select Count(*) FROM article
+	<select id="bjarticleIndex" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM ARTICLE
+		WHERE
+		<![CDATA[
+			brd_id >= #{brd_id} AND brd_id < #{brd_id} + 100
+		]]>
+	</select>
+	<select id="bjarticlePart" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM ARTICLE
+		WHERE brd_id = #{brd_id}
 	</select>
 	
-	<select id="bjarticleIndexAll" resultType="Article">
-	
+	<select id="bjarticleIndexAll" parameterType="Article" resultType="Article">
+		<![CDATA[
+		SELECT *
+		FROM (
+		    SELECT ROWNUM RN, TEMP.*, M.mem_nickname, M.mem_image
+		    FROM (
+		        SELECT A.*, NVL(R.REP_CNT, 0) AS REP_CNT
+		        FROM ARTICLE A
+		        LEFT OUTER JOIN (
+		            SELECT ART_ID, BRD_ID, COUNT(*) REP_CNT 
+		            FROM REPLY 
+		            WHERE BRD_ID BETWEEN 1300 AND 1399
+		            GROUP BY ART_ID, BRD_ID
+		        ) R ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID) 
+		        WHERE A.BRD_ID BETWEEN 1300 AND 1399
+		    ) TEMP
+		    INNER JOIN member M ON TEMP.mem_id = M.mem_id
+		)
+		WHERE RN BETWEEN #{start} AND #{end}
+
+		]]>
+	</select>
+	<select id="bjArticleMenu" parameterType="Article" resultType="Article">
+		SELECT *
+		FROM (
+		    SELECT ROWNUM RN, TEMP.*, M.mem_nickname, M.mem_image
+		    FROM (
+		        SELECT A.*, NVL(R.REP_CNT, 0) AS REP_CNT
+		        FROM ARTICLE A
+		        LEFT OUTER JOIN (
+		            SELECT ART_ID, BRD_ID, COUNT(*) REP_CNT 
+		            FROM REPLY 
+		            WHERE BRD_ID = #{brd_id}
+		            GROUP BY ART_ID, BRD_ID
+		        ) R ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID) 
+		        WHERE A.BRD_ID = #{brd_id}
+		    ) TEMP
+		    INNER JOIN member M ON TEMP.mem_id = M.mem_id
+		)
+		WHERE RN BETWEEN #{start} AND #{end}
 	</select>
 
+		<!-- Select * FROM article where art_id = #{art_id} and brd_id = #{brd_id} -->
+	<select id="bjdetailContent"  parameterType="Article" resultType="Article">
+		SELECT a.*, m.mem_nickname, m.mem_image
+			FROM article a
+			INNER JOIN member m ON a.mem_id = m.mem_id
+		WHERE a.art_id = #{art_id} AND a.brd_id = #{brd_id}		
+	</select>
+	
+	<update id="bjreadCount" parameterType="Article" >
+		UPDATE article
+		SET art_read = art_read + 1
+		WHERE art_id = #{art_id} AND brd_id = #{brd_id}
+	</update>
+	
+	<insert id="bjWriteArticle" parameterType="Article">
+    INSERT INTO article (
+    				art_id, brd_id, art_title, art_tag1, 
+    				art_content)
+    VALUES (
+		    		#{art_id}, #{brd_id}, #{art_title}, #{art_tag1},#{art_content}
+    		 );
+</insert>
 
+    
+	
 </mapper>

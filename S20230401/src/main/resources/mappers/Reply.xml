@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="S20230401/src/main/java/com/java501/S20230401/model/ReplyMapper">
+	<select id="bjCountReply" parameterType="Reply" resultType="Reply">
+		SELECT COUNT(*) AS rep_cnt
+		FROM reply
+		WHERE art_id = #{art_id}  AND brd_id = #{brd_id}
+	</select>
+	
+	<select id="bjreplyMain" parameterType="Reply" resultType="Reply">
+		SELECT reply.*, member.*
+		FROM reply
+		INNER JOIN member ON reply.mem_id = member.mem_id
+		WHERE reply.art_id = #{art_id} AND reply.brd_id = #{brd_id}
+	</select>
+</mapper>

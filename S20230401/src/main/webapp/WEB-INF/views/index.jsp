@@ -308,7 +308,7 @@
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="">나눔해요</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="/bj_communityTotalList">커뮤니티</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/community?category=1300">커뮤니티</a>
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="">정보공유</a>
 				<div class="menu-separator"></div>
@@ -338,10 +338,10 @@
 							<a class="submenuitem adv-hover" href="">기타</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">일상수다</a>
-							<a class="submenuitem adv-hover" href="">자랑하기</a>
-							<a class="submenuitem adv-hover" href="">홍보하기</a>
-							<a class="submenuitem adv-hover" href="">질문 / 요청</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/community?category=1310">일상수다</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/community?category=1320">자랑하기</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/community?category=1330">홍보하기</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/community?category=1340">질문 / 요청</a>
 						</div>
 						<div class="submenu">
 							<a class="submenuitem adv-hover" href="">동네정보</a>

@@ -6,30 +6,34 @@ import lombok.Data;
 
 @Data
 public class Article {
-	private int 	art_id;
-	private int 	brd_id;
-	private String 	art_title;
-	private int 	mem_id;
-	private Date 	art_regdate;
-	private String 	art_tag1;
-	private String 	art_tag2;
-	private String 	art_tag3;
-	private String 	art_tag4;
-	private String 	art_tag5;
-	private int 	trd_id;
-	private int 	art_good;
-	private int 	art_bad;
-	private int 	art_read;
-	private int 	art_isnotice;
-	private int 	isdelete;
-	private int 	report_id;
+	private Integer 	art_id;
+	private Integer 	brd_id;
+	private String 		art_title;
+	private String 		art_content;
+	private Integer 	mem_id;
+	private Date 		art_regdate;
+	private String 		art_tag1;
+	private String 		art_tag2;
+	private String 		art_tag3;
+	private String 		art_tag4;
+	private String 		art_tag5;
+	private Integer 	trd_id;
+	private Integer 	art_good;
+	private Integer 	art_bad;
+	private Integer 	art_read;
+	private Integer 	art_isnotice;
+	private Integer 	isdelete;
+	private Integer 	report_id;
 	
-	private String 	search;	
-	private String 	keyword;
-	private String 	pageNum;
-	private int		start;
-	private int 	end;
+	private String 		mem_nickname;	
+	private String 		mem_image;
+	
+	private String 		search;	
+	private String 		keyword;
+	private String 		pageNum;
+	private Integer		start;
+	private Integer 	end;
 		// TODO Auto-generated method stub
-		
+	private Integer 	rep_cnt;
 	
 }

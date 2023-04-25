@@ -275,12 +275,14 @@
 		right: 10px;
 	}
 	
-	
 	/* Footer */
 	#footer-info {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
+	}
+	.tag{
+		max-width: 70px;
 	}
 </style>
 </head>
@@ -310,7 +312,7 @@
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="">나눔해요</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/community?category=1300">커뮤니티</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/community?brd_id=1300">커뮤니티</a>
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="">정보공유</a>
 				<div class="menu-separator"></div>
@@ -340,10 +342,10 @@
 							<a class="submenuitem adv-hover" href="">기타</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/community?category=1310">일상수다</a>
-							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/community?category=1320">자랑하기</a>
-							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/community?category=1330">홍보하기</a>
-							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/community?category=1340">질문 / 요청</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/community?brd_id=1310">일상수다</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/community?brd_id=1320">자랑하기</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/community?brd_id=1330">홍보하기</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/community?brd_id=1340">질문 / 요청</a>
 						</div>
 						<div class="submenu">
 							<a class="submenuitem adv-hover" href="">동네정보</a>
@@ -399,69 +401,45 @@
 	<aside id="leftside">
 		
 	</aside>
-	<main  >
-	
-	
+	<main>
 		<div class="container" align="center">
-		<%-- <c:set var="num" value="${page.total-page.start+1 }"></c:set> --%>
-		<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1300'">전체목록</button>
-		<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1310'">일상수다</button>
-		<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1320'">자랑하기</button>
-		<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1330'">홍보하기</button>
-		<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1340'">질문/요청</button>
-		<button onclick="location.href='${pageContext.request.contextPath}/board/community/communityWrite'">글쓰기</button>
-		<table border="1">
-			<tr><th>글번호</th><th>카테고리</th><th>프로필</th><th>제목</th><th>태그</th><th>댓글수</th>
-			<th>조회수</th><th>추천</th><th>비추</th><th>작성일</th></tr>
-			<c:forEach var="article" items="${listArticle }">
-				<tr>
-				<td>${article.art_id }</td>
-				<%-- <td>${boardMap[article.brd_id]}</td> --%>
-				<td>${boardMap[article.brd_id]}</td>
-				<td><img src="${pageContext.request.contextPath}/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
-						${article.mem_nickname }</td>
-				<td><a href="${pageContext.request.contextPath}/board/community/detailContent?art_id=${article.art_id }&brd_id=${article.brd_id }&category=${category }">${article.art_title}</a></td>
-				<td>
-				    <c:if test="${not empty article.art_tag1}">
-				        #${article.art_tag1}
-				    </c:if>
-				    <c:if test="${not empty article.art_tag2}">
-				        #${article.art_tag2}
-				    </c:if>
-				    <c:if test="${not empty article.art_tag3}">
-				        #${article.art_tag3}
-				    </c:if>
-				    <c:if test="${not empty article.art_tag4}">
-				        #${article.art_tag4}
-				    </c:if>
-				    <c:if test="${not empty article.art_tag5}">
-				        #${article.art_tag5}
-				    </c:if>
-				</td>
-				<td>${article.rep_cnt }</td>
-				<td>${article.art_read }</td>
-				<td>${article.art_good }</td>
-				<td>${article.art_bad }</td>
-				<%-- <td><fmt:formatDate value="${article.art_regdate}" pattern="MM.dd HH:mm" /></td> --%>
-				<fmt:formatDate value="${article.art_regdate}" pattern="MM.dd" var="regdate" />
-				<fmt:formatDate value="${article.art_regdate}" pattern="hh:mm" var="regtime" />
-				<td style="font-size : 10px">${regdate }<br>${regtime}</td>
-				</tr>
-			</c:forEach>
+		<span>글쓰기</span>
+		<form action="bjcommunitywrite" method="post" name="frm">
+		<table>
+		<tr><th>작성자</th><td></td> 
+		<tr><td>임시 입력</td><td>art_id<input type="text" name="art_id"> brd_id<input type="text" name="brd_id"></td></tr>
+		<tr><td>제목</td><td><input type="text" name="art_title" required="required" maxlength="50"></td></tr>
+		<tr><td>태그</td>
+						<td>
+						태그1 : <input type="text" name="art_tag1" class="tag">
+						</td>
+		<tr><td>분류</td>
+						<td>
+						<select name="category">
+						<option value="1310">일상수다</option>
+						<option value="1320">자랑하기</option>
+						<option value="1330">홍보하기</option>
+						<option value="1340">질문/요청</option>
+						</select>
+						</td></tr>						
+		<tr><td>내용</td></tr>
+		<tr><td colspan="2"><textarea rows="20" cols="100"></textarea></td></tr>
+		<tr><td colspan="2"><input type="submit" value="완료"></td></tr>
 		</table>
+
+		</form>
 		
-		<c:if test ="${page.startPage > page.pageBlock }">
-			<a href="${pageContext.request.contextPath}/board/community?currentpage=${page.startPage-page.pageBlock }&category=${category}">[이전]</a>
-		</c:if>
-		<c:forEach var="i" begin="${page.startPage }" end="${page.endPage }">
-			<a href="${pageContext.request.contextPath}/board/community?currentPage=${i }&category=${brd_id}"	>[${i }]</a>
-		</c:forEach>
-		<c:if test="${page.endPage < page.totalPage }">
-			<a href="${pageContext.request.contextPath}/board/community?currentPage=${page.startPage+page.pageBlock }&category=${brd_id}">[다음]</a>
-		</c:if>
-	</div>
-	
-	
+		</div>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		<button id="scrollToTop" class="adv-hover">
 			<svg style="fill: var(--subtheme); stroke: var(--subtheme); stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round;" width="20" height="10" viewBox="0 0 32 16">
 				<path d="M 15 1 L 1 15 31 15 Z"/>

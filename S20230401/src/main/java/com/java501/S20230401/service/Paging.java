@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class Paging {
 	private int currentPage = 1;
-	private int rowPage = 10;
+	private int rowPage = 5;
 	private int pageBlock = 10;
 	private int start;
 	private int end;
