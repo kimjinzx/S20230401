@@ -3,16 +3,18 @@
 
 <mapper namespace="com.java501.S20230401.model.TradeMapper">
 
+
+	<!-- 양동균 -->
 	<resultMap type="Trade" id="dgTradeMap">
 		<id 	column="trd_id" 		property="trd_id"/><!-- PK -->
-		<result column="mem_id" 		property="mem_id"/>
-		<result column="trd_status" 	property="trd_status"/>
+		<result column="mem_id" 		property="mem_id"/><!-- FK -->
+		<result column="trd_status" 	property="trd_status"/><!-- FK -->
+		<result column="reg_id" 		property="reg_id"/><!-- FK -->
+		<result column="trd_gender" 	property="trd_gender"/><!-- FK -->
 		<result column="trd_max" 		property="trd_max"/>
 		<result column="trd_enddate" 	property="trd_enddate"/>
 		<result column="trd_cost" 		property="trd_cost"/>
-		<result column="reg_id" 		property="reg_id"/>
 		<result column="trd_loc" 		property="trd_loc"/>
-		<result column="trd_gender" 	property="trd_gender"/>
 		<result column="trd_minage" 	property="trd_minage"/>
 		<result column="trd_maxage" 	property="trd_maxage"/>
 		<collection property="member" 	resultMap="com.java501.S20230401.model.MemberMapper.dgMemberMap"/>

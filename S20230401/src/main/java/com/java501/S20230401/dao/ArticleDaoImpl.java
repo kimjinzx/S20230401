@@ -88,6 +88,22 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return result;
 	}
+		// Share 글쓰기 프로시저
+	@Override
+	public int writeShareArticle(Article article) {
+		int result = 0;
+		try {
+			result = session.insert("dgWriteShareArticle",article);
+			if(result>0) System.out.println("성공");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	
+	
+	// 현규
 	
 	@Override
 	public List<ArticleMember> getArticleSummary(int boardNum, SummaryType summaryType) {
@@ -122,19 +138,139 @@ public class ArticleDaoImpl implements ArticleDao {
 	public Article getArticleById(Article searcher) {
 		return session.selectOne("hgGetArticleById", searcher);
 	}
-
 	
-	// Share 글쓰기 /수동 commit, rollback
+	
+	
+	
+	
+	
+	
+	
+	
+	// 백준
 	@Override
-	public int writeShareArticle(Article article) {
-		int result = 0;
-		log.info("뭐가 들었니 {}", article);
+	public Integer totalArticle(int brd_id) {
+		int totArticleCount = 0;
 		try {
-			result = session.insert("dgWriteShareArticle",article);
-			if(result>0) System.out.println("성공");
+			if (brd_id % 100 == 0) totArticleCount = session.selectOne("bjarticleIndex", brd_id);
+			else totArticleCount = session.selectOne("bjarticlePart", brd_id);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return totArticleCount;
+	}
+
+	@Override
+	public List<Article> articleTotal(Article article) {
+		List<Article> articleList = null;
+		
+		try {
+			articleList = session.selectList("bjarticleIndexAll",article);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		
+		return articleList;
+	}
+
+	@Override
+	public Article detailContent(Article article) {
+		Article detailCon = new Article();
+		
+		try {
+			detailCon = session.selectOne("bjdetailContent",article);
+		} catch (Exception e) {
+			System.out.println("에러"+e.getMessage());
+		}
+		return detailCon;
+	}
+	
+	@Override
+	public List<Article> artcleMenu(Article article) {
+		List<Article> articleMenu = null;
+		try {
+			articleMenu = session.selectList("bjArticleMenu",article);
+		} catch (Exception e) {
+			System.out.println("게시판 메뉴에러"+e.getMessage());
+		}
+		return articleMenu;
+	}
+
+	@Override
+	public Integer replyCount(int art_id) {
+		int countReply = 0;
+		try {
+			countReply = session.selectOne("bjCountReply", art_id);
+		} catch (Exception e) {
+			System.out.println("리플 에러"+e.getMessage());
+		}
+		
+		return countReply;
+	}
+
+	@Override
+	public Integer upreadCount(Article article) {
+		System.out.println("아티클 조회수 다오임플 시작");
+		Article countUpread = article;
+		System.out.println("아티칼 조회수 카운트업리드"+countUpread);
+		Integer count = 0;
+		try {
+			count = session.update("bjreadCount",countUpread);
+			System.out.println("업데이트 결과 "+count);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return result;
+		return count;
+	}
+
+	@Override
+	public List<Article> listMagnager() {
+		List<Article> bjwrite = null;
+		try {
+			bjwrite = session.selectList("bjWriteArticle");
+		} catch (Exception e) {
+			System.out.println("에러->"+e.getMessage());
+		}
+		return bjwrite;
+	}
+
+	@Override
+	public int writeArticle(Article article) {
+		System.out.println("아티클다오임플 라이트아티클 시작");
+		int writeArticle = 0;
+		
+		try {
+			writeArticle = session.insert("bjWriteArticle", article);
+			System.out.println("아티클 다오 임플 라이트아티클1"+ writeArticle);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		System.out.println("아티클 다오 임플 라이트아티클2"+ writeArticle);
+		return writeArticle;
+	}
+	
+	@Override
+	public int updateArticle(Article article) {
+		int update = 0;
+		try {
+			update = session.update("bjUpdate",article);
+		} catch (Exception e) {
+			System.out.println("업데이트에러"+e.getMessage());
+		}
+		System.out.println("업데이트 아티클값->"+article);
+		return update;
+	}
+
+	@Override
+	public int delete(Article article) {
+		int delResult = 0;
+		try {
+			delResult = session.update("bjDelete",article);
+		} catch (Exception e) {
+			System.out.println("삭제대기에러"+e.getMessage());
+		}
+		return delResult;
 	}
 }

@@ -27,4 +27,5 @@ public class AuthenticationsServiceImpl implements AuthenticationsService {
 	public void deleteAuthentication(Integer auth_id) {
 		ad.deleteAuthentication(auth_id);
 	}
+	
 }

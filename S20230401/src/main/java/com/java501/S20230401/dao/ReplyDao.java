@@ -10,8 +10,14 @@ import com.java501.S20230401.model.Reply;
 @Repository
 public interface ReplyDao {
 
+	// 양동균
 	List<Reply> replyShareList(Article article);
 	int writeReply(Reply reply);
 	int deleteReply(Reply reply);
-
+	
+	
+	// 백준
+	Reply replyCount(Reply reply);
+	List<Reply> replyMain(Reply reply);
 }
+

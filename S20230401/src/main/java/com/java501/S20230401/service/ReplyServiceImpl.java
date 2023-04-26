@@ -14,18 +14,32 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ReplyServiceImpl implements ReplyService {
-	private final ReplyDao replyDao;
+	private final ReplyDao rd;
+	
+	
+	// 양동균
 	@Override
 	public List<Reply> replyShareList(Article article) {
-		return replyDao.replyShareList(article);
+		return rd.replyShareList(article);
 	}
 	@Override
 	public int writeReply(Reply reply) {
-		return replyDao.writeReply(reply);
+		return rd.writeReply(reply);
 	}
 	@Override
 	public int deleteReply(Reply reply) {
-		return replyDao.deleteReply(reply);
+		return rd.deleteReply(reply);
 	}
-
+	
+	
+	// 백준
+		@Override
+	public Reply replyCount(Reply reply) {
+		return rd.replyCount(reply);
+	}
+	@Override
+	public List<Reply> replyMain(Reply reply) {
+		return rd.replyMain(reply);
+		
+	}
 }

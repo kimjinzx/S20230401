@@ -29,4 +29,5 @@ public class RegionDaoImpl implements RegionDao {
 	public List<Region> getChildRegions(int parentRegionCode) {
 		return session.selectList("hgGetChildRegions", parentRegionCode);
 	}
+	
 }

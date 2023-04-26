@@ -3,6 +3,7 @@
 
 <mapper namespace="com.java501.S20230401.model.BoardMapper">
 
+	<!-- 양동균 -->
 	<resultMap type="Board" id="dgBoardMap">
 		<id 	column="brd_id" 		property="brd_id"/>
 		<result column="read_auth" 		property="read_auth"/>

@@ -3,6 +3,12 @@
 
 <mapper namespace="com.java501.S20230401.model.ReplyMapper">
 
+
+
+
+
+
+	<!-- 양동균 -->
 	<resultMap type="Reply" id="dgReplyMap">
 		<id 	column="art_id" 		property="art_id"/>
 		<id 	column="brd_id" 		property="brd_id"/>
@@ -19,7 +25,6 @@
 		<collection property="member" 	resultMap="com.java501.S20230401.model.MemberMapper.dgMemberMap"/>
 		<collection property="board" 	resultMap="com.java501.S20230401.model.BoardMapper.dgBoardMap"/>
 	</resultMap>
-	
 	<!-- 댓글 조회 -->
 	<select id="gdReplyShareList" parameterType="Article" resultMap="dgReplyMap">
 		SELECT  *
@@ -33,7 +38,6 @@
 		        )
 		WHERE 	ISDELETE = 0
 	</select>
-	
 	<!-- 댓글 작성  -->
 	<insert id="dgWriteReply" parameterType="Reply">
 		INSERT 
@@ -70,7 +74,6 @@
 		        </choose>
 		        0)
 	</insert>
-	
 	<!-- 댓글 삭제 -->
 	<update id="dgDeleteReply" parameterType="Reply">
 		UPDATE  REPLY
@@ -80,4 +83,23 @@
 		AND     REP_ID = #{rep_id}
 	</update>
 	
+
+
+
+
+	<!-- 백준 -->
+	<select id="bjCountReply" parameterType="Reply" resultType="Reply">
+		SELECT COUNT(*) AS rep_cnt
+		FROM reply
+		WHERE art_id = #{art_id}  AND brd_id = #{brd_id} AND isdelete = 0
+	</select>
+	
+	<select id="bjreplyMain" parameterType="Reply" resultType="Reply">
+		SELECT reply.*, member.*
+		FROM reply
+		INNER JOIN member ON reply.mem_id = member.mem_id
+		WHERE reply.art_id = #{art_id} AND reply.brd_id = #{brd_id} AND reply.isdelete = 0
+	</select>
+
+
 </mapper>

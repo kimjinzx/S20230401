@@ -3,6 +3,27 @@
 
 <mapper namespace="com.java501.S20230401.model.CommMapper">
 
+
+	<!-- 유현규 -->
+	<select id="hgCommGetValue" parameterType="int" resultType="Comm">
+		SELECT COMM_VALUE FROM COMM WHERE COMM_ID = #{comm_id}
+	</select>
+	<select id="hgGetCommById" parameterType="int" resultType="Comm">
+		SELECT * FROM COMM WHERE COMM_ID = #{comm_id}
+	</select>
+	<select id="hgGetCommByName" parameterType="java.lang.String" resultType="Comm">
+		SELECT * FROM COMM WHERE COMM_VALUE = #{comm_value}
+	</select>
+	<select id="hgGetBoardName" resultType="Comm">
+		SELECT * FROM COMM WHERE COMM_ID BETWEEN 1000 AND 1600 AND MOD(COMM_ID, 100) = 0
+	</select>
+	<select id="hgGetCategoryListBySuper" parameterType="int" resultType="Comm">
+		SELECT * FROM COMM WHERE TRUNC(COMM_ID / 100) * 100 = #{superId} AND COMM_ID != #{superId}
+	</select>
+	
+	
+	
+	<!-- 양동균 -->
 	<resultMap type="Comm" id="dgCommMap">
 		<id 	column="comm_id" 	property="comm_id"/><!-- PK -->
 		<result column="comm_value" property="comm_value"/>
@@ -18,25 +39,5 @@
 		SELECT  *
 		FROM    COMM
 		WHERE   COMM_ID BETWEEN #{comm_id} AND #{comm_id}+99
-	</select>
-	
-	
-	
-	
-	<!-- 로그인 -->
-	<select id="hgCommGetValue" parameterType="int" resultType="Comm">
-		SELECT COMM_VALUE FROM COMM WHERE COMM_ID = #{comm_id}
-	</select>
-	<select id="hgGetCommById" parameterType="int" resultType="Comm">
-		SELECT * FROM COMM WHERE COMM_ID = #{comm_id}
-	</select>
-	<select id="hgGetCommByName" parameterType="java.lang.String" resultType="Comm">
-		SELECT * FROM COMM WHERE COMM_VALUE = #{comm_value}
-	</select>
-	<select id="hgGetBoardName" resultType="Comm">
-		SELECT * FROM COMM WHERE COMM_ID BETWEEN 1000 AND 1600 AND MOD(COMM_ID, 100) = 0
-	</select>
-	<select id="hgGetCategoryListBySuper" parameterType="int" resultType="Comm">
-		SELECT * FROM COMM WHERE TRUNC(COMM_ID / 100) * 100 = #{superId} AND COMM_ID != #{superId}
 	</select>
 </mapper>

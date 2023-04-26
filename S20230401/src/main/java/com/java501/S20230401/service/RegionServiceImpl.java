@@ -29,4 +29,5 @@ public class RegionServiceImpl implements RegionService {
 	public List<Region> getChildRegions(int parentRegionCode) {
 		return rd.getChildRegions(parentRegionCode);
 	}
+	
 }

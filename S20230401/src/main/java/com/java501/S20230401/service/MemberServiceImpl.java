@@ -51,5 +51,6 @@ public class MemberServiceImpl implements MemberService {
 		md.setAuthority(mem_id, authority);
 	}
 	
+	
 
 }

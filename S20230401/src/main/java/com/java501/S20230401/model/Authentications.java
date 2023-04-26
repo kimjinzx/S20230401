@@ -11,4 +11,5 @@ public class Authentications {
 	private String auth_value;
 	private Date auth_regdate;
 	private Date auth_expiredate;
+	
 }

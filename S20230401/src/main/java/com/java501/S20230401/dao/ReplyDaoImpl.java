@@ -15,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 public class ReplyDaoImpl implements ReplyDao {
 	private final SqlSession session;
 	
+	
+	// 양동균
 	// 댓글 리스트
 	@Override
 	public List<Reply> replyShareList(Article article) {
@@ -48,5 +50,32 @@ public class ReplyDaoImpl implements ReplyDao {
 		}
 		return result;
 	}
-
+	
+	
+	
+	
+	
+	
+	
+	// 백준
+	@Override
+	public Reply replyCount(Reply reply) {
+		Reply countReply = null;
+		try {
+			countReply = session.selectOne("bjCountReply",reply);
+		} catch (Exception e) {
+			System.out.println("댓글수에러"+e.getMessage());
+		}
+		return countReply;
+	}
+	@Override
+	public List<Reply> replyMain(Reply reply) {
+		List<Reply> mainReply = null;
+		try {
+			mainReply = session.selectList("bjreplyMain",reply);
+		} catch (Exception e) {
+			System.out.println("댓글에러"+e.getMessage());
+		}
+		return mainReply;
+	}
 }

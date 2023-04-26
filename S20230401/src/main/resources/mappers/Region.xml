@@ -3,15 +3,7 @@
 
 <mapper namespace="com.java501.S20230401.model.RegionMapper">
 
-	<resultMap type="Region" id="dgRegionMap">
-		<id 	column="reg_id" 		property="reg_id"/><!-- PK -->
-		<result column="reg_name" 		property="reg_name"/>
-		<result column="reg_parent" 	property="reg_parent"/>
-	</resultMap>
-	
-	
-	
-	<!-- 로그인 -->
+	<!-- 유현규 -->
 	<select id="hgGetRegion" parameterType="int" resultType="Region">
 		SELECT * FROM REGION WHERE REG_ID = #{regionCode}
 	</select>
@@ -21,4 +13,12 @@
 	<select id="hgGetChildRegions" parameterType="int" resultType="Region">
 		SELECT * FROM REGION WHERE REG_PARENT = #{parentRegionCode} ORDER BY REG_ID
 	</select>
+	
+	
+	<!-- 양동균 -->	
+	<resultMap type="Region" id="dgRegionMap">
+		<id 	column="reg_id" 		property="reg_id"/><!-- PK -->
+		<result column="reg_name" 		property="reg_name"/>
+		<result column="reg_parent" 	property="reg_parent"/>
+	</resultMap>
 </mapper>

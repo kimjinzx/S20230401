@@ -2,7 +2,37 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.java501.S20230401.model.ArticleMapper">
+
+
+	<!-- 유현규 -->
+	<insert id="hgInsertArticle" parameterType="Article">
+		<!-- INSERT INTO ARTICLE (ART_ID, BRD_ID, ART_TITLE, MEM_ID, ART_REGDATE, ART_CONTENT,
+							 ART_TAG1, ART_TAG2, ART_TAG3, ART_TAG4, ART_TAG5, TRD_ID, ART_GOOD,
+							 ART_BAD, ART_READ, ART_ISNOTICE, ISDELETE, REPORT_ID)
+		VALUES ((SELECT MAX(ART_ID) + 1 FROM ARTICLE WHERE BRD_ID = #{brd_id}), #{brd_id},
+				#{art_title, jdbcType=VARCHAR}, #{mem_id}, SYSDATE, #{art_content, jdbcType=VARCHAR},
+				#{art_tag1, jdbcType=VARCHAR}, #{art_tag2, jdbcType=VARCHAR}, #{art_tag3, jdbcType=VARCHAR},
+				#{art_tag4, jdbcType=VARCHAR}, #{art_tag5, jdbcType=VARCHAR}, #{trd_id, jdbcType=NUMERIC},
+				0, 0, 0, 0, 0, NULL) -->
+		INSERT INTO ARTICLE (ART_ID, BRD_ID, ART_TITLE, MEM_ID, ART_REGDATE, ART_CONTENT,
+							 ART_TAG1, ART_TAG2, ART_TAG3, ART_TAG4, ART_TAG5, TRD_ID, ART_GOOD,
+							 ART_BAD, ART_READ, ART_ISNOTICE, ISDELETE, REPORT_ID)
+		VALUES ((SELECT MAX(ART_ID) + 1 FROM ARTICLE WHERE BRD_ID = #{brd_id}), #{brd_id},
+				#{art_title, jdbcType=VARCHAR}, #{mem_id}, SYSDATE, #{art_content, jdbcType=VARCHAR},
+				#{art_tag1, jdbcType=VARCHAR}, #{art_tag2, jdbcType=VARCHAR}, #{art_tag3, jdbcType=VARCHAR},
+				#{art_tag4, jdbcType=VARCHAR}, #{art_tag5, jdbcType=VARCHAR}, NULL,
+				0, 0, 0, 0, 0, NULL)
+	</insert>
+	<select id="hgGetArticleById" parameterType="Article" resultType="Article">
+		SELECT * FROM ARTICLE
+		WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
+	</select>
 	
+	
+	
+	
+	
+	<!-- 양동균 -->
 	<resultMap type="Article" id="dgArticleMap">
 		<id 	column="art_id" 		property="art_id"/> <!-- PK	 -->
 		<id 	column="brd_id" 		property="brd_id"/>	<!-- PK -->
@@ -30,47 +60,6 @@
 		<collection property="board" 	resultMap="com.java501.S20230401.model.BoardMapper.dgBoardMap"/>
 		<collection property="trade" 	resultMap="com.java501.S20230401.model.TradeMapper.dgTradeMap"/>
 	</resultMap>
-	
-		<!-- 게시판 카운트 -->
-<!--<select id="dgArtCnt" resultType="int" parameterType="Article">
-		<![CDATA[
-			SELECT 	COUNT(*)
-			FROM 	ARTICLE
-			WHERE 	brd_id = #{brd_id}
-		]]>
-	</select> -->
-
-	<!-- 게시판 조회 -->
-<!--<select id="dgArticleList" resultMap="dgArticleMap" parameterType="Article">
-		SELECT  *
-		FROM    (SELECT ROWNUM AS RN, J.*
-		         FROM   (SELECT *
-		                 FROM ( SELECT  * 
-		                        FROM    ARTICLE A
-		                        JOIN    (   SELECT  C1.COMM_VALUE AS BRD_NAME, B.*
-		                                    FROM    BOARD B JOIN COMM C1
-		                                    ON      BRD_ID IN COMM_ID
-		                                )USING(BRD_ID)
-		                        JOIN	(   SELECT  C2.COMM_VALUE AS GEN_NAME, M.*
-		                                    FROM    MEMBER M JOIN COMM C2
-		                                    ON      MEM_GENDER IN COMM_ID
-		                                )USING(MEM_ID)
-				                LEFT OUTER JOIN 	(   SELECT  C3.COMM_VALUE AS STATUS_NAME, T.*, R.REG_NAME
-				                                        FROM    TRADE T LEFT OUTER JOIN COMM C3
-				                                        ON      T.TRD_STATUS = C3.COMM_ID
-				                                        LEFT OUTER JOIN REGION R
-				                                        ON      T.REG_ID = R.REG_ID
-				                         )USING(TRD_ID)
-		                        LEFT OUTER JOIN    (    SELECT COUNT(*) AS REP_CNT, ART_ID, BRD_ID
-		                                                FROM REPLY
-		                                                GROUP BY (ART_ID, BRD_ID)
-		                                            )USING(BRD_ID, ART_ID)
-		                        WHERE 	A.ISDELETE = 0
-		                       )
-		                 WHERE      BRD_ID = #{brd_id}
-		                 ORDER BY   ART_REGDATE DESC) J)
-		WHERE 	RN BETWEEN #{start} and #{end}
-	</select>-->
 	
 	<!-- 전체 카운트 -->
 	<select id="dgAllArtCnt" resultType="int" parameterType="Article">
@@ -134,9 +123,6 @@
 		WHERE 	RN BETWEEN #{start} and #{end}
 	</select>
 
-	
-
-	
 	<!-- 게시글 조회 -->
 	<select id="dgDetailShareArticle" resultMap="dgArticleMap" parameterType="Article">
 		SELECT  *
@@ -205,22 +191,82 @@
 		}
 	</insert>
 
+	
+	
+	
+	
+	
+	<!-- 백준 -->
+	<select id="bjarticleIndex" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM ARTICLE
+		WHERE
+		<![CDATA[
+			brd_id >= #{brd_id} AND brd_id < #{brd_id} + 100
+		]]>
+	</select>
+	<select id="bjarticlePart" parameterType="int" resultType="int">
+		SELECT COUNT(*) FROM ARTICLE
+		WHERE brd_id = #{brd_id}
+	</select>
+	
+	<select id="bjarticleIndexAll" parameterType="Article" resultType="Article">
+		SELECT *
+		FROM (
+		    SELECT ROWNUM RN, TEMP.*, M.mem_nickname, M.mem_image
+		    FROM (
+		        SELECT A.*, NVL(R.REP_CNT, 0) AS REP_CNT
+		        FROM ARTICLE A
+		        LEFT OUTER JOIN (
+		            SELECT ART_ID, BRD_ID, COUNT(*) REP_CNT 
+		            FROM REPLY 
+		            WHERE BRD_ID BETWEEN 1300 AND 1399
+		            GROUP BY ART_ID, BRD_ID
+		        ) R ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID) 
+		        WHERE A.BRD_ID BETWEEN 1300 AND 1399
+		        AND A.isdelete = 0 
+		        ORDER BY A.ART_ID DESC
+		    ) TEMP
+		    INNER JOIN member M ON TEMP.mem_id = M.mem_id
+		)
+		WHERE RN BETWEEN #{start} AND #{end}
+	</select>
+	<select id="bjArticleMenu" parameterType="Article" resultType="Article">
+		SELECT *
+		FROM (
+		    SELECT ROWNUM RN, TEMP.*, M.mem_nickname, M.mem_image
+		    FROM (
+		        SELECT A.*, NVL(R.REP_CNT, 0) AS REP_CNT
+		        FROM ARTICLE A
+		        LEFT OUTER JOIN (
+		            SELECT ART_ID, BRD_ID, COUNT(*) REP_CNT 
+		            FROM REPLY 
+		            WHERE BRD_ID = #{brd_id}
+		            GROUP BY ART_ID, BRD_ID
+		        ) R ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID) 
+		        WHERE A.BRD_ID = #{brd_id}
+		        AND A.isdelete = 0 
+		        ORDER BY A.ART_ID DESC
+		    ) TEMP
+		    INNER JOIN member M ON TEMP.mem_id = M.mem_id
+		)
+		WHERE RN BETWEEN #{start} AND #{end}
+	</select>
 
-
-
-
-
-	<!-- 추가 -->
-	<insert id="hgInsertArticle" parameterType="Article">
-		<!-- INSERT INTO ARTICLE (ART_ID, BRD_ID, ART_TITLE, MEM_ID, ART_REGDATE, ART_CONTENT,
-							 ART_TAG1, ART_TAG2, ART_TAG3, ART_TAG4, ART_TAG5, TRD_ID, ART_GOOD,
-							 ART_BAD, ART_READ, ART_ISNOTICE, ISDELETE, REPORT_ID)
-		VALUES ((SELECT MAX(ART_ID) + 1 FROM ARTICLE WHERE BRD_ID = #{brd_id}), #{brd_id},
-				#{art_title, jdbcType=VARCHAR}, #{mem_id}, SYSDATE, #{art_content, jdbcType=VARCHAR},
-				#{art_tag1, jdbcType=VARCHAR}, #{art_tag2, jdbcType=VARCHAR}, #{art_tag3, jdbcType=VARCHAR},
-				#{art_tag4, jdbcType=VARCHAR}, #{art_tag5, jdbcType=VARCHAR}, #{trd_id, jdbcType=NUMERIC},
-				0, 0, 0, 0, 0, NULL) -->
-		INSERT INTO ARTICLE (ART_ID, BRD_ID, ART_TITLE, MEM_ID, ART_REGDATE, ART_CONTENT,
+	<select id="bjdetailContent"  parameterType="Article" resultType="Article">
+		SELECT a.*, m.mem_nickname, m.mem_image
+			FROM article a
+			INNER JOIN member m ON a.mem_id = m.mem_id
+		WHERE a.art_id = #{art_id} AND a.brd_id = #{brd_id}	AND a.isdelete = 0
+	</select>
+	
+	<update id="bjreadCount" parameterType="Article" >
+		UPDATE article
+		SET art_read = art_read + 1
+		WHERE art_id = #{art_id} AND brd_id = #{brd_id} AND isdelete = 0
+	</update>
+	
+	<insert id="bjWriteArticle" parameterType="Article">
+    INSERT INTO ARTICLE (ART_ID, BRD_ID, ART_TITLE, MEM_ID, ART_REGDATE, ART_CONTENT,
 							 ART_TAG1, ART_TAG2, ART_TAG3, ART_TAG4, ART_TAG5, TRD_ID, ART_GOOD,
 							 ART_BAD, ART_READ, ART_ISNOTICE, ISDELETE, REPORT_ID)
 		VALUES ((SELECT MAX(ART_ID) + 1 FROM ARTICLE WHERE BRD_ID = #{brd_id}), #{brd_id},
@@ -229,8 +275,29 @@
 				#{art_tag4, jdbcType=VARCHAR}, #{art_tag5, jdbcType=VARCHAR}, NULL,
 				0, 0, 0, 0, 0, NULL)
 	</insert>
-	<select id="hgGetArticleById" parameterType="Article" resultType="Article">
-		SELECT * FROM ARTICLE
-		WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
-	</select>
+	
+	<update id="bjUpdate" parameterType="Article">
+		UPDATE article
+		  SET
+		    art_title = #{art_title},
+		    art_tag1 = #{art_tag1},
+		    art_tag2 = #{art_tag2},
+		    art_tag3 = #{art_tag3},
+		    art_tag4 = #{art_tag4},
+		    art_tag5 = #{art_tag5},
+		    art_content = #{art_content}
+		WHERE  art_id = #{art_id} AND brd_id = #{brd_id}   
+	</update>
+	<update id="bjDelete" parameterType="Article">
+		UPDATE article
+		  SET
+		  	isdelete = 1
+		WHERE art_id=#{art_id} AND brd_id = #{brd_id}
+	</update>
+	
+	
+	
+	
+	
+	
 </mapper>
