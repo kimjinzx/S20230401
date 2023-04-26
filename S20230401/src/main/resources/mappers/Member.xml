@@ -88,6 +88,8 @@
 	
 	
 	
-
-
+	<!-- 최승환 -->
+   <select id="memCount" parameterType="java.lang.String" resultType="int">
+ 		Select Count(*) from member  where id = #{mem_id}	
+   </select>
 </mapper>

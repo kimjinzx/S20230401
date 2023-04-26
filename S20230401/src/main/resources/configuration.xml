@@ -25,5 +25,6 @@
 		<typeAlias type="com.java501.S20230401.model.Authentications" 	alias="Authentications"/>
 		
 		<typeAlias type="com.java501.S20230401.model.Article_Trade_Reply" alias="Article_Trade_Reply"/>		
+		
 	</typeAliases>
 </configuration>

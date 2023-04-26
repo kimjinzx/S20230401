@@ -690,4 +690,86 @@
 	
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 최승환 -->
+	<select id="shCustomerCount" resultType="int">
+	 <![CDATA[
+		SELECT Count(*)
+		FROM article
+		WHERE brd_id >=1500 and brd_id <1600
+ 	 ]]>	
+	</select>
+	
+	<select id="shListCustomer" parameterType="Article" resultType="Article">
+	 <![CDATA[
+		SELECT *
+  		FROM 
+  			(
+    		SELECT ROWNUM RN, A.*, M.MEM_NICKNAME, M.MEM_IMAGE, NVL(R.REP_COUNT, 0) REP_COUNT
+    		FROM ARTICLE A
+    		LEFT JOIN MEMBER M ON A.MEM_ID = M.MEM_ID
+    		LEFT JOIN 
+    			(
+      			SELECT ART_ID, BRD_ID, COUNT(*) REP_COUNT
+      			FROM REPLY
+      			GROUP BY ART_ID, BRD_ID
+    			) R
+    		ON A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID
+    		WHERE A.BRD_ID >= 1500 AND A.BRD_ID < 1600
+    		ORDER BY A.ART_ID DESC
+  			)
+  		WHERE RN BETWEEN #{start} AND #{end}
+ 	 ]]>	
+	</select>
+	
+	<select id="shListCustomerMenu" parameterType="Article" resultType="Article">
+	 <![CDATA[
+		SELECT *
+  		FROM 
+  			(
+    		SELECT ROWNUM RN, A.*, M.MEM_NICKNAME, M.MEM_IMAGE, NVL(R.REP_COUNT, 0) REP_COUNT
+    		FROM ARTICLE A
+    		LEFT JOIN MEMBER M ON A.MEM_ID = M.MEM_ID
+    		LEFT JOIN 
+    			(
+      			SELECT ART_ID, BRD_ID, COUNT(*) REP_COUNT
+      			FROM REPLY
+      			GROUP BY ART_ID, BRD_ID
+    			) R
+    		ON A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID
+    		WHERE A.BRD_ID = #{brd_id}
+    		ORDER BY A.ART_ID DESC
+  			)
+  		WHERE RN BETWEEN #{start} AND #{end}
+ 	 ]]>	
+	</select>
+		
+	<select id="shCustomerDetail" parameterType="Article" resultType="Article">
+	  <![CDATA[
+        	 SELECT A.*, M.MEM_NICKNAME, M.MEM_IMAGE, NVL(R.REP_COUNT, 0) REP_COUNT
+			 FROM ARTICLE A
+			 LEFT JOIN MEMBER M ON A.MEM_ID = M.MEM_ID
+			 LEFT JOIN (SELECT ART_ID, BRD_ID, COUNT(*) REP_COUNT
+			 	 		FROM REPLY
+			 	 		GROUP BY ART_ID, BRD_ID) R
+			 	 		ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID)
+			 	 		WHERE A.ART_ID = #{art_id} AND A.BRD_ID = #{brd_id}
+	  ]]>
+	</select>
+	
+	<insert id="shInsertCustomer" parameterType="Article">
+		INSERT into article (art_id, brd_id, art_title, mem_id, art_content, art_regdate) 
+		VALUES (#{art_id}, #{brd_id}, #{art_title}, #{mem_id}, #{art_content}, #{art_regdate})
+	</insert>
+	
 </mapper>

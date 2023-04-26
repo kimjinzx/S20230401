@@ -16,4 +16,8 @@ public interface ReplyService {
 	// 백준
 	Reply replyCount(Reply reply);
 	List<Reply> replyMain(Reply reply);
+	
+	// 최승환
+	int 		shReplyCount(Reply reply);
+	List<Reply> replyList(Reply reply);
 }

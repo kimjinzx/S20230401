@@ -328,5 +328,40 @@ public class ArticleServiceImpl implements ArticleService {
 
 
 
-
+	// 최승환
+	@Override
+	public int totalCustomer() {
+		System.out.println("ArticleServiceImpl Start totalCustomer..." );
+		int totCustomerCnt = ad.totalCustomer();
+		System.out.println("ArticleServiceImpl totalCustomer totCustomerCnt->" + totCustomerCnt);
+		return totCustomerCnt;
+	}
+	@Override
+	public List<Article> listCustomer(Article article) {
+		List<Article> customerList = null;
+		System.out.println("ArticleServiceImpl listCustomer Start..." );
+		customerList = ad.listCustomer(article);
+		System.out.println("ArticleServiceImpl list customerList.size()->" +customerList.size());
+		return customerList;
+	}
+	@Override
+	public Article detailCustomer(Article article) {
+		System.out.println("ArticleServiceImpl detailCustomer...");
+		Article customerDetail = null;
+		customerDetail = ad.detailCustomer(article);
+		return customerDetail;
+	}
+	@Override
+	public List<Article> listCustomerMenu(Article article) {
+		List<Article> listMenu = null;
+		listMenu = ad.listCustomerMenu(article);
+		return listMenu;
+	}
+	@Override
+	public int insertCustomer(Article article) {
+		int result = 0;
+		System.out.println("ArticleServiceImpl insertCustomer Start");
+		result = ad.insertCustomer(article);
+		return result;
+	}
 }

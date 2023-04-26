@@ -107,7 +107,9 @@ public class Article {
 	
 	// 김찬영
 	//조회용(강의내용)
-	private String keyword;
+	private String 		keyword;
 	
-	
+	// 최승환
+	// 조인
+	private Integer		rep_count;
 }

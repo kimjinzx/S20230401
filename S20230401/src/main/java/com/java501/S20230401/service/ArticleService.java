@@ -72,4 +72,13 @@ public interface ArticleService {
 	Article 		detailArticle(int art_title);
 	int				cyArticleinsert(Article article);
 	int				cyArticlemodify(Article article);
+	
+	
+	
+	// 최승환
+	int 				totalCustomer();
+	List<Article> 		listCustomer(Article article);
+	Article 			detailCustomer(Article article);
+	List<Article> 		listCustomerMenu(Article article);
+	public int 			insertCustomer(Article article);
 }

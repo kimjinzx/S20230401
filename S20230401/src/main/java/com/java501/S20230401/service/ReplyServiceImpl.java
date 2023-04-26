@@ -43,4 +43,23 @@ public class ReplyServiceImpl implements ReplyService {
 		return rd.replyMain(reply);
 		
 	}
+	
+	
+	
+	// 최승환
+	@Override
+	public int shReplyCount(Reply reply) {
+		int countReply = 0;
+		countReply = rd.shReplyCount(reply);
+		System.out.println("댓글수 서비스 시작"+ countReply);
+		return countReply;
+	}
+	@Override
+	public List<Reply> replyList(Reply reply) {
+
+		List<Reply> listReply = null;
+		listReply = rd.replyList(reply);
+		System.out.println("댓글 서비스 시작"+ listReply);
+		return listReply;
+	}
 }

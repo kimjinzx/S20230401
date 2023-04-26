@@ -72,4 +72,11 @@ public interface ArticleDao {
 	
 	
 	
+	
+	// 최승환
+	int				totalCustomer();
+	List<Article> 	listCustomer(Article article);
+	Article 		detailCustomer(Article article);
+	List<Article> 	listCustomerMenu(Article article);
+	int 			insertCustomer(Article article);
 }
