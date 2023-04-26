@@ -13,4 +13,5 @@ public class Board {
 	// 참조
 	private Comm comm;
 
+
 }

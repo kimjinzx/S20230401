@@ -35,4 +35,17 @@
 		select * from region
 		where reg_parent is null
 	</select>
+	
+	
+	<!-- 김진현 -->
+	<select id="JHLoc" resultType="Region">
+		SELECT * FROM region
+	</select>
+	
+	<select id="JHLocUd" resultType="Region">
+		SELECT * FROM region
+	</select>
+	
+	
+	
 </mapper>

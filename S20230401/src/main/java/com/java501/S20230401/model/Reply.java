@@ -29,4 +29,5 @@ public class Reply {
 	private String	mem_nickname;
 	private String	mem_image;
 	
+	
 }

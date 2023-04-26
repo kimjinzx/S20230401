@@ -9,4 +9,5 @@ public class History {
 	private String 		his_review;
 	private Integer 	his_score;
 	
+	
 }

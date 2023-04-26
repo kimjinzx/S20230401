@@ -37,4 +37,5 @@ public class MemberInfo {
 	private int his_bad;
 	
 	
+	
 }

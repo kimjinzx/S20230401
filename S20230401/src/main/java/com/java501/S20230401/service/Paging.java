@@ -24,5 +24,6 @@ public class Paging {
 		endPage		= startPage + pageBlock - 1;
 		totalPage 	= (int)Math.ceil((double)total / pageRow);
 		endPage		= endPage > totalPage? totalPage : endPage;
+		
 	}
 }

@@ -10,4 +10,5 @@ public class Waiting {
 	private Integer mem_id;
 	private Date 	wait_date;
 	
+	
 }

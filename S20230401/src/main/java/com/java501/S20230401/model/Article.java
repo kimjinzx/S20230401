@@ -45,7 +45,6 @@ public class Article {
 	
 	
 	
-	
 	// 백준
 	private String 		mem_nickname;	
 	private String 		mem_image;

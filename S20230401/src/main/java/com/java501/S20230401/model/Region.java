@@ -8,4 +8,5 @@ public class Region {
 	private String 	reg_name;
 	private Integer reg_parent;
 	
+	
 }

@@ -25,4 +25,5 @@ public class Trade {
 	private Region 	region;
 	
 	
+	
 }

@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberServiceImpl implements MemberService {
 	private final MemberDao md;
 	
+	
 	// 양동균
 	@Override
 	public List<Member> allMemberList(Article article) {

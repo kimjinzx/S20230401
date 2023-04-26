@@ -4,4 +4,5 @@ public enum MemberSearchKeyword {
 	USERNAME, EMAIL, NICKNAME
 	
 	
+	
 }

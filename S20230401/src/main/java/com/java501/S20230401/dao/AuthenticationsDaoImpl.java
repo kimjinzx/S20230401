@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationsDaoImpl implements AuthenticationsDao {
 	private final SqlSession session;
 	
+	
 	// 유현규
 	@Override
 	public void setAuthentication(Member member, String code) {
@@ -32,4 +33,5 @@ public class AuthenticationsDaoImpl implements AuthenticationsDao {
 	public void deleteAuthentication(Integer auth_id) {
 		session.delete("hgDeleteAuthentication", auth_id);
 	}
+	
 }

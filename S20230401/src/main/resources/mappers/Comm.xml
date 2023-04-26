@@ -53,4 +53,20 @@
 		select * from comm where comm_id between 201 and 202
 	</select>
 	
+	
+	
+	
+	
+	<!-- 김진현 -->
+	<select id="JHCategory" resultType="Comm"> 
+		SELECT * FROM comm where comm_id between 1110 and 1150
+	</select>
+	
+	<select id="JHCategoryUd" resultType="Comm">
+		SELECT * FROM comm where comm_id between 1110 and 1150
+	</select>
+	
+	
+	
+	
 </mapper>

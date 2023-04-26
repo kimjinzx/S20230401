@@ -64,4 +64,5 @@ public class MemberDaoImpl implements MemberDao {
 		session.update("hgSetAuthority", member);
 	}
 	
+	
 }

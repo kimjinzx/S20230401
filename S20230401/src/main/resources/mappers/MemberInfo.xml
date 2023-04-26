@@ -4,6 +4,7 @@
 <mapper namespace="com.java501.S20230401.MemberInfoMapper">
 
 
+
 	<!-- 유현규 -->
 	<select id="hgGetMemberInfoByUsername" parameterType="java.lang.String" resultType="MemberInfo">
 		SELECT	MEM_ID, MEM_USERNAME, MEM_PASSWORD, MEM_NICKNAME, MEM_EMAIL,
