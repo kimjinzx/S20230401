@@ -7,6 +7,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import com.java501.S20230401.handler.ShareGoLoginSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -15,6 +18,11 @@ public class SecurityConfig {
 	@Bean
 	public BCryptPasswordEncoder encodePwd() {
 		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	public AuthenticationSuccessHandler successHandler() {
+		return new ShareGoLoginSuccessHandler("/");
 	}
 	
 	@Bean
@@ -31,7 +39,8 @@ public class SecurityConfig {
 			 .formLogin()
 			 .loginPage("/login")
 			 .loginProcessingUrl("/loginProc")
-			 .defaultSuccessUrl("/")
+			 //.defaultSuccessUrl("/")
+			 .successHandler(successHandler())
 			 .and()
 			 .logout()
 			 .logoutSuccessUrl("/")

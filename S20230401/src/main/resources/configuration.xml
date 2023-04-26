@@ -11,5 +11,7 @@
 		<typeAlias alias="MemberInfo" type="com.java501.S20230401.model.MemberInfo"/>
 		<typeAlias alias="Comm" type="com.java501.S20230401.model.Comm"/>
 		<typeAlias alias="Authentications" type="com.java501.S20230401.model.Authentications"/>
+		<typeAlias alias="Reply" type="com.java501.S20230401.model.Reply"/>
+		<typeAlias alias="ReplyMember" type="com.java501.S20230401.model.ReplyMember"/>
 	</typeAliases>
 </configuration>

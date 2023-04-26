@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.java501.S20230401.dao.ArticleDao;
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.ArticleMember;
+import com.java501.S20230401.model.MemberInfo;
 import com.java501.S20230401.util.SummaryType;
 
 import lombok.RequiredArgsConstructor;
@@ -31,5 +32,15 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public Article getArticleById(Article searcher) {
 		return ad.getArticleById(searcher);
+	}
+	
+	@Override
+	public MemberInfo getMemberInfoById(int mem_id) {
+		return ad.getMemberInfoById(mem_id);
+	}
+	
+	@Override
+	public ArticleMember getArticleMemberById(Article searcher) {
+		return ad.getArticleMemberById(searcher);
 	}
 }

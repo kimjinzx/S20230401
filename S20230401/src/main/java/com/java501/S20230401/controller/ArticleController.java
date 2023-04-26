@@ -6,9 +6,14 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -19,16 +24,25 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.java501.S20230401.model.Article;
+import com.java501.S20230401.model.ArticleMember;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.MemberDetails;
+import com.java501.S20230401.model.MemberInfo;
+import com.java501.S20230401.model.Region;
+import com.java501.S20230401.model.Reply;
+import com.java501.S20230401.model.ReplyMember;
 import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.CommService;
+import com.java501.S20230401.service.RegionService;
+import com.java501.S20230401.service.ReplyService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -36,7 +50,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ArticleController {
 	private final ArticleService as;
+	private final RegionService rs;
 	private final CommService cs;
+	private final ReplyService reps;
 	
 	private Integer getBoardIdByBoardName(String boardName) {
 		switch(boardName) {
@@ -55,6 +71,16 @@ public class ArticleController {
 							   @RequestParam(required = false) Integer pageNum,
 							   @AuthenticationPrincipal MemberDetails memberDetails,
 							   Model model) {
+		String[] trades = { "together", "dutchpay", "share" };
+		boolean isTradeBoard = Arrays.stream(trades).anyMatch(boardName::equals);
+		if (isTradeBoard) {
+			Map<Region, List<Region>> regionHierachy = new HashMap<Region, List<Region>>();
+			List<Region> superRegions = rs.getSuperRegions();
+			for (Region sups : superRegions) regionHierachy.put(sups, rs.getChildRegions(sups.getReg_id()));
+			model.addAttribute("superRegions", superRegions);
+			model.addAttribute("regions", regionHierachy);
+		}
+		model.addAttribute("isTradeBoard", isTradeBoard);
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		model.addAttribute("boardName", boardName);
 		int boardId = brd_id == null ? getBoardIdByBoardName(boardName) : brd_id;
@@ -116,25 +142,55 @@ public class ArticleController {
 	}
 
 	@PostMapping(value = "/board/{boardName}/writeProc")
-	public String writeArticleProcess(Article article, @RequestParam int brd_idLink,
+	public String writeArticleProcess(Article article, @RequestParam int category,
 									  @PathVariable String boardName,
 									  String articleEditor,
 									  @AuthenticationPrincipal MemberDetails memberDetails) {
-		article.setMem_id(memberDetails.getMemberInfo().getMem_id());
 		int result = as.insertArticle(article);
-		return "redirect:/board/" + boardName + "?brd_id=" + brd_idLink;
+		return "redirect:/board/" + boardName + "?brd_id=" + category;
 	}
 	
 	@GetMapping(value = "/board/{boardName}/{art_id}")
-	public String viewArticle(@PathVariable String boardName,
+	public String viewArticle(@AuthenticationPrincipal MemberDetails memberDetails,
+							  @PathVariable String boardName,
 							  @PathVariable int art_id, @RequestParam int brd_id,
-							  @RequestParam Integer category, Model model) {
+							  @RequestParam Integer category,
+							  String currentPage,
+							  Model model) {
+		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		Article searcher = new Article();
 		searcher.setArt_id(art_id);
 		searcher.setBrd_id(brd_id);
-		Article article = as.getArticleById(searcher);
+		ArticleMember article = as.getArticleMemberById(searcher);
+		MemberInfo writerInfo = as.getMemberInfoById(article.getMem_id());
+		/*
+		 * List<Comm> categories = new ArrayList<Comm>();
+		 * for (int i = 1000; i <= 1500 ; i += 100) categories.addAll(cs.getCategoryListBySuper(i));
+		 * Map<Integer, String> categoryMap = categories.stream().collect(Collectors.toMap(Comm::getComm_id, Comm::getComm_value)); model.addAttribute("categories", categoryMap);
+		 */
+		if (category.intValue() != brd_id) model.addAttribute("board", cs.getCommById(brd_id).getComm_value());
+		else model.addAttribute("board", null);
+		String boardScope = cs.getValueById(category);
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("boardScope", boardScope);
+		model.addAttribute("boardName", boardName);
+		model.addAttribute("writerInfo", writerInfo);
 		model.addAttribute("article", article);
 		model.addAttribute("brd_id", brd_id);
-		return "viewArticleTest";
+		return "viewArticle_Backup";
+	}
+	
+	@PostMapping(value = "/board/{boardName}/{art_id}/replies")
+	public String viewReply(@PathVariable String boardName,
+						    @PathVariable int art_id,
+						    @RequestBody Map<String, Object> data,
+						    Model model) {
+		int brd_id = (int)data.get("brd_id");
+		Article article = new Article();
+		article.setArt_id(art_id);
+		article.setBrd_id(brd_id);
+		List<ReplyMember> replies = reps.getReplyByArticle(article);
+		model.addAttribute("replies", replies);
+		return "replyMiddleView";
 	}
 }

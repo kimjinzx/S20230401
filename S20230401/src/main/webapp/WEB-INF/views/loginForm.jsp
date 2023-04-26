@@ -6,6 +6,11 @@
 <title>로그인 ▒ ShareGo</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/initializer.js"></script>
+<script type="text/javascript">
+	$(() => {
+		$('#username').focus();
+	});
+</script>
 <link href="https://unpkg.com/sanitize.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/preference.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/presets.css">

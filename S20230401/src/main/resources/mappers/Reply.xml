@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.java501.S20230401.ReplyMapper">
+	<select id="hgGetReplyByArticle" parameterType="Article" resultType="ReplyMember">
+		<!-- SELECT *
+		FROM (SELECT * FROM REPLY
+			  START WITH REP_ID = REP_PARENT
+			  CONNECT BY PRIOR REP_ID = REP_PARENT
+			  ORDER SIBLINGS BY REP_REGDATE ASC
+			 ) R LEFT OUTER JOIN MEMBER M ON (R.MEM_ID = M.MEM_ID)
+		WHERE R.ART_ID = #{art_id} AND R.BRD_ID = #{brd_id} -->
+		SELECT *
+		FROM (SELECT DISTINCT * FROM REPLY
+				 WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id} AND ISDELETE = 0
+				 START WITH REP_ID = REP_PARENT
+				 CONNECT BY PRIOR REP_ID = REP_PARENT AND REP_ID != REP_PARENT
+				) R LEFT OUTER JOIN MEMBER M ON (R.MEM_ID = M.MEM_ID)
+	</select>
+</mapper>
