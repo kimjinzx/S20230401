@@ -15,12 +15,12 @@ public interface ArticleDao {
 	public Article getArticleById(Article searcher);
 
 
+	// 여기서부터 내꺼
 	int 			totalArticle(Article article);
 	List<Article> 	listArticle(Article article);
 	Article 		detailArticle(Article article);
 
 	List<Article> 	replyList(Article a);
-	
 	void 			writeArticle(Article article);
 	void 			updateArticle(Article article);
 	int 			deleteArticle(Article article);

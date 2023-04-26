@@ -5,13 +5,6 @@
 
 <mapper namespace="com.java501.S20230401.CommMapper">
 
-	<select id="SelectBoard" resultType="Comm">
-		select * from comm where comm_id between 1010 and 1060
-	</select>
-	
-	<select id="SelectGender" resultType="Comm">
-		select * from comm where comm_id between 201 and 202
-	</select>
 
 	<select id="hgCommGetValue" parameterType="int" resultType="Comm">
 		SELECT COMM_VALUE FROM COMM WHERE COMM_ID = #{comm_id}
@@ -27,5 +20,14 @@
 	</select>
 	<select id="hgGetCategoryListBySuper" parameterType="int" resultType="Comm">
 		SELECT * FROM COMM WHERE TRUNC(COMM_ID / 100) * 100 = #{superId} AND COMM_ID != #{superId}
+	</select>
+	
+	<!-- 여기서부터 내꺼 -->
+	<select id="SelectBoard" resultType="Comm">
+		select * from comm where comm_id between 1010 and 1060
+	</select>
+	
+	<select id="SelectGender" resultType="Comm">
+		select * from comm where comm_id between 201 and 202
 	</select>
 </mapper>

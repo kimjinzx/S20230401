@@ -29,7 +29,8 @@ public interface ArticleService {
 	void			updateArticle(Article article);
 	int 			deleteArticle(Article article);
 	
-	public int insertArticle(Article article);
+	public 			int insertArticle(Article article);
+	public 			Article getArticleById(Article searcher);
 
-	public Article getArticleById(Article searcher);
+//	public 			int insertReply(Article article);
 }

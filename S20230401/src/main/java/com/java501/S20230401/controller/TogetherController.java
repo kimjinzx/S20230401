@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Region;
+import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.Paging;
 
@@ -124,9 +125,9 @@ public class TogetherController {
 		System.out.println("ArticleController Start delete...");
 
 		// 게시글 삭제 (isdelete = 0 => 1)
-		int result = as.deleteArticle(article);
+		int deleteresult = as.deleteArticle(article);
 
-		model.addAttribute("result", result);
+		model.addAttribute("result", deleteresult);
 		return "redirect:/board/together?category=1000";
 	}
 
@@ -181,4 +182,16 @@ public class TogetherController {
 			return "forward:/board/updateFormArticle";
 		}
 	}
+	
+//	@RequestMapping(value = "/board/detailArticle")
+//	public String insertReply(Article article, Model model) {
+//		System.out.println("TogetherController Start insertReply...");
+//		int insertReply = as.insertReply(article);
+//		
+//		model.addAttribute("insertReply", insertReply);
+//		
+//		return "board/detailArticle";
+//		
+//	}
+	
 }

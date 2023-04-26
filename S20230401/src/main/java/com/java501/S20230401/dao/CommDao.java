@@ -10,12 +10,14 @@ import com.java501.S20230401.model.Comm;
 public interface CommDao {
 	public String getValueById(int comm_id);
 
-	List<Comm> boardName();
-	List<Comm> genderName();
 
 	public Comm getCommById(int comm_id);
 
 	public Comm getCommByName(String comm_value);
 
 	public List<Comm> getCategoryListBySuper(Integer superId);
+
+	// 여기서부터 내꺼
+	List<Comm> boardName();
+	List<Comm> genderName();
 }

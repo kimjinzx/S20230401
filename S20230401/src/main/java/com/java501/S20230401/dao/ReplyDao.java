@@ -1,8 +1,10 @@
 package com.java501.S20230401.dao;
 
-import org.springframework.stereotype.Repository;
 
-@Repository
+import com.java501.S20230401.model.Article;
+
 public interface ReplyDao {
+
+//	int 		insertReply(Article article);
 
 }

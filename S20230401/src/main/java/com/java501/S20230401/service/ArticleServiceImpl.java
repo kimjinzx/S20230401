@@ -7,10 +7,11 @@ import org.springframework.stereotype.Service;
 import com.java501.S20230401.dao.ArticleDao;
 import com.java501.S20230401.dao.CommDao;
 import com.java501.S20230401.dao.RegionDao;
+import com.java501.S20230401.dao.ReplyDao;
 import com.java501.S20230401.model.Article;
+import com.java501.S20230401.model.ArticleMember;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Region;
-import com.java501.S20230401.model.ArticleMember;
 import com.java501.S20230401.util.SummaryType;
 
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
 
-	private final ArticleDao ad;
-	private final RegionDao rd;
-	private final CommDao cd;
+	private final ArticleDao 	ad;
+	private final RegionDao 	rd;
+	private final CommDao 		cd;
+	private final ReplyDao 		rpd;
 
 	@Override
 	public int totalArticle(Article article) {
@@ -144,6 +146,13 @@ public class ArticleServiceImpl implements ArticleService {
 	public Article getArticleById(Article searcher) {
 		return ad.getArticleById(searcher);
 	}
+
+
+//	@Override
+//	public int insertReply(Article article) {
+//		int insertReply = rpd.insertReply(article);
+//		return insertReply;
+//	}
 
 
 

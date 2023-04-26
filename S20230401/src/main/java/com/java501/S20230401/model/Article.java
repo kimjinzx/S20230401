@@ -8,6 +8,9 @@ import lombok.Data;
 
 @Data
 public class Article {
+	
+	// Article 여기다가 model들 다 때려박아서 아마 넣어야할거 같아요...
+	
 	// ARTICLE
 	private Integer 	art_id;
 	private Integer 	brd_id;

@@ -10,7 +10,6 @@ import com.java501.S20230401.model.ArticleMember;
 import com.java501.S20230401.util.SummaryType;
 
 import lombok.RequiredArgsConstructor;
-import oracle.security.o3logon.a;
 
 @Repository
 @RequiredArgsConstructor
@@ -51,6 +50,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		return session.selectOne("hgGetArticleById", searcher);
 	}
 	
+	// 여기서부터 내꺼
 	@Override
 	public int totalArticle(Article article) {
 		int totArticleCount = 0;

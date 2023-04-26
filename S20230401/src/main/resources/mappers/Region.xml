@@ -5,15 +5,6 @@
 
 <mapper namespace="com.java501.S20230401.RegionMapper">
 
-	<select id="SelectRegion" resultType="Region">
-		select * from region
-		where reg_parent is not null
-	</select>
-
-	<select id="SelectParentRegion" resultType="Region">
-		select * from region
-		where reg_parent is null
-	</select>
 
 	<select id="hgGetRegion" parameterType="int" resultType="Region">
 		SELECT * FROM REGION WHERE REG_ID = #{regionCode}
@@ -23,5 +14,16 @@
 	</select>
 	<select id="hgGetChildRegions" parameterType="int" resultType="Region">
 		SELECT * FROM REGION WHERE REG_PARENT = #{parentRegionCode} ORDER BY REG_ID
+	</select>
+	
+	<!-- 여기서부터 내꺼 -->
+	<select id="SelectRegion" resultType="Region">
+		select * from region
+		where reg_parent is not null
+	</select>
+
+	<select id="SelectParentRegion" resultType="Region">
+		select * from region
+		where reg_parent is null
 	</select>
 </mapper>
