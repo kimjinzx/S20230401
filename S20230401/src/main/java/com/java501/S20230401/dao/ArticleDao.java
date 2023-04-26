@@ -2,7 +2,6 @@ package com.java501.S20230401.dao;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
 
 import com.java501.S20230401.model.Article_Trade_Reply;
 import com.java501.S20230401.model.Comm;
@@ -43,7 +42,7 @@ public interface ArticleDao {
 	
 	// 임동빈
 	int 			totalArticle(Article article);
-	List<Article> 	listArticle(Article article);
+	List<Article> 	dbListArticle(Article article);
 	Article 		detailArticle(Article article);
 	List<Article> 	replyList(Article a);
 	void 			dbWriteArticle(Article article);
@@ -60,4 +59,17 @@ public interface ArticleDao {
 	Article_Trade_Reply 				updateForm2(Article_Trade_Reply atr);
 	List<Comm> 							category_ud2();
 	List<Region> 						loc_ud2();
+	
+	
+	// 김찬영
+	int				totalArticle();								//총 리스트
+	List<Article> 	listArticle(Article article);				//리스트
+	Article			cyArticlereadDetail(Article article);		//상세페이지
+	Article 		cyArticlereadupdate(Article article);		//수정페이지 상세
+	Article 		detatilArticle(int art_title);				//상세페이지
+	int				cyArticleinsert(Article article);			//게시물 작성
+	int				cyArticlemodify(Article article);			//게시물 수정
+	
+	
+	
 }

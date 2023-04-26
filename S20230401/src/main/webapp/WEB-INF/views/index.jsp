@@ -39,7 +39,7 @@
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/community?category=1300">커뮤니티</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/information?category=1400">정보공유</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath }/board/information?category=1400">정보공유</a>
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/customer?category=1500">고객센터</a>
 				<div id="dropdown">
@@ -73,10 +73,10 @@
 							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/community?category=1340">질문 / 요청</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/information?category=1410">동네정보</a>
-							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/information?category=1420">구매정보</a>
-							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/information?category=1430">신규점포</a>
-							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/information?category=1440">지역활동</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/information?category=1410">동네정보</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/information?category=1420">구매정보</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/information?category=1430">신규점포</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/information?category=1440">지역활동</a>
 						</div>
 						<div class="submenu">
 							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/customer?category=1510">공지</a>

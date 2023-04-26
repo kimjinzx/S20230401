@@ -101,4 +101,16 @@
 	</select>
 
 
+
+
+
+
+	<!-- 김찬영 댓글 조회 -->
+<!-- 	<select = id="Reply" parameterType="Reply">
+	INSERT INTO 
+		reply (art_id, brd_id, rep_id, mem_id, rep_content, rep_regdate, rep_good, rep_bad, rep_parent, rep_step)
+		VALUES (#{art_id}, #{brd_id}, #{red_id}, #{mem_id}, #{rep_content},
+		#{rep_regdate}, #{rep_good}, #{rep_bad}, #{rep_parent}, #{rep_step});	
+	</select> -->
+
 </mapper>

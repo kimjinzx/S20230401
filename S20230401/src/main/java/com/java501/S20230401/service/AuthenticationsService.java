@@ -10,5 +10,4 @@ public interface AuthenticationsService {
 	public void deleteAuthentication(Integer auth_id);
 	
 	
-	
 }

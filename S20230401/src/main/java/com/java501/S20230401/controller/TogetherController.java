@@ -43,7 +43,7 @@ public class TogetherController {
 		article.setEnd(page.getEnd());
 
 		// 게시글 리스트 작업
-		List<Article> listArticle = as.listArticle(article);
+		List<Article> listArticle = as.dbListArticle(article);
 
 		model.addAttribute("article", article);
 		model.addAttribute("totalArticle", totalArticle);

@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 public class ReplyDaoImpl implements ReplyDao {
 	private final SqlSession session;
 	
-	
 	// 양동균
 	// 댓글 리스트
 	@Override

@@ -40,7 +40,7 @@ public interface ArticleService {
 	
 	// 임동빈
 	int 			totalArticle(Article article);
-	List<Article> 	listArticle(Article article);
+	List<Article> 	dbListArticle(Article article);
 	Article 		detailArticle(Article article);
 	List<Region> 	regionName();
 	List<Region>	parentRegionName();
@@ -64,5 +64,12 @@ public interface ArticleService {
 	
 	
 	
-	
+	// 김찬영
+	int				totalArticle();
+	List<Article> 	listArticle(Article article);
+	Article			cyArticlereadDetail(Article article);
+	Article 		cyArticlereadupdate(Article article);
+	Article 		detailArticle(int art_title);
+	int				cyArticleinsert(Article article);
+	int				cyArticlemodify(Article article);
 }

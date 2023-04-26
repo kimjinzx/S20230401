@@ -34,4 +34,5 @@ public class AuthenticationsDaoImpl implements AuthenticationsDao {
 		session.delete("hgDeleteAuthentication", auth_id);
 	}
 	
+	
 }

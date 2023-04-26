@@ -602,4 +602,92 @@
 	</select>
 	
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 김찬영 -->
+	<!-- 리스트 조회-->
+	<select id="ArticleTotal" resultType="int">
+		select Count(*) FROM article
+	</select>
+	
+	<!-- 페이지 불러오기 -->
+	<select id="cyArticleListAll" parameterType="Article" resultType="Article">
+		<![CDATA[
+		
+		SELECT *
+		FROM
+		(
+		    SELECT rownum rn, a.*
+		    FROM
+		        (SELECT * FROM article WHERE brd_id >= 1400 AND brd_id < 1500 ORDER BY art_id) a
+		)
+			WHERE rn >= #{start}
+			and   rn <= #{end}
+		]]>
+	</select>
+
+	
+	<!-- 상세페이지 불러오기 -->
+	<select id="cyArticlereadDetail" parameterType="Article" resultType="Article">
+			select *
+			from article a
+			left join member m 
+			on a.mem_id = m.mem_id
+			where a.art_id=#{art_id} and a.brd_id = #{brd_id}
+	</select>
+	<!-- 조회 -->
+	<select id="count" resultType="int">
+	 select count(brd_id) from article
+	</select>
+
+	<!-- 게시글 작성 -->
+ 	<insert id="cyArticleinsert" parameterType="Article">
+		insert into 
+			article(art_id, brd_id, art_title, art_tag1, art_content)
+			values((Select max(art_id) + 1 from article where brd_id = #{brd_id}), #{brd_id}, #{art_title}, #{art_content}, #{art_content})
+	</insert> 
+	
+		<!-- 게시글 작성 -->
+   	<insert id="cyArticlewrite" parameterType="Article">
+		insert into 
+			article(brd_id, art_title, art_tag1, art_content)
+			values(#{brd_id}, #{art_title}, #{art_content}, #{art_content})
+	</insert>  
+
+	<!-- 수정페이지 불러오기 -->
+	<select id="cyArticlereadupdate" parameterType="Article" resultType="Article">
+			select *
+			from article 
+			where art_id=#{art_id} and brd_id = #{brd_id}
+	</select>
+ 
+    	<!-- 글 수정하기 -->
+	 <update id = "cyArticlemodify" parameterType="Article">
+			update article 
+		set 
+			art_id = #{art_id, jdbcType=VARCHAR},
+			art_title = #{art_title, jdbcType=VARCHAR},
+			art_tag1 = #{art_tag1, jdbcType=VARCHAR},
+			art_tag2 = #{art_tag2, jdbcType=VARCHAR},
+			art_tag3 = #{art_tag3, jdbcType=VARCHAR},
+			art_tag4 = #{art_tag4, jdbcType=VARCHAR},
+			art_tag5 = #{art_tag5, jdbcType=VARCHAR},
+			art_content = #{art_content, jdbcType=CLOB} 
+		where art_id = #{art_id, jdbcType=NUMERIC} and brd_id = #{brd_id, jdbcType=NUMERIC}
+	</update>
+	
+	
+	
+	
 </mapper>

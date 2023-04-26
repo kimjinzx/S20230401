@@ -11,4 +11,5 @@ public interface AuthenticationsDao {
 	public void deleteAuthentication(Integer auth_id);
 	
 	
+	
 }

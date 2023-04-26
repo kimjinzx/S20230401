@@ -17,6 +17,7 @@ public class ReplyServiceImpl implements ReplyService {
 	private final ReplyDao rd;
 	
 	
+	
 	// 양동균
 	@Override
 	public List<Reply> replyShareList(Article article) {

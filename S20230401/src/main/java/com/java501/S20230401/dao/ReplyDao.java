@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Reply;
 
-@Repository
+
 public interface ReplyDao {
 
 	// 양동균

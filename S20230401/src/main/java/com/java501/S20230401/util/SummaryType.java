@@ -4,5 +4,4 @@ public enum SummaryType {
 	RECENT, POPULAR
 	
 	
-	
 }

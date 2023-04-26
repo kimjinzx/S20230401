@@ -8,5 +8,6 @@ public class differentDate {
 	private Date today = new Date();
 	public static void main(String[] args) {
 	}
+
 	
 }

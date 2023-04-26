@@ -103,4 +103,11 @@ public class Article {
 	private Integer		insert_result;
 	private Integer		reg_id1;
 	private Integer     reg_id2;
+	
+	
+	// 김찬영
+	//조회용(강의내용)
+	private String keyword;
+	
+	
 }

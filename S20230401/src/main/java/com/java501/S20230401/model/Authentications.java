@@ -12,4 +12,5 @@ public class Authentications {
 	private Date auth_regdate;
 	private Date auth_expiredate;
 	
+	
 }
