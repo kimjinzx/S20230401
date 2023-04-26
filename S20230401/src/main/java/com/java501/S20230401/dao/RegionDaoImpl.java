@@ -31,5 +31,19 @@ public class RegionDaoImpl implements RegionDao {
 		parentRegionList = session.selectList("SelectParentRegion");
 		return parentRegionList;
 	}
-
+	
+	@Override
+	public Region getRegion(int regionCode) {
+		return session.selectOne("hgGetRegion", regionCode);
+	}
+	
+	@Override
+	public List<Region> getSuperRegions() {
+		return session.selectList("hgGetSuperRegions");
+	}
+	
+	@Override
+	public List<Region> getChildRegions(int parentRegionCode) {
+		return session.selectList("hgGetChildRegions", parentRegionCode);
+	}
 }

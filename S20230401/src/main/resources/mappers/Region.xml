@@ -15,5 +15,13 @@
 		where reg_parent is null
 	</select>
 
-
+	<select id="hgGetRegion" parameterType="int" resultType="Region">
+		SELECT * FROM REGION WHERE REG_ID = #{regionCode}
+	</select>
+	<select id="hgGetSuperRegions" resultType="Region">
+		SELECT * FROM REGION WHERE REG_PARENT IS NULL ORDER BY REG_ID
+	</select>
+	<select id="hgGetChildRegions" parameterType="int" resultType="Region">
+		SELECT * FROM REGION WHERE REG_PARENT = #{parentRegionCode} ORDER BY REG_ID
+	</select>
 </mapper>

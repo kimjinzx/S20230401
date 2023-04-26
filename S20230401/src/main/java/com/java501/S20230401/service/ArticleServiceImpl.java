@@ -10,6 +10,8 @@ import com.java501.S20230401.dao.RegionDao;
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Region;
+import com.java501.S20230401.model.ArticleMember;
+import com.java501.S20230401.util.SummaryType;
 
 import lombok.RequiredArgsConstructor;
 
@@ -124,6 +126,23 @@ public class ArticleServiceImpl implements ArticleService {
 	public void updateArticle(Article article) {
 		ad.updateArticle(article);
 		System.out.println("ArticleServiceImpl article.getInsert_result())=> " + article.getInsert_result());
+	}
+	
+	@Override
+	public List<ArticleMember> getArticleSummary(int boardNum, SummaryType summaryType) {
+		List<ArticleMember> articleList = ad.getArticleSummary(boardNum, summaryType);
+		return articleList;
+	}
+	
+	@Override
+	public int insertArticle(Article article) {
+		int result = ad.insertArticle(article);
+		return result;
+	}
+	
+	@Override
+	public Article getArticleById(Article searcher) {
+		return ad.getArticleById(searcher);
 	}
 
 

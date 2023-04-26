@@ -33,4 +33,23 @@ public class CommDaoImpl implements CommDao {
 			return GenderList;
 	}
 
+	@Override
+	public Comm getCommById(int comm_id) {
+		return session.selectOne("hgGetCommById", comm_id);
+	}
+	
+	@Override
+	public Comm getCommByName(String comm_value) {
+		return session.selectOne("hgGetCommByName", comm_value);
+	}
+	
+	@Override
+	public String getValueById(int comm_id) {
+		return session.selectOne("hgCommGetValue", comm_id);
+	}
+	
+	@Override
+	public List<Comm> getCategoryListBySuper(Integer superId) {
+		return session.selectList("hgGetCategoryListBySuper", superId);
+	}
 }
