@@ -9,7 +9,9 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/initializer.js"></script>
 <script type="text/javascript">
 	const getReplyList = (art_id, brd_id) => {
-		let dataObj = {art_id : art_id, brd_id : brd_id};
+		let dataObj = {};
+		dataObj["art_id"] = art_id;
+		dataObj["brd_id"] = brd_id;
 		let sendData = JSON.stringify(dataObj);
 		$.ajax({
 			url: '${pageContext.request.contextPath}/board/${boardName}/${article.art_id}/replies',
@@ -20,6 +22,33 @@
 			traditional: true,
 			success: data => {
 				$('#reply-section').html(data);
+			}
+		});
+	};
+	function replyToAjax() {
+		let content = $('#rep_content').val();
+		if (!(!content) || content != null || content != '') ajaxForReply();
+		return false;
+	}
+	const ajaxForReply = () => {
+		let formData = $('#reply-form').serializeArray();
+		let dataObject = {};
+		for (let datum of formData) {
+			let temp = parseInt(datum.value);
+			if (isNaN(temp)) temp = datum.value;
+			dataObject[datum.name] = temp;
+		}
+		let sendData = JSON.stringify(dataObject);
+		$.ajax({
+			url: '${pageContext.request.contextPath}/board/${boardName}/${article.art_id}/replyWrite',
+			type: 'post',
+			data: sendData,
+			dataType: 'json',
+			contentType: 'application/json',
+			success: data => {
+				if (data.result == 0) alert('댓글 등록에 실패했습니다');
+				getReplyList(${article.art_id}, ${article.brd_id});
+				$('#rep_content').val('');
 			}
 		});
 	};
@@ -168,7 +197,7 @@
 			</svg>
 			<span style="font-size: 10px; font-weight: bold; color: var(--subtheme);">
 				<a href="${pageContext.request.contextPath }/board/${boardName }/${article.art_id }?brd_id=${article.brd_id }">
-					${pageContext.request.contextPath }/board/${boardName }/${article.art_id }?brd_id=${article.brd_id }
+					${baseUrl }/board/${boardName }/${article.art_id }?brd_id=${article.brd_id }
 				</a>
 			</span>
 		</div>
@@ -214,6 +243,37 @@
 				</svg>
 			</button>
 		</div>
+		<c:choose>
+			<c:when test="${memberInfo != null }">
+				<div id="reply-write" style="margin-top: 10px;">
+					<form id="reply-form" name="reply-form" method="post" onsubmit="return replyToAjax();">
+						<input type="hidden" name="art_id" value="${article.art_id }">
+						<input type="hidden" name="brd_id" value="${article.brd_id }">
+						<input type="hidden" name="mem_id" value="${memberInfo.mem_id }">
+						<div id="reply-form-group" style="display: flex; flex-direction: column; justify-content: center; align-content: stretch; border: 2px solid var(--subtheme); border-radius: 5px;">
+							<div class="reply-box-title" style="display: flex; justify-content: space-between; align-items: center; padding: 5px 10px;">
+								<div style="display: flex; justify-content: flex-start; align-items: center;">
+									<div style="width: 40px; height: 40px; border-radius: 50%; overflow: hidden; margin-right: 10px; box-shadow: 0 2.5px 2.5px var(--theme-font); display: flex; justify-content: center; align-items: center; background-color: white;">
+										<img src="${pageContext.request.contextPath }/uploads/profile/${memberInfo.mem_image }" onerror="this.onerror=null; this.src='${pageContext.request.contextPath }/image/abstract-user.svg';" style="width: 40px; height: 40px; object-fit: cover;">
+									</div>
+									<div style="display: flex; flex-direction: column; justify-content: center; align-items: flex-start;">
+										<span style="font-size: 18px; font-weight: bold;">${memberInfo.mem_nickname }</span>
+									</div>
+								</div>
+								<button type="submit" class="subtheme-button" style="margin: 0 10px; padding: 2.5px 5px; font-size: 16px; font-weight: bold;">댓글 등록</button>
+							</div>
+							<textarea id="rep_content" name="rep_content" maxlength="500" style="height: 100px; margin: 0 10px; margin-bottom: 10px; border: 0.5px solid var(--theme-font); border-radius: 2.5px; outline: none; resize: none;" required></textarea>
+						</div>
+					</form>
+				</div>
+			</c:when>
+			<c:otherwise>
+				<div style="border: 0; border-radius: 5px; margin-top: 10px; padding: 10px; background-color: rgba(var(--subtheme-rgb), 0.125); display: flex; justify-content: flex-start; align-items: center;">
+					<span style="font-size: 14px; color: var(--theme-font);">로그인 후 댓글을 작성할 수 있습니다</span>
+					<a href="${pageContext.request.contextPath }/login" style="margin: 0; margin-left: 10px; font-size: 16px; font-weight: bold; color: var(--subtheme);">로그인</a>
+				</div>
+			</c:otherwise>
+		</c:choose>
 		<div id="reply-section" style="display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch;">
 			
 		</div>

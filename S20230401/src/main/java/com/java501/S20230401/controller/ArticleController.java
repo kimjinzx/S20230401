@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.ArticleMember;
@@ -156,7 +158,13 @@ public class ArticleController {
 							  @PathVariable int art_id, @RequestParam int brd_id,
 							  @RequestParam Integer category,
 							  String currentPage,
+							  HttpServletRequest request,
 							  Model model) {
+		String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request)
+										            .replacePath(null)
+										            .build()
+										            .toUriString();
+		model.addAttribute("baseUrl", baseUrl);
 		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		Article searcher = new Article();
 		searcher.setArt_id(art_id);
@@ -192,5 +200,26 @@ public class ArticleController {
 		List<ReplyMember> replies = reps.getReplyByArticle(article);
 		model.addAttribute("replies", replies);
 		return "replyMiddleView";
+	}
+	
+	@ResponseBody
+	@PostMapping(value = "/board/{boardName}/{art_id}/replyWrite")
+	public String writeReply(@PathVariable String boardName,
+							     @PathVariable int art_id,
+							     @RequestBody Map<String, Object> data) {
+		JSONObject result = new JSONObject();
+		int brd_id = (int)data.get("brd_id");
+		int mem_id = (int)data.get("mem_id");
+		String rep_content = (String)data.get("rep_content");
+		Reply reply = new Reply();
+		reply.setArt_id(art_id);
+		reply.setBrd_id(brd_id);
+		reply.setMem_id(mem_id);
+		reply.setRep_content(rep_content);
+		int ajaxResult = reps.hgInsertReply(reply);
+		result.append("result", ajaxResult);
+		result.append("art_id", art_id);
+		result.append("brd_id", brd_id);
+		return result.toString();
 	}
 }

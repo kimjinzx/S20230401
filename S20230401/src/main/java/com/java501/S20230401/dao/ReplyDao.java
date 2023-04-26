@@ -13,4 +13,6 @@ public interface ReplyDao {
 
 	public List<ReplyMember> getReplyByArticle(Article article);
 
+	public int hgInsertReply(Reply reply);
+
 }
