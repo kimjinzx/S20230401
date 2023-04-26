@@ -9,6 +9,7 @@ public class Board {
 	private Integer write_auth;
 	private Integer reply_auth;
 	
+	// 양동균
 	// 참조
 	private Comm comm;
 

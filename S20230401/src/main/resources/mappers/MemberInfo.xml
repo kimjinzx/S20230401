@@ -22,4 +22,5 @@
 		                                     					GROUP BY MEM_ID) H USING(MEM_ID))
 		WHERE MEM_USERNAME = #{username}
 	</select>
+	
 </mapper>

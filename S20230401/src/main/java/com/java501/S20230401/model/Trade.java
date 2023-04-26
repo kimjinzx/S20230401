@@ -18,9 +18,11 @@ public class Trade {
 	private Integer 	trd_minage;
 	private Integer 	trd_maxage;
 	
+	// 양동균
 	// 참조
 	private Member 	member;
 	private Comm 	comm;
 	private Region 	region;
+	
 	
 }

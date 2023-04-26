@@ -19,5 +19,6 @@ public interface ReplyDao {
 	// 백준
 	Reply replyCount(Reply reply);
 	List<Reply> replyMain(Reply reply);
+	
 }
 

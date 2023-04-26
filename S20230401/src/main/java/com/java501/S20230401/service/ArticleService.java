@@ -3,6 +3,8 @@ package com.java501.S20230401.service;
 import java.util.List;
 
 import com.java501.S20230401.model.Article;
+import com.java501.S20230401.model.Comm;
+import com.java501.S20230401.model.Region;
 import com.java501.S20230401.model.ArticleMember;
 import com.java501.S20230401.util.SummaryType;
 
@@ -29,7 +31,20 @@ public interface ArticleService {
 	List<Article>		articleMenu(Article article);
 	Integer 			upreadCount(Article article);
 	List<Article> 		listMagnager();
-	int 				writeArticle(Article article);
-	public int 			updateArticle(Article article);
+	int 				bjWriteArticle(Article article);
+	public int 			bjUpdateArticle(Article article);
 	public int 			delete(Article article);
+	
+	// 임동빈
+	int 			totalArticle(Article article);
+	List<Article> 	listArticle(Article article);
+	Article 		detailArticle(Article article);
+	List<Region> 	regionName();
+	List<Region>	parentRegionName();
+	List<Comm> 		categoryName();
+	List<Comm>		genderName();
+	List<Article> 	replyList(Article article);
+	void 			dbWriteArticle(Article article);
+	void			dbUpdateArticle(Article article);
+	int 			deleteArticle(Article article);
 }

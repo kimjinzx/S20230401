@@ -52,4 +52,5 @@
 		SELECT COUNT(*) FROM REPLY
 		WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
 	</select>
+	
 </mapper>

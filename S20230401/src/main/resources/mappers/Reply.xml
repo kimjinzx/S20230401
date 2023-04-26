@@ -7,7 +7,6 @@
 
 
 
-
 	<!-- 양동균 -->
 	<resultMap type="Reply" id="dgReplyMap">
 		<id 	column="art_id" 		property="art_id"/>

@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberServiceImpl implements MemberService {
 	private final MemberDao md;
 	
+	// 양동균
 	@Override
 	public List<Member> allMemberList(Article article) {
 		return md.allMemberList(article);
@@ -23,7 +24,7 @@ public class MemberServiceImpl implements MemberService {
 
 
 	
-	// 로그인
+	// 유현규
 	@Override
 	public Member getMember(String keyword, MemberSearchKeyword type) {
 		Member member = null;
@@ -35,17 +36,14 @@ public class MemberServiceImpl implements MemberService {
 		}
 		return member;
 	}
-	
 	@Override
 	public int registMember(Member member) {
 		return md.registMember(member);
 	}
-	
 	@Override
 	public Member getMemberById(int mem_id) {
 		return md.getMemberById(mem_id);
 	}
-	
 	@Override
 	public void setAuthority(Integer mem_id, int authority) {
 		md.setAuthority(mem_id, authority);

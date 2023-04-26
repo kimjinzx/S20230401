@@ -7,4 +7,5 @@ public class Region {
 	private Integer reg_id;
 	private String 	reg_name;
 	private Integer reg_parent;
+	
 }

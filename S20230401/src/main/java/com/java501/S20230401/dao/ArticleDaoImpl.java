@@ -3,7 +3,6 @@ package com.java501.S20230401.dao;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Repository;
 
 import com.java501.S20230401.model.Article;
@@ -20,6 +19,8 @@ import oracle.security.o3logon.a;
 public class ArticleDaoImpl implements ArticleDao {
 	private final SqlSession session;
 	
+	
+	// 양동균
 	@Override
 	public int allTotalArt(Article article) {
 		int allArtCnt = 0;
@@ -30,7 +31,6 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return allArtCnt;
 	}
-	
 	@Override
 	public List<Article> allArticleList(Article article) {
 		List<Article> allArticleList = null;
@@ -41,30 +41,6 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return allArticleList;
 	}
-//	@Override
-//	public int totalArt(Article article) {
-//		int artCnt = 0;
-//		try {
-//			artCnt = session.selectOne("dgArtCnt", article);
-//			log.info("Article 게시판 카운트 : {}", artCnt);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return artCnt;
-//	}
-//
-//	@Override
-//	public List<Article> articleList(Article article) {
-//		List<Article> articleList = null;
-//		try {
-//			articleList = session.selectList("dgArticleList", article);
-//			log.info("Article {} 게시판 조회", articleList);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//		return articleList;
-//	}
-
 	// 게시글 조회 (art_id, brd_id)
 	@Override
 	public Article detailShareArticle(Article article) {
@@ -88,7 +64,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return result;
 	}
-		// Share 글쓰기 프로시저
+	// Share 글쓰기 프로시저
 	@Override
 	public int writeShareArticle(Article article) {
 		int result = 0;
@@ -103,8 +79,10 @@ public class ArticleDaoImpl implements ArticleDao {
 	
 	
 	
-	// 현규
 	
+	
+	
+	// 유현규
 	@Override
 	public List<ArticleMember> getArticleSummary(int boardNum, SummaryType summaryType) {
 		List<ArticleMember> articleList = null;
@@ -237,7 +215,7 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 
 	@Override
-	public int writeArticle(Article article) {
+	public int bjWriteArticle(Article article) {
 		System.out.println("아티클다오임플 라이트아티클 시작");
 		int writeArticle = 0;
 		
@@ -252,7 +230,7 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 	
 	@Override
-	public int updateArticle(Article article) {
+	public int bjUpdateArticle(Article article) {
 		int update = 0;
 		try {
 			update = session.update("bjUpdate",article);
@@ -272,5 +250,113 @@ public class ArticleDaoImpl implements ArticleDao {
 			System.out.println("삭제대기에러"+e.getMessage());
 		}
 		return delResult;
+	}
+	
+	
+	
+	
+	
+	// 임동빈
+	@Override
+	public int totalArticle(Article article) {
+		int totArticleCount = 0;
+		System.out.println("ArticleDaoImple Start total...");
+
+		try {
+			if (article.getBrd_id() == 1000) {
+				totArticleCount = session.selectOne("ArticleTotalCnt");
+			} else {
+				totArticleCount = session.selectOne("ArticleBoardCnt", article);
+			}
+			System.out.println("ArticleDaoImpl totalArticle totArticleCount-> " + totArticleCount);
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl totalArticle Exception-> " + e.getMessage());
+		}
+		return totArticleCount;
+	}
+
+	@Override
+	public List<Article> listArticle(Article article) {
+		List<Article> articleList = null;
+		System.out.println("ArticleDaoImpl listArticle Start...");
+		try {
+			// article.getBrd_id() 따라서 분기 --> 전체
+			if (article.getBrd_id() == 1000) {
+				articleList = session.selectList("tkArticleListAll", article);
+			} else {
+				// 1010 밥/카페
+				// 1020 스포츠/운동
+				// 1030 쇼핑
+				// 1040 문화 생활
+				// 1050 취미 생활
+				// 1060 기타
+				articleList = session.selectList("tkArticleListBoard", article);
+			}
+			System.out.println("ArticleDaoImpl listArticle ArticleList.size()-> " + articleList.size());
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl listArticle e.getMessage()-> " + e.getMessage());
+		}
+		return articleList;
+	}
+	@Override
+	public Article detailArticle(Article article) {
+		Article detailArticle = null;
+		System.out.println("ArticleDaoImpl detailArticle Start...");
+		try {
+			detailArticle = session.selectOne("tkArticleDetail", article);
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl detailArticle e.getMessage()->" + e.getMessage());
+		}
+		return detailArticle;
+	}
+	@Override
+	public List<Article> replyList(Article article) {
+		List<Article> replyList = null;
+		try {
+			replyList = session.selectList("tkReplyList", article);
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl replyList => " + e.getMessage());
+		}
+		return replyList;
+	}
+
+	@Override
+	public void dbWriteArticle(Article article) {
+		System.out.println("ArticleDaoImpl wirteArticle start...");
+		try {
+			if (article.getReg_id2() == null) {
+				article.setReg_id(article.getReg_id1());
+			} else {
+				article.setReg_id(article.getReg_id2());
+			}
+			session.selectOne("insertArticle", article);
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl insertArticle => " + e.getMessage());
+		}
+	}
+	@Override
+	public int deleteArticle(Article article) {
+		int deleteArticle = 0;
+
+		try {
+			deleteArticle = session.update("deleteArticle", article);
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl deleteArticle => " + e.getMessage());
+		}
+		return deleteArticle;
+	}
+	@Override
+	public void dbUpdateArticle(Article article) {
+		System.out.println("ArticleDaoImpl updateArticle start...");
+		try {
+			if (article.getReg_id2() == null) {
+				article.setReg_id(article.getReg_id1());
+			} else {
+				article.setReg_id(article.getReg_id2());
+			}
+			session.selectOne("updateArticle", article);
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl updateArticle => " + e.getMessage());
+		}
 	}
 }

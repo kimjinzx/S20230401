@@ -36,4 +36,5 @@ public class MemberInfo {
 	private int his_normal;
 	private int his_bad;
 	
+	
 }

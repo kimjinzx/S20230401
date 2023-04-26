@@ -12,4 +12,5 @@ public class Report {
 	private Date 	report_date;
 	private Integer report_status;
 	private String 	report_reason;
+	
 }

@@ -10,4 +10,5 @@ public class Nickname {
 	private Date 	nick_date;
 	private String 	nick_prev;
 	private String 	nick_curr;
+	
 }

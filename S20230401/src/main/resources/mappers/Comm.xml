@@ -40,4 +40,17 @@
 		FROM    COMM
 		WHERE   COMM_ID BETWEEN #{comm_id} AND #{comm_id}+99
 	</select>
+	
+	
+	
+	
+	<!-- 임동빈 -->
+	<select id="SelectBoard" resultType="Comm">
+		select * from comm where comm_id between 1010 and 1060
+	</select>
+	
+	<select id="SelectGender" resultType="Comm">
+		select * from comm where comm_id between 201 and 202
+	</select>
+	
 </mapper>

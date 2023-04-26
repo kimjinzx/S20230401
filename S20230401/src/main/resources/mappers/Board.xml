@@ -11,4 +11,5 @@
 		<result column="reply_auth" 	property="reply_auth"/>
 		<collection property="comm" 	resultMap="com.java501.S20230401.model.CommMapper.dgCommMap"/>
 	</resultMap>
+	
 </mapper>

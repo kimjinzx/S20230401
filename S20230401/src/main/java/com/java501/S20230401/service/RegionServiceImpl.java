@@ -14,17 +14,15 @@ import lombok.RequiredArgsConstructor;
 public class RegionServiceImpl implements RegionService {
 	private final RegionDao rd;
 	
-	
+	// 유현규
 	@Override
 	public Region getRegion(int regionCode) {
 		return rd.getRegion(regionCode);
 	}
-	
 	@Override
 	public List<Region> getSuperRegions() {
 		return rd.getSuperRegions();
 	}
-	
 	@Override
 	public List<Region> getChildRegions(int parentRegionCode) {
 		return rd.getChildRegions(parentRegionCode);

@@ -15,4 +15,5 @@ public class Message {
 	private Integer mes_isread;
 	private Integer mes_status;
 	private Integer isdelete;
+	
 }

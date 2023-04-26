@@ -9,4 +9,5 @@ public interface AuthenticationsService {
 	public Authentications getAuthentication(String code);
 	public void deleteAuthentication(Integer auth_id);
 	
+	
 }

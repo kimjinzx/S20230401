@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationsDaoImpl implements AuthenticationsDao {
 	private final SqlSession session;
 	
+	// 유현규
 	@Override
 	public void setAuthentication(Member member, String code) {
 		Map<String, Object> param = new HashMap<String, Object>();

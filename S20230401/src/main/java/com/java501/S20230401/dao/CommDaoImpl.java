@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 public class CommDaoImpl implements CommDao {
 	private final SqlSession session;
 	
-	
+	// 양동균
 	@Override
 	public String categoryName(int comm_id) {
 		String categoryName = "";
@@ -37,7 +37,10 @@ public class CommDaoImpl implements CommDao {
 		return commList;
 	}
 
-	// 로그인 기능
+
+
+
+	// 유현규
 	@Override
 	public Comm getCommById(int comm_id) {
 		return session.selectOne("hgGetCommById", comm_id);
@@ -55,4 +58,27 @@ public class CommDaoImpl implements CommDao {
 		return session.selectList("hgGetCategoryListBySuper", superId);
 	}
 
+
+
+
+
+	
+	// 임동빈
+	@Override
+	public List<Comm> boardName() {
+		List<Comm> BoardList = null;
+		System.out.println("CommDaoImpl CommName Start..");
+		BoardList = session.selectList("SelectBoard");
+		System.out.println("CommDaoImpl CommList.size()=> " + BoardList.size());
+		return BoardList;
+	}
+	
+	@Override
+	public List<Comm> genderName() {
+		List<Comm> GenderList = null;
+		System.out.println("CommDaoImpl CommName Start..");
+		GenderList = session.selectList("SelectGender");
+		System.out.println("CommDaoImpl CommList.size()=> " + GenderList.size());
+		return GenderList;
+	}
 }

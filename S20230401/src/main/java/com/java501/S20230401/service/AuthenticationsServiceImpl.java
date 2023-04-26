@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationsServiceImpl implements AuthenticationsService {
 	private final AuthenticationsDao ad;
 	
+	// 유현규
 	@Override
 	public void setAuthentication(Member member, String code) {
 		ad.setAuthentication(member, code);
@@ -27,5 +28,6 @@ public class AuthenticationsServiceImpl implements AuthenticationsService {
 	public void deleteAuthentication(Integer auth_id) {
 		ad.deleteAuthentication(auth_id);
 	}
+	
 	
 }

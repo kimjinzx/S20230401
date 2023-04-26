@@ -24,5 +24,6 @@
 		<typeAlias type="com.java501.S20230401.model.ArticleMember" 	alias="ArticleMember"/>
 		<typeAlias type="com.java501.S20230401.model.Authentications" 	alias="Authentications"/>
 		
+		
 	</typeAliases>
 </configuration>

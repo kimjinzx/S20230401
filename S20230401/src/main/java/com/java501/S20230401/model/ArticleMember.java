@@ -55,4 +55,5 @@ public class ArticleMember {
 	// For Comment Count
 	private int rep_count;
 	
+	
 }

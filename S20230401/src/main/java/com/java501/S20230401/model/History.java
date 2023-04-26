@@ -8,4 +8,5 @@ public class History {
 	private Integer 	trd_id;
 	private String 		his_review;
 	private Integer 	his_score;
+	
 }

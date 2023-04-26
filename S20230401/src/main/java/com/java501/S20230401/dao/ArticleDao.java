@@ -11,7 +11,7 @@ import com.java501.S20230401.util.SummaryType;
 
 public interface ArticleDao {
 
-	// 유현규 로그인
+	// 유현규
 	public List<ArticleMember> getArticleSummary(int boardNum, SummaryType summaryType);
 	public int insertArticle(Article article);
 	public Article getArticleById(Article searcher);
@@ -32,7 +32,17 @@ public interface ArticleDao {
 	List<Article> 					artcleMenu(Article article);
 	Integer 						upreadCount(Article article);
 	List<Article> 					listMagnager();
-	int 							writeArticle(Article article);
-	int 							updateArticle(Article article);
+	int 							bjWriteArticle(Article article);
+	int 							bjUpdateArticle(Article article);
 	int								delete(Article article);
+	
+	
+	// 임동빈
+	int 			totalArticle(Article article);
+	List<Article> 	listArticle(Article article);
+	Article 		detailArticle(Article article);
+	List<Article> 	replyList(Article a);
+	void 			dbWriteArticle(Article article);
+	void 			dbUpdateArticle(Article article);
+	int 			deleteArticle(Article article);
 }

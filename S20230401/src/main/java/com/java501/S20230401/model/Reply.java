@@ -28,4 +28,5 @@ public class Reply {
 	private Integer	rep_cnt;
 	private String	mem_nickname;
 	private String	mem_image;
+	
 }

@@ -5,10 +5,15 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.java501.S20230401.dao.ArticleDao;
+import com.java501.S20230401.dao.CommDao;
+import com.java501.S20230401.dao.RegionDao;
+import com.java501.S20230401.dao.ReplyDao;
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Member;
 import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.model.ArticleMember;
+import com.java501.S20230401.model.Comm;
+import com.java501.S20230401.model.Region;
 import com.java501.S20230401.util.SummaryType;
 
 import lombok.RequiredArgsConstructor;
@@ -17,7 +22,10 @@ import oracle.security.o3logon.a;
 @Service
 @RequiredArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
-	private final ArticleDao ad;
+	private final ArticleDao 	ad;
+	private final RegionDao 	rd;
+	private final CommDao 		cd;
+	private final ReplyDao 		rpd;
 
 	// 유현규 로그인 기능 추가
 	@Override
@@ -72,7 +80,6 @@ public class ArticleServiceImpl implements ArticleService {
 		detailCon = ad.detailContent(article);
 		return detailCon;
 	}
-
 	@Override
 	public List<Article> articleMenu(Article article) {
 		List<Article> articleMenu = null;
@@ -90,15 +97,15 @@ public class ArticleServiceImpl implements ArticleService {
 		return bjwrite;
 	}
 	@Override
-	public int writeArticle(Article article) {
+	public int bjWriteArticle(Article article) {
 		int result = 0;
-		result = ad.writeArticle(article);
+		result = ad.bjWriteArticle(article);
 		return result;
 	}
 	@Override
-	public int updateArticle(Article article) {
+	public int bjUpdateArticle(Article article) {
 		int update = 0;
-		update = ad.updateArticle(article);
+		update = ad.bjUpdateArticle(article);
 		return update;
 	}
 	@Override
@@ -107,5 +114,91 @@ public class ArticleServiceImpl implements ArticleService {
 		delResult = ad.delete(article);
 		return delResult;
 	}
+	
+	
+	
+	
+	
+	// 임동빈
+		@Override
+	public int totalArticle(Article article) {
+		System.out.println("ArticleService Start total...");
+		int totArticleCnt = ad.totalArticle(article);
+		System.out.println("ArticleServiceImpl totalArticle totArticleCnt-> " + totArticleCnt);
+
+		return totArticleCnt;
+	}
+	@Override
+	public List<Article> listArticle(Article article) {
+		List<Article> articleList = null;
+		System.out.println("ArticleServiceImpl listManager Start...");
+		articleList = ad.listArticle(article);
+		System.out.println("ArticleServiceImpl listArticle ArticleList.size()->" + articleList.size());
+		return articleList;
+	}
+	@Override
+	public Article detailArticle(Article article) {
+		Article detailArticle = null;
+		detailArticle = ad.detailArticle(article);
+		return detailArticle;
+	}
+	@Override
+	public List<Region> regionName() {
+		List<Region> regionName = null;
+		System.out.println("ArticleServiceImpl regionName start...");
+		regionName = rd.regionName();
+		System.out.println("ArticleServiceImpl regionName.size()=> " + regionName.size());
+		
+		return regionName;
+	}
+
+	@Override
+	public List<Region> parentRegionName() {
+		List<Region> parentRegionName = null;
+		parentRegionName = rd.parentRegionName();
+		return parentRegionName;
+	}
+	@Override
+	public List<Comm> categoryName() {
+		List<Comm> categoryName = null;
+		System.out.println("ArticleServiceImpl categoryName start...");
+		categoryName = cd.boardName();
+		System.out.println("ArticleServiceImpl commName.size()=> " + categoryName.size());
+		return categoryName;
+	}
+	
+	@Override
+	public List<Comm> genderName() {
+		List<Comm> genderName = null;
+		System.out.println("ArticleServiceImpl categoryName start...");
+		genderName = cd.genderName();
+		System.out.println("ArticleServiceImpl commName.size()=> " + genderName.size());
+		return genderName;
+	}
+	@Override
+	public List<Article> replyList(Article article) {
+		List<Article> replyList = ad.replyList(article);
+		return replyList;
+	}
+	@Override
+	public void dbWriteArticle(Article article) {
+		ad.dbWriteArticle(article);
+		System.out.println("ArticleServiceImpl article.getInsert_result() => " + article.getInsert_result());
+	}
+	@Override
+	public int deleteArticle(Article article) {
+		
+		int deleteArticle = ad.deleteArticle(article);
+		System.out.println("ArticleServiceImpl deleteArticle.size()=> " + deleteArticle);
+		return deleteArticle;
+	}
+	@Override
+	public void dbUpdateArticle(Article article) {
+		ad.dbUpdateArticle(article);
+		System.out.println("ArticleServiceImpl article.getInsert_result())=> " + article.getInsert_result());
+	}
+	
+	
+	
 	
 }
