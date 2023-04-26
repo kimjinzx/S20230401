@@ -18,7 +18,8 @@ import com.java501.S20230401.util.SummaryType;
 import com.java501.S20230401.model.Article_Trade_Reply;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Region;
-
+import com.java501.S20230401.model.MemberInfo;
+import com.java501.S20230401.util.SummaryType;
 import lombok.RequiredArgsConstructor;
 import oracle.security.o3logon.a;
 
@@ -29,6 +30,7 @@ public class ArticleServiceImpl implements ArticleService {
 	private final RegionDao 	rd;
 	private final CommDao 		cd;
 	private final ReplyDao 		rpd;
+
 
 	// 유현규 로그인 기능 추가
 	@Override
@@ -45,6 +47,17 @@ public class ArticleServiceImpl implements ArticleService {
 	public Article getArticleById(Article searcher) {
 		return ad.getArticleById(searcher);
 	}
+	@Override
+	public MemberInfo getMemberInfoById(int mem_id) {
+		return ad.getMemberInfoById(mem_id);
+	}
+	@Override
+	public ArticleMember getArticleMemberById(Article searcher) {
+		return ad.getArticleMemberById(searcher);
+	}
+
+
+
 
 
 	// 양동균

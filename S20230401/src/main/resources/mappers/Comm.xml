@@ -5,7 +5,7 @@
 
 
 	<!-- 유현규 -->
-	<select id="hgCommGetValue" parameterType="int" resultType="Comm">
+	<select id="hgCommGetValue" parameterType="int" resultType="java.lang.String">
 		SELECT COMM_VALUE FROM COMM WHERE COMM_ID = #{comm_id}
 	</select>
 	<select id="hgGetCommById" parameterType="int" resultType="Comm">

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.java501.S20230401.dao.ReplyDao;
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Reply;
-
+import com.java501.S20230401.model.ReplyMember;
 import kotlin.jvm.internal.SerializedIr;
 import lombok.RequiredArgsConstructor;
 
@@ -62,4 +62,15 @@ public class ReplyServiceImpl implements ReplyService {
 		System.out.println("댓글 서비스 시작"+ listReply);
 		return listReply;
 	}
+	
+	// 유현규
+	@Override
+	public List<ReplyMember> getReplyByArticle(Article article) {
+		return rd.getReplyByArticle(article);
+	}
+	@Override
+	public int hgInsertReply(Reply reply) {
+		return rd.hgInsertReply(reply);
+	}
+	
 }
