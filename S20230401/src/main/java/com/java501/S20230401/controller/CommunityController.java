@@ -142,7 +142,7 @@ public class CommunityController {
 	
 	
 	@RequestMapping(value = "board/community/communityWrite")
-	public String communityFormWrite(@AuthenticationPrincipal MemberDetails memberDetails, Model model) {
+	public String communityFormWrite(@AuthenticationPrincipal MemberDetails memberDetails,int category, Model model) {
 		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		System.out.println("커뮤니티 폼 라이트 시작");
 		
@@ -150,22 +150,24 @@ public class CommunityController {
 //		model.addAttribute("listMagnager", articleList);
 
 //		System.out.println("리스트 아티클"+ articleList);
+		model.addAttribute("category", category);
 		
 		return "community/communityWrite";
 	}
 	
 	@PostMapping(value = "board/community/bjcommunitywrite")
-	public String communityWrite(@AuthenticationPrincipal MemberDetails memberDetails, Article article, Model model) {
+	public String communityWrite(@AuthenticationPrincipal MemberDetails memberDetails,int category, Article article, Model model) {
 		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		System.out.println("커뮤니티 라이트 시작");
 
 		System.out.println("커뮤니티 아티클"+article);
 		
 		int writeResult = as.writeArticle(article);
+		model.addAttribute("category", category);
 		System.out.println("라이트리절트"+writeResult);
 		if(writeResult > 0 ) {
 			System.out.println("라이트리절트값"+writeResult);
-			return "redirect:/board/community?category="+article.getBrd_id();
+			return "redirect:/board/community?category="+category;
 		}
 		else {
 			model.addAttribute("msg", "입력 실패 확인하세요");
@@ -174,48 +176,60 @@ public class CommunityController {
 	}
 	
 	@GetMapping(value = "board/community/updateForm")
-	public String updateForm(@AuthenticationPrincipal MemberDetails memberDetails,Article article, Model model) {
+	public String updateForm(@AuthenticationPrincipal MemberDetails memberDetails,int category ,Article article, Model model) {
 		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		System.out.println("업데이트 폼 시작");
 		
 		Article formUpdate = as.detailContent(article);
 		
 		model.addAttribute("article", formUpdate);
-		
+		model.addAttribute("category", category);
+		System.out.println("업데이트폼 아티클값"+formUpdate);
 		
 		return "community/updateForm";
 	}
 	
 	@PostMapping(value = "board/community/bjUpdate")
-	public String update(@AuthenticationPrincipal MemberDetails memberDetails, Article article , Model model) {
+	public String update(@AuthenticationPrincipal MemberDetails memberDetails,int category, Article article , Model model) {
 		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		System.out.println("업데이트 시작");
 		
 		int updateCount = as.updateArticle(article);
 		
 		model.addAttribute("uptCnt", updateCount);
+		model.addAttribute("category", category);
 		
-		return "redirect:/board/community?category="+article.getBrd_id();
+		return "redirect:/board/community?category="+category;
+	}
+	
+	
+	@RequestMapping(value = "board/community/bjDelte")
+	public String delete(Article article, int category, Model model) {
+		System.out.println("삭제 업데이트 시작");
+		int delResult = as.delete(article);
+		model.addAttribute("category", category);
+		
+		return "redirect:/board/community?category="+category;
 	}
 	
 	@PostMapping(value = "board/community/bjReplyWrite")
 	public String replyWrite(@AuthenticationPrincipal MemberDetails memberDetails, Reply reply , Model model) {
 		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		System.out.println("댓글쓰기 컨트롤러 시작");
+		int reWrite = as.replyWrite(reply);
+		System.out.println("reply 값 ->" + reply);
+		model.addAttribute("reply", reWrite);
 		
+		return "redirect:/board/community/detailContent?art_id="+reply.getArt_id()+"&brd_id="+reply.getBrd_id()+"&category="+reply.getBrd_id();   
 		
-	
-	return "board/community/bjReplyWrite";   
-	
 	}
 	
-	@RequestMapping(value = "board/community/bjDelte")
-	public String delete(Article article , Model model) {
-		System.out.println("삭제 업데이트 시작");
-		int delResult = as.delete(article);
-		
-		
-		return "redirect:/board/community?category="+article.getBrd_id();
+	@RequestMapping(value = "board/community/bjReplyDelete")
+	public String replyDelete(@AuthenticationPrincipal MemberDetails memberDetails, Reply reply , Model model) {
+		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		int reDelete = as.replyDelete(reply);
+
+		return "redirect:/board/community/detailContent?art_id="+reply.getArt_id()+"&brd_id="+reply.getBrd_id()+"&category="+reply.getBrd_id();  
 	}
-	
 }
 

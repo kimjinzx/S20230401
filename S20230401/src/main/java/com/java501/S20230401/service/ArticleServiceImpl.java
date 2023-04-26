@@ -94,4 +94,18 @@ public class ArticleServiceImpl implements ArticleService {
 		delResult = ad.delete(article);
 		return delResult;
 	}
+
+	@Override
+	public int replyWrite(Reply reply) {
+		int reWrite = 0;
+		reWrite = ad.replyWrite(reply);
+		return reWrite;
+	}
+
+	@Override
+	public int replyDelete(Reply reply) {
+		int reDelete = 0;
+		reDelete = ad.replyDelete(reply);
+		return reDelete;
+	}
 }

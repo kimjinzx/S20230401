@@ -25,5 +25,7 @@ public interface ArticleDao {
 	public Article 					getArticleById(Article searcher);
 	int 							updateArticle(Article article);
 	int								delete(Article article);
+	int 							replyWrite(Reply reply);
+	int 							replyDelete(Reply reply);
 
 }

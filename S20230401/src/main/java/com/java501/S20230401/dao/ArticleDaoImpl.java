@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.ArticleMember;
+import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.util.SummaryType;
 
 import lombok.RequiredArgsConstructor;
@@ -173,5 +174,27 @@ public class ArticleDaoImpl implements ArticleDao{
 			System.out.println("삭제대기에러"+e.getMessage());
 		}
 		return delResult;
+	}
+
+	@Override
+	public int replyWrite(Reply reply) {
+		int reWrite = 0;
+		try {
+			reWrite = session.insert("bjReplyWrite",reply);
+		} catch (Exception e) {
+			System.out.println("댓글쓰기에러"+e.getMessage());
+		}
+		return reWrite;
+	}
+
+	@Override
+	public int replyDelete(Reply reply) {
+		int reDelete= 0;
+		try {
+			reDelete = session.insert("bjReplyDelete",reply);
+		} catch (Exception e) {
+			System.out.println("댓글쓰기에러"+e.getMessage());
+		}
+		return reDelete;
 	}
 }

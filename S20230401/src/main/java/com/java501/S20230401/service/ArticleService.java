@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.ArticleMember;
+import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.util.SummaryType;
 
 public interface ArticleService {
@@ -20,4 +21,6 @@ public interface ArticleService {
 	public Article 		getArticleById(Article searcher);
 	public int 			updateArticle(Article article);
 	public int 			delete(Article article);
+	public int 			replyWrite(Reply reply);
+	public int			replyDelete(Reply reply);
 }

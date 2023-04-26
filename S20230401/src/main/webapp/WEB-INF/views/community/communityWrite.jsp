@@ -444,6 +444,7 @@
 			<div>작성자 : ${memberInfo.mem_nickname }</div>
 			<div>
 			<input type="hidden" name="mem_id" value="${memberInfo.mem_id}">
+			<input type="hidden" name="category" value="${category}">
 			</div>
 			<div>제목 : <input type="text" name="art_title" required="required" maxlength="50"></div>
 			<div>태그 <br>

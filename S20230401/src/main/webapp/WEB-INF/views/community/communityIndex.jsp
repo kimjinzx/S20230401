@@ -449,7 +449,7 @@
 		<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1340'">질문/요청</button>
 		<c:choose>
 		<c:when test="${memberInfo != null }">
-		<button onclick="location.href='${pageContext.request.contextPath}/board/community/communityWrite'">글쓰기</button>
+		<button onclick="location.href='${pageContext.request.contextPath}/board/community/communityWrite?category=${category }'">글쓰기</button>
 		</c:when>
 		</c:choose>
 		<table border="1">

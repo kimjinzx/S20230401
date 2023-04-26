@@ -447,7 +447,7 @@
 			<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1340'">질문/요청</button>
 			<c:choose>
 			<c:when test="${memberInfo != null }">
-			<button onclick="location.href='${pageContext.request.contextPath}/board/community/communityWrite'">글쓰기</button>
+			<button onclick="location.href='${pageContext.request.contextPath}/board/community/communityWrite?category=${category }'">글쓰기</button>
 			</c:when>
 			</c:choose>
 			</p>
@@ -479,47 +479,55 @@
 					</td>
 				</tr>	
 			</table>
-					
-				<p> ${reply.rep_cnt }개의 댓글  </p>
-				<p>
+			<div align="left" style="margin-left: 400px;">	
+			<div>	
+				 ${reply.rep_cnt }개의 댓글 
 				<c:choose>
 					<c:when test="${memberInfo.mem_id != null }">
 						<form action="bjReplyWrite" method="post" name="reply">
 							<div><img src="${pageContext.request.contextPath}/${memberInfo.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
-							${memberInfo.mem_nickname }
-							<textarea rows="2" cols="50" name="art_content"  >댓글내용을 입력하세요</textarea>								
+							${memberInfo.mem_nickname }<br>
+							<input type="text" name="rep_content" maxlength="200" style="width: 500px; height: 100px;" required="required">
+							<input type="hidden" name="mem_id" value="${memberInfo.mem_id}">									
+							<input type="hidden" name="art_id" value="${article.art_id}">									
+							<input type="hidden" name="brd_id" value="${article.brd_id}">									
 																<input type="submit" value="댓글쓰기"></div>
 						</form>
 					</c:when>
 				</c:choose>
-				</p>
+			</div>
 				
 			<div>
 				<c:forEach var="reply" items="${replyMain }">
-					<div style="margin: 10px">
+					<div >
 						<span>프사</span> <span>작성자</span> <span>댓글내용</span> <span>작성시간</span>	<span>추천</span> <span>비추천</span> <span>최상위댓글번호</span> <span>댓글순서</span>
 					</div>
 					<div>	
 						<span><img src="${pageContext.request.contextPath}/${reply.mem_image }" alt="예시" style="max-height: 40px; max-width: 40px;"></span>
 						<span>${reply.mem_nickname }</span>
 						<span>${reply.rep_content }</span>
-						<fmt:formatDate value="${article.art_regdate}" pattern="MM.dd" var="regdate" />
-						<fmt:formatDate value="${article.art_regdate}" pattern="hh:mm" var="regtime" />
+						<fmt:formatDate value="${reply.rep_regdate}" pattern="MM.dd" var="regdate" />
+						<fmt:formatDate value="${reply.rep_regdate}" pattern="hh:mm" var="regtime" />
 						<span style="font-size : 10px">${regdate }${regtime}</span>
 						<span>${reply.rep_good }<button>추천</button> </span>
-						<span>${reply.rep_bad }<button>비추천</button></span>
+						<span>${reply.rep_bad }<button>비추천</button> </span>
 						<span>${reply.rep_parent}</span>
 						<span>${reply.rep_step }</span>
+						<c:choose>
+							<c:when test="${memberInfo.mem_id != null }">
+								<span><button>대댓글쓰기</button></span>
+							</c:when>
+						</c:choose>
+						<c:choose>
+							<c:when test="${memberInfo.mem_id == reply.mem_id }">
+								<input type="button" value="댓글삭제" 
+								onclick="location.href='${pageContext.request.contextPath}/board/community/bjReplyDelete?art_id=${article.art_id }&rep_id=${reply.rep_id }&brd_id=${article.brd_id }&category=${category}'">
+							</c:when>
+						</c:choose>
 					</div>
-					<c:choose>
-						<c:when test="${memberInfo.mem_id == reply.mem_id }">
-							<div><button>대댓글쓰기</button></div>
-							<div><button>삭제</button></div>
-						</c:when>
-					</c:choose>
 				</c:forEach>
 			</div>	 
-	
+		</div>
 		<button id="scrollToTop" class="adv-hover">
 			<svg style="fill: var(--subtheme); stroke: var(--subtheme); stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round;" width="20" height="10" viewBox="0 0 32 16">
 				<path d="M 15 1 L 1 15 31 15 Z"/>
