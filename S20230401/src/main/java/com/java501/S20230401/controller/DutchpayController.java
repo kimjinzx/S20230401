@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -71,17 +72,6 @@ public class DutchpayController {
 		return "dutchpay/dutchpayWriteForm";
 	}
 	
-	@PostMapping(value = "dutchpay/dutchpayWritePro") // 글내용 삽입 (insert) 
-	public String insert(Article_Trade_Reply atr ,RedirectAttributes ra) {
-		
-		System.out.println("start insert button");
-		System.out.println(atr);
-		System.out.println("controller insert brd_id  -> "+atr.getBrd_id());
-		as.dutchpayInsert1(atr);
-			ra.addFlashAttribute("atr", atr);  //model.addAttribute와 다른점은 컨트롤러 내에서 매핑할 시 이렇게 사용하는게 좋음
-			int brd_id = atr.getBrd_id(); //확인 버튼 누르면 드롭다운(카테고리) 에서 고른 해당카테고리로 이동 
-			return "redirect:/board/dutchpay?category="+brd_id;
-		}
 	
 
 	@RequestMapping(value = "dutchpay/dutchpayUpdateForm") //업데이트(수정) 폼 + 드롭다운 
@@ -104,13 +94,27 @@ public class DutchpayController {
 		return "dutchpay/dutchpayUpdateForm";
 	}
 	
-//	@RequestMapping(value = "dutchpay/dutchpayUpdateForm/update")
-//	public String update(Article_Trade_Reply atr, Model model) {
-//		System.out.println("dutchpay/dutchpayUpdateForm start..");
-//		System.out.println("controller updateForm brd_id size() -> "+atr.getBrd_id());
-//		System.out.println("controller updateForm art_id size() -> "+atr.getArt_id());
-//		System.out.println("controller updateForm trd_id size() -> "+atr.getTrd_id());
-//		
+	@PostMapping(value = "dutchpay/dutchpayWritePro") // 글내용 삽입 (insert) 
+	public String insert(Article_Trade_Reply atr ,RedirectAttributes ra) {
+		
+		System.out.println("start insert button");
+		System.out.println(atr);
+		System.out.println("controller insert brd_id  -> "+atr.getBrd_id());
+		as.dutchpayInsert1(atr);
+		ra.addFlashAttribute("atr", atr);  //model.addAttribute와 다른점은 컨트롤러 내에서 매핑할 시 이렇게 사용하는게 좋음
+		int brd_id = atr.getBrd_id(); //확인 버튼 누르면 드롭다운(카테고리) 에서 고른 해당카테고리로 이동 
+		return "redirect:/board/dutchpay?category="+brd_id;
+	}
+	
+//	@PostMapping(value = "dutchpay/dutchpayUpdatePro") //글내용 수정(update)
+//	public String update(Article_Trade_Reply atr ,RedirectAttributes ra) {
+//		System.out.println("start update button");
+//		System.out.println(atr);
+//		System.out.println("controller update brd_id size() -> "+atr.getBrd_id());
+//		as.dutchpayUpdate1(atr);
+//		ra.addFlashAttribute("atr", atr);  
+//		int brd_id = atr.getBrd_id();
+//		return "redirect:/board/dutchpay?category="+brd_id;
 //	}
 	
 }

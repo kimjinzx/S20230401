@@ -4,13 +4,13 @@
 
 <mapper namespace="com.java501.S20230401.CommMapper">
 	
-	<select id="JHCategory" resultType="Comm">
+	<select id="JHCategory" resultType="Comm"> <!-- 진현 -->
 		SELECT * FROM comm where comm_id between 1110 and 1150
 	</select>
 	
 	<select id="JHCategoryUd" resultType="Comm">
 		SELECT * FROM comm where comm_id between 1110 and 1150
-	</select>
+	</select><!-- 진현 -->
 	
 	<select id="hgCommGetValue" parameterType="int" resultType="Comm">
 		SELECT COMM_VALUE FROM COMM WHERE COMM_ID = #{comm_id}

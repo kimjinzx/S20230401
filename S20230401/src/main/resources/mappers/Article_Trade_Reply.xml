@@ -4,7 +4,7 @@
 
 <mapper namespace="com.java501.S20230401.Article_Trade_ReplyMapper">
 
-	<select id="JHDutchpayList" parameterType="Article_Trade_Reply" resultType="Article_Trade_Reply">
+	<select id="JHDutchpayList" parameterType="Article_Trade_Reply" resultType="Article_Trade_Reply"><!-- 진현 -->
 		SELECT a.art_id, a.brd_id,
 			   c.comm_value, a.art_title, a.art_regdate, 
       		   a.art_tag1, a.art_tag2, a.art_tag3, a.art_tag4, a.art_tag5,
@@ -173,6 +173,6 @@
 
 	</select>
 	
-
+<!-- 진현 -->
 </mapper>
 

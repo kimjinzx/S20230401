@@ -36,7 +36,7 @@ public class ArticleServiceImpl implements ArticleService {
 		return ad.getArticleById(searcher);
 	}
 	
-	@Override
+	@Override//진현
 	public List<Article_Trade_Reply> getDutchpayList(String boardName) {
 		List<Article_Trade_Reply> atr = ad.getDutchpayList(boardName);
 		return atr;
@@ -87,7 +87,7 @@ public class ArticleServiceImpl implements ArticleService {
 		List<Region> re = null;
 		re = ad.loc_ud2();
 		return re;
-	}
+	}//진현
 
 
 

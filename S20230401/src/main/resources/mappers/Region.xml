@@ -4,13 +4,13 @@
 
 <mapper namespace="com.java501.S20230401.RegionMapper">
 
-	<select id="JHLoc" resultType="Region">
+	<select id="JHLoc" resultType="Region"><!-- 진현 -->
 		SELECT * FROM region
 	</select>
 	
 	<select id="JHLocUd" resultType="Region">
 		SELECT * FROM region
-	</select>
+	</select><!-- 진현 -->
 	
 	<select id="hgGetRegion" parameterType="int" resultType="Region">
 		SELECT * FROM REGION WHERE REG_ID = #{regionCode}

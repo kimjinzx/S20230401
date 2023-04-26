@@ -14,14 +14,14 @@ import com.java501.S20230401.util.SummaryType;
 
 public interface ArticleDao {
 
-	List<Article_Trade_Reply> 			getDutchpayList(String boardName);
+	List<Article_Trade_Reply> 			getDutchpayList(String boardName); //진현
 	Article_Trade_Reply                 detail2(Article_Trade_Reply atr);
 	void 								dutchpayInsert2(Article_Trade_Reply atr);
 	List<Comm>           				category2();
 	List<Region>    			        loc2();
 	Article_Trade_Reply 				updateForm2(Article_Trade_Reply atr);
 	List<Comm> 							category_ud2();
-	List<Region> 						loc_ud2();
+	List<Region> 						loc_ud2();//진현
 
 	public List<ArticleMember> getArticleSummary(int boardNum, SummaryType summaryType);
 

@@ -22,7 +22,7 @@ public class ArticleDaoImpl implements ArticleDao {
 	
 	private final SqlSession session;
 	
-	@Override
+	@Override//진현
 	public List<Article_Trade_Reply> getDutchpayList(String boardName) {
 		List<Article_Trade_Reply> dutchpayList2 = null;
 		
@@ -110,7 +110,7 @@ public class ArticleDaoImpl implements ArticleDao {
 			System.out.println("ArticleServiceImpl loc_ud2 Exception -> "+e.getMessage());
 		}
 		return re;
-	}
+	}//진현
 	
 	@Override
 	public List<ArticleMember> getArticleSummary(int boardNum, SummaryType summaryType) {
