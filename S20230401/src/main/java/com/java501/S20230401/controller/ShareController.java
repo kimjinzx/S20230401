@@ -51,14 +51,13 @@ public class ShareController {
 		if(memberDetails != null)
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		
+		// brd_id 할당
 		article.setBrd_id(category);
 		int totalArt = 0;
 		List<Article> articleList = null;
 		
 		// 접속한 게시판의 카테고리 목록 가져오기
-		int comm_id = ((int)category / 100) * 100;
-		List<Comm> commList = commService.commList(comm_id);
-
+		List<Comm> commList = commService.commList((category / 100 * 100));
 		// 접속한 카테고리 이름 식별
 		String categoryName = commService.categoryName(category);
 		
@@ -128,9 +127,9 @@ public class ShareController {
 	}
 	
 	// 게시글, 댓글 조회
-	@RequestMapping(value = "board/share/{commStr}")
-	public String detailShareArticle(	@PathVariable("commStr")
-										String commStr,
+	@RequestMapping(value = "board/share/{art_id}")
+	public String detailShareArticle(	@PathVariable("art_id")
+										String art_id,
 										@AuthenticationPrincipal
 										MemberDetails memberDetails,
 										Article article,
@@ -141,10 +140,11 @@ public class ShareController {
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());	// 유저 정보 리턴
 		
 		// url 데이터 변환
-		Integer brd_id = Integer.parseInt(commStr.substring(0, 4));
-		Integer art_id = Integer.parseInt(commStr.substring(4));
-		article.setArt_id(art_id);
-		article.setBrd_id(brd_id);
+		article.setArt_id(Integer.parseInt(art_id));
+//		Integer brd_id = Integer.parseInt(commStr.substring(0, 4));
+//		Integer art_id = Integer.parseInt(commStr.substring(4));
+//		article.setArt_id(art_id);
+//		article.setBrd_id(brd_id);
 		
 		// 조회수 증가
 		int result = articleService.readShareArticle(article);
@@ -153,12 +153,17 @@ public class ShareController {
 		Article detailArticle = articleService.detailShareArticle(article);
 		// 댓글 조회
 		List<Reply> replyList = replyService.replyShareList(article);
+		// 접속한 카테고리 이름
+		String categoryName = commService.categoryName(category);
+		String categoryType = commService.categoryName(article.getBrd_id());
 		
 		model.addAttribute("article", detailArticle);
 		model.addAttribute("replyList", replyList);
 		model.addAttribute("category", category);
+		model.addAttribute("categoryName", categoryName);
+		model.addAttribute("categoryType", categoryType);
 		
-		return "share/article";
+		return "share/viewArticle";
 	}
 	
 	// 게시글 - 댓글 쓰기
@@ -221,12 +226,12 @@ public class ShareController {
 	
 	
 	
-	
+/* 머지 후 영업 종
 	// 메인
-//	@RequestMapping(value = "/")
-//	public String indexPage() {
-//		return "redirect:/board/share?category=999";
-//	}
+	@RequestMapping(value = "/")
+	public String indexPage() {
+		return "redirect:/board/share?category=999";
+	}
 	// Share외의 다른 카테고리 연결
 	@RequestMapping(value = "board/{categoryConnect}")
 	public String togetherPage(	@PathVariable("categoryConnect")
@@ -241,4 +246,5 @@ public class ShareController {
 		redirectAttributes.addFlashAttribute("currentPage", currentPage);
 		return "redirect:/board/share?category="+category;
 	}
+*/
 }

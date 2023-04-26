@@ -266,7 +266,7 @@
 							</div>
 							<div class="view-bottom">
 								<%-- <span class="article-title"><a href="${pageContext.request.contextPath}/board/share/article?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category}">${article.art_title}</a></span> --%>
-								<span class="article-title"><a href="${pageContext.request.contextPath}/board/share/${article.brd_id}${article.art_id}?category=${category}">${article.art_title}</a></span>
+								<span class="article-title"><a href="${pageContext.request.contextPath}/board/share/${article.art_id}?brd_id=${article.brd_id}&category=${category}">${article.art_title}</a></span>
 									<c:if test="${article.rep_cnt != null && article.rep_cnt != 0}">
 										<span class="article-replycnt">[${article.rep_cnt }]</span>
 									</c:if><br>
