@@ -41,6 +41,7 @@
 		flex-direction: column;
 		justify-content: flex-start;
 		align-items: stretch;
+		background-color: var(--theme);
 	}
 	div#art_title {
 		display: flex;
@@ -158,6 +159,19 @@
 				</span>
 			</div>
 		</div>
+		<div id="art_share" style="display: flex; justify-content: flex-end; align-items: center; padding: 2.5px 10px;">
+			<svg viewBox="0 0 512 512" style="width: 20px; height: 20px; fill: none; stroke: var(--subtheme); stroke-width: 32px; stroke-linecap: round; stroke-linejoin: round;">
+				<circle cx="128" cy="256" r="48" style="fill: var(--subtheme);"/>
+				<circle cx="384" cy="112" r="48" style="fill: var(--subtheme);"/>
+				<circle cx="384" cy="400" r="48" style="fill: var(--subtheme);"/>
+				<path d="M169.83 279.53l172.34 96.94M342.17 135.53l-172.34 96.94"/>
+			</svg>
+			<span style="font-size: 10px; font-weight: bold; color: var(--subtheme);">
+				<a href="${pageContext.request.contextPath }/board/${boardName }/${article.art_id }?brd_id=${article.brd_id }">
+					${pageContext.request.contextPath }/board/${boardName }/${article.art_id }?brd_id=${article.brd_id }
+				</a>
+			</span>
+		</div>
 		<div id="art_content">
 			${article.art_content }
 		</div>
@@ -200,7 +214,7 @@
 				</svg>
 			</button>
 		</div>
-		<div id="reply-section" style="display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch; margin: 5px 0;">
+		<div id="reply-section" style="display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch;">
 			
 		</div>
 	</div>
