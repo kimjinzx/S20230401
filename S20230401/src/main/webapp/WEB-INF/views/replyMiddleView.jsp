@@ -24,7 +24,7 @@
 					</div>
 					<div style="display: flex; justify-content: flex-end; align-items: center;">
 						<c:if test="${memberInfo != null }">
-							<button type="button" onclick="$('.reply-reply-box').hide(); $('#reply-reply-box-${reply.rep_id }').toggle();" style="cursor: pointer; border: 0; outline: none; background-color: transparent; font-weight: bold; color: var(--theme-font);">댓글 달기</button>
+							<button type="button" onclick="$('.reply-reply-box').not(this).hide(); $('#reply-reply-box-${reply.rep_id }').toggle();" style="cursor: pointer; border: 0; outline: none; background-color: transparent; font-weight: bold; color: var(--theme-font);">댓글 달기</button>
 						</c:if>
 					</div>
 				</div>
@@ -58,7 +58,7 @@
 								</div>
 								<button type="submit" class="subtheme-button" style="margin: 0 10px; padding: 2.5px 5px; font-size: 16px; font-weight: bold;">댓글 등록</button>
 							</div>
-							<textarea name="rep_content" maxlength="500" style="height: 100px; margin: 0 10px; margin-bottom: 10px; border: 0.5px solid var(--theme-font); border-radius: 2.5px; outline: none; resize: none;" required></textarea>
+							<textarea name="rep_content" maxlength="500" style="height: 100px; margin: 0 10px; margin-bottom: 10px; border: 0.5px solid var(--theme-font); border-radius: 2.5px; outline: none; resize: none; background-color: var(--theme);" required></textarea>
 						</div>
 					</form>
 				</div>
