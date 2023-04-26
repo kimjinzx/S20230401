@@ -189,10 +189,12 @@ public class ArticleController {
 	}
 	
 	@PostMapping(value = "/board/{boardName}/{art_id}/replies")
-	public String viewReply(@PathVariable String boardName,
-						    @PathVariable int art_id,
-						    @RequestBody Map<String, Object> data,
-						    Model model) {
+	public String viewReply(@AuthenticationPrincipal MemberDetails memberDetails,
+			  					  @PathVariable String boardName,
+			  					  @PathVariable int art_id,
+			  					  @RequestBody Map<String, Object> data,
+			  					  Model model) {
+		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		int brd_id = (int)data.get("brd_id");
 		Article article = new Article();
 		article.setArt_id(art_id);
@@ -204,18 +206,27 @@ public class ArticleController {
 	
 	@ResponseBody
 	@PostMapping(value = "/board/{boardName}/{art_id}/replyWrite")
-	public String writeReply(@PathVariable String boardName,
-							     @PathVariable int art_id,
-							     @RequestBody Map<String, Object> data) {
+	public String writeReply(@AuthenticationPrincipal MemberDetails memberDetails,
+			  					  @PathVariable String boardName,
+							      @PathVariable int art_id,
+							      @RequestBody Map<String, Object> data) {
 		JSONObject result = new JSONObject();
 		int brd_id = (int)data.get("brd_id");
 		int mem_id = (int)data.get("mem_id");
 		String rep_content = (String)data.get("rep_content");
+		String reply_add = null;
+		String display_whose = null;
+		Integer rep_parent = null;
+		if (data.get("reply-add") != null) reply_add = (String)data.get("reply-add");
+		if (data.get("display-whose") != null) display_whose = (String)data.get("display-whose");
+		if (data.get("rep_parent") != null) rep_parent = (int)data.get("rep_parent");
+		if (reply_add != null) rep_content = "<a style=\"font-size: 16px; font-weight: bold; color: var(--subtheme);\" href=\"#" + reply_add + "\">" + display_whose + "</a><br>" + rep_content;
 		Reply reply = new Reply();
 		reply.setArt_id(art_id);
 		reply.setBrd_id(brd_id);
 		reply.setMem_id(mem_id);
 		reply.setRep_content(rep_content);
+		if (rep_parent != null) reply.setRep_parent(rep_parent);
 		int ajaxResult = reps.hgInsertReply(reply);
 		result.append("result", ajaxResult);
 		result.append("art_id", art_id);

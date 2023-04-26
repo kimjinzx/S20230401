@@ -25,13 +25,13 @@
 			}
 		});
 	};
-	function replyToAjax() {
-		let content = $('#rep_content').val();
-		if (!(!content) || content != null || content != '') ajaxForReply();
+	function replyToAjax(elem) {
+		let content = $(elem).find('textarea').val();
+		if (!(!content) || content != null || content != '') ajaxForReply(elem);
 		return false;
 	}
-	const ajaxForReply = () => {
-		let formData = $('#reply-form').serializeArray();
+	const ajaxForReply = (elem) => {
+		let formData = $(elem).serializeArray();
 		let dataObject = {};
 		for (let datum of formData) {
 			let temp = parseInt(datum.value);
@@ -48,7 +48,8 @@
 			success: data => {
 				if (data.result == 0) alert('댓글 등록에 실패했습니다');
 				getReplyList(${article.art_id}, ${article.brd_id});
-				$('#rep_content').val('');
+				//$('#rep_content').val('');
+				$(elem).find('textarea[name="rep_content"]').val('');
 			}
 		});
 	};
@@ -161,7 +162,7 @@
 				<button class="theme-button adv-hover" style="margin: 5px; padding: 2.5px 5px; font-size: 12px;" type="button">수정</button>
 				<button class="theme-button adv-hover" style="margin: 5px; padding: 2.5px 5px; font-size: 12px;" type="button">삭제</button>
 			</c:if>
-			<button class="subtheme-button adv-hover" style="margin: 5px; padding: 2.5px 5px; font-size: 12px;" type="button">목록</button>
+			<button class="subtheme-button adv-hover" style="margin: 5px; padding: 4.5px 7px; font-size: 12px;" type="button">목록</button>
 		</div>
 		<div id="art_title">
 			<c:if test="${board != null }">
@@ -246,7 +247,7 @@
 		<c:choose>
 			<c:when test="${memberInfo != null }">
 				<div id="reply-write" style="margin-top: 10px;">
-					<form id="reply-form" name="reply-form" method="post" onsubmit="return replyToAjax();">
+					<form id="reply-form" name="reply-form" method="post" onsubmit="return replyToAjax(this);">
 						<input type="hidden" name="art_id" value="${article.art_id }">
 						<input type="hidden" name="brd_id" value="${article.brd_id }">
 						<input type="hidden" name="mem_id" value="${memberInfo.mem_id }">
