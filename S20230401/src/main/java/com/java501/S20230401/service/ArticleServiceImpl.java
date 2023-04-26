@@ -5,6 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.java501.S20230401.dao.ArticleDao;
+import com.java501.S20230401.model.Article;
+import com.java501.S20230401.model.ArticleMember;
+import com.java501.S20230401.util.SummaryType;
 import com.java501.S20230401.model.Article_Trade_Reply;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Region;
@@ -14,8 +17,24 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
-	
 	private final ArticleDao ad;
+	
+	@Override
+	public List<ArticleMember> getArticleSummary(int boardNum, SummaryType summaryType) {
+		List<ArticleMember> articleList = ad.getArticleSummary(boardNum, summaryType);
+		return articleList;
+	}
+	
+	@Override
+	public int insertArticle(Article article) {
+		int result = ad.insertArticle(article);
+		return result;
+	}
+	
+	@Override
+	public Article getArticleById(Article searcher) {
+		return ad.getArticleById(searcher);
+	}
 	
 	@Override
 	public List<Article_Trade_Reply> getDutchpayList(String boardName) {

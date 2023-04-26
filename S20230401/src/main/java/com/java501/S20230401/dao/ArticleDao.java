@@ -8,7 +8,10 @@ import com.java501.S20230401.model.Article_Trade_Reply;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Region;
 
-@Repository
+import com.java501.S20230401.model.Article;
+import com.java501.S20230401.model.ArticleMember;
+import com.java501.S20230401.util.SummaryType;
+
 public interface ArticleDao {
 
 	List<Article_Trade_Reply> 			getDutchpayList(String boardName);
@@ -19,5 +22,12 @@ public interface ArticleDao {
 	Article_Trade_Reply 				updateForm2(Article_Trade_Reply atr);
 	List<Comm> 							category_ud2();
 	List<Region> 						loc_ud2();
+
+	public List<ArticleMember> getArticleSummary(int boardNum, SummaryType summaryType);
+
+	public int insertArticle(Article article);
+
+	public Article getArticleById(Article searcher);
+
 
 }

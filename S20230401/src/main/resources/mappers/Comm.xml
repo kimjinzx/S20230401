@@ -12,5 +12,19 @@
 		SELECT * FROM comm where comm_id between 1110 and 1150
 	</select>
 	
+	<select id="hgCommGetValue" parameterType="int" resultType="Comm">
+		SELECT COMM_VALUE FROM COMM WHERE COMM_ID = #{comm_id}
+	</select>
+	<select id="hgGetCommById" parameterType="int" resultType="Comm">
+		SELECT * FROM COMM WHERE COMM_ID = #{comm_id}
+	</select>
+	<select id="hgGetCommByName" parameterType="java.lang.String" resultType="Comm">
+		SELECT * FROM COMM WHERE COMM_VALUE = #{comm_value}
+	</select>
+	<select id="hgGetBoardName" resultType="Comm">
+		SELECT * FROM COMM WHERE COMM_ID BETWEEN 1000 AND 1600 AND MOD(COMM_ID, 100) = 0
+	</select>
+	<select id="hgGetCategoryListBySuper" parameterType="int" resultType="Comm">
+		SELECT * FROM COMM WHERE TRUNC(COMM_ID / 100) * 100 = #{superId} AND COMM_ID != #{superId}
+	</select>
 </mapper>
-

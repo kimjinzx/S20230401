@@ -8,5 +8,10 @@
 		<typeAlias alias="Article_Trade_Reply" type="com.java501.S20230401.model.Article_Trade_Reply"/>		
 		<typeAlias alias="Region" type="com.java501.S20230401.model.Region"/>		
 		<typeAlias alias="Comm" type="com.java501.S20230401.model.Comm"/>		
+		<typeAlias alias="Article" type="com.java501.S20230401.model.Article"/>
+		<typeAlias alias="Member" type="com.java501.S20230401.model.Member"/>
+		<typeAlias alias="ArticleMember" type="com.java501.S20230401.model.ArticleMember"/>
+		<typeAlias alias="MemberInfo" type="com.java501.S20230401.model.MemberInfo"/>
+		<typeAlias alias="Authentications" type="com.java501.S20230401.model.Authentications"/>
 	</typeAliases>
 </configuration>
