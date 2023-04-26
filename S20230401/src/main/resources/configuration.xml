@@ -4,6 +4,6 @@
 	<typeAliases>
 		<!-- typeAlias 각자 만들어 쓰기 -->
 		<!-- alias의 값은 DTO 이름과 동일하게 -->
-		
+		<typeAlias type="com.java501.S20230401.model.Article" alias="Article"/>	
 	</typeAliases>
 </configuration>

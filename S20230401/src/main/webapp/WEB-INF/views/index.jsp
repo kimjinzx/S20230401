@@ -310,7 +310,7 @@
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="">커뮤니티</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="">정보공유</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath }/board/information?category=1400">정보공유</a>
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="">고객센터</a>
 				<div id="dropdown">
@@ -344,10 +344,10 @@
 							<a class="submenuitem adv-hover" href="">질문 / 요청</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">동네정보</a>
-							<a class="submenuitem adv-hover" href="">구매정보</a>
-							<a class="submenuitem adv-hover" href="">신규점포</a>
-							<a class="submenuitem adv-hover" href="">지역활동</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/information?category=1410">동네정보</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/information?category=1420">구매정보</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/information?category=1430">신규점포</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/information?category=1440">지역활동</a>
 						</div>
 						<div class="submenu">
 							<a class="submenuitem adv-hover" href="">공지</a>

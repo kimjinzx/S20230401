@@ -18,4 +18,6 @@ public class Reply {
 	private int 	rep_step;
 	private int 	isdelete;
 	private int 	report_id;
+	
+	
 }
