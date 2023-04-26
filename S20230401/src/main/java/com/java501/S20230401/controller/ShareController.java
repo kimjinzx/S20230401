@@ -117,7 +117,6 @@ public class ShareController {
 			return "redirect:/board/share?category="+category;
 		}
 		
-		
 		log.info("제목은 나옴? [ {} ] 비었으면 안나옴", article.getArt_title());
 		log.info("글쓰기 안에 있음 {}", article);
 		
