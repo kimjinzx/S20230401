@@ -11,7 +11,6 @@ import com.java501.S20230401.model.Region;
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.ArticleMember;
 import com.java501.S20230401.util.SummaryType;
-import oracle.security.o3logon.a;
 
 
 import lombok.RequiredArgsConstructor;
@@ -91,17 +90,6 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 
 	@Override
-	public List<Comm> category_ud2() {
-		List<Comm> cm = null;
-		try {
-			cm = session.selectList("JHCategoryUd");
-		} catch (Exception e) {
-			System.out.println("ArticleServiceImpl category_ud2 Exception -> "+e.getMessage());
-		}
-		return cm;
-	}
-
-	@Override
 	public List<Region> loc_ud2() {
 		List<Region> re = null;
 		try {
@@ -110,7 +98,27 @@ public class ArticleDaoImpl implements ArticleDao {
 			System.out.println("ArticleServiceImpl loc_ud2 Exception -> "+e.getMessage());
 		}
 		return re;
-	}//진현
+	}
+	
+	@Override
+	public void dutchpayUpdate2(Article_Trade_Reply atr) {
+		try {
+			System.out.println(atr);
+			session.selectOne("JHUpdate",atr);
+		} catch (Exception e) {
+			System.out.println("ArticleServiceImpl dutchpayUpdate2 Exception -> "+e.getMessage());
+		}
+	}
+	
+	@Override
+	public void dutchpayDelete2(Article_Trade_Reply atr) {
+		try {
+			session.selectOne("JHDelete",atr);
+		} catch (Exception e) {
+			System.out.println("ArticleServiceImpl dutchpayDelete2 Exception -> "+e.getMessage());
+		}
+	}
+	//진현
 	
 	@Override
 	public List<ArticleMember> getArticleSummary(int boardNum, SummaryType summaryType) {
@@ -145,4 +153,9 @@ public class ArticleDaoImpl implements ArticleDao {
 	public Article getArticleById(Article searcher) {
 		return session.selectOne("hgGetArticleById", searcher);
 	}
+
+		
+	
+
+
 }

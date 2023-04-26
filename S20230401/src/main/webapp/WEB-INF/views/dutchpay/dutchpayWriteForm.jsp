@@ -14,8 +14,6 @@
 		<input type="hidden" name="mem_id" value="1">
 		<input type="hidden" name="trd_status" value="401">
 <table border="1"> 
-		
-		
 		<tr><th>제목</th><td><input type="text" name="art_title" required="required">
 		
 		<tr><th>카테고리</th><td>

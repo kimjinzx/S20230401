@@ -2,7 +2,6 @@ package com.java501.S20230401.dao;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
 
 import com.java501.S20230401.model.Article_Trade_Reply;
 import com.java501.S20230401.model.Comm;
@@ -20,9 +19,13 @@ public interface ArticleDao {
 	List<Comm>           				category2();
 	List<Region>    			        loc2();
 	Article_Trade_Reply 				updateForm2(Article_Trade_Reply atr);
-	List<Comm> 							category_ud2();
-	List<Region> 						loc_ud2();//진현
-
+	List<Region> 						loc_ud2();
+	void dutchpayUpdate2(Article_Trade_Reply atr);
+	void dutchpayDelete2(Article_Trade_Reply atr);
+	
+	//진현
+	
+	
 	public List<ArticleMember> getArticleSummary(int boardNum, SummaryType summaryType);
 
 	public int insertArticle(Article article);

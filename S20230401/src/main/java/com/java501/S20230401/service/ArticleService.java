@@ -21,6 +21,12 @@ public interface ArticleService {
 	List<Region>         				loc1();
 	void 								dutchpayInsert1(Article_Trade_Reply atr);
 	Article_Trade_Reply		 			updateForm1(Article_Trade_Reply atr);
-	List<Comm> 							category_ud1();
-	List<Region> 						loc_ud1();//진현
+	List<Region> 						loc_ud1();
+
+	public void dutchpayUpdate1(Article_Trade_Reply atr);
+
+	public void dutchpayDelete1(Article_Trade_Reply atr);
+
+
+
 }

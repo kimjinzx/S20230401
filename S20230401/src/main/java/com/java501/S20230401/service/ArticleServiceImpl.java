@@ -36,6 +36,10 @@ public class ArticleServiceImpl implements ArticleService {
 		return ad.getArticleById(searcher);
 	}
 	
+	
+	
+	
+	
 	@Override//진현
 	public List<Article_Trade_Reply> getDutchpayList(String boardName) {
 		List<Article_Trade_Reply> atr = ad.getDutchpayList(boardName);
@@ -76,19 +80,27 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	public List<Comm> category_ud1() {
-		List<Comm> cm = null;
-		cm = ad.category_ud2();
-		return cm;
-	}
-
-	@Override
 	public List<Region> loc_ud1() {
 		List<Region> re = null;
 		re = ad.loc_ud2();
 		return re;
-	}//진현
+	}
 
+	@Override
+	public void dutchpayUpdate1(Article_Trade_Reply atr) {
+		ad.dutchpayUpdate2(atr);
+		
+	}
+
+	@Override
+	public void dutchpayDelete1(Article_Trade_Reply atr) {
+		ad.dutchpayDelete2(atr);
+		
+	}
+
+
+
+	}//진현
 
 
 
@@ -100,4 +112,3 @@ public class ArticleServiceImpl implements ArticleService {
 
 
 
-}

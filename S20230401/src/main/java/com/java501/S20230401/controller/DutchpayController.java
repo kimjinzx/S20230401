@@ -4,13 +4,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.fasterxml.jackson.databind.annotation.JsonValueInstantiator;
 import com.java501.S20230401.model.Article_Trade_Reply;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Region;
@@ -41,6 +38,8 @@ public class DutchpayController {
 	      List<Article_Trade_Reply> dutchpayList = as.getDutchpayList(boardName);
 	      System.out.println("controller dutchpayList size() -> "+dutchpayList.size());
 	      model.addAttribute("dutchpayList", dutchpayList);
+	      
+	      
 	      
 	      return "dutchpay/" + viewName;
 	}
@@ -77,18 +76,15 @@ public class DutchpayController {
 	@RequestMapping(value = "dutchpay/dutchpayUpdateForm") //업데이트(수정) 폼 + 드롭다운 
 	public String dutchpayUpdateForm(Article_Trade_Reply atr, Model model) {
 		System.out.println("dutchpay/dutchpayUpdateForm start..");
-		System.out.println("controller updateForm brd_id size() -> "+atr.getBrd_id());
-		System.out.println("controller updateForm art_id size() -> "+atr.getArt_id());
+		System.out.println("controller updateForm brd_id  -> "+atr.getBrd_id());
+		System.out.println("controller updateForm art_id  -> "+atr.getArt_id());
 		Article_Trade_Reply updateForm = as.updateForm1(atr);
 		model.addAttribute("updateForm", updateForm);
 		
-		List<Comm> category_ud = as.category_ud1();
-		System.out.println("dutchpay/dutchpayUpdateForm category_ud.size()- >"+category_ud.size());
-		
 		List<Region> loc_ud = as.loc_ud1();
+		//for (Region l : loc_ud) System.out.println(l.getReg_id() + " : " + l.getReg_name());
 		System.out.println("dutchpay/dutchpayUpdateForm loc_ud.size()- >"+loc_ud.size());
 		
-		model.addAttribute("category_ud", category_ud);
 		model.addAttribute("loc_ud", loc_ud);
 		
 		return "dutchpay/dutchpayUpdateForm";
@@ -106,17 +102,34 @@ public class DutchpayController {
 		return "redirect:/board/dutchpay?category="+brd_id;
 	}
 	
-//	@PostMapping(value = "dutchpay/dutchpayUpdatePro") //글내용 수정(update)
-//	public String update(Article_Trade_Reply atr ,RedirectAttributes ra) {
-//		System.out.println("start update button");
-//		System.out.println(atr);
-//		System.out.println("controller update brd_id size() -> "+atr.getBrd_id());
-//		as.dutchpayUpdate1(atr);
-//		ra.addFlashAttribute("atr", atr);  
-//		int brd_id = atr.getBrd_id();
-//		return "redirect:/board/dutchpay?category="+brd_id;
-//	}
+	//detail에서 쓰던 brd_id,atr_id,trd_id들을 가져온 updateForm에서 그것들을 사용해 update
+	@PostMapping(value = "dutchpay/dutchpayUpdatePro") //글내용 수정(update)
+	public String update(Article_Trade_Reply atr, RedirectAttributes ra) {
+		
+		System.out.println("start update button");
+		System.out.println(atr);
+		System.out.println("controller update brd_id -> "+atr.getBrd_id());
+		System.out.println("controller update art_id -> "+atr.getArt_id());
+		System.out.println("controller update trd_id -> "+atr.getTrd_id());
+		as.dutchpayUpdate1(atr);
+		ra.addFlashAttribute("atr", atr);  
+		int brd_id = atr.getBrd_id();
+		return "redirect:/board/dutchpay?category="+brd_id;
+	}
 	
+	@PostMapping(value = "/dutchpay/dutchpayDelete") //게시글 삭제
+	public String delete(Article_Trade_Reply atr, RedirectAttributes ra) {
+		
+		System.out.println("start delete button");
+		System.out.println("controller delete brd_id -> "+atr.getBrd_id());
+		System.out.println("controller delete isdelete -> "+atr.getIsdelete());
+		as.dutchpayDelete1(atr);
+		ra.addFlashAttribute("atr",atr);
+		int brd_id = atr.getBrd_id();
+		return "redirect:/board/dutchpay?category="+brd_id;
+	}
+
+
 }
 
 		
