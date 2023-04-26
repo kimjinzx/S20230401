@@ -8,8 +8,18 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 </head>
 <body>
-	<div>
+	<div class="container">
 		<h1>글쓰기</h1>
+		<c:if test="${article.mem_id == memberInfo.mem_id}">
+			<div class="reply-button">
+				<span><button>작성버튼</button></span>
+				<span>
+					<button class="btns-delete" onclick="rep_delete(${article.brd_id},${article.art_id},${reply.rep_id})">
+						삭제
+					</button>
+				</span>
+			</div>
+		</c:if>
 		<div style="text-align: center;">
 			<form action="${pageContext.request.contextPath}/board/share/writeArticleForm" method="post">
 				<input type="hidden" 	name="category" value="${category}">

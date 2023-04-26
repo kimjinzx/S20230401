@@ -51,6 +51,29 @@ $(document).ready(function() {
 		document.getElementById("reply-write"+pIndex).style.display = (rep == "none")? "" : "none";
 	} */
 </script>
+<style type="text/css">
+	.board-articleList{
+		width: 80%;
+		margin: auto;
+	}
+	.reply-detail{
+		display: flex;
+		flex-direction: column;
+		padding: 10px;
+	}
+	.reply-view{
+		border: 1px solid #0193F8;
+		border-radius: 2.5px;
+	}
+	.reply-member{
+		border-bottom: 1px solid #0193F8;
+		
+	}
+	.reply-login > span{
+		display: block;
+		text-align: center;
+	}
+</style>
 </head>
 <body>
 	<div class="board-articleList">
@@ -132,7 +155,7 @@ $(document).ready(function() {
 				
 				<div class="reply-list">
 					<c:forEach var="reply" items="${replyList}" varStatus="status">
-						<div class="reply-detail" style="display: flex; flex-direction: column;">
+						<div class="reply-detail">
 							<div class="reply-view" style="display: flex; ${(reply.rep_id != reply.rep_parent) ? 'margin-left: 20px;' : ''}">
 								<div class="reply-image">
 									<span><img alt="회원 프사" src="${pageContext.request.contextPath}/image/share/${reply.member.mem_image}" style="width: 80px; height: 80px;"></span>
@@ -147,10 +170,16 @@ $(document).ready(function() {
 										<span>${reply.rep_content}</span>
 									</div>
 								</div>
-								<div class="reply-button">
-									<span><button>작성버튼</button></span>
-									<span><button class="btns-delete" onclick="rep_delete(${article.brd_id},${article.art_id},${reply.rep_id})">삭제버튼</button></span>
-								</div>
+								<c:if test="${article.mem_id == memberInfo.mem_id}">
+									<div class="reply-button">
+										<span><button>작성버튼</button></span>
+										<span>
+											<button class="btns-delete" onclick="rep_delete(${article.brd_id},${article.art_id},${reply.rep_id})">
+												삭제
+											</button>
+										</span>
+									</div>
+								</c:if>
 							</div>
 							<div class="reply-replyWrite" style="display: none; margin-left: 10%">
 								<form action="${pageContext.request.contextPath}/board/share/replyForm" method="post">
@@ -173,15 +202,15 @@ $(document).ready(function() {
 									<span><input type="hidden" name="brd_id" 	value="${article.brd_id}"></span>
 									<span><input type="hidden" name="art_id" 	value="${article.art_id}"></span>
 									<span><input type="hidden" name="category" 	value="${category}"></span>
-		<%-- 							<span><input type="hidden" name="rep_id" 	value="${reply.rep_id}"></span>
-									<span><input type="hidden" name="rep_parent"value="0"></span>
-									<span><input type="hidden" name="rep_step"	value="0"></span> --%>
 									<span><input type="text" name="rep_content" placeholder="댓글을 작성하세요."></span>
 									<span><input type="submit" value="등록"></span>
 								</form>
 							</c:when>
 							<c:otherwise>
-								<span style="margin: 15%">본 게시물에 댓글을 작성하실 권한이 없습니다. 로그인 하신 후 댓글을 다실 수 있습니다. ShareGo <a href="${pageContext.request.contextPath }/login">로그인</a></span>
+								<div class="reply-login">
+									<span>본 게시물에 댓글을 작성하실 권한이 없습니다. 로그인 하신 후 댓글을 다실 수 있습니다.</span>
+									<span>ShareGo <a href="${pageContext.request.contextPath }/login">로그인</a></span>
+								</div>
 							</c:otherwise>
 						</c:choose>
 					</div>

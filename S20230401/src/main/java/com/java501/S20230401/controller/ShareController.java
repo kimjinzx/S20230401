@@ -206,6 +206,7 @@ public class ShareController {
 			redirectAttributes.addFlashAttribute("memberInfo", memberInfo);	// 유저 정보 리턴
 			reply.setMem_id(memberInfo.getMem_id());
 		}else {
+			System.err.println("응 로그인 안했어");
 			return String.format("redirect:/board/share/%s%s?category=%s", reply.getBrd_id(), reply.getArt_id(), reply.getBrd_id());
 		}
 		
