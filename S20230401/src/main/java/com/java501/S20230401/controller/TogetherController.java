@@ -1,10 +1,13 @@
 package com.java501.S20230401.controller;
 
+import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Comm;
@@ -36,10 +39,10 @@ public class TogetherController {
 		// Paging 작업
 		Paging page = new Paging(totalArticle, currentPage);
 		article.setStart(page.getStart()); // 시작시 1
-		article.setEnd  (page.getEnd());
+		article.setEnd(page.getEnd());
 
 		// 게시글 리스트 작업
-		List<Article> listArticle = as.listArticle(article); 
+		List<Article> listArticle = as.listArticle(article);
 
 		model.addAttribute("article", article);
 		model.addAttribute("totalArticle", totalArticle);
@@ -56,8 +59,6 @@ public class TogetherController {
 
 		// 상세게시글 요소 구현
 		Article detailArticle = as.detailArticle(article);
-		System.out.println("article =>" + article);
-		System.out.println("detailArticle => " + detailArticle);
 		model.addAttribute("detailArticle", detailArticle);
 
 		// 게시글 별 댓글 리스트
@@ -76,32 +77,46 @@ public class TogetherController {
 		System.out.println("ArticleController category => " + categoryList.size());
 		model.addAttribute("categories", categoryList);
 
+		// 성별 콤보박스
+		List<Comm> genderList = as.genderName();
+		System.out.println("ArticleController gender => " + genderList.size());
+		model.addAttribute("genders", genderList);
+
 		// 지역별 콤보박스
 		List<Region> regionList = as.regionName();
-		System.out.println("ArticleController category => " + regionList.size());
+		System.out.println("ArticleController region => " + regionList.size());
 		model.addAttribute("regions", regionList);
+
+		// 지역별 부모 콤보박스
+		List<Region> parentRegionList = as.parentRegionName();
+		System.out.println("ArticleController Parentregion => " + parentRegionList.size());
+		model.addAttribute("parentRegions", parentRegionList);
 
 		return "together/writeFormArticle";
 	}
 
 	@RequestMapping(value = "/board/writeArticle")
-	public String writeArticle(Article article, Model model) {
+	public String writeArticle(Article article, Model model, 
+			@RequestParam("trd_enddate1") @DateTimeFormat(pattern = "yyyy-MM-dd") Date trd_enddate) {
 		System.out.println("ArticleController Start writeEmp...");
-
+		article.setTrd_enddate(trd_enddate);
+		
 		// 프로시저 Insert_Article 이용 => 게시글 작성
 		as.writeArticle(article);
 		int insertResult = article.getInsert_result();
-		int brd_id 		 = article.getBrd_id();
+		int brd_id = article.getBrd_id();
 		System.out.println("article.getInsert_result() =>" + insertResult);
 
 		model.addAttribute("insertResult", insertResult);
 		model.addAttribute("article", article);
+
 		if (insertResult > 0) {
-			return "redirect:/board/together?category="+brd_id;
+			return "redirect:/board/together?category=" + brd_id;
 		} else {
 			model.addAttribute("msg", "입력실패");
 			return "forward:/board/writeFormArticle";
 		}
+
 	}
 
 	@RequestMapping(value = "/board/deleteArticle")
@@ -121,34 +136,46 @@ public class TogetherController {
 
 		// 게시글 수정 양식 (상세 게시글 값 가져오기)
 		Article updateFormArticle = as.detailArticle(article);
-		System.out.println("article =>" + article);
-		System.out.println("updateArticle => " + updateFormArticle);
 		model.addAttribute("article", updateFormArticle);
-		
+
 		// 카테고리별 콤보박스
 		List<Comm> categoryList = as.categoryName();
 		System.out.println("ArticleController category => " + categoryList.size());
 		model.addAttribute("categories", categoryList);
 
+		// 성별 콤보박스
+		List<Comm> genderList = as.genderName();
+		System.out.println("ArticleController category => " + genderList.size());
+		model.addAttribute("genders", genderList);
+
 		// 지역별 콤보박스
 		List<Region> regionList = as.regionName();
-		System.out.println("ArticleController category => " + regionList.size());
+		System.out.println("ArticleController region => " + regionList.size());
 		model.addAttribute("regions", regionList);
+
+		// 지역별 부모 콤보박스
+		List<Region> parentRegionList = as.parentRegionName();
+		System.out.println("ArticleController Parentregion => " + parentRegionList.size());
+		model.addAttribute("parentRegions", parentRegionList);
 
 		return "together/updateFormArticle";
 	}
-	
+
 	@RequestMapping(value = "/board/updateArticle")
-	public String updateArticle(Article article, Model model) {
+	public String updateArticle(Article article, Model model,
+			@RequestParam("trd_enddate1") @DateTimeFormat(pattern = "yyyy-MM-dd") Date trd_enddate) {
 		System.out.println("ArticleController Start updateArticle...");
 
+		article.setTrd_enddate(trd_enddate);
 		// 게시글 수정 (프로시저 사용 => Update_Article)
-		int updateArticle = as.updateArticle(article);
-		int brd_id 		  = article.getBrd_id(); 
+		as.updateArticle(article);
+		int updateArticle = article.getInsert_result();
+		int brd_id = article.getBrd_id();
+
 		model.addAttribute("article", article);
 
 		if (updateArticle > 0) {
-			return "redirect:/board/together?category="+brd_id;
+			return "redirect:/board/together?category=" + brd_id;
 		} else {
 			model.addAttribute("msg", "입력실패");
 			return "forward:/board/updateFormArticle";

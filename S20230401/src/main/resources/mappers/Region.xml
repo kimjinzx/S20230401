@@ -5,11 +5,12 @@
 
 <mapper namespace="com.java501.S20230401.RegionMapper">
 
-	<select id="tkSelectRegion" resultType="Region">
+	<select id="SelectRegion" resultType="Region">
 		select * from region
+		where reg_parent is not null
 	</select>
 
-	<select id="tkSelectParentRegion" resultType="Region">
+	<select id="SelectParentRegion" resultType="Region">
 		select * from region
 		where reg_parent is null
 	</select>

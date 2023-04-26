@@ -39,7 +39,7 @@ public class Article {
 	// TRADE
 	private Integer 	trd_status;
 	private Integer 	trd_max;
-	private String 		trd_enddate;
+	private Date 		trd_enddate;
 	private Integer 	trd_cost;
 	private Integer 	reg_id;
 	private String 		trd_loc;
@@ -89,5 +89,7 @@ public class Article {
 	private Integer 	rest_regdate;
 	private Integer 	favoriteCount;
 	private String		trd_finish;
-	private int			insert_result;
+	private Integer		insert_result;
+	private Integer		reg_id1;
+	private Integer     reg_id2;
 }

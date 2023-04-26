@@ -10,11 +10,12 @@ public class Trade {
 	private Integer 	mem_id;
 	private Integer 	trd_status;
 	private Integer 	trd_max;
-	private Date 	trd_enddate;
+	private Date 		trd_enddate;
 	private Integer 	trd_cost;
 	private Integer 	reg_id;
-	private String 	trd_loc;
+	private String 		trd_loc;
 	private Integer 	trd_gender;
 	private Integer 	trd_minage;
 	private Integer 	trd_maxage;
+	
 }

@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class Comm {
 	private Integer 	comm_id;
-	private String 	comm_value;
+	private String 		comm_value;
 }

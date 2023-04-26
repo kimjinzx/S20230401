@@ -10,5 +10,6 @@ import com.java501.S20230401.model.Region;
 public interface RegionDao {
 
 	List<Region> regionName();
+	List<Region> parentRegionName();
 
 }

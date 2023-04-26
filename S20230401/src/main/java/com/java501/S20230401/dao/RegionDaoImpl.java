@@ -20,9 +20,16 @@ public class RegionDaoImpl implements RegionDao {
 	public List<Region> regionName() {
 		List<Region> regionList = null;
 		System.out.println("RegionDaoImpl regionName Start..");
-		regionList = session.selectList("tkSelectRegion");
+		regionList = session.selectList("SelectRegion");
 		System.out.println("RegionDaoImpl regionList.size()=> " + regionList.size());
 		return regionList;
+	}
+	
+	@Override
+	public List<Region> parentRegionName() {
+		List<Region> parentRegionList = null;
+		parentRegionList = session.selectList("SelectParentRegion");
+		return parentRegionList;
 	}
 
 }

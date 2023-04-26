@@ -9,6 +9,7 @@ import com.java501.S20230401.model.Comm;
 @Repository
 public interface CommDao {
 
-	List<Comm> commName();
+	List<Comm> boardName();
+	List<Comm> genderName();
 
 }

@@ -5,8 +5,12 @@
 
 <mapper namespace="com.java501.S20230401.CommMapper">
 
-	<select id="tkSelectComm" resultType="Comm">
+	<select id="SelectBoard" resultType="Comm">
 		select * from comm where comm_id between 1010 and 1060
+	</select>
+	
+	<select id="SelectGender" resultType="Comm">
+		select * from comm where comm_id between 201 and 202
 	</select>
 
 

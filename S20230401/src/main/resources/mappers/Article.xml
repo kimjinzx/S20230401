@@ -167,6 +167,7 @@
             	   		, t.trd_cost
             	   		, t.trd_loc
             	   		, t.trd_gender
+            	   		, t.trd_enddate
             	   		, t.trd_minage
             	   		, t.trd_maxage
             	   		, C1.COMM_ID 							AS C1_COMM_ID
@@ -215,13 +216,13 @@
 			, #{trd_enddate,   mode= IN,  jdbcType=DATE}
 			, #{trd_cost,      mode= IN,  jdbcType=NUMERIC}
 			, #{reg_id,        mode= IN,  jdbcType=NUMERIC}
-			, #{trd_loc,       mode= IN}
+			, #{trd_loc,       mode= IN,  jdbcType=VARCHAR}
 			, #{trd_gender,    mode= IN,  jdbcType=NUMERIC}
-			, #{trd_minage,    mode= IN}
-			, #{trd_maxage,    mode= IN}
-			, #{brd_id,        mode= IN}
-			, #{art_title,     mode= IN}
-			, #{art_content,   mode= IN}
+			, #{trd_minage,    mode= IN,  jdbcType=NUMERIC}
+			, #{trd_maxage,    mode= IN,  jdbcType=NUMERIC} 
+			, #{brd_id,        mode= IN,  jdbcType=NUMERIC}
+			, #{art_title,     mode= IN,  jdbcType=VARCHAR}
+			, #{art_content,   mode= IN,  jdbcType=VARCHAR}
 			, #{art_tag1,      mode= IN,  jdbcType=VARCHAR}
 			, #{art_tag2,      mode= IN,  jdbcType=VARCHAR}
 			, #{art_tag3,      mode= IN,  jdbcType=VARCHAR}
@@ -286,21 +287,21 @@
 	<select id="updateArticle" parameterType="Article" statementType="CALLABLE">
 	{
 		call Update_Article(
-			  #{trd_id, 	   mode= IN}
+			  #{trd_id, 	   mode= IN,  jdbcType=NUMERIC}
 			, 1
 			, 401
 			, #{trd_max,       mode= IN,  jdbcType=NUMERIC}
 			, #{trd_enddate,   mode= IN,  jdbcType=DATE}
 			, #{trd_cost,      mode= IN,  jdbcType=NUMERIC}
 			, #{reg_id,        mode= IN,  jdbcType=NUMERIC}
-			, #{trd_loc,       mode= IN}
+			, #{trd_loc,       mode= IN,  jdbcType=VARCHAR}
 			, #{trd_gender,    mode= IN,  jdbcType=NUMERIC}
-			, #{trd_minage,    mode= IN}
-			, #{trd_maxage,    mode= IN}
-			, #{art_id,		   mode= IN}
-			, #{brd_id,        mode= IN}
-			, #{art_title,     mode= IN}
-			, #{art_content,   mode= IN}
+			, #{trd_minage,    mode= IN,  jdbcType=NUMERIC}
+			, #{trd_maxage,    mode= IN,  jdbcType=NUMERIC}
+			, #{art_id,		   mode= IN,  jdbcType=NUMERIC}
+			, #{brd_id,        mode= IN,  jdbcType=NUMERIC}
+			, #{art_title,     mode= IN,  jdbcType=VARCHAR}
+			, #{art_content,   mode= IN,  jdbcType=VARCHAR}
 			, #{art_tag1,      mode= IN,  jdbcType=VARCHAR}
 			, #{art_tag2,      mode= IN,  jdbcType=VARCHAR}
 			, #{art_tag3,      mode= IN,  jdbcType=VARCHAR}

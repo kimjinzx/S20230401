@@ -488,14 +488,14 @@ button#scrollToBottom {
 
 			</tr>
 			<c:forEach var="art" items="${listArticle }">
-				<tr>
+				<tr style="cursor: pointer;" onclick="location.href='detailArticle?brd_id=${art.brd_id}&art_id=${art.art_id}';">
 					<td>${art.c1_comm_value }</td>
 					<td>${art.art_tag1 }</td>
 					<td>${art.art_tag2 }</td>
 					<td>${art.art_tag3 }</td>
 					<td>${art.art_tag4 }</td>
 					<td>${art.art_tag5 }</td>
-					<td><a href="detailArticle?brd_id=${art.brd_id}&art_id=${art.art_id}">${art.art_title }</a></td>
+					<td>${art.art_title }</td>
 					<td>${art.rest_regdate }일전</td>
 					<td>${art.reg_name }</td>
 					<td>${art.trd_loc }</td>

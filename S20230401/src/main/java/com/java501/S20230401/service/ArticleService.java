@@ -14,15 +14,17 @@ public interface ArticleService {
 	Article 		detailArticle(Article article);
 
 	List<Region> 	regionName();
+	List<Region>	parentRegionName();
 	List<Comm> 		categoryName();
+	List<Comm>		genderName();
 
 //	int 			favoriteCount(Article a);
 
 	List<Article> 	replyList(Article article);
 
 	void 			writeArticle(Article article);
+	void			updateArticle(Article article);
 	int 			deleteArticle(Article article);
-	int 			updateArticle(Article article);
 	
 	
 

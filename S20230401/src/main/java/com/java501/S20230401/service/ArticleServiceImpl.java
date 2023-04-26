@@ -59,14 +59,29 @@ public class ArticleServiceImpl implements ArticleService {
 		return regionName;
 	}
 
+	@Override
+	public List<Region> parentRegionName() {
+		List<Region> parentRegionName = null;
+		parentRegionName = rd.parentRegionName();
+		return parentRegionName;
+	}
 
 	@Override
 	public List<Comm> categoryName() {
-		List<Comm> commName = null;
+		List<Comm> categoryName = null;
 		System.out.println("ArticleServiceImpl categoryName start...");
-		commName = cd.commName();
-		System.out.println("ArticleServiceImpl commName.size()=> " + commName.size());
-		return commName;
+		categoryName = cd.boardName();
+		System.out.println("ArticleServiceImpl commName.size()=> " + categoryName.size());
+		return categoryName;
+	}
+	
+	@Override
+	public List<Comm> genderName() {
+		List<Comm> genderName = null;
+		System.out.println("ArticleServiceImpl categoryName start...");
+		genderName = cd.genderName();
+		System.out.println("ArticleServiceImpl commName.size()=> " + genderName.size());
+		return genderName;
 	}
 
 
@@ -106,11 +121,12 @@ public class ArticleServiceImpl implements ArticleService {
 
 
 	@Override
-	public int updateArticle(Article article) {
-		int updateArticle = ad.updateArticle(article);
-		System.out.println("ArticleServiceImpl updateArticle.size()=> " + updateArticle);
-		return updateArticle;
+	public void updateArticle(Article article) {
+		ad.updateArticle(article);
+		System.out.println("ArticleServiceImpl article.getInsert_result())=> " + article.getInsert_result());
 	}
+
+
 
 
 }

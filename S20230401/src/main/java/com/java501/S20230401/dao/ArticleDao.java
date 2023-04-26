@@ -14,8 +14,8 @@ public interface ArticleDao {
 	List<Article> 	replyList(Article a);
 	
 	void 			writeArticle(Article article);
+	void 			updateArticle(Article article);
 	int 			deleteArticle(Article article);
-	int 			updateArticle(Article article);
 	
 	
 

@@ -85,7 +85,6 @@ public class ArticleDaoImpl implements ArticleDao {
 //		}
 //		return favoriteCount;
 //	}
-	
 
 	@Override
 	public List<Article> replyList(Article article) {
@@ -102,19 +101,23 @@ public class ArticleDaoImpl implements ArticleDao {
 	public void writeArticle(Article article) {
 		System.out.println("ArticleDaoImpl wirteArticle start...");
 		try {
+			if (article.getReg_id2() == null) {
+				article.setReg_id(article.getReg_id1());
+			} else {
+				article.setReg_id(article.getReg_id2());
+			}
 			session.selectOne("insertArticle", article);
 		} catch (Exception e) {
 			System.out.println("ArticleDaoImpl insertArticle => " + e.getMessage());
 		}
 	}
 
-
 	@Override
 	public int deleteArticle(Article article) {
 		int deleteArticle = 0;
-		
+
 		try {
-			deleteArticle = session.update("deleteArticle", article);				
+			deleteArticle = session.update("deleteArticle", article);
 		} catch (Exception e) {
 			System.out.println("ArticleDaoImpl deleteArticle => " + e.getMessage());
 		}
@@ -122,17 +125,20 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 
 	@Override
-	public int updateArticle(Article article) {
+	public void updateArticle(Article article) {
 		System.out.println("ArticleDaoImpl updateArticle start...");
-		int result = 0;
 		try {
+			if (article.getReg_id2() == null) {
+				article.setReg_id(article.getReg_id1());
+			} else {
+				article.setReg_id(article.getReg_id2());
+			}
 			session.selectOne("updateArticle", article);
-			result = article.getInsert_result();
 		} catch (Exception e) {
 			System.out.println("ArticleDaoImpl updateArticle => " + e.getMessage());
 		}
-		return result;
 	}
+}
 
 //	@Override
 //	@Transactional
@@ -159,4 +165,3 @@ public class ArticleDaoImpl implements ArticleDao {
 //		}
 //		return updateArticle;
 //	}
-}
