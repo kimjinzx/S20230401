@@ -112,9 +112,10 @@
 				                                        LEFT OUTER JOIN REGION R
 				                                        ON      T.REG_ID = R.REG_ID
 				                         )USING(TRD_ID)
-		                        LEFT OUTER JOIN    (    SELECT COUNT(*) AS REP_CNT, ART_ID, BRD_ID
-		                                                FROM REPLY
-		                                                GROUP BY (ART_ID, BRD_ID)
+		                        LEFT OUTER JOIN    (    SELECT 	COUNT(*) AS REP_CNT, ART_ID, BRD_ID
+		                                                FROM 	REPLY
+		                                                WHERE 	ISDELETE = 0
+		                                                GROUP BY(ART_ID, BRD_ID)
 		                                            )USING(BRD_ID, ART_ID)
                                 WHERE 	A.ISDELETE = 0
 		                       )
@@ -155,9 +156,10 @@
                                         LEFT OUTER JOIN REGION R
                                         ON      T.REG_ID = R.REG_ID
                          )USING(TRD_ID)
-                LEFT OUTER JOIN    (    SELECT COUNT(*) AS REP_CNT, ART_ID, BRD_ID
-                                        FROM REPLY
-                                        GROUP BY (ART_ID, BRD_ID)
+                LEFT OUTER JOIN    (    SELECT 	COUNT(*) AS REP_CNT, ART_ID, BRD_ID
+                                        FROM 	REPLY
+                                        WHERE 	ISDELETE = 0
+                                        GROUP BY(ART_ID, BRD_ID)
                                     )USING(BRD_ID, ART_ID)
                 WHERE 	A.ISDELETE = 0
 		        )
