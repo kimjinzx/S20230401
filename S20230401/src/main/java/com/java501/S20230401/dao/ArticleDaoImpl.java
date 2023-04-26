@@ -10,7 +10,6 @@ import com.java501.S20230401.model.ArticleMember;
 import com.java501.S20230401.util.SummaryType;
 
 import lombok.RequiredArgsConstructor;
-import oracle.security.o3logon.a;
 
 @Repository
 @RequiredArgsConstructor
@@ -18,7 +17,7 @@ public class ArticleDaoImpl implements ArticleDao {
 	// 마이바티스 db연동
 	private final SqlSession session;
 	
-	
+	// 총리스트
 	@Override
 	public int totalArticle() {
 		int totArticleCount = 0;
@@ -33,7 +32,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		
 		return totArticleCount;
 	}
-
+	// 리스트조회
 	@Override
 	public List<Article> listArticle(Article article) {
 		List<Article> articleList = null;
@@ -45,7 +44,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return articleList;
 	}
-
+	//상세페이지
 	@Override
 	public Article cyArticlereadDetail(Article article) {
 		System.out.println("ArticleDaoImpl article Start...");
@@ -57,7 +56,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return result;
 	}
-
+	// 상세페이지
 	@Override
 	public Article detatilArticle(int art_title) {
 		System.out.println("ArticleDaoImpl detail start..");
@@ -72,7 +71,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		
 		return article;
 	}
-
+	//상세페이지 수정
 	@Override
 	public Article cyArticlereadupdate(Article article) {
 		System.out.println("ArticleDaoImpl article Start...");
@@ -86,11 +85,11 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 	// 게시물 작성
 	@Override
-	public int insert(Article article) {
+	public int cyArticleinsert(Article article) {
 		System.out.println("ArticleDaoImpl insert Start...");
 		int result = 0;
 		try {
-			result = session.insert("insert", article);
+			result = session.insert("cyArticleinsert", article);
 		} catch (Exception e) {
 			System.out.println("ArticleImpl article e.getMessage()->"+e.getMessage());
 		}
@@ -98,17 +97,18 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 	//게시물 수정
 	@Override
-	public int modify(Article article) {
+	public int cyArticlemodify(Article article) {
 		System.out.println(article);
-		System.out.println("ArticleDaoImpl update Start...");
+		System.out.println("ArticleDaoImpl modify Start...");
 		int result = 0;
 		try {
-			result = session.update("update", article);
+			result = session.update("cyArticlemodify", article);
 		} catch (Exception e) {
 			System.out.println("ArticleImpl article e.getMessage()->"+e.getMessage());
 		}
 		return result;
 	}
+	
 	
 	@Override
 	public List<ArticleMember> getArticleSummary(int boardNum, SummaryType summaryType) {

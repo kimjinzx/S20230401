@@ -26,7 +26,7 @@
 	</select>
 
 	
-	<!-- 게시판 보기 -->
+	<!-- 상세페이지 불러오기 -->
 	<select id="cyArticlereadDetail" parameterType="Article" resultType="Article">
 			select *
 			from article a
@@ -34,43 +34,37 @@
 			on a.mem_id = m.mem_id
 			where a.art_id=#{art_id} and a.brd_id = #{brd_id}
 	</select>
-
-	<!-- 게시판 보기(수정페이지) -->
-	<select id="cyArticlereadupdate" parameterType="Article" resultType="Article">
-			select *
-			from article 
-			where art_id=#{art_id} and brd_id = #{brd_id}
-	</select>
+	<!-- 조회 -->
 	<select id="count" resultType="int">
 	 select count(brd_id) from article
 	</select>
 
 	<!-- 게시글 작성 -->
- 	<insert id="insert" parameterType="Article">
+ 	<insert id="cyArticleinsert" parameterType="Article">
 		insert into 
 			article(art_id, brd_id, art_title, art_tag1, art_content)
 			values((Select max(art_id) + 1 from article where brd_id = #{brd_id}), #{brd_id}, #{art_title}, #{art_content}, #{art_content})
 	</insert> 
 	
 		<!-- 게시글 작성 -->
-   	<insert id="write" parameterType="Article">
+   	<insert id="cyArticlewrite" parameterType="Article">
 		insert into 
 			article(brd_id, art_title, art_tag1, art_content)
 			values(#{brd_id}, #{art_title}, #{art_content}, #{art_content})
 	</insert>  
- 	
- 	
-		<!-- 게시글 수정 -->
-   	<select id="update" parameterType="Article">
-		insert into 
-			article(brd_id, art_title, art_tag1, art_content)
-			values(#{brd_id}, #{art_title}, #{art_content}, #{art_content})
-	</select>  
+
+	<!-- 수정페이지 불러오기 -->
+	<select id="cyArticlereadupdate" parameterType="Article" resultType="Article">
+			select *
+			from article 
+			where art_id=#{art_id} and brd_id = #{brd_id}
+	</select>
  
     	<!-- 글 수정하기 -->
-	 <update id = "modify" parameterType="Article">
+	 <update id = "cyArticlemodify" parameterType="Article">
 			update article 
 		set 
+			art_id = #{art_id, jdbcType=VARCHAR},
 			art_title = #{art_title, jdbcType=VARCHAR},
 			art_tag1 = #{art_tag1, jdbcType=VARCHAR},
 			art_tag2 = #{art_tag2, jdbcType=VARCHAR},
@@ -90,6 +84,7 @@
 				#{art_tag1, jdbcType=VARCHAR}, #{art_tag2, jdbcType=VARCHAR}, #{art_tag3, jdbcType=VARCHAR},
 				#{art_tag4, jdbcType=VARCHAR}, #{art_tag5, jdbcType=VARCHAR}, #{trd_id, jdbcType=NUMERIC},
 				0, 0, 0, 0, 0, NULL) -->
+				
 		INSERT INTO ARTICLE (ART_ID, BRD_ID, ART_TITLE, MEM_ID, ART_REGDATE, ART_CONTENT,
 							 ART_TAG1, ART_TAG2, ART_TAG3, ART_TAG4, ART_TAG5, TRD_ID, ART_GOOD,
 							 ART_BAD, ART_READ, ART_ISNOTICE, ISDELETE, REPORT_ID)

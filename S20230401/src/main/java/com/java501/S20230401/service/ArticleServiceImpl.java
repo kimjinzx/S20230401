@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class ArticleServiceImpl implements ArticleService {
 
 	private final ArticleDao	ad;
-	 	
+	// 총리스트 	
 	@Override
 	public int totalArticle() {
 		System.out.println("ArticleServiceImpl Start total...");
@@ -24,7 +24,8 @@ public class ArticleServiceImpl implements ArticleService {
 		System.out.println("ArticleServiceImpl totalArticle totArticleCnt->" + totArticleCnt);
 		return totArticleCnt;
 	}
-
+	
+	//리스트 조회
 	@Override
 	public List<Article> listArticle(Article article) {
 		List<Article> articleList = null;
@@ -33,7 +34,8 @@ public class ArticleServiceImpl implements ArticleService {
 		System.out.println("ArticleServiceImpl listArticle articleList.size()->" +articleList.size());
 		return articleList;
 	}
-
+	
+	// 상세페이지 조회
 	@Override
 	public Article cyArticlereadDetail(Article article) {
 		System.out.println("ArticleServiceImpl Manager Start..");
@@ -41,15 +43,7 @@ public class ArticleServiceImpl implements ArticleService {
 		System.out.println("ArticleServiceImpl cyArticlereadDetail article->" +article);
 		return result;
 	}
-	
-	@Override
-	public Article cyArticlereadupdate(Article article) {
-		System.out.println("ArticleServiceImpl Manager Start..");
-		Article result = ad.cyArticlereadupdate(article);
-		System.out.println("ArticleServiceImpl cyArticlereadDetail article->" +article);
-		return result;
-	}
-
+	// 상세페이지?
 	@Override
 	public Article detailArticle(int art_title) {
 		System.out.println("ArticleServiceImpl detail...");
@@ -57,20 +51,39 @@ public class ArticleServiceImpl implements ArticleService {
 		article = ad.detatilArticle(art_title);
 		return article;
 	}
-	// 게시물 작성
+	
+	// 수정페이지 상세페이지
 	@Override
-	public int insert(Article article) {
-		System.out.println("ArticleServiceImpl insert...");
-		int result = ad.insert(article);
+	public Article cyArticlereadupdate(Article article) {
+		System.out.println("ArticleServiceImpl Manager Start..");
+		Article result = ad.cyArticlereadupdate(article);
+		System.out.println("ArticleServiceImpl cyArticlereadDetail article->" +article);
 		return result;
 	}
+	
 	// 게시물 수정
 	@Override
-	public int modify(Article article) {
+	public int cyArticlemodify(Article article) {
 		System.out.println("ArticleServiceImpl update");
-		int result = ad.modify(article);
+		int result = ad.cyArticlemodify(article);
 		return result;
 	}
+	
+	
+	// 게시물 작성
+	@Override
+	public int cyArticleinsert(Article article) {
+		System.out.println("ArticleServiceImpl insert...");
+		int result = ad.cyArticleinsert(article);
+		return result;
+	}
+	
+	
+	
+	
+	
+	
+	
 	
 	@Override
 	public List<ArticleMember> getArticleSummary(int boardNum, SummaryType summaryType) {

@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.java501.S20230401.model.Article;
-import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.Paging;
 import com.java501.S20230401.service.ReplyService;
@@ -24,7 +23,7 @@ public class InformationController {
 	private final ReplyService rs;
 	
 	
-	// list(infoindex) + pagging 
+	// 리스트 조회 
 	@RequestMapping(value="/board/information")
 	public String articleList(Article article, int category, String currentPage, Model model) {
 		System.out.println("ArticleController Start listArticle...");
@@ -32,6 +31,7 @@ public class InformationController {
 		int totalArticle = as.totalArticle();
 		System.out.println("ArticleController totalArticle=>" + totalArticle);
 		
+		//페이징
 		Paging page = new Paging(totalArticle, currentPage);		//전통방식
 		article.setStart(page.getStart());
 		article.setEnd(page.getEnd());
@@ -119,24 +119,16 @@ public class InformationController {
 		
 	}
 	
-	//게시물 수정 POST	
+	//게시물 수정 	
 	@RequestMapping(value="/board/information/modify", method = RequestMethod.POST)
 	public String updateForm(Article article, Model model)throws Exception{
 		System.out.println("updateform Start..");
 		
-		int result = as.modify(article);
+		int result = as.cyArticlemodify(article);
 		
-		return "redirect:board/information/update"; 
+		return "redirect:/board/information/detail"; 
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+			
 	//게시물 작성 GET
 	@RequestMapping(value = "/board/information/write", method = RequestMethod.GET)
 	public String getwrite() throws Exception {
@@ -149,7 +141,7 @@ public class InformationController {
 	public String insert(Article article, Model model) throws Exception {
 		System.out.println("writeform Start...");
 
-		int result = as.insert(article);
+		int result = as.cyArticleinsert(article);
 	
 		Article newArticle = new Article();
 		articleList(newArticle, 1400, "1", model);

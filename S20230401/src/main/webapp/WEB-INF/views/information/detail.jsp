@@ -144,21 +144,7 @@ function functionAlert2(){
      <tr height="1" bgcolor="#dddddd">
      	<td colspan="4"></td>
      </tr>
-     <!-- 댓글 -->
-   <%--   <div id="reply">
-     	<ol class = "replyList">
-     		<c:fotEach iteams="${reptlyList}" var="replyList">
-     			<li>
-     				<p>
-     				작성자 : ${replyList.writer}<br />
-     				작성날짜 : <fmt:formatDate value="${replyList.regdate}" pattern="yyyy-MM-dd" />
-     				</p>
-     				
-     				<p>${replyList.content }</p>	
-     			</li>
-     		</c:fotEach>
-     	</ol>
-     </div> --%>
+
      <tr align="center">
       <td>&nbsp;</td>
       <td colspan="2">

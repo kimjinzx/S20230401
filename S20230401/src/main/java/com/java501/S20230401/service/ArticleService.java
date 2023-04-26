@@ -12,14 +12,13 @@ public interface ArticleService {
 	Article			cyArticlereadDetail(Article article);
 	Article 		cyArticlereadupdate(Article article);
 	Article 		detailArticle(int art_title);
-	int				insert(Article article);
-	int				modify(Article article);
-	
-	
+	int				cyArticleinsert(Article article);
+	int				cyArticlemodify(Article article);
+
 	public List<ArticleMember> getArticleSummary(int boardNum, SummaryType summaryType);
 
-	
 	public int insertArticle(Article article);
 
 	public Article getArticleById(Article searcher);
+
 }
