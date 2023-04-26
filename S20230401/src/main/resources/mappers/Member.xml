@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -7,12 +6,6 @@
    <select id="memCount" parameterType="java.lang.String" resultType="int">
  		Select Count(*) from member  where id = #{mem_id}	
    </select>
-
-=======
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.java501.S20230401.MemberMapper">
 	<select id="hgGetMemberByUsername" parameterType="java.lang.String" resultType="Member">
 		SELECT * FROM MEMBER WHERE MEM_USERNAME = #{username}
 	</select>
@@ -46,5 +39,4 @@
 	<update id="hgSetAuthority" parameterType="Member">
 		UPDATE MEMBER SET MEM_AUTHORITY = #{mem_authority, jdbcType=NUMERIC} WHERE MEM_ID = #{mem_id, jdbcType=NUMERIC}
 	</update>
->>>>>>> refs/remotes/origin/mergedWork
 </mapper>

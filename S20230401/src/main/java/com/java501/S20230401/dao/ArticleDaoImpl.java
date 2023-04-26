@@ -62,12 +62,6 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 
 	@Override
-	public List<Article> listManager() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public List<Article> listCustomerMenu(Article article) {
 		List<Article> listMenu = null;
 		try {
@@ -113,4 +107,18 @@ public class ArticleDaoImpl implements ArticleDao {
 	public Article getArticleById(Article searcher) {
 		return session.selectOne("hgGetArticleById", searcher);
 	}
+
+	@Override
+	public int insertCustomer(Article article) {
+		int result = 0;
+		System.out.println("ArticleDaoImpl insertCustomer start...");
+		try {
+			result = session.insert("shInsertCustomer", article);
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl insertCustomer Exception->"+e.getMessage());
+		}
+		return result;
+	}
+
+
 }

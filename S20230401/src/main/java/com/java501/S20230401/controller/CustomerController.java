@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.java501.S20230401.model.Article;
@@ -43,8 +44,8 @@ public class CustomerController {
 		
 		// 설정해둔 view resolver로 리턴
 		model.addAttribute("category", category);
-		model.addAttribute("totalCustomer", totalCustomer);
 		model.addAttribute("brd_id", brd_id);
+		model.addAttribute("totalCustomer", totalCustomer);
 		model.addAttribute("page", page);
 		article.setBrd_id(brd_id);
 		System.out.println("brd_id --->" + brd_id);
@@ -61,16 +62,14 @@ public class CustomerController {
 	}
 	
 	@GetMapping(value = "/board/customer/detailCustomer")
-	public String detailCustomer(Article article, Model model) {
+	public String detailCustomer(Article article, int category, Model model) {
 		System.out.println("CustomerController Start detailCustomer...");
 
-		
 //		1. ArticleService안에 detailCustomer method 선언
 //		   1) parameter : brd_id
 //		   2) Return      Article
 //
 		Article customerDetail = as.detailCustomer(article);
-		model.addAttribute("article", customerDetail);
 		
 //		2. ArticleDao   detailCustomer method 선언 
 ////		                    mapper ID   ,    Parameter
@@ -85,27 +84,32 @@ public class CustomerController {
 		
 		int replyCount = rs.replyCount(reply);
 		List<Reply> replyList = rs.replyList(reply);
-
+		
+		model.addAttribute("article", customerDetail);
 		model.addAttribute("replyCount", replyCount);
 		model.addAttribute("replyList",replyList);
+		model.addAttribute("category", category);
 		
 		System.out.println("댓글카운트"+replyCount);
 		System.out.println("댓글리스트"+replyList);
+		System.out.println("카테고리"+category);
 		
 		return "/customer/detailCustomer";
 	}
 	
 	@RequestMapping(value = "/board/customer/customerWriteForm")
-	public String customerWriteForm(Model model) {
-		System.out.println("CustomerController customerWriteForm Start...");
-
-		List<Article> articleList = as.listManager();
-		System.out.println("CustomerController customerWriteForm customerList.size"+articleList.size());
-		model.addAttribute("articleMngList", articleList); // article Manager List
+	public String customerWriteForm(Article article, Model model) {
 		
-		return "customerWriteForm";
+		return "/customer/customerWriteForm";
 	}
 	
+	@GetMapping(value = "writeCustomer")
+	public String writeEmp(Article article, Model model) {
+		System.out.println("CustomerController Start writeCustomer...");
+
+		return "forward:/board/customer/customerWriteForm";
+		
+	}
 }
 	
 

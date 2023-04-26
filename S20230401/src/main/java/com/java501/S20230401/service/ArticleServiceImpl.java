@@ -42,15 +42,6 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	public List<Article> listManager() {
-		List<Article> articleList = null;
-		System.out.println("ArticleServiceImpl listManager Start...");
-		articleList = ad.listManager();
-		System.out.println("ArticleServiceImpl listArticle articleList.size()->"+articleList.size());
-		return articleList;
-	}
-
-	@Override
 	public List<Article> listCustomerMenu(Article article) {
 		List<Article> listMenu = null;
 		listMenu = ad.listCustomerMenu(article);
@@ -72,5 +63,13 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public Article getArticleById(Article searcher) {
 		return ad.getArticleById(searcher);
+	}
+
+	@Override
+	public int insertCustomer(Article article) {
+		int result = 0;
+		System.out.println("ArticleServiceImpl insertCustomer Start");
+		result = ad.insertCustomer(article);
+		return result;
 	}
 }

@@ -12,12 +12,15 @@ public interface ArticleService {
 	int 				totalCustomer();
 	List<Article> 		listCustomer(Article article);
 	Article 			detailCustomer(Article article);
-	List<Article> 		listManager();
-	List<Article> listCustomerMenu(Article article);
+	List<Article> 		listCustomerMenu(Article article);
+	public int 			insertCustomer(Article article);
 	
 	
 
 	public int insertArticle(Article article);
 
 	public Article getArticleById(Article searcher);
+
+	
+
 }

@@ -10,8 +10,8 @@ public interface ArticleDao {
 	int				totalCustomer();
 	List<Article> 	listCustomer(Article article);
 	Article 		detailCustomer(Article article);
-	List<Article> 	listManager();
-	List<Article> listCustomerMenu(Article article);
+	List<Article> 	listCustomerMenu(Article article);
+	int 			insertCustomer(Article article);
 	
 	
 	

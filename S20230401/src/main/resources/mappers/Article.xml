@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -69,14 +68,15 @@
 			 	 		WHERE A.ART_ID = #{art_id} AND A.BRD_ID = #{brd_id}
 	  ]]>
 	</select>
-
-  
 	
-=======
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.java501.S20230401.ArticleMapper">
+	<insert id="shInsertCustomer" parameterType="Article">
+		INSERT into article (art_id, brd_id, art_title, mem_id, art_content, art_regdate) 
+		VALUES (#{art_id}, #{brd_id}, #{art_title}, #{mem_id}, #{art_content}, #{art_regdate})
+	</insert>
+	
+	
+	
+	
 	<insert id="hgInsertArticle" parameterType="Article">
 		<!-- INSERT INTO ARTICLE (ART_ID, BRD_ID, ART_TITLE, MEM_ID, ART_REGDATE, ART_CONTENT,
 							 ART_TAG1, ART_TAG2, ART_TAG3, ART_TAG4, ART_TAG5, TRD_ID, ART_GOOD,
@@ -99,5 +99,4 @@
 		SELECT * FROM ARTICLE
 		WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
 	</select>
->>>>>>> refs/remotes/origin/mergedWork
 </mapper>
