@@ -6,8 +6,8 @@ import lombok.Data;
 
 @Data
 public class Article {
-	private Integer	art_id;
-	private Integer	brd_id;
+	private int 	art_id;
+	private int 	brd_id;
 	private String 	art_title;
 	private Integer	mem_id;
 	private Date 	art_regdate;
