@@ -51,6 +51,8 @@
 			</c:forEach>
 			</select></td>
 		</tr> 
+		<tr><th>마감일자</th><td>
+		<input type="date" name="trd_enddate" value="${updateForm.trd_enddate}"	  required="required"></td></tr>
 		
 		<tr><th>내용</th><td>
 		 	<textarea rows="10" cols="50">${updateForm.art_content}</textarea>
