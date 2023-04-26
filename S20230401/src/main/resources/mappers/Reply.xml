@@ -6,13 +6,13 @@
 	<select id="bjCountReply" parameterType="Reply" resultType="Reply">
 		SELECT COUNT(*) AS rep_cnt
 		FROM reply
-		WHERE art_id = #{art_id}  AND brd_id = #{brd_id}
+		WHERE art_id = #{art_id}  AND brd_id = #{brd_id} AND isdelete = 0
 	</select>
 	
 	<select id="bjreplyMain" parameterType="Reply" resultType="Reply">
 		SELECT reply.*, member.*
 		FROM reply
 		INNER JOIN member ON reply.mem_id = member.mem_id
-		WHERE reply.art_id = #{art_id} AND reply.brd_id = #{brd_id}
+		WHERE reply.art_id = #{art_id} AND reply.brd_id = #{brd_id} AND reply.isdelete = 0
 	</select>
 </mapper>

@@ -17,7 +17,25 @@
 	</select>
 	
 	<select id="bjarticleIndexAll" parameterType="Article" resultType="Article">
-		<![CDATA[
+<!-- 		SELECT *
+		FROM (
+		    SELECT ROWNUM RN, TEMP.*, M.mem_nickname, M.mem_image
+		    FROM (
+		        SELECT A.*, NVL(R.REP_CNT, 0) AS REP_CNT
+		        FROM ARTICLE A
+		        LEFT OUTER JOIN (
+		            SELECT ART_ID, BRD_ID, COUNT(*) REP_CNT 
+		            FROM REPLY 
+		            WHERE BRD_ID BETWEEN 1300 AND 1399
+		            GROUP BY ART_ID, BRD_ID
+		        ) R ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID) 
+		        WHERE A.BRD_ID BETWEEN 1300 AND 1399
+		        ORDER BY A.ART_ID DESC
+		    ) TEMP
+		    INNER JOIN member M ON TEMP.mem_id = M.mem_id
+		)
+		WHERE RN BETWEEN #{start} AND #{end}
+ -->
 		SELECT *
 		FROM (
 		    SELECT ROWNUM RN, TEMP.*, M.mem_nickname, M.mem_image
@@ -31,14 +49,33 @@
 		            GROUP BY ART_ID, BRD_ID
 		        ) R ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID) 
 		        WHERE A.BRD_ID BETWEEN 1300 AND 1399
+		        AND A.isdelete = 0 
+		        ORDER BY A.ART_ID DESC
 		    ) TEMP
 		    INNER JOIN member M ON TEMP.mem_id = M.mem_id
 		)
 		WHERE RN BETWEEN #{start} AND #{end}
-
-		]]>
 	</select>
 	<select id="bjArticleMenu" parameterType="Article" resultType="Article">
+		<!-- SELECT *
+		FROM (
+		    SELECT ROWNUM RN, TEMP.*, M.mem_nickname, M.mem_image
+		    FROM (
+		        SELECT A.*, NVL(R.REP_CNT, 0) AS REP_CNT
+		        FROM ARTICLE A
+		        LEFT OUTER JOIN (
+		            SELECT ART_ID, BRD_ID, COUNT(*) REP_CNT 
+		            FROM REPLY 
+		            WHERE BRD_ID = #{brd_id}
+		            GROUP BY ART_ID, BRD_ID
+		        ) R ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID) 
+		        WHERE A.BRD_ID = #{brd_id}
+		        ORDER BY A.ART_ID DESC
+		    ) TEMP
+		    INNER JOIN member M ON TEMP.mem_id = M.mem_id
+		)
+		WHERE RN BETWEEN #{start} AND #{end} -->
+		
 		SELECT *
 		FROM (
 		    SELECT ROWNUM RN, TEMP.*, M.mem_nickname, M.mem_image
@@ -52,6 +89,8 @@
 		            GROUP BY ART_ID, BRD_ID
 		        ) R ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID) 
 		        WHERE A.BRD_ID = #{brd_id}
+		        AND A.isdelete = 0 
+		        ORDER BY A.ART_ID DESC
 		    ) TEMP
 		    INNER JOIN member M ON TEMP.mem_id = M.mem_id
 		)
@@ -63,23 +102,25 @@
 		SELECT a.*, m.mem_nickname, m.mem_image
 			FROM article a
 			INNER JOIN member m ON a.mem_id = m.mem_id
-		WHERE a.art_id = #{art_id} AND a.brd_id = #{brd_id}		
+		WHERE a.art_id = #{art_id} AND a.brd_id = #{brd_id}	AND a.isdelete = 0
 	</select>
 	
 	<update id="bjreadCount" parameterType="Article" >
 		UPDATE article
 		SET art_read = art_read + 1
-		WHERE art_id = #{art_id} AND brd_id = #{brd_id}
+		WHERE art_id = #{art_id} AND brd_id = #{brd_id} AND isdelete = 0
 	</update>
 	
 	<insert id="bjWriteArticle" parameterType="Article">
-    INSERT INTO article (
-    				art_id, brd_id, art_title, art_tag1, 
-    				art_content)
-    VALUES (
-		    		#{art_id}, #{brd_id}, #{art_title}, #{art_tag1},#{art_content}
-    		 );
-</insert>
+    INSERT INTO ARTICLE (ART_ID, BRD_ID, ART_TITLE, MEM_ID, ART_REGDATE, ART_CONTENT,
+							 ART_TAG1, ART_TAG2, ART_TAG3, ART_TAG4, ART_TAG5, TRD_ID, ART_GOOD,
+							 ART_BAD, ART_READ, ART_ISNOTICE, ISDELETE, REPORT_ID)
+		VALUES ((SELECT MAX(ART_ID) + 1 FROM ARTICLE WHERE BRD_ID = #{brd_id}), #{brd_id},
+				#{art_title, jdbcType=VARCHAR}, #{mem_id}, SYSDATE, #{art_content, jdbcType=VARCHAR},
+				#{art_tag1, jdbcType=VARCHAR}, #{art_tag2, jdbcType=VARCHAR}, #{art_tag3, jdbcType=VARCHAR},
+				#{art_tag4, jdbcType=VARCHAR}, #{art_tag5, jdbcType=VARCHAR}, NULL,
+				0, 0, 0, 0, 0, NULL)
+	</insert>
 
 	<insert id="hgInsertArticle" parameterType="Article">
 		<!-- INSERT INTO ARTICLE (ART_ID, BRD_ID, ART_TITLE, MEM_ID, ART_REGDATE, ART_CONTENT,
@@ -103,4 +144,23 @@
 		SELECT * FROM ARTICLE
 		WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
 	</select>
+	
+	<update id="bjUpdate" parameterType="Article">
+		UPDATE article
+		  SET
+		    art_title = #{art_title},
+		    art_tag1 = #{art_tag1},
+		    art_tag2 = #{art_tag2},
+		    art_tag3 = #{art_tag3},
+		    art_tag4 = #{art_tag4},
+		    art_tag5 = #{art_tag5},
+		    art_content = #{art_content}
+		WHERE  art_id = #{art_id} AND brd_id = #{brd_id}   
+	</update>
+	<update id="bjDelete" parameterType="Article">
+		UPDATE article
+		  SET
+		  	isdelete = 1
+		WHERE art_id=#{art_id} AND brd_id = #{brd_id}
+	</update>
 </mapper>

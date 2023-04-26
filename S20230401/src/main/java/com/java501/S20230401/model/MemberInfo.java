@@ -24,7 +24,7 @@ public class MemberInfo {
 	private Date 	mem_latest;
 	private int 	isdelete;
 	private int 	report_id;
-	
+
 	// Article data
 	private int art_count;
 	

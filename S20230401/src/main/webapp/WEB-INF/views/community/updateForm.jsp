@@ -438,87 +438,35 @@
 		
 	</aside>
 	<main>
-	
+		<p>
 		<div class="container" align="center">
-			<p>
 			<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1310'">일상수다</button>
 			<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1320'">자랑하기</button>
 			<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1330'">홍보하기</button>
 			<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1340'">질문/요청</button>
-			<c:choose>
-			<c:when test="${memberInfo != null }">
-			<button onclick="location.href='${pageContext.request.contextPath}/board/community/communityWrite'">글쓰기</button>
-			</c:when>
-			</c:choose>
-			</p>
+			<form action="bjUpdate" method="post" name="update">
 			<table >
 				<tr><th>닉네임</th>
-				<td><img src="${pageContext.request.contextPath}/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
-				${article.mem_nickname}</td></tr>
-				<tr><th>제목</th><td>${article.art_title }</td></tr>
-				<tr><th>조회수</th><td>${article.art_read}</td>
-				<th>추천</th><th>${article.art_good }<br><button>추천</button></th>
-				<th>비추천</th><th>${article.art_bad }<br><button>비추천</button></th>
-				<tr><th>작성일</th>
-				<fmt:formatDate value="${article.art_regdate}" pattern="MM.dd" var="regdate" />
-				<fmt:formatDate value="${article.art_regdate}" pattern="hh:mm" var="regtime" />
-				<td style="font-size : 10px">${regdate }<br>${regtime}</td>
-				</tr>
-				<tr><th>내용</th><td>${article.art_content }</td></tr>
-				<tr><td colspan="2">
+				<td><img src="${pageContext.request.contextPath}/${memberInfo.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
+				${memberInfo.mem_nickname}</td></tr>
+				<tr><th>제목</th><td><input type="text" name="art_title" > </td></tr>
+				<tr><th colspan="2">태그<br>태그1 : <input type="text" name="art_tag1" class="tag"><br>
+							      태그2 : <input type="text" name="art_tag2" class="tag"><br>
+							      태그3 : <input type="text" name="art_tag3" class="tag"><br>
+							      태그4 : <input type="text" name="art_tag4" class="tag"><br>
+							      태그5 : <input type="text" name="art_tag5" class="tag"><br></th></tr>
+				<tr><th>내용</th><td><textarea rows="20" cols="100" name="art_content"></textarea></td></tr>
+				<tr><td colspan="1">
 					<input type="button" value="목록" 
-						onclick="location.href='${pageContext.request.contextPath}/board/community?category=${category }'">
-				<c:choose>
-					<c:when test="${memberInfo.mem_id != null && memberInfo.mem_id == article.mem_id }">
-					<input type="button" value="수정" 
-						onclick="location.href='${pageContext.request.contextPath}/board/community/updateForm?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category}'">
-					<input type="button" value="삭제" 
-						onclick="location.href='${pageContext.request.contextPath}/board/community/bjDelte?art_id=${article.art_id }&brd_id=${article.brd_id }&category=${category}'">
-					</c:when>
-				</c:choose>
-					</td>
+						onclick="location.href='${pageContext.request.contextPath}/board/community?category=${category }'"></td>
+					<td>
+					<input type="submit" value="수정완료"></td>						
 				</tr>	
 			</table>
-					
-				<p> ${reply.rep_cnt }개의 댓글  </p>
-				<p>
-				<c:choose>
-					<c:when test="${memberInfo.mem_id != null }">
-						<form action="bjReplyWrite" method="post" name="reply">
-							<div><img src="${pageContext.request.contextPath}/${memberInfo.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
-							${memberInfo.mem_nickname }
-							<textarea rows="2" cols="50" name="art_content"  >댓글내용을 입력하세요</textarea>								
-																<input type="submit" value="댓글쓰기"></div>
-						</form>
-					</c:when>
-				</c:choose>
-				</p>
-				
-			<div>
-				<c:forEach var="reply" items="${replyMain }">
-					<div style="margin: 10px">
-						<span>프사</span> <span>작성자</span> <span>댓글내용</span> <span>작성시간</span>	<span>추천</span> <span>비추천</span> <span>최상위댓글번호</span> <span>댓글순서</span>
-					</div>
-					<div>	
-						<span><img src="${pageContext.request.contextPath}/${reply.mem_image }" alt="예시" style="max-height: 40px; max-width: 40px;"></span>
-						<span>${reply.mem_nickname }</span>
-						<span>${reply.rep_content }</span>
-						<fmt:formatDate value="${article.art_regdate}" pattern="MM.dd" var="regdate" />
-						<fmt:formatDate value="${article.art_regdate}" pattern="hh:mm" var="regtime" />
-						<span style="font-size : 10px">${regdate }${regtime}</span>
-						<span>${reply.rep_good }<button>추천</button> </span>
-						<span>${reply.rep_bad }<button>비추천</button></span>
-						<span>${reply.rep_parent}</span>
-						<span>${reply.rep_step }</span>
-					</div>
-					<c:choose>
-						<c:when test="${memberInfo.mem_id == reply.mem_id }">
-							<div><button>대댓글쓰기</button></div>
-							<div><button>삭제</button></div>
-						</c:when>
-					</c:choose>
-				</c:forEach>
-			</div>	 
+			<input type="number" name="art_id" value="${article.art_id }">
+			<input type="number" name="brd_id" value="${article.brd_id }">
+			</form>
+		</div>
 	
 		<button id="scrollToTop" class="adv-hover">
 			<svg style="fill: var(--subtheme); stroke: var(--subtheme); stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round;" width="20" height="10" viewBox="0 0 32 16">

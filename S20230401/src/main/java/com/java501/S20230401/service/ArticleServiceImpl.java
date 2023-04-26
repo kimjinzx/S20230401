@@ -80,4 +80,18 @@ public class ArticleServiceImpl implements ArticleService {
 	public Article getArticleById(Article searcher) {
 		return ad.getArticleById(searcher);
 	}
+
+	@Override
+	public int updateArticle(Article article) {
+		int update = 0;
+		update = ad.updateArticle(article);
+		return update;
+	}
+
+	@Override
+	public int delete(Article article) {
+		int delResult = 0;
+		delResult = ad.delete(article);
+		return delResult;
+	}
 }
