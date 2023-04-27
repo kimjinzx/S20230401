@@ -199,7 +199,7 @@ public class CommunityController {
 		model.addAttribute("uptCnt", updateCount);
 		model.addAttribute("category", category);
 		
-		return "redirect:/board/community?category="+category;
+		return "redirect:/board/community/detailContent?art_id="+article.getArt_id()+"&brd_id="+article.getBrd_id()+"&category="+category;
 	}
 	
 	

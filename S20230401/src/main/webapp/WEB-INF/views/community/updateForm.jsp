@@ -468,6 +468,7 @@
 			</table>
 			<input type="number" name="art_id" value="${article.art_id }">
 			<input type="number" name="brd_id" value="${article.brd_id }">
+			<input type="number" name="category" value="${category}">
 			</form>
 		</div>
 	
