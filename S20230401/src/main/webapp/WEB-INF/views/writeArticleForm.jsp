@@ -20,11 +20,10 @@
 			return false;
 		}
 		let tagIndex = 1;
-		let tagValues = $('#tag-box').find('.tag-box-tag-value');
-		for (let tagPart of tagValues) {
-			let tag = tagPart.html();
+		$('.tag-box-tag').each((index, value) => {
+			let tag = $(value).find('.tag-box-tag-value').html();
 			$('#art_tag' + tagIndex++).val(tag);
-		}
+		});
 		return true;
 	}
 	const quillInit = (id) => {
@@ -230,6 +229,18 @@
 		stroke: var(--subtheme-font);
 	}
 	
+	div#trade-info {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: stretch;
+		margin: 5px 0;
+	}
+	div#trade-info input {
+		min-width: 0px;
+		width: auto;
+	}
+	
 	form#write-form button[type="submit"] {
 		width: 100%;
 		outline: none;
@@ -242,6 +253,88 @@
 		padding: 5px;
 		margin: 5px 0;
 		cursor: pointer;
+	}
+	
+	form div.popup-group {
+		position: relative;
+		margin: 5px 0;
+		height: 32px;
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+		z-index: 90;
+	}
+	form div.popup-group > button.togglePopup {
+		width: 120px;
+		height: 32px;
+		overflow: hidden;
+		margin: 0;
+		margin-left: 10px;
+	}
+	form div.popup-group > button.togglePopup > * {
+		pointer-events: none;
+	}
+	form div.popup-group > div.popup-window {
+		position: absolute;
+		border-radius: 2.5px;
+		background-color: var(--theme);
+		border: 2px solid #CCCCCC;
+		bottom: 32px;
+		left: 44px;
+	}
+	button#region {
+		font-size: 14px;
+		font-weight: bold;
+		height: 32px;
+	}
+	div#region-popup {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: stretch;
+		border: 2px solid var(--subtheme);
+		font-size: 14px;
+		font-weight: bold;
+		height: 400px;
+	}
+	div.popup-window > div > button {
+		width: 116px;
+		border: none;
+		outline: none;
+		font-size: 14px;
+		font-weight: bold;
+	}
+	div.popup-window > div > button {
+		background-color: var(--theme);
+	}
+	
+	button.subitem-header ~ div.subitem-list {
+		display: none;
+		position: absolute;
+		bottom: 0px;
+		left: 116px;
+		background-color: var(--theme);
+		border: 2px solid var(--subtheme);
+		max-height: 300px;
+		overflow-y: auto;
+		overflow-x: hidden;
+	}
+	button.subitem-header:hover ~ div.subitem-list,
+	button.subitem-header ~ div.subitem-list:hover {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: stretch;
+	}
+	div.subitem-list > button {
+		width: 116px;
+		border: none;
+		outline: none;
+		font-size: 14px;
+		font-weight: bold;
+	}
+	div.subitem-list > button {
+		background-color: var(--theme);
 	}
 </style>
 <style type="text/css">
@@ -425,7 +518,8 @@
 	<main>
 		<div class="container" style="margin: 10px;">
 		<form id="write-form" name="write-form" action="/board/${boardName }/writeProc" method="post" enctype="multipart/form-data" onsubmit="writeAction();">
-			<input type="hidden" id="brd_idLink" name="brd_idLink" value="${brd_id }">
+			<input type="hidden" id="category" name="category" value="${brd_id }">
+			<input type="hidden" id="mem_id" name="mem_id" value="${memberInfo.mem_id }">
 			<div class="form-group">
 				<div class="input-box">
 					<label for="art_title">제목</label>
@@ -455,6 +549,74 @@
 						</div>
 					</div>
 				</div>
+				<c:if test="${isTradeBoard }">
+					<div id="trade-info">
+						<h2 style="color: var(--subtheme); margin: 10px 0;">거래 정보</h2>
+						<div style="display: flex; justify-content: flex-start; align-items: center;">
+							<div class="input-box" style="flex-grow: 1;">
+								<label for="trd_max">최대 참가 인원</label>
+								<input type="number" id="trd_max" name="trd_max" min="2" value="2" style="width: 75px; text-align: center;" required>
+								<span style="font-size: 16px; font-weight: bold; margin: 0 5px;">명</span>
+							</div>
+							<div class="input-box" style="flex-grow: 1;">
+								<label for="trd_cost">소요 비용</label>
+								<input type="number" id="trd_cost" name="trd_cost" min="0" value="0" style="width: 200px; text-align: center;">
+								<span style="font-size: 16px; font-weight: bold; margin: 0 5px;">원</span>
+							</div>
+						</div>
+						<div class="input-box">
+							<label for="trd_enddate">모집 종료일</label>
+							<input type="datetime-local" id="trd_enddate" name="trd_enddate" style="text-align: center;">
+						</div>
+						<div style="display: flex; justify-content: flex-start; align-items: center;">
+							<div class="input-box popup-group" style="flex-grow: 1;">
+								<input type="hidden" id="reg_id" name="reg_id">
+								<label for="reg_id-button">지역 제한</label>
+								<button type="button" id="region" name="reg_id-button" class="togglePopup theme-button"></button>
+								<div id="region-popup" class="popup-window" style="top: 32px; right: auto; left: 96.28px; padding: 0;">
+									<div style="position: relative;">
+										<button type="button" class="subitem-header adv-hover" onclick="$('#reg_id').removeAttr('value'); $('#region').text(''); $('#region-popup').toggle();">없음</button>
+									</div>
+									<c:forEach var="region" items="${superRegions }">
+										<div style="position: relative;">
+											<button type="button" class="subitem-header adv-hover" onclick="$('#region-value').val(${region.reg_id}); $('#region').text('${region.reg_name }'); $('#region-popup').toggle();">${region.reg_name }</button>
+											<c:if test="${not empty regions[region] }">
+												<div class="subitem-list">
+													<button type="button" class="adv-hover" onclick="$('#reg_id').removeAttr('value'); $('#region').text(''); $('#region-popup').toggle();">없음</button>
+													<c:forEach var="subRegion" items="${regions[region] }">
+														<button type="button" class="adv-hover" onclick="$('#reg_id').val(${subRegion.reg_id}); $('#region').text('${subRegion.reg_name }'); $('#region-popup').toggle();">${subRegion.reg_name }</button>
+													</c:forEach>
+												</div>
+											</c:if>
+										</div>
+									</c:forEach>
+								</div>
+							</div>
+							<div class="input-box" style="flex-grow: 1;">
+								<label for="trd_loc">장소</label>
+								<input type="text" id="trd_loc" name="trd_loc" style="min-width: none; max-width: none; width: auto; flex-grow: 1;">
+							</div>
+						</div>
+						<div style="display: flex; justify-content: flex-start; align-items: center;">
+							<div class="input-box" style="flex-grow: 1;">
+								<label for="trd_gender">성별 제한</label>
+								<select name="trd_gender" style="text-align: center;">
+									<option selected>제한 없음</option>
+									<option value="201">남성</option>
+									<option value="202">여성</option>
+								</select>
+							</div>
+							<div class="input-box" style="flex-grow: 1;">
+								<label for="trd_minage">연령 제한</label>
+								<input type="number" id="trd_minage" name="trd_minage" min="0" style="width: 50px; text-align: right;">
+								<span style="font-size: 16px; font-weight: bold; margin: 0 5px;">세</span>
+								<span style="font-size: 16px; font-weight: bold; margin: 0 5px;">~</span>
+								<input type="number" id="trd_maxage" name="trd_maxage" min="0" style="width: 50px; text-align: right;">
+								<span style="font-size: 16px; font-weight: bold; margin: 0 5px;" min="0">세</span>
+							</div>
+						</div>
+					</div>
+				</c:if>
 				<input type="hidden" id="art_content" name="art_content" required>
 				<div id="articleEditor">
 					

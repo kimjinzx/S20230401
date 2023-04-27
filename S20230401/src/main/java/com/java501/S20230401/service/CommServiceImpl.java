@@ -13,7 +13,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CommServiceImpl implements CommService {
 	private final CommDao cd;
+	@Override
+	public String categoryName(int comm_id) {
+		return cd.categoryName(comm_id);
+	}
+	@Override
+	public List<Comm> commList(int comm_id) {
+		return cd.commList(comm_id);
+	}
 	
+	// Comm 과 그 값 가져오기
 	@Override
 	public Comm getCommById(int comm_id) {
 		return cd.getCommById(comm_id);

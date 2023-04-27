@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,8 +44,9 @@ public class MemberController {
 	private final CommService cs;
 	
 	@RequestMapping(value = "/login")
-	public String memberLogin() {
-		
+	public String memberLogin(HttpServletRequest request) {
+		String referer = request.getHeader("Referer");
+		request.getSession().setAttribute("prevPage", referer);
 		return "loginForm";
 	}
 	

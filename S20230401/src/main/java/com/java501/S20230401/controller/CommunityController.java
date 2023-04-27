@@ -162,7 +162,7 @@ public class CommunityController {
 
 		System.out.println("커뮤니티 아티클"+article);
 		
-		int writeResult = as.writeArticle(article);
+		int writeResult = as.bjWriteArticle(article);
 		model.addAttribute("category", category);
 		System.out.println("라이트리절트"+writeResult);
 		if(writeResult > 0 ) {
@@ -194,7 +194,7 @@ public class CommunityController {
 		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		System.out.println("업데이트 시작");
 		
-		int updateCount = as.updateArticle(article);
+		int updateCount = as.bjUpdateArticle(article);
 		
 		model.addAttribute("uptCnt", updateCount);
 		model.addAttribute("category", category);
