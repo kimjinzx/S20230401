@@ -39,10 +39,11 @@ public class InformationController {
 		List<Article> listArticle = as.listArticle(article);
 		System.out.println("ArticleController list listArticle.size()=>" + listArticle.size());
 		
+		model.addAttribute("article", article);
 		model.addAttribute("totalArticle", totalArticle);
 		model.addAttribute("listArticle", listArticle);
 		model.addAttribute("page", page);
-		
+		model.addAttribute("category", category);
 		String viewName;
 		switch(category) {
 		case 1410: viewName = "infovillage"; break;
@@ -60,30 +61,13 @@ public class InformationController {
 	
 	// 상세페이지 확인
 	@RequestMapping(value="/board/information/detail")
-	public String detail(Integer art_id, Integer brd_id, Model model) {
-		Article article = new Article();
-		article.setArt_id(art_id);
-		article.setBrd_id(brd_id);
+	public String detail(Article article,int category, Model model) {
 		
 		Article result = as.cyArticlereadDetail(article);	//DB에서 불러오기
 		
-		System.out.println("result = " + result.toString());
-
-		model.addAttribute("art_id", result.getArt_id());
-		model.addAttribute("brd_id", result.getBrd_id());
-		model.addAttribute("art_title", result.getArt_title());
-		model.addAttribute("mem_nickname", result.getMem_nickname());
-		model.addAttribute("art_content", result.getArt_content());
-		model.addAttribute("art_reg_date", result.getArt_regdate());
-		model.addAttribute("art_tag1", result.getArt_tag1());
-		model.addAttribute("art_tag2", result.getArt_tag2());
-		model.addAttribute("art_tag3", result.getArt_tag3());
-		model.addAttribute("art_tag4", result.getArt_tag4());
-		model.addAttribute("art_tag5", result.getArt_tag5());
-//		//댓글
-//		List<Reply> replyList = ReplyService.readReply(article.getBrd_id()));
-//		model.addAttribute("replyList", replyList);
-//		
+		model.addAttribute("category", category);
+		model.addAttribute("aticle", result);
+		System.out.println("controller detai; Article result"+result);		
 		System.out.println("detail Start...");
 		return "information/detail";
 	}
@@ -91,27 +75,17 @@ public class InformationController {
 		
 	// 수정 상세페이지 update로 이동 
 	@RequestMapping(value="/board/information/update", method = RequestMethod.GET)
-	public String update(Integer art_id, Integer brd_id, Model model) {
-		Article article = new Article();
-		article.setArt_id(art_id);
-		article.setBrd_id(brd_id);
-		System.out.println(art_id);
-		System.out.println(brd_id);
+	public String update(Article article,int category, Model model) {
+		System.out.println("controller updateform Start.. >" + article);
 		
-		Article result = as.cyArticlereadupdate(article);	//DB에서 불러오기
+		Article result = as.cyArticlereadDetail(article);	//DB에서 불러오기
 		
 		System.out.println("result = " + result.toString());
-
 		
-		model.addAttribute("art_id", result.getArt_id());
-		model.addAttribute("brd_id", result.getBrd_id());
-		model.addAttribute("art_title", result.getArt_title());
-		model.addAttribute("art_content", result.getArt_content());
-		model.addAttribute("art_tag1", result.getArt_tag1());
-		model.addAttribute("art_tag2", result.getArt_tag2());
-		model.addAttribute("art_tag3", result.getArt_tag3());
-		model.addAttribute("art_tag4", result.getArt_tag4());
-		model.addAttribute("art_tag5", result.getArt_tag5());
+		model.addAttribute("category", category);
+		model.addAttribute("article", result);
+		
+		
 		
 		
 		System.out.println("update Start...");
@@ -121,12 +95,13 @@ public class InformationController {
 	
 	//게시물 수정 	
 	@RequestMapping(value="/board/information/modify", method = RequestMethod.POST)
-	public String updateForm(Article article, Model model)throws Exception{
+	public String updateForm(Article article, int category, Model model)throws Exception{
 		System.out.println("updateform Start..");
 		
+		model.addAttribute("category", category);
 		int result = as.cyArticlemodify(article);
 		
-		return "redirect:/board/information/detail"; 
+		return "redirect:/board/information/detail?art_id="+article.getArt_id()+"&brd_id="+article.getBrd_id()+"&category="+category; 
 	}
 			
 	//게시물 작성 GET

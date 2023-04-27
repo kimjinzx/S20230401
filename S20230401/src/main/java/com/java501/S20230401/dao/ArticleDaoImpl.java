@@ -54,6 +54,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		} catch (Exception e) {
 			System.out.println("ArticleImpl article e.getMessage()->"+e.getMessage());
 		}
+		System.out.println("articleDaoImpl detail"+article);
 		return result;
 	}
 	// 상세페이지

@@ -445,7 +445,7 @@
 		<td>${article.art_id }</td>
 		<td>${article.brd_id}</td>
 		<td>
-			<a href="${pageContext.request.contextPath }/board/information/detail?art_id=${article.art_id }&brd_id=${article.brd_id}">
+			<a href="${pageContext.request.contextPath }/board/information/detail?art_id=${article.art_id }&brd_id=${article.brd_id}&category=${category}">
 			${article.art_title }</a>
 		</td>
 		<td><fmt:formatDate value="${article.art_regdate}" pattern="YY-MM-dd"/></td>

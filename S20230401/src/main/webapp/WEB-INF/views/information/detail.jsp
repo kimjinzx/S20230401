@@ -46,14 +46,14 @@ function functionAlert2(){
       <td width="5"><img src="img/table_right.gif" width="5" height="30" /></td>
      </tr>
     </table>
-	<button type="button" onclick="location.href='${pageContext.request.contextPath}/board/information/update?art_id=${art_id }&brd_id=${brd_id }';">수정하기</button>
+	<button type="button" onclick="location.href='${pageContext.request.contextPath}/board/information/update?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category }';">수정하기</button>
 	<button onclick="location.href='${pageContext.request.contextPath }/board/information?category=1400';">목록</button>
 	<table>
      <tr>
 	      <td>&nbsp;</td>
 	      <td align="center">글번호</td>
 	      <td>
-	      	<input name="artId" size="50" maxlength="100" value="${art_id}">
+	      	<input name="artId" size="50" maxlength="100" value="${aticle.art_id}">
 	      </td>
 	      <td>&nbsp;</td>
      </tr>
@@ -66,7 +66,7 @@ function functionAlert2(){
 	      <td>&nbsp;</td>
 	      <td align="center">게시판 번호</td>
 	      <td>
-	      	<input name="brdId" size="50" maxlength="100" value="${brd_id}">
+	      	<input name="brdId" size="50" maxlength="100" value="${aticle.brd_id}">
 	      </td>
 	      <td>&nbsp;</td>
      </tr>
@@ -79,7 +79,7 @@ function functionAlert2(){
 	      <td>&nbsp;</td>
 	      <td align="center">제목</td>
 	      <td>
-	      	<input name="title" size="50" maxlength="100" value="${art_title}">
+	      	<input name="title" size="50" maxlength="100" value="${aticle.art_title}">
 	      </td>
 	      <td>&nbsp;</td>
      </tr>
@@ -105,7 +105,7 @@ function functionAlert2(){
       <td>&nbsp;</td>
       <td align="center">작성자</td>
       <td>
-      	<input name="nickname" size="50" maxlength="50" value="${mem_nickname }">
+      	<input name="nickname" size="50" maxlength="50" value="${aticle.mem_nickname }">
       </td>
       <td>&nbsp;</td>
      </tr>
@@ -119,11 +119,11 @@ function functionAlert2(){
       <td align="center">태그</td>
       <td>
       	<ul id="art-tags">
-      		<c:if test="${art_tag1 != null}"><li>#${art_tag1}</li></c:if>
-      		<c:if test="${art_tag2 != null}"><li>#${art_tag2}</li></c:if>
-      		<c:if test="${art_tag3 != null}"><li>#${art_tag3}</li></c:if>
-      		<c:if test="${art_tag4 != null}"><li>#${art_tag4}</li></c:if>
-      		<c:if test="${art_tag5 != null}"><li>#${art_tag5}</li></c:if>
+      		<c:if test="${art_tag1 != null}"><li>#${aticle.art_tag1}</li></c:if>
+      		<c:if test="${art_tag2 != null}"><li>#${aticle.art_tag2}</li></c:if>
+      		<c:if test="${art_tag3 != null}"><li>#${aticle.art_tag3}</li></c:if>
+      		<c:if test="${art_tag4 != null}"><li>#${aticle.art_tag4}</li></c:if>
+      		<c:if test="${art_tag5 != null}"><li>#${aticle.art_tag5}</li></c:if>
       	</ul>
       </td>
       <td>&nbsp;</td>
@@ -137,7 +137,7 @@ function functionAlert2(){
 	      <td>&nbsp;</td>
 	      <td align="center">내용</td>
       <td>
-      	  <textarea name="content" cols="50" rows="13">${art_content}</textarea>
+      	  <textarea name="content" cols="50" rows="13">${aticle.art_content}</textarea>
       </td>
       	  <td>&nbsp;</td>
      </tr>
