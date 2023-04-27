@@ -40,16 +40,16 @@ public class DutchpayController {
 	      model.addAttribute("dutchpayList", dutchpayList);
 	      
 	      
-	      
 	      return "dutchpay/" + viewName;
 	}
 	
 	@RequestMapping(value ="/dutchpay/dutchpayDetail") //상세 게시글    
 	public String dutchpayDetail(Article_Trade_Reply atr ,Model model) {
-		System.out.println("controller detail brd_id size() -> "+atr.getBrd_id());
-		System.out.println("controller detail art_id size() -> "+atr.getArt_id());
+		System.out.println("controller detail brd_id -> "+atr.getBrd_id());
+		System.out.println("controller detail art_id -> "+atr.getArt_id());
 		Article_Trade_Reply detail = as.detail1(atr);
 		model.addAttribute("detail", detail);
+		
 		return "/dutchpay/dutchpayDetail";
 		
 	}

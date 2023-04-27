@@ -35,7 +35,7 @@
 		<span>모집인원 : ${detail.trd_max } 명 (작성자 제외)</span><p>
 		<span>지역 : ${detail.reg_name }</span><p>
 		<span>거래 상세장소 : ${detail.trd_loc }</span><p>
-		<span>마감일자 : ${detail.trd_enddate } 추천 ${detail.art_good }  비추천 ${detail.art_bad }  조회수${detail.art_read }  댓글수</span><p>
+		<span>마감일자 : ${detail.trd_enddate } 추천 ${detail.art_good }  비추천 ${detail.art_bad }  조회수${detail.art_read }  댓글수${detail.reply_count }</span><p>
 		<span>내용 : ${detail.art_content }</span>
 	</div>
 	

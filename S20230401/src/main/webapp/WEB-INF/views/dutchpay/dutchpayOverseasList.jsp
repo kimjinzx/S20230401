@@ -34,7 +34,7 @@
 		<span>거래장소 : ${ATR.reg_name }</span><p>
 		<span>모집인원 수 : ${ATR.trd_max }명</span><p>
 		<span>마감일자 : ${ATR.trd_enddate }</span><p>
-		<span>추천 ${ATR.art_good }  비추천 ${ATR.art_bad }  조회수${ATR.art_read }  댓글수</span>
+		<span>추천 ${ATR.art_good }  비추천 ${ATR.art_bad }  조회수${ATR.art_read }  댓글수${ATR.reply_count }</span>
 	</div>
 	<hr>
 	</c:forEach>

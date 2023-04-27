@@ -26,8 +26,12 @@
 <a href="${pageContext.request.contextPath }/board/dutchpay?category=1150">기타</a><p>
 <input type="button" value="글쓰기" onclick="location.href='/dutchpay/dutchpayWriteForm'"> 
 	 <c:forEach var="ATR" items="${dutchpayList }">
+	 
 	<div class="container" >
-		<span>작성자 : ${ART.mem_image}   ${ATR.mem_username }</span><p>
+		<input type="hidden" name="brd_id" value="${ATR.brd_id }">
+		<input type="hidden" name="art_id" value="${ATR.art_id }">
+		
+		<span>작성자 : ${ART.mem_image}   ${ATR.mem_username }</span>
 		<span>${ATR.comm_value }</span>
 		<span><a href="/dutchpay/dutchpayDetail?art_id=${ATR.art_id}&brd_id=${ATR.brd_id}">제목 : ${ATR.art_title }</a>  작성날짜 : ${ATR.art_regdate }  </span><p>
 		
@@ -36,7 +40,7 @@
 		<span>거래장소 : ${ATR.reg_name }</span><p>
 		<span>모집인원 수 : ${ATR.trd_max }명</span><p>
 		<span>마감일자 : ${ATR.trd_enddate }</span><p>
-		<span>추천 ${ATR.art_good }  비추천 ${ATR.art_bad }  조회수${ATR.art_read }  댓글수</span>
+		<span>추천 ${ATR.art_good }  비추천 ${ATR.art_bad }  조회수${ATR.art_read }  댓글수${ATR.reply_count }</span>
 	</div>
 	<hr>
 	</c:forEach>

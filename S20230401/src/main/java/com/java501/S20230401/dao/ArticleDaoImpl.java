@@ -39,7 +39,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		try {				
 			atr2 = session.selectOne("JHDutchpayDetail",atr);
 		} catch (Exception e) {
-			System.out.println("ArticleServiceImpl detail2 Exception -> "+e.getMessage());
+			System.out.println("ArticleDaoImpl detail2 Exception -> "+e.getMessage());
 		}
 		return atr2;
 	}
@@ -50,7 +50,7 @@ public class ArticleDaoImpl implements ArticleDao {
 			System.out.println(atr);
 			session.selectOne("JHInsert",atr);
 		} catch (Exception e) {
-			System.out.println("ArticleServiceImpl dutchpayInsert2 Exception -> "+e.getMessage());
+			System.out.println("ArticleDaoImpl dutchpayInsert2 Exception -> "+e.getMessage());
 		}
 	}
 	
@@ -60,7 +60,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		try {
 			cm = session.selectList("JHCategory");
 		} catch (Exception e) {
-			System.out.println("ArticleServiceImpl category2 Exception -> "+e.getMessage());
+			System.out.println("ArticleDaoImpl category2 Exception -> "+e.getMessage());
 		}
 		return cm;
 	}
@@ -72,7 +72,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		try {
 			re = session.selectList("JHLoc");
 		} catch (Exception e) {
-			System.out.println("ArticleServiceImpl region2 Exception -> "+e.getMessage());
+			System.out.println("ArticleDaoImpl region2 Exception -> "+e.getMessage());
 		}
 		return re;
 	}
@@ -84,7 +84,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		try {
 			updateForm = session.selectOne("JHUpdateForm",atr);
 		} catch (Exception e) {
-			System.out.println("ArticleServiceImpl updateForm2 Exception -> "+e.getMessage());
+			System.out.println("ArticleDaoImpl updateForm2 Exception -> "+e.getMessage());
 		}
 		return updateForm;
 	}
@@ -95,7 +95,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		try {
 			re = session.selectList("JHLocUd");
 		} catch (Exception e) {
-			System.out.println("ArticleServiceImpl loc_ud2 Exception -> "+e.getMessage());
+			System.out.println("ArticleDaoImpl loc_ud2 Exception -> "+e.getMessage());
 		}
 		return re;
 	}
@@ -106,7 +106,7 @@ public class ArticleDaoImpl implements ArticleDao {
 			System.out.println(atr);
 			session.selectOne("JHUpdate",atr);
 		} catch (Exception e) {
-			System.out.println("ArticleServiceImpl dutchpayUpdate2 Exception -> "+e.getMessage());
+			System.out.println("ArticleDaoImpl dutchpayUpdate2 Exception -> "+e.getMessage());
 		}
 	}
 	
@@ -115,7 +115,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		try {
 			session.selectOne("JHDelete",atr);
 		} catch (Exception e) {
-			System.out.println("ArticleServiceImpl dutchpayDelete2 Exception -> "+e.getMessage());
+			System.out.println("ArticleDaoImpl dutchpayDelete2 Exception -> "+e.getMessage());
 		}
 	}
 	//진현
@@ -153,6 +153,7 @@ public class ArticleDaoImpl implements ArticleDao {
 	public Article getArticleById(Article searcher) {
 		return session.selectOne("hgGetArticleById", searcher);
 	}
+
 
 		
 	

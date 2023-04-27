@@ -14,7 +14,8 @@
        		   m.mem_image,
        		   m.mem_username, 
        		   t.trd_enddate, 
-       		   a.art_good, a.art_bad, a.art_read
+       		   a.art_good, a.art_bad, a.art_read,
+       		   REP_CNT(brd_id, art_id) AS reply_count
 		FROM article a
 		LEFT JOIN trade t ON a.trd_id = t.trd_id
 		LEFT JOIN comm c ON t.trd_status = c.comm_id
@@ -33,7 +34,8 @@
        		   m.mem_image,
        		   m.mem_username, 
        		   t.trd_enddate, 
-       		   a.art_good, a.art_bad, a.art_read
+       		   a.art_good, a.art_bad, a.art_read,
+       		   REP_CNT(brd_id, art_id) AS reply_count
 		FROM article a
 		LEFT JOIN trade t ON a.trd_id = t.trd_id
 		LEFT JOIN comm c ON t.trd_status = c.comm_id
@@ -52,7 +54,8 @@
        		   m.mem_image,
        		   m.mem_username, 
        		   t.trd_enddate, 
-       		   a.art_good, a.art_bad, a.art_read
+       		   a.art_good, a.art_bad, a.art_read,
+       		   REP_CNT(brd_id, art_id) AS reply_count
 		FROM article a
 		LEFT JOIN trade t ON a.trd_id = t.trd_id
 		LEFT JOIN comm c ON t.trd_status = c.comm_id
@@ -71,7 +74,8 @@
        		   m.mem_image,
        		   m.mem_username, 
        		   t.trd_enddate, 
-       		   a.art_good, a.art_bad, a.art_read
+       		   a.art_good, a.art_bad, a.art_read,
+       		   REP_CNT(brd_id, art_id) AS reply_count
 		FROM article a
 		LEFT JOIN trade t ON a.trd_id = t.trd_id
 		LEFT JOIN comm c ON t.trd_status = c.comm_id
@@ -90,7 +94,8 @@
        		   m.mem_image,
        		   m.mem_username, 
        		   t.trd_enddate, 
-       		   a.art_good, a.art_bad, a.art_read
+       		   a.art_good, a.art_bad, a.art_read,
+       		   REP_CNT(brd_id, art_id) AS reply_count
 		FROM article a
 		LEFT JOIN trade t ON a.trd_id = t.trd_id
 		LEFT JOIN comm c ON t.trd_status = c.comm_id
@@ -109,7 +114,8 @@
        		   m.mem_image,
        		   m.mem_username, 
        		   t.trd_enddate, 
-       		   a.art_good, a.art_bad, a.art_read
+       		   a.art_good, a.art_bad, a.art_read,
+       		   REP_CNT(brd_id, art_id) AS reply_count
 		FROM article a
 		LEFT JOIN trade t ON a.trd_id = t.trd_id
 		LEFT JOIN comm c ON t.trd_status = c.comm_id
@@ -128,7 +134,8 @@
        		   r.reg_name,
        		   t.trd_loc, 
        		   t.trd_enddate , a.art_good, a.art_bad, a.art_read,
-       		   a.art_content
+       		   a.art_content,
+       		   REP_CNT(brd_id, art_id) AS reply_count
 		FROM article a
 		LEFT JOIN trade t  ON a.trd_id = t.trd_id
 		LEFT JOIN comm c   ON t.trd_status = c.comm_id
@@ -205,9 +212,6 @@
 	</select>
 
 
-	<select id="JHDutchpayList" parameterType="Article_Trade_Reply" statementType="CALLABLE">
-		SELECT count(*) FROM reply WHERE brd_id = ${brd_id} and art_id = ${art_id}
-       
-	</select>
+
 </mapper>
 
