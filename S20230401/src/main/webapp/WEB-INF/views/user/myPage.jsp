@@ -135,6 +135,7 @@
 	}
 	div#user-info-selector > * {
 		flex-grow: 1;
+		flex-basis: 0;
 	}
 	button.rect-button {
 		border-radius: 0;
