@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Region {
-	private Integer 	reg_id;
+	private Integer reg_id;
 	private String 	reg_name;
-	private Integer 	reg_parent;
+	private Integer reg_parent;
 }

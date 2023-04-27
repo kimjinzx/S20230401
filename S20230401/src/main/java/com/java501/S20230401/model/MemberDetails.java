@@ -19,6 +19,7 @@ public class MemberDetails implements UserDetails {
 	
 	public MemberDetails(MemberInfo memberInfo) { this.memberInfo = memberInfo; }
 	
+	// 유현규
 	@Override
 	public String getPassword() {
 		return memberInfo.getMem_password();

@@ -6,10 +6,10 @@ import lombok.Data;
 
 @Data
 public class Report {
-	private Integer 	report_id;
-	private Integer 	mem_id;
+	private Integer report_id;
+	private Integer mem_id;
 	private String 	report_content;
 	private Date 	report_date;
-	private Integer 	report_status;
+	private Integer report_status;
 	private String 	report_reason;
 }

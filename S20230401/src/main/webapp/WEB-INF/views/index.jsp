@@ -33,13 +33,13 @@
 			<div id="topmenu">
 				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/together?category=1000">함께해요</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="${pageContext.request.contextPath }/board/dutchpay?category=1100">같이사요</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/dutchpay?category=1100">같이사요</a>
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/share?category=1200">나눔해요</a>
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/community?category=1300">커뮤니티</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/information?category=1400">정보공유</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath }/board/information?category=1400">정보공유</a>
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/customer?category=1500">고객센터</a>
 				<div id="dropdown">
@@ -54,11 +54,11 @@
 							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1060">기타</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/dutchpay?category=1110">식료품</a>
-							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/dutchpay?category=1120">의류 / 잡화</a>
-							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/dutchpay?category=1130">생활용품</a>
-							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/dutchpay?category=1140">해외배송</a>
-							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/dutchpay?category=1150">기타</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/dutchpay?category=1110">식료품</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/dutchpay?category=1120">의류 / 잡화</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/dutchpay?category=1130">생활용품</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/dutchpay?category=1140">해외배송</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/dutchpay?category=1150">기타</a>
 						</div>
 						<div class="submenu">
 							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/share?category=1210">식품</a>
@@ -73,10 +73,10 @@
 							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/community?category=1340">질문 / 요청</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/information?category=1410">동네정보</a>
-							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/information?category=1420">구매정보</a>
-							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/information?category=1430">신규점포</a>
-							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/information?category=1440">지역활동</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/information?category=1410">동네정보</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/information?category=1420">구매정보</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/information?category=1430">신규점포</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/information?category=1440">지역활동</a>
 						</div>
 						<div class="submenu">
 							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/customer?category=1510">공지</a>
@@ -164,7 +164,7 @@
 		
 	</aside>
 	<main>
-				<c:forEach var="board" items="${articles }" varStatus="i">
+		<c:forEach var="board" items="${articles }" varStatus="i">
 			<div class="board-summary">
 				<div class="board-summary-title">
 					<span>
@@ -332,6 +332,7 @@
 				</div>
 			</div>
 		</c:forEach>
+		
 		<button id="scrollToTop" class="adv-hover">
 			<svg style="fill: var(--subtheme); stroke: var(--subtheme); stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round;" width="20" height="10" viewBox="0 0 32 16">
 				<path d="M 15 1 L 1 15 31 15 Z"/>
