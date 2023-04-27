@@ -20,6 +20,8 @@
 			let groupName = $(e.target).attr('data-group');
 			$('button[data-group="' + groupName + '"]').attr('data-toggle', 'false');
 			$(e.target).attr('data-toggle', 'true');
+			$(e.target).mouseout();
+			$(e.target).mouseenter();
 			$('div[data-group="' + groupName + '-document"]').not('div#' + $(e.target).attr('id') + '-document').hide();
 			$('div#' + $(e.target).attr('id') + '-document').show();
 		});
@@ -160,7 +162,7 @@
 		<div id="user-background">
 			<div id="user-profile-box">
 				<div id="user-image-container">
-					<img id="user-image" src="${pageContext.request.contextPath }/uploads/profile/${article.mem_image }" onerror="this.onerror=null; this.src='${pageContext.request.contextPath }/image/anonymous.png';">
+					<img id="user-image" src="${pageContext.request.contextPath }/uploads/profile/${memberInfo.mem_image }" onerror="this.onerror=null; this.src='${pageContext.request.contextPath }/image/anonymous.png';">
 				</div>
 				<div id="user-nickname-box">
 					<h2 id="user-nickname">${memberInfo.mem_nickname }</h2>
