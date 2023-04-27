@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -53,7 +54,8 @@ public class MemberController {
 							  HttpServletResponse response) {
 		String referer = request.getHeader("Referer");
 		if (memberDetails != null)
-			try { response.sendRedirect(referer); } catch (IOException e) { e.printStackTrace(); }
+			try { response.sendRedirect(referer); }
+			catch (IOException e) { e.printStackTrace(); }
 		request.getSession().setAttribute("prevPage", referer);
 		return "loginForm";
 	}
@@ -131,5 +133,19 @@ public class MemberController {
 		return resp;
 	}
 	
-	
+	/* 마이 페이지 관련 컨트롤러 */
+	@RequestMapping(value = "/user/mypage")
+	public String myPage(@AuthenticationPrincipal MemberDetails memberDetails,
+						 HttpServletRequest request, HttpServletResponse response,
+						 Model model) {
+		
+		if (memberDetails == null)
+			try { response.sendRedirect(request.getHeader("Referer")); }
+			catch (IOException e) { e.printStackTrace(); }
+		else model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		
+		
+		
+		return "user/myPage";
+	}
 }

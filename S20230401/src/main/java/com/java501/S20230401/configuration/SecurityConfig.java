@@ -32,19 +32,19 @@ public class SecurityConfig {
 //		return http.build();
 		http.csrf().disable(); // 추후 각주처리... POST 마다 CSRF TOKEN 값을 hidden type으로 넣어주면 됨...
 		http.authorizeRequests()
-			 .antMatchers("/user/**").authenticated()
-			 .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
-			 .anyRequest().permitAll()
-			 .and()
-			 .formLogin()
-			 .loginPage("/login")
-			 .loginProcessingUrl("/loginProc")
-			 //.defaultSuccessUrl("/")
-			 .successHandler(successHandler())
-			 .and()
-			 .logout()
-			 .logoutSuccessUrl("/")
-			 .invalidateHttpSession(true);
+			.antMatchers("/user/**").authenticated()
+			.antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
+			.anyRequest().permitAll()
+			.and()
+			.formLogin()
+			.loginPage("/login")
+			.loginProcessingUrl("/loginProc")
+			//.defaultSuccessUrl("/")
+			.successHandler(successHandler())
+			.and()
+			.logout()
+			.logoutSuccessUrl("/")
+			.invalidateHttpSession(true);
 		return http.build();
 	}
 }
