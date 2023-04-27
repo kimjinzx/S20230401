@@ -48,7 +48,7 @@ import com.java501.S20230401.service.ReplyService;
 
 import lombok.RequiredArgsConstructor;
 
-//@Controller
+@Controller
 @RequiredArgsConstructor
 public class ArticleController {
 	private final ArticleService as;

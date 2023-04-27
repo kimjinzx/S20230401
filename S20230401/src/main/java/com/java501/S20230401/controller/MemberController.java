@@ -1,6 +1,7 @@
 package com.java501.S20230401.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
@@ -11,7 +12,9 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,6 +29,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.java501.S20230401.model.Member;
+import com.java501.S20230401.model.MemberDetails;
 import com.java501.S20230401.model.Region;
 import com.java501.S20230401.service.CommService;
 import com.java501.S20230401.service.MemberService;
@@ -44,8 +48,12 @@ public class MemberController {
 	private final CommService cs;
 	
 	@RequestMapping(value = "/login")
-	public String memberLogin(HttpServletRequest request) {
+	public String memberLogin(@AuthenticationPrincipal MemberDetails memberDetails,
+							  HttpServletRequest request,
+							  HttpServletResponse response) {
 		String referer = request.getHeader("Referer");
+		if (memberDetails != null)
+			try { response.sendRedirect(referer); } catch (IOException e) { e.printStackTrace(); }
 		request.getSession().setAttribute("prevPage", referer);
 		return "loginForm";
 	}

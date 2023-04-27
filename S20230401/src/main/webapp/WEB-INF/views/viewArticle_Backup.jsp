@@ -48,7 +48,6 @@
 			success: data => {
 				if (data.result == 0) alert('댓글 등록에 실패했습니다');
 				getReplyList(${article.art_id}, ${article.brd_id});
-				//$('#rep_content').val('');
 				$(elem).find('textarea[name="rep_content"]').val('');
 			}
 		});
