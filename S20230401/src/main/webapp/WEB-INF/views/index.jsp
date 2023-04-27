@@ -6,14 +6,14 @@
 <meta charset="UTF-8">
 <title>메인 페이지 ▒ ShareGo</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath }/js/initializer.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath }/js/layout.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath }/js/index.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/initializer.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/layout.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/index.js"></script>
 <link href="https://unpkg.com/sanitize.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/preference.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/presets.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/layout.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/index.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/preference.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/presets.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/layout.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/index.css">
 </head>
 <body>
 	<header>

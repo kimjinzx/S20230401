@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class Nickname {
-	private int 	mem_id;
+	private Integer mem_id;
 	private Date 	nick_date;
 	private String 	nick_prev;
 	private String 	nick_curr;

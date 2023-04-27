@@ -4,8 +4,12 @@ import lombok.Data;
 
 @Data
 public class Board {
-	private int brd_id;
-	private int read_auth;
-	private int write_auth;
-	private int reply_auth;
+	private Integer brd_id;
+	private Integer read_auth;
+	private Integer write_auth;
+	private Integer reply_auth;
+	
+	// 양동균
+	// 참조
+	private Comm comm;
 }

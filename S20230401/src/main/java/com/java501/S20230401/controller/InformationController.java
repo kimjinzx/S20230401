@@ -122,26 +122,6 @@ public class InformationController {
 		articleList(newArticle, 1400, "1", model);
 		return "redirect:/board/information?category=1400";
 	}
-	
 
 	
-	
-	
-	
-//	@RequestMapping(value="information/infovillage")
-//	public String infovillage() {
-//		return "information/infovillage";
-//	}
-//	@RequestMapping(value="information/infodeal")
-//	public String infodeal() {
-//		return "information/infodeal";
-//	}
-//	@RequestMapping(value="information/infostore")
-//	public String infostore() {
-//		return "information/infostore";
-//	}
-//	@RequestMapping(value="information/infoarea")
-//	public String infoarea() {
-//		return "information/infoarea";
-//	}
 }

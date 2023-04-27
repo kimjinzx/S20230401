@@ -6,295 +6,31 @@
 <meta charset="UTF-8">
 <title>메인 페이지 ▒ ShareGo</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/initializer.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/initializer.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/layout.js"></script>
+<link href="https://unpkg.com/sanitize.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/preference.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/presets.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/layout.css">
 <script type="text/javascript">
-	$(window).scroll(() => {
-		let scrollTop = $(window).scrollTop();
-		let header = $('header');
-		if (header != null) {
-			if (scrollTop > 21 && !header.hasClass('fix-header')) {
-				header.addClass('fix-header');
-			}
-			else if (scrollTop <= 21 && header.hasClass('fix-header')) {
-				header.removeClass('fix-header');
-			}
-		}
-	});
 	$(() => {
-		$('#scrollToTop').click(e => $(window).scrollTop(0));
-		$('#scrollToBottom').click(e => $(window).scrollTop($(document).height() - 1120));
+		$('.board-toggle').click(e => {
+			let parent = $(e.target).closest('.board-summary');
+			let children = parent.find('.board-summary-part');
+			children.toggle();
+		});
 	});
 </script>
-<link href="https://unpkg.com/sanitize.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/preference.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/presets.css">
-<style type="text/css">
-	body {
-		width: 100%;
-		display: grid;
-		grid-template-columns: 200px 1fr 200px;
-		grid-template-rows: 100px 1fr 200px;
-		grid-template-areas:
-			"header header header"
-			"leftside main rightside"
-			"footer footer footer";
-	}
-	header {
-		grid-area: header;
-		height: 100px;
-		background-color: var(--theme);
-		border-bottom: 0.5px solid #CCCCCC;
-		z-index: 99;
-	}
-	aside {
-		background-color: var(--backtheme);
-	}
-	aside#leftside {
-		grid-area: leftside;
-		/* TEST */
-		height: 5000px;
-	}
-	main {
-		grid-area: main;
-		background-color: var(--theme);
-		/* TEST */
-		height: 5000px;
-	}
-	aside#rightside {
-		grid-area: rightside;
-		/* TEST */
-		height: 5000px;
-	}
-	footer {
-		grid-area: footer;
-		height: 200px;
-		border-top: 0.5px solid #CCCCCC;
-		background-color: var(--theme);
-	}
-	
-	header > div#usernav {
-		width: 100%;
-		display: flex;
-		justify-content: flex-end;
-		align-items: center;
-		background-color: var(--backtheme);
-	}
-	header > div#usernav > a {
-		font-size: 14px;
-		color: var(--subtheme);
-		font-weight: bold;
-		margin: 0 5px;
-	}
-	header > div#topbar > div#logo-div, header > div#topbar > div#top-right { width: 200px; }
-	header > div#topbar > div#top-right {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-	header > div#topbar {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		height: calc(100% - 21px);
-	}
-	header > div#topbar > div#topmenu {
-		display: flex;
-		height: 100%;
-		justify-content: flex-start;
-		align-items: stretch;
-	}
-	header > div#topbar > div#topmenu > div.menu-separator {
-		width: 0;
-		height: 20px;
-		border: 1px solid #888888;
-		opacity: 0.25;
-		margin: 29.5px 0;
-	}
-	header > div#topbar > div#topmenu > a.menuitem {
-		display: block;
-		font-size: 18px;
-		background-color: var(--theme);
-		padding: 0 10px;
-		line-height: 79px;
-		font-weight: bold;
-		width: 120px;
-		text-align: center;
-	}
-	div#dropdown {
-		display: flex;
-		justify-content: space-between;
-		align-items: flex-start;
-		position: absolute;
-		top: 100px;
-		left: 0;
-		width: 100%;
-		height: 0px;
-		background-color: var(--theme);
-		border-bottom: 0.5px solid #CCCCCC;
-		transition: height .125s cubic-bezier(.5,1,.5,1);
-		overflow: hidden;
-	}
-	header > div#topbar > div#topmenu > a.menuitem:hover ~ div#dropdown,
-	header > div#topbar > div#topmenu > div.menu-separator:hover ~ div#dropdown,
-	header > div#topbar > div#topmenu > div#dropdown:hover {
-		height: 192.5px;
-	}
-	header > div#topbar > div#topmenu > div#dropdown > div.submenu-items {
-		display: flex;
-		justify-content: flex-start;
-		align-items: stretch;
-	}
-	header > div#topbar > div#topmenu > div#dropdown > div.submenu-items > div.submenu {
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-start;
-		align-items: stretch;
-		width: 120px;
-		margin: 0 1px;
-	}
-	header > div#topbar > div#topmenu > div#dropdown > div.submenu-items > div.submenu > a.submenuitem {
-		display: block;
-		width: 100%;
-		height: 32px;
-		line-height: 32px;
-		font-size: 16px;
-		background-color: var(--theme);
-		text-align: center;
-	}
-	.fix-header {
-		top: -21px;
-		position: fixed;
-		grid-area: none;
-		width: 100%;
-	}
-	
-	/* Dark And Light Mode Switcher */
-	#viewMode {
-		border: 2px solid var(--subtheme-font);
-		border-radius: 14.5px;
-		width: 54px;
-		height: 29px;
-		background-color: var(--subtheme);
-		position: relative;
-	}
-	#viewModeButton {
-		border: 0;
-		background-color: var(--subtheme-font);
-		width: 20px;
-		height: 20px;
-		border-radius: 10px;
-		position: absolute;
-		top: 2.5px;
-		left: 2.5px;
-		transition: left .25s cubic-bezier(.5, 1, .5, 1);
-	}
-	#viewMode[data-toggle="true"] > #viewModeButton {
-		left: 27.5px;
-	}
-	
-	/* User Info Popup */
-	div.popup-group {
-		position: relative;
-	}
-	div.popup-group > button.togglePopup {
-		width: 50px;
-		height: 50px;
-		/*border-radius: 25px;
-		background-color: var(--subtheme);*/
-		overflow: hidden;
-	}
-	div.popup-group > div.popup-window {
-		position: absolute;
-		padding: 10px 20px;
-		border-radius: 5px;
-		background-color: var(--theme);
-		/* border: 2px solid var(--theme-font); */
-		border: 2px solid #CCCCCC;
-		top: 64.5px;
-		right: 0px;
-	}
-	
-	/* Buttons */
-	button.theme-button {
-		background-color: var(--theme);
-		color: var(--theme-font);
-		font-weight: bold;
-		padding: 0;
-		border-radius: 5px;
-		outline: none;
-		border: 2px solid var(--subtheme);
-		cursor: pointer;
-	}
-	button.subtheme-button {
-		background-color: var(--subtheme);
-		color: var(--subtheme-font);
-		font-weight: bold;
-		padding: 0;
-		border-radius: 5px;
-		outline: none;
-		border: 0;
-		cursor: pointer;
-	}
-	button#login-button {
-		width: 100px;
-		height: 32px;
-		line-height: 32px;
-		text-align: center;
-		font-size: 16px;
-	}
-	button.init-button {
-		border: 0;
-		background-color: var(--theme);
-		padding: 0;
-		margin: 0;
-		outline: none;
-		cursor: pointer;
-	}
-	button > svg {
-		pointer-events: none;
-	}
-	button#scrollToTop, button#scrollToBottom {
-		position: fixed;
-		width: 40px;
-		height: 40px;
-		outline: none;
-		border: 0.5px solid var(--subtheme);
-		border-radius: 10px;
-		background-color: var(--theme);
-		cursor: pointer;
-		opacity: 0.5;
-		box-shadow: 0 5px 5px var(--theme-font);
-	}
-	button#scrollToTop {
-		bottom: 60px;
-		right: 10px;
-	}
-	button#scrollToBottom {
-		bottom: 10px;
-		right: 10px;
-	}
-	
-	/* Footer */
-	#footer-info {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-</style>
 </head>
 <body>
 	<header>
 		<div id="usernav">
-			<!-- <a href="">로그인</a>
-			<a href="">회원가입</a>
-			<a href="">마이페이지</a> -->
 			<a href="">이용 약관</a>
 			<a href="">개인정보 취급 방침</a>
 		</div>
 		<div id="topbar">
 			<div id="logo-div" class="full-height" style="display: flex; justify-content: flex-start; align-items: center; padding: 0 10px;">
 				<a id="logo" class="full-height" href="/">
-					<!-- <img class="full-height" src="image/ShareGo_forLight.png"/> -->
 					<div style="width: auto; display: flex; flex-direction: column; justify-content: center; align-items: flex-end;">
 						<img src="${pageContext.request.contextPath}/image/ShareGo_Img.png" style="height: 30px;">
 						<span style="font-size: 24px; font-weight: 900; margin: -5px 0 0 0;">ShareGo</span>
@@ -369,8 +105,6 @@
 						<c:when test="${1 == 1 }">
 							<button id="login" class="togglePopup init-button">
 								<svg width="40" height="40" viewBox="0 0 512 512" style="margin: 5px;">
-									<!-- <path d="M192 176v-40a40 40 0 0140-40h160a40 40 0 0140 40v240a40 40 0 01-40 40H240c-22.09 0-48-17.91-48-40v-40" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/>
-									<path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M288 336l80-80-80-80M80 256h272"/> -->
 									<path d="M258.9 48C141.92 46.42 46.42 141.92 48 258.9c1.56 112.19 92.91 203.54 205.1 205.1 117 1.6 212.48-93.9 210.88-210.88C462.44 140.91 371.09 49.56 258.9 48zm126.42 327.25a4 4 0 01-6.14-.32 124.27 124.27 0 00-32.35-29.59C321.37 329 289.11 320 256 320s-65.37 9-90.83 25.34a124.24 124.24 0 00-32.35 29.58 4 4 0 01-6.14.32A175.32 175.32 0 0180 259c-1.63-97.31 78.22-178.76 175.57-179S432 158.81 432 256a175.32 175.32 0 01-46.68 119.25z"/>
 									<path d="M256 144c-19.72 0-37.55 7.39-50.22 20.82s-19 32-17.57 51.93C191.11 256 221.52 288 256 288s64.83-32 67.79-71.24c1.48-19.74-4.8-38.14-17.68-51.82C293.39 151.44 275.59 144 256 144z"/>
 								</svg>
