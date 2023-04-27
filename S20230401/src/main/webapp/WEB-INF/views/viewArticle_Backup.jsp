@@ -263,7 +263,7 @@
 								</div>
 								<button type="submit" class="subtheme-button" style="margin: 0 10px; padding: 2.5px 5px; font-size: 16px; font-weight: bold;">댓글 등록</button>
 							</div>
-							<textarea id="rep_content" name="rep_content" maxlength="500" style="height: 100px; margin: 0 10px; margin-bottom: 10px; border: 0.5px solid var(--theme-font); border-radius: 2.5px; outline: none; resize: none; background-color: var(--theme);" required></textarea>
+							<textarea id="rep_content" name="rep_content" maxlength="300" style="height: 100px; margin: 0 10px; margin-bottom: 10px; border: 0.5px solid var(--theme-font); border-radius: 2.5px; outline: none; resize: none; background-color: var(--theme);" required></textarea>
 						</div>
 					</form>
 				</div>

@@ -48,7 +48,7 @@ import com.java501.S20230401.service.ReplyService;
 
 import lombok.RequiredArgsConstructor;
 
-@Controller
+//@Controller
 @RequiredArgsConstructor
 public class ArticleController {
 	private final ArticleService as;
@@ -220,7 +220,7 @@ public class ArticleController {
 		if (data.get("reply-add") != null) reply_add = (String)data.get("reply-add");
 		if (data.get("display-whose") != null) display_whose = (String)data.get("display-whose");
 		if (data.get("rep_parent") != null) rep_parent = (int)data.get("rep_parent");
-		if (reply_add != null) rep_content = "<a style=\"font-size: 16px; font-weight: bold; color: var(--subtheme);\" href=\"#" + reply_add + "\">" + display_whose + "</a><br>" + rep_content;
+		if (reply_add != null) rep_content = "<a style=\"cursor: pointer; font-size: 16px; font-weight: bold; color: var(--subtheme);\" onclick=\"$('#" + reply_add + "')[0].scrollIntoView({behavior : 'smooth'});\">" + display_whose + "</a><br>" + rep_content;
 		Reply reply = new Reply();
 		reply.setArt_id(art_id);
 		reply.setBrd_id(brd_id);
