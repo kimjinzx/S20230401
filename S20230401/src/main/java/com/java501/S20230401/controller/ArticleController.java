@@ -191,10 +191,10 @@ public class ArticleController {
 	
 	@PostMapping(value = "/board/{boardName}/{art_id}/replies")
 	public String viewReply(@AuthenticationPrincipal MemberDetails memberDetails,
-			  					  @PathVariable String boardName,
-			  					  @PathVariable int art_id,
-			  					  @RequestBody Map<String, Object> data,
-			  					  Model model) {
+			  				@PathVariable String boardName,
+			  				@PathVariable int art_id,
+			  				@RequestBody Map<String, Object> data,
+			  				Model model) {
 		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		int brd_id = (int)data.get("brd_id");
 		Article article = new Article();
@@ -208,9 +208,9 @@ public class ArticleController {
 	@ResponseBody
 	@PostMapping(value = "/board/{boardName}/{art_id}/replyWrite")
 	public String writeReply(@AuthenticationPrincipal MemberDetails memberDetails,
-			  					  @PathVariable String boardName,
-							      @PathVariable int art_id,
-							      @RequestBody Map<String, Object> data) {
+			  				 @PathVariable String boardName,
+							 @PathVariable int art_id,
+							 @RequestBody Map<String, Object> data) {
 		JSONObject result = new JSONObject();
 		int brd_id = (int)data.get("brd_id");
 		int mem_id = (int)data.get("mem_id");
