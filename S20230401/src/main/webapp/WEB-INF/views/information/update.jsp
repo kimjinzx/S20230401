@@ -6,7 +6,6 @@
 <meta charset="UTF-8">
 </head>
 <body>
-<%-- <form action="${pageContext.request.contextPath }/board/information/update?art_id=${article.art_id }&brd_id=${article.brd_id }&category=${category }" method = "post" id = "modify"> --%>
 <form action="${pageContext.request.contextPath }/board/information/modify" method = "post" id = "modify">
 	<input type="hidden" name="art_id" value="${article.art_id }">
 	<input type="hidden" name="brd_id" value="${article.brd_id }">

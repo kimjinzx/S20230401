@@ -7,10 +7,33 @@
 	<!-- 리스트 조회-->
 	<select id="ArticleTotal" resultType="int">
 		select Count(*) FROM article
+		where between 1400 and 1499
 	</select>
 	
 	<!-- 페이지 불러오기 -->
-<!--   	<select id="cyArticleListAll" parameterType="Article" resultType="Article">
+   	<select id="cyArticleListAll" parameterType="Article" resultType="Article">
+		SELECT *
+		FROM
+		(
+		    SELECT rownum rn, a.*
+		    FROM
+		        (SELECT *
+		         FROM article
+		         where  
+		        <choose>
+		        	<when test="brd_id == 1400">
+		        		brd_id between 1400 and 1499
+		        	</when>
+		        	<otherwise>
+		        		brd_id = #{brd_id}
+		        	</otherwise>
+		        </choose>
+		         and isdelete = 0
+		     ORDER BY art_id) a
+		)
+			WHERE rn between #{start} and #{end}
+	</select>  
+<!--    	<select id="cyArticleListAll" parameterType="Article" resultType="Article">
 		<![CDATA[
 		
 		SELECT *
@@ -24,25 +47,11 @@
 			WHERE rn between #{start} and #{end}
 		]]>
 	</select>   -->
-  	<select id="cyArticleListAll" parameterType="Article" resultType="Article">
-		<![CDATA[
-		SELECT *
-		FROM(SELECT rownum rn, a.*
-		FROM(SELECT * FROM article  
-		WHERE brd_id >= 1400 AND brd_id < 1499 ORDER BY art_id) a)
-		WHERE rn >= 1 and rn <=10;
-		]]>
-	</select>  
-<!-- <select id="cyArticleListAll" parameterType="Article" resultType="Article">
-		SELECT *
-		FROM rownum rn, a.*
-			(SELECT art_id, brd_id, art_title, art_regdate, art_tag1,
-			art_tag2, art_tag3, art_tag4, art_tag5, art_content, art_good,
-			art_,bad, art_read)
-		WHERE brd_id BETWEEN 1400 AND 1499  a
-		)
-		WHERE rn BETWEEN #{start} and #{end}
-</select> -->
+
+	<!-- 조회 -->
+	<select id="count" resultType="int">
+	 select count(brd_id) from article
+	</select>
 	
 	<!-- 상세페이지 불러오기 -->
 	<select id="cyArticlereadDetail" parameterType="Article" resultType="Article">
@@ -51,10 +60,6 @@
 			left join member m 
 			on a.mem_id = m.mem_id
 			where a.art_id=#{art_id} and a.brd_id = #{brd_id}
-	</select>
-	<!-- 조회 -->
-	<select id="count" resultType="int">
-	 select count(brd_id) from article
 	</select>
 
 	<!-- 게시글 작성 -->
@@ -91,6 +96,29 @@
 			art_content = #{art_content, jdbcType=CLOB} 
 		where art_id = #{art_id, jdbcType=NUMERIC} and brd_id = #{brd_id, jdbcType=NUMERIC}
 	</update>
+			
+	<delete id ="cyArticledelete">
+	
+	</delete>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			
 	<insert id="hgInsertArticle" parameterType="Article">
 		<!-- INSERT INTO ARTICLE (ART_ID, BRD_ID, ART_TITLE, MEM_ID, ART_REGDATE, ART_CONTENT,
