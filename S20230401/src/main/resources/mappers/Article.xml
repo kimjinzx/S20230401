@@ -292,14 +292,14 @@
 	
 	
 	<!-- 임동빈 -->
-		<select id="ArticleTotalCnt" resultType="int">
+	<select id="dbArticleTotalCnt" resultType="int">
 		select 	Count(*) 
 		FROM   	article 
 		WHERE  	brd_id between 1010 and 1060
 		AND    	isdelete = 0
 	</select>
 
-	<select id="ArticleBoardCnt" parameterType="Article"
+	<select id="dbArticleBoardCnt" parameterType="Article">
 		resultType="int">
 		SELECT 	Count(*) 
 		FROM 	article 
@@ -308,7 +308,7 @@
 	</select>
 
 
-	<select id="tkArticleListAll" parameterType="Article" resultType="Article">
+	<select id="dbArticleListAll" parameterType="Article" resultType="Article">
 		SELECT * FROM (
 		    SELECT ROWNUM RN, TT.*
 		    FROM (
@@ -375,7 +375,7 @@
 			
 	</select>
 
-	<select id="tkArticleListBoard" parameterType="Article" resultType="Article">
+	<select id="dbArticleListBoard" parameterType="Article" resultType="Article">
 		SELECT * FROM (
 		    SELECT ROWNUM RN, TT.*
 		    FROM (
@@ -442,7 +442,7 @@
 	</select>
 
 
-	<select id="tkArticleDetail" parameterType="Article" resultType="Article">
+	<select id="dbArticleDetail" parameterType="Article" resultType="Article">
         SELECT  		  a.*
         				, m.*
         				, r.*

@@ -125,9 +125,9 @@ public class ArticleServiceImpl implements ArticleService {
 	
 	// 임동빈
 		@Override
-	public int totalArticle(Article article) {
+	public int dbtotalArticle(Article article) {
 		System.out.println("ArticleService Start total...");
-		int totArticleCnt = ad.totalArticle(article);
+		int totArticleCnt = ad.dbtotalArticle(article);
 		System.out.println("ArticleServiceImpl totalArticle totArticleCnt-> " + totArticleCnt);
 
 		return totArticleCnt;
@@ -136,14 +136,14 @@ public class ArticleServiceImpl implements ArticleService {
 	public List<Article> dbListArticle(Article article) {
 		List<Article> articleList = null;
 		System.out.println("ArticleServiceImpl listManager Start...");
-		articleList = ad.listArticle(article);
+		articleList = ad.dbListArticle(article);
 		System.out.println("ArticleServiceImpl listArticle ArticleList.size()->" + articleList.size());
 		return articleList;
 	}
 	@Override
-	public Article detailArticle(Article article) {
+	public Article dbdetailArticle(Article article) {
 		Article detailArticle = null;
-		detailArticle = ad.detailArticle(article);
+		detailArticle = ad.dbdetailArticle(article);
 		return detailArticle;
 	}
 	@Override

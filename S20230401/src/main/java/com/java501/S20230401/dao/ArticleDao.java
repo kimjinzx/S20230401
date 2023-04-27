@@ -45,9 +45,9 @@ public interface ArticleDao {
 	
 	
 	// 임동빈
-	int 			totalArticle(Article article);
+	int 			dbtotalArticle(Article article);
 	List<Article> 	dbListArticle(Article article);
-	Article 		detailArticle(Article article);
+	Article 		dbdetailArticle(Article article);
 	List<Article> 	replyList(Article a);
 	void 			dbWriteArticle(Article article);
 	void 			dbUpdateArticle(Article article);

@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Comm;
+import com.java501.S20230401.model.MemberDetails;
 import com.java501.S20230401.model.Region;
-import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.Paging;
 
@@ -26,16 +27,22 @@ public class TogetherController {
 	private final ArticleService as;
 
 	@RequestMapping(value = "/board/together")
-	public String articleList(Article article, int category, String currentPage, Model model) {
-		System.out.println("articleList controller Start");
+	public String articleList(@AuthenticationPrincipal MemberDetails memberDetails,  // 세션의 로그인 유저 정보
+													   Article article,
+													   int category,
+							     					   String currentPage,
+							     					   Model model) {
+		
+		// 유저 정보를 다시 리턴  //memberDetails.getMemberInfo() DB의 유저와 대조 & 권한 확인
+		if (memberDetails != null) 
+				model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		
+		// category 값을 brd_id에 할당.
 		article.setBrd_id(category);
 		int number = article.getBrd_id();
-		System.out.println("article.getBrd_id() = " + number);
-		System.out.println("articleList controller getBrd_id->" + article.getBrd_id());
 
 		// 전체 게시글 개수 Count
-		int totalArticle = as.totalArticle(article);
-		System.out.println("ArticleController totalArticle => " + totalArticle);
+		int totalArticle = as.dbtotalArticle(article);
 
 		// Paging 작업
 		Paging page = new Paging(totalArticle, currentPage);
@@ -55,11 +62,12 @@ public class TogetherController {
 	}
 
 	@RequestMapping(value = "/board/detailArticle")
-	public String detailArticle(Article article, Model model) {
+	public String detailArticle(Article article,
+								Model model) {
 		System.out.println("ArticleController Start detailArticle...");
 
 		// 상세게시글 요소 구현
-		Article detailArticle = as.detailArticle(article);
+		Article detailArticle = as.dbdetailArticle(article);
 		model.addAttribute("detailArticle", detailArticle);
 
 		// 게시글 별 댓글 리스트
@@ -70,7 +78,8 @@ public class TogetherController {
 	}
 
 	@RequestMapping(value = "/board/writeFormArticle")
-	public String writeFormArticle(Model model) {
+	public String writeFormArticle(@AuthenticationPrincipal MemberDetails memberDetails, Model model) {
+		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		System.out.println("ArticleController Start writeFormArticle...");
 
 		// 카테고리별 콤보박스
@@ -97,8 +106,10 @@ public class TogetherController {
 	}
 
 	@RequestMapping(value = "/board/writeArticle")
-	public String writeArticle(Article article, Model model, 
-			@RequestParam("trd_enddate1") @DateTimeFormat(pattern = "yyyy-MM-dd") Date trd_enddate) {
+	public String writeArticle(Article article,
+							   Model model, 
+							   @RequestParam("trd_enddate1")
+							   @DateTimeFormat(pattern = "yyyy-MM-dd") Date trd_enddate) {
 		System.out.println("ArticleController Start writeEmp...");
 		article.setTrd_enddate(trd_enddate);
 		
@@ -136,7 +147,7 @@ public class TogetherController {
 		System.out.println("ArticleController Start writeFormArticle...");
 
 		// 게시글 수정 양식 (상세 게시글 값 가져오기)
-		Article updateFormArticle = as.detailArticle(article);
+		Article updateFormArticle = as.dbdetailArticle(article);
 		model.addAttribute("article", updateFormArticle);
 
 		// 카테고리별 콤보박스

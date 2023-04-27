@@ -276,15 +276,15 @@ public class ArticleDaoImpl implements ArticleDao {
 	
 	// 임동빈
 	@Override
-	public int totalArticle(Article article) {
+	public int dbtotalArticle(Article article) {
 		int totArticleCount = 0;
 		System.out.println("ArticleDaoImple Start total...");
 
 		try {
 			if (article.getBrd_id() == 1000) {
-				totArticleCount = session.selectOne("ArticleTotalCnt");
+				totArticleCount = session.selectOne("dbArticleTotalCnt");
 			} else {
-				totArticleCount = session.selectOne("ArticleBoardCnt", article);
+				totArticleCount = session.selectOne("dbArticleBoardCnt", article);
 			}
 			System.out.println("ArticleDaoImpl totalArticle totArticleCount-> " + totArticleCount);
 		} catch (Exception e) {
@@ -300,7 +300,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		try {
 			// article.getBrd_id() 따라서 분기 --> 전체
 			if (article.getBrd_id() == 1000) {
-				articleList = session.selectList("tkArticleListAll", article);
+				articleList = session.selectList("dbArticleListAll", article);
 			} else {
 				// 1010 밥/카페
 				// 1020 스포츠/운동
@@ -308,7 +308,7 @@ public class ArticleDaoImpl implements ArticleDao {
 				// 1040 문화 생활
 				// 1050 취미 생활
 				// 1060 기타
-				articleList = session.selectList("tkArticleListBoard", article);
+				articleList = session.selectList("dbArticleListBoard", article);
 			}
 			System.out.println("ArticleDaoImpl listArticle ArticleList.size()-> " + articleList.size());
 		} catch (Exception e) {
@@ -317,11 +317,11 @@ public class ArticleDaoImpl implements ArticleDao {
 		return articleList;
 	}
 	@Override
-	public Article detailArticle(Article article) {
+	public Article dbdetailArticle(Article article) {
 		Article detailArticle = null;
 		System.out.println("ArticleDaoImpl detailArticle Start...");
 		try {
-			detailArticle = session.selectOne("tkArticleDetail", article);
+			detailArticle = session.selectOne("dbArticleDetail", article);
 		} catch (Exception e) {
 			System.out.println("ArticleDaoImpl detailArticle e.getMessage()->" + e.getMessage());
 		}
