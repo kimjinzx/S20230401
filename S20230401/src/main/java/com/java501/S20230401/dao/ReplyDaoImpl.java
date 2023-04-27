@@ -20,4 +20,9 @@ public class ReplyDaoImpl implements ReplyDao {
 	public List<ReplyMember> getReplyByArticle(Article article) {
 		return session.selectList("hgGetReplyByArticle", article);
 	}
+	
+	@Override
+	public int hgInsertReply(Reply reply) {
+		return session.insert("hgInsertReply", reply);
+	}
 }

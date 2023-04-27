@@ -20,4 +20,9 @@ public class ReplyServiceImpl implements ReplyService {
 	public List<ReplyMember> getReplyByArticle(Article article) {
 		return rd.getReplyByArticle(article);
 	}
+	
+	@Override
+	public int hgInsertReply(Reply reply) {
+		return rd.hgInsertReply(reply);
+	}
 }
