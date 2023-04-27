@@ -314,13 +314,12 @@ public class ArticleServiceImpl implements ArticleService {
 		return result;
 	}
 
+	
+	
 	// 최승환
 	@Override
-	public int totalCustomer() {
-		System.out.println("ArticleServiceImpl Start totalCustomer..." );
-		int totCustomerCnt = ad.totalCustomer();
-		System.out.println("ArticleServiceImpl totalCustomer totCustomerCnt->" + totCustomerCnt);
-		return totCustomerCnt;
+	public int totalCustomer(Article article) {
+		return ad.totalCustomer(article);
 	}
 	@Override
 	public List<Article> listCustomer(Article article) {

@@ -170,7 +170,27 @@
 	<div class="container" align="center">
 	
 	<h1>고객센터</h1>
-	<p style="text-align:center">게시글수: ${totalCustomer}</p>
+	
+	<p>
+		<div class="board-category" align="center" style="font-size: 20px">
+		<span class="item">
+			<a href="/board/customer?category=1500" class="active">&nbsp;전체&nbsp;</a>
+		</span>
+		<span class="item">
+			<a href="/board/customer?category=1510" class="active">&nbsp;공지&nbsp;</a>
+		</span>
+		<span class="item">
+			<a href="/board/customer?category=1520" class="active">&nbsp;Q&A&nbsp;</a>
+		</span>
+		<span class="item">
+			<a href="/board/customer?category=1530" class="active">&nbsp;이벤트&nbsp;</a>
+		</span>
+		<span class="item">
+			<a href="/board/customer?category=1540" class="active">&nbsp;문의/건의&nbsp;</a>
+		</span>
+	</div>
+	
+	<p style="text-align:left">게시글수: ${totalCustomer}</p>
 	<c:set var="num" value="${page.total-page.start+1 }"></c:set>
 	
 	<table border="1">
@@ -194,13 +214,13 @@
 	</table>	
 	
 	<c:if test="${page.startPage > page.pageBlock }">
-		<a href="listCustomer?currentPage=${page.startPage-page.pageBlock}">[이전]</a>
+		<a href="customer?currentPage=${page.startPage-page.pageBlock}&category=${category}">[이전]</a>
 	</c:if>
 	<c:forEach var="i" begin="${page.startPage}" end="${page.endPage}">
-		<a href="listCustomer?currentPage=${i}">[${i}]</a>
+		<a href="customer?currentPage=${i}&category=${brd_id}">[${i}]</a>
 	</c:forEach>
 	<c:if test="${page.endPage < page.totalPage }">
-		<a href="listCustomer?currentPage=${page.startPage+page.pageBlock}">[다음]</a>
+		<a href="customer?currentPage=${page.startPage+page.pageBlock}&category=${category}">[다음]</a>
 	</c:if>	
 	<!-- 글쓰기 버튼 -->
 	

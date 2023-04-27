@@ -3,6 +3,7 @@ package com.java501.S20230401.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.java501.S20230401.model.Article;
+import com.java501.S20230401.model.MemberDetails;
 import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.Paging;
@@ -27,15 +29,24 @@ public class CustomerController {
 	private final ReplyService rs;
 	
 	@RequestMapping(value = "/board/customer")
-	public String customerList(Article article, int category, String currentPage, Model model) {
+	public String customerList(@AuthenticationPrincipal MemberDetails mD,
+								Article article, Integer category, String currentPage, Model model) {
 		System.out.println("CustomerController Start customerList..." );
+		
+		if (mD != null) {
+			model.addAttribute("memberInfo", mD.getMemberInfo());
+		}
+		
 		article.setBrd_id(category);
 		int brd_id = category;
-		int totalCustomer =  as.totalCustomer();
+		
+		// 전체 게시글 갯수
+		int totalCustomer = 0;
+		totalCustomer =  as.totalCustomer(article);
 		System.out.println("CustomerController totalCustomer=>" + totalCustomer);
+		
 		// Paging 작업
 		Paging page = new Paging(totalCustomer, currentPage);
-		// Parameter article --> Page만 추가 Setting
 		article.setStart(page.getStart());	// 시작시 1
 		article.setEnd(page.getEnd());		// 시작시 10
 		
@@ -45,8 +56,8 @@ public class CustomerController {
 		model.addAttribute("brd_id", brd_id);
 		model.addAttribute("totalCustomer", totalCustomer);
 		model.addAttribute("page", page);
-		article.setBrd_id(brd_id);
-		System.out.println("brd_id --->" + brd_id);
+		
+		// 게시글 목록
 		if(brd_id == 1500) {
 			List<Article> listCustomer = as.listCustomer(article);
 			model.addAttribute("listCustomer", listCustomer);
@@ -60,7 +71,7 @@ public class CustomerController {
 	}
 	
 	@GetMapping(value = "/board/customer/detailCustomer")
-	public String detailCustomer(Article article, int category, Model model) {
+	public String detailCustomer(Article article, Integer category, Model model) {
 		System.out.println("CustomerController Start detailCustomer...");
 
 //		1. ArticleService안에 detailCustomer method 선언
@@ -74,13 +85,13 @@ public class CustomerController {
 //		article = session.selectOne("shCustomerDetail",    brd_id);
 		System.out.println("댓글 갯수세기 시작");
 		// 댓글 총갯수세기
-		// 댓글 목록
 		System.out.println("아티클수"+article);
 		Reply reply = new Reply();
 		reply.setArt_id(article.getArt_id());
 		reply.setBrd_id(article.getBrd_id());
 		
 		int replyCount = rs.shReplyCount(reply);
+		// 댓글 목록
 		List<Reply> replyList = rs.replyList(reply);
 		
 		model.addAttribute("article", customerDetail);
@@ -96,13 +107,16 @@ public class CustomerController {
 	}
 	
 	@RequestMapping(value = "/board/customer/customerWriteForm")
-	public String customerWriteForm(Article article, Model model) {
-		
+	public String customerWriteForm(@AuthenticationPrincipal MemberDetails mD,
+									Article article, Integer category, Model model) {
+		model.addAttribute("memberInfo", mD.getMemberInfo());
+		model.addAttribute("category", category);
 		return "/customer/customerWriteForm";
 	}
 	
-	@GetMapping(value = "writeCustomer")
-	public String writeEmp(Article article, Model model) {
+	@PostMapping(value = "writeCustomer")
+	public String writeCustomer(@AuthenticationPrincipal MemberDetails mD,
+								Article article, Model model) {
 		System.out.println("CustomerController Start writeCustomer...");
 
 		return "forward:/board/customer/customerWriteForm";

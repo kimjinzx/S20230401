@@ -699,8 +699,8 @@
 	
 	
 	<!-- 최승환 -->
-	<select id="shCustomerCount" resultType="int">
-	 <![CDATA[
+	<select id="shCustomerCount" resultType="int" parameterType="Article">
+	<![CDATA[
 		SELECT Count(*)
 		FROM article
 		WHERE brd_id >=1500 and brd_id <1600 AND isdelete=0
@@ -715,14 +715,13 @@
     		SELECT ROWNUM RN, A.*, M.MEM_NICKNAME, M.MEM_IMAGE, NVL(R.REP_COUNT, 0) REP_COUNT
     		FROM ARTICLE A
     		LEFT JOIN MEMBER M ON A.MEM_ID = M.MEM_ID
-    		LEFT JOIN 
-    			(
-      			SELECT ART_ID, BRD_ID, COUNT(*) REP_COUNT
-      			FROM REPLY
-      			GROUP BY ART_ID, BRD_ID
-    			) R
+    		LEFT JOIN	(
+      					SELECT ART_ID, BRD_ID, COUNT(*) REP_COUNT
+      					FROM REPLY
+      					GROUP BY ART_ID, BRD_ID
+    				 	) R
     		ON A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID
-    		WHERE A.BRD_ID >= 1500 AND A.BRD_ID < 1600
+    		WHERE A.BRD_ID >= 1500 AND A.BRD_ID < 1600 and A.isdelete=0
     		ORDER BY A.ART_ID DESC
   			)
   		WHERE RN BETWEEN #{start} AND #{end} AND isdelete=0
@@ -744,7 +743,7 @@
       			GROUP BY ART_ID, BRD_ID
     			) R
     		ON A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID
-    		WHERE A.BRD_ID = #{brd_id}
+    		WHERE A.BRD_ID = #{brd_id} and A.isdelete=0
     		ORDER BY A.ART_ID DESC
   			)
   		WHERE RN BETWEEN #{start} AND #{end} AND isdelete=0
@@ -760,7 +759,7 @@
 			 	 		FROM REPLY
 			 	 		GROUP BY ART_ID, BRD_ID) R
 			 	 		ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID)
-			 	 		WHERE A.ART_ID = #{art_id} AND A.BRD_ID = #{brd_id}
+			 	 		WHERE A.ART_ID = #{art_id} AND A.BRD_ID = #{brd_id} and isdelete=0
 	  ]]>
 	</select>
 	
