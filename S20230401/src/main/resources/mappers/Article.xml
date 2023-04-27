@@ -703,7 +703,7 @@
 	 <![CDATA[
 		SELECT Count(*)
 		FROM article
-		WHERE brd_id >=1500 and brd_id <1600
+		WHERE brd_id >=1500 and brd_id <1600 AND isdelete=0
  	 ]]>	
 	</select>
 	
@@ -725,7 +725,7 @@
     		WHERE A.BRD_ID >= 1500 AND A.BRD_ID < 1600
     		ORDER BY A.ART_ID DESC
   			)
-  		WHERE RN BETWEEN #{start} AND #{end}
+  		WHERE RN BETWEEN #{start} AND #{end} AND isdelete=0
  	 ]]>	
 	</select>
 	
@@ -747,7 +747,7 @@
     		WHERE A.BRD_ID = #{brd_id}
     		ORDER BY A.ART_ID DESC
   			)
-  		WHERE RN BETWEEN #{start} AND #{end}
+  		WHERE RN BETWEEN #{start} AND #{end} AND isdelete=0
  	 ]]>	
 	</select>
 		

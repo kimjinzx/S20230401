@@ -16,11 +16,9 @@ import com.java501.S20230401.service.Paging;
 import com.java501.S20230401.service.ReplyService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 // 고객센터 페이지 계열 컨트롤러 : 최승환
 @Controller
-@Slf4j
 @RequiredArgsConstructor
 public class CustomerController {
 	
