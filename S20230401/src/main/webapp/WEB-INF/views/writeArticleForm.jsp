@@ -255,7 +255,6 @@
 		cursor: pointer;
 	}
 	
-	
 	form div.popup-group {
 		position: relative;
 		margin: 5px 0;

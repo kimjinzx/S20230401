@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class AuthenticationsDaoImpl implements AuthenticationsDao {
 	private final SqlSession session;
 	
+	// 유현규
 	@Override
 	public void setAuthentication(Member member, String code) {
 		Map<String, Object> param = new HashMap<String, Object>();
@@ -23,14 +24,14 @@ public class AuthenticationsDaoImpl implements AuthenticationsDao {
 		param.put("code", code);
 		session.insert("hgInsertAuthentication", param);
 	}
-	
 	@Override
 	public Authentications getAuthentication(String code) {
 		return session.selectOne("hgGetAuthenticationByCode", code);
 	}
-	
 	@Override
 	public void deleteAuthentication(Integer auth_id) {
 		session.delete("hgDeleteAuthentication", auth_id);
 	}
+	
+	
 }

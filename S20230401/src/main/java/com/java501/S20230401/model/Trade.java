@@ -6,15 +6,21 @@ import lombok.Data;
 
 @Data
 public class Trade {
-	private int 	trd_id;
-	private int 	mem_id;
-	private int 	trd_status;
-	private int 	trd_max;
-	private Date 	trd_enddate;
-	private int 	trd_cost;
-	private int 	reg_id;
-	private String 	trd_loc;
-	private int 	trd_gender;
-	private int 	trd_minage;
-	private int 	trd_maxage;
+	private Integer 	trd_id;
+	private Integer 	mem_id;
+	private Integer 	trd_status;
+	private Integer 	trd_max;
+	private Date 		trd_enddate;
+	private Integer 	trd_cost;
+	private Integer 	reg_id;
+	private String 		trd_loc;
+	private Integer 	trd_gender;
+	private Integer 	trd_minage;
+	private Integer 	trd_maxage;
+	
+	// 양동균
+	// 참조
+	private Member 	member;
+	private Comm 	comm;
+	private Region 	region;
 }

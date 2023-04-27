@@ -148,6 +148,7 @@ public class ArticleController {
 									  @PathVariable String boardName,
 									  String articleEditor,
 									  @AuthenticationPrincipal MemberDetails memberDetails) {
+		article.setMem_id(memberDetails.getMemberInfo().getMem_id());
 		int result = as.insertArticle(article);
 		return "redirect:/board/" + boardName + "?brd_id=" + category;
 	}
