@@ -16,7 +16,7 @@ $(document).ready(() => {
 	});
 });
 */
-
+	// 대댓글 작성
 	$(document).ready(() => {
 		$(".reply-inner").click(e => {
 			console.log(e.target.getAttribute('class')); // 클릭 이벤트 발생시 e.target의 클래스 출력
@@ -24,16 +24,53 @@ $(document).ready(() => {
 		});
 	});
 	
-/* 	$(document).ready(function (){
-		$(".btns-delete").click(function(){
-			location.href="";
-		});
-	}); */
+	// 댓글 삭제
 	function rep_delete(brd_id, art_id, rep_id) {
 		location.href = '${pageContext.request.contextPath}/board/share/delete?art_id='+art_id+'&brd_id='+brd_id+'&rep_id='+rep_id;
 	}
 	
+	// 댓글 수정
+	$(document).ready(() => {
+		$(".btns-update").click(e => {
+			$(e.target)
+			.closest('.reply-view')
+			.find('.rep-content').attr("disabled", false).focus()
+			.end()
+			.find('.btns-update').hide()
+			.end()
+			.find('.btns-update-complete').show();
+		});
+	});
+	// 댓글 수정 완료
+/* 	$(document).ready(() => {
+		$('.btns-update-complete').click((e) => {
+			e.preventDefault(); 			 // 이벤트 동시사용 방지
 
+			});
+		}); */
+	function rep_Update(pIndex){
+		var rep_content = $('#rep-content'+pIndex).val();
+		var art_id = $('#art_id'+pIndex).val();
+		var brd_id = $('#brd_id'+pIndex).val();
+		var rep_id = $('#rep_id'+pIndex).val();
+		console.log(rep_content);
+		console.log(art_id);
+		console.log(brd_id);
+		console.log(rep_id);
+		
+		$.ajax({
+			url:"${pageContext.request.contextPath}/board/share/update",
+			data:{art_id, brd_id, rep_id, rep_content},
+			dataType:'json',
+			success:function(data){
+				console.log(data)
+				if(data == 1){
+					alert('업데이트 성공');
+				}
+			}
+		});
+	}
+//			alert($(e.target).closest('.reply-view').find('.rep-content').change());
 /*
 $(document).ready(function() {
 	$(".reply-detail").click(function() {
@@ -72,6 +109,13 @@ $(document).ready(function() {
 	.reply-login > span{
 		display: block;
 		text-align: center;
+	}
+	.rep-content{
+		border: none;
+		resize: none;
+		width: 90%;
+		height: 90%;
+		background-color: transparent;
 	}
 </style>
 </head>
@@ -158,7 +202,7 @@ $(document).ready(function() {
 						<div class="reply-detail">
 							<div class="reply-view" style="display: flex; ${(reply.rep_id != reply.rep_parent) ? 'margin-left: 20px;' : ''}">
 								<div class="reply-image">
-									<span><img alt="회원 프사" src="${pageContext.request.contextPath}/image/share/${reply.member.mem_image}" style="width: 80px; height: 80px;"></span>
+									<span><img alt="회원 프사" src="${pageContext.request.contextPath}/uploads/profile/${reply.member.mem_image}" style="width: 80px; height: 80px;"></span>
 								</div>
 								<div class="reply-inner" style="flex-grow: 1">
 									<div class="reply-member" style="display: flex;">
@@ -166,13 +210,23 @@ $(document).ready(function() {
 										<span>작성일 : <fmt:formatDate value="${reply.rep_regdate}" pattern="yy-MM-dd :HH:mm:ss"/></span>
 										<span>최종 접속일 : <fmt:formatDate value="${reply.member.mem_latest}" pattern="yy-MM-dd :HH:mm:ss"/></span>
 									</div>
+									
+									
 									<div class="reply-content">
-										<span>${reply.rep_content}</span>
+										<!-- 댓글 수정 -->
+										<textarea class="rep-content" id="rep-content${status.index}" disabled="disabled" autofocus="autofocus">${reply.rep_content}</textarea>
+										<!-- 댓글 수정 -->
+										<%-- <textarea style="border: none; resize: none; width: 90%; height: 90%; display: none;">${reply.rep_content}</textarea> --%>
 									</div>
+									
+									
 								</div>
-								<c:if test="${article.mem_id == memberInfo.mem_id}">
+								<c:if test="${article.mem_id == memberInfo.mem_id || memberInfo.mem_authority == 109}">
 									<div class="reply-button">
-										<span><button>작성버튼</button></span>
+										<span>
+											<button class="btns-update">수정버튼</button>
+											<button class="btns-update-complete" style="display: none;" onclick="rep_Update(${status.index})">수정완료</button>
+										</span>
 										<span>
 											<button class="btns-delete" onclick="rep_delete(${article.brd_id},${article.art_id},${reply.rep_id})">
 												삭제
@@ -181,19 +235,20 @@ $(document).ready(function() {
 									</div>
 								</c:if>
 							</div>
-							<div class="reply-replyWrite" style="display: none; margin-left: 10%">
-								<form action="${pageContext.request.contextPath}/board/share/replyForm" method="post">
-									<span><input type="hidden" name="brd_id" 	value="${article.brd_id}"></span>
-									<span><input type="hidden" name="art_id" 	value="${article.art_id}"></span>
-									<span><input type="hidden" name="category" 	value="${category}"></span>
-									<span><input type="hidden" name="rep_id" 	value="${reply.rep_id}"></span>
-									<span><input type="hidden" name="rep_parent"value="${reply.rep_parent}"></span>
-									<span><input type="hidden" name="rep_step"	value="${reply.rep_step}"></span>
-									<span><input type="text" name="rep_content" placeholder="댓글을 작성하세요."></span>
-									<span><input type="submit" value="등록"></span>
-								</form>
-							</div>
+						<!-- 대댓글 작성 -->
+						<div class="reply-replyWrite" style="display: none; margin-left: 10%">
+							<form action="${pageContext.request.contextPath}/board/share/replyForm" method="post">
+								<span><input type="hidden" id="brd_id${status.index}" name="brd_id" 	value="${article.brd_id}"></span>
+								<span><input type="hidden" id="art_id${status.index}" name="art_id" 	value="${article.art_id}"></span>
+								<span><input type="hidden" id="rep_id${status.index}" name="rep_id" 	value="${reply.rep_id}"></span>
+								<span><input type="hidden" name="category" 	value="${category}"></span>
+								<span><input type="hidden" name="rep_parent"value="${reply.rep_parent}"></span>
+								<span><input type="hidden" name="rep_step"	value="${reply.rep_step}"></span>
+								<textarea style="border: none; resize: none; width: 90%; height: 90%;" placeholder="댓글을 입력하세요" name="rep_content"></textarea>
+								<span><input type="submit" value="등록"></span>
+							</form>
 						</div>
+					</div>
 					</c:forEach>
 					<div class="reply-write">
 						<c:choose>
@@ -202,7 +257,7 @@ $(document).ready(function() {
 									<span><input type="hidden" name="brd_id" 	value="${article.brd_id}"></span>
 									<span><input type="hidden" name="art_id" 	value="${article.art_id}"></span>
 									<span><input type="hidden" name="category" 	value="${category}"></span>
-									<span><input type="text" name="rep_content" placeholder="댓글을 작성하세요."></span>
+									<textarea style="border: none; resize: none; width: 90%; height: 90%;" placeholder="댓글을 입력하세요" name="rep_content"></textarea>
 									<span><input type="submit" value="등록"></span>
 								</form>
 							</c:when>

@@ -247,7 +247,7 @@
 				<c:forEach var="article" items="${articleList}">
 					<div class="article-view" style="display: flex;">
 						<div class="view-preview" style="flex-direction: row; margin-right: 14px">
-							<span><img style="width: 100px; height: 100px" alt="${article.member.mem_image}" src="${pageContext.request.contextPath}/image/share/${article.member.mem_image}"></span>
+							<span><img style="width: 100px; height: 100px" alt="${article.member.mem_image}" src="${pageContext.request.contextPath}/uploads/profile/${article.member.mem_image}"></span>
 						</div>
 						<div class="view-inner" style="display: flex; flex-direction: column; justify-content: center;">
 							<div class="view-top">

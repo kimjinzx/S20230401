@@ -50,7 +50,17 @@ public class ReplyDaoImpl implements ReplyDao {
 		}
 		return result;
 	}
-	
+	// 댓글 업데이트
+	@Override
+	public int dgUpdateReply(Reply reply) {
+		int result = 0;
+		try {
+			result = session.update("dgUpdateReply", reply);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 	
 	
@@ -118,5 +128,6 @@ public class ReplyDaoImpl implements ReplyDao {
 	@Override
 	public int hgInsertReply(Reply reply) {
 		return session.insert("hgInsertReply", reply);
-	}	
+	}
+
 }

@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.annotation.JacksonInject.Value;
@@ -163,14 +165,15 @@ public class ShareController {
 		model.addAttribute("categoryName", categoryName);
 		model.addAttribute("categoryType", categoryType);
 		
-		return "share/viewArticle";
+		return "share/article";
 	}
 	
-	// 게시글 - 댓글 쓰기
+	// 게시글 - 댓글, 대댓글 쓰기
 	@PostMapping(value = "board/share/replyForm")
 	public String replyForm(@AuthenticationPrincipal MemberDetails memberDetails, Reply reply, Model model, Integer category, RedirectAttributes redirectAttributes) {
 		MemberInfo memberInfo = null;
 		redirectAttributes.addFlashAttribute("category", category);
+		
 		
 		if(memberDetails != null) {
 			memberInfo = memberDetails.getMemberInfo(); 					// 유저 정보 저장
@@ -188,6 +191,7 @@ public class ShareController {
 		System.out.println("내용 : "+reply.getRep_content());
 		System.out.println("댓글 순서 : "+reply.getRep_step());
 		
+		System.out.println(reply);
 		// 댓글 작성
 		int result = replyService.writeReply(reply);
 		
@@ -198,7 +202,7 @@ public class ShareController {
 		return String.format("redirect:/board/share/%s%s?category=%s", reply.getBrd_id(), reply.getArt_id(), category);
 	}
 	
-	// 게시글 삭제
+	// 댓글 삭제
 	@RequestMapping(value = "board/share/delete")
 	public String deleteReply(	@AuthenticationPrincipal
 								MemberDetails memberDetails,
@@ -223,10 +227,19 @@ public class ShareController {
 		
 		return String.format("redirect:/board/share/%s%s?category=%s", reply.getBrd_id(), reply.getArt_id(), reply.getBrd_id());
 	}
+	// 댓글 수정
+	@ResponseBody
+	@RequestMapping(value = "board/share/update")
+	public int updateReply(	@AuthenticationPrincipal
+								MemberDetails memberDetails,
+								Reply reply,
+								RedirectAttributes redirectAttributes) {
+		log.info("잘 바다따 {}", reply);
+		int result = replyService.dgUpdateReply(reply);
+		return result;
+	}
 	
-	
-	
-/* 머지 후 영업 종
+/* 머지 후 영업 종료
 	// 메인
 	@RequestMapping(value = "/")
 	public String indexPage() {

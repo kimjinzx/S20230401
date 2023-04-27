@@ -77,7 +77,14 @@
 		AND     ART_ID = #{art_id}
 		AND     REP_ID = #{rep_id}
 	</update>
-	
+	<!-- 댓글 수정 -->
+	<update id="dgUpdateReply" parameterType="Reply">
+		UPDATE	REPLY
+		SET 	REP_CONTENT = #{rep_content}
+		WHERE	REP_ID = #{rep_id}
+		AND		ART_ID = #{art_id}
+		AND		BRD_ID = #{brd_id}
+	</update>
 
 
 

@@ -14,6 +14,7 @@ public interface ReplyDao {
 	List<Reply> replyShareList(Article article);
 	int writeReply(Reply reply);
 	int deleteReply(Reply reply);
+	int dgUpdateReply(Reply reply);
 	
 	
 	// 백준
@@ -28,7 +29,7 @@ public interface ReplyDao {
 	
 	// 유현규
 	public List<ReplyMember> getReplyByArticle(Article article);
-
 	public int hgInsertReply(Reply reply);
+
 
 }
