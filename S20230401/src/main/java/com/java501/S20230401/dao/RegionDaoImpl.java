@@ -20,12 +20,10 @@ public class RegionDaoImpl implements RegionDao {
 	public Region getRegion(int regionCode) {
 		return session.selectOne("hgGetRegion", regionCode);
 	}
-	
 	@Override
 	public List<Region> getSuperRegions() {
 		return session.selectList("hgGetSuperRegions");
 	}
-	
 	@Override
 	public List<Region> getChildRegions(int parentRegionCode) {
 		return session.selectList("hgGetChildRegions", parentRegionCode);
@@ -44,12 +42,24 @@ public class RegionDaoImpl implements RegionDao {
 		System.out.println("RegionDaoImpl regionList.size()=> " + regionList.size());
 		return regionList;
 	}
-	
 	@Override
 	public List<Region> parentRegionName() {
 		List<Region> parentRegionList = null;
 		parentRegionList = session.selectList("SelectParentRegion");
 		return parentRegionList;
+	}
+
+	
+	// 양동균
+	@Override
+	public List<Region> dgRegionList() {
+		List<Region> regionList = null;
+		try {
+			regionList = session.selectList("dgRegionList");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return regionList;
 	}
 	
 	

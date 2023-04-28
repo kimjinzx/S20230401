@@ -17,6 +17,10 @@ public interface RegionDao {
 	// 임동빈
 	List<Region> regionName();
 	List<Region> parentRegionName();
+	
+	
+	// 양동균
+	public List<Region> dgRegionList();
 
 
 }

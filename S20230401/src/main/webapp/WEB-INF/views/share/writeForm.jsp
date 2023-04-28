@@ -6,41 +6,55 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script type="text/javascript">
+	function locSelect(e){
+		var selectLocation = e;
+	}
+</script>
 </head>
 <body>
 	<div class="container">
 		<h1>글쓰기</h1>
-		<c:if test="${article.mem_id == memberInfo.mem_id}">
-			<div class="reply-button">
-				<span><button>작성버튼</button></span>
-				<span>
-					<button class="btns-delete" onclick="rep_delete(${article.brd_id},${article.art_id},${reply.rep_id})">
-						삭제
-					</button>
-				</span>
-			</div>
-		</c:if>
+
 		<div style="text-align: center;">
 			<form action="${pageContext.request.contextPath}/board/share/writeArticleForm" method="post">
-				<input type="hidden" 	name="category" value="${category}">
-				<input type="hidden" 	name="brd_id" 	value="${category}">
+				<input type="hidden" 	name="category" 		value="${category}">
+				<input type="hidden" 	name="brd_id" 			value="${category}">
 				<input type="hidden" 	name="trade.trd_status" value="401">
 				<input type="hidden" 	name="trade.trd_cost" 	value="0">
-				<input type="hidden" 	name="art_good" 	value="0">
-				<input type="hidden" 	name="art_bad" 		value="0">
-				<input type="hidden" 	name="art_read" 	value="0">
-				<input type="hidden" 	name="isdelete" 	value="0">
+				<input type="hidden" 	name="art_good" 		value="0">
+				<input type="hidden" 	name="art_bad" 			value="0">
+				<input type="hidden" 	name="art_read" 		value="0">
+				<input type="hidden" 	name="isdelete" 		value="0">
 				
-
-				태그1<input type="text" 	name="art_tag1" value="태그1"><br>
-				태그2<input type="text" 	name="art_tag2" value="태그2"><br>
-				태그3<input type="text" 	name="art_tag3" value="태그3"><br>
-				태그4<input type="text" 	name="art_tag4" value="태그4"><br>
-				태그5<input type="text" 	name="art_tag5" value="태그5"><br>
+				<div class="artigle_tag">
+					<span>
+						태그1 <input type="text" 	name="art_tag1" value="태그1">
+						태그2 <input type="text" 	name="art_tag2" value="태그2">
+						태그3 <input type="text" 	name="art_tag3" value="태그3">
+						태그4 <input type="text" 	name="art_tag4" value="태그4">
+						태그5 <input type="text" 	name="art_tag5" value="태그5">
+					</span>
+				</div>
 				
 				지역제한
-				<select name="trade.reg_id">
-					<option value="100">서울</option>
+				<!-- 대분류 -->
+				<select class="artigle_loc" onchange="locSelect()">
+					<option value="">지역을 선택하세요</option>
+					<c:forEach var="region" items="${regionList}" varStatus="status">
+						<c:if test="${region.reg_parent == null}">
+							<option id="region-parent${status.index}" value="${region.reg_id}">${region.reg_name}</option>
+						</c:if>
+					</c:forEach>
+				</select>
+				<!-- 소분류 -->
+				<select>
+					<option value="">선택</option>
+					<c:forEach var="region" items="${regionList}">
+						<c:if test="${region.reg_id == selectLocation}">
+							<option value="${region.reg_id}">${region.reg_name}</option>
+						</c:if>
+					</c:forEach>
 				</select>
 				<br>
 

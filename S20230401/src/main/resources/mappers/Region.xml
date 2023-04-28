@@ -14,6 +14,7 @@
 	</select>
 	
 	
+	
 	<!-- 양동균 -->	
 	<resultMap type="Region" id="dgRegionMap">
 		<id 	column="reg_id" 		property="reg_id"/><!-- PK -->
@@ -21,6 +22,14 @@
 		<result column="reg_parent" 	property="reg_parent"/>
 	</resultMap>
 	
+	<select id="dgRegionList" resultType="Region">
+		SELECT * FROM REGION ORDER BY REG_ID ASC
+	</select>
+<!-- 	<select id="dgRegionList" resultType="Region">
+		SELECT  *
+		FROM    REGION
+		WHERE   REG_PARENT IS NULL
+	</select> -->
 	
 	
 	
