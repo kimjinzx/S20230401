@@ -18,7 +18,15 @@
 		SELECT * FROM ARTICLE
 		WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
 	</select>
-	
+	<update id="hgIncreaseReadCount" parameterType="Article">
+		UPDATE ARTICLE SET ART_READ = ART_READ + 1
+		WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
+	</update>
+	<update id="hgRecommendArticle" parameterType="Article">
+		UPDATE ARTICLE SET ART_GOOD = ART_GOOD + #{art_good},
+						   ART_BAD = ART_BAD + #{art_bad}
+		WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
+	</update>
 	
 	<!-- 양동균 -->
 	<resultMap type="Article" id="dgArticleMap">

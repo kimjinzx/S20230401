@@ -55,6 +55,19 @@ public class ArticleServiceImpl implements ArticleService {
 	public ArticleMember getArticleMemberById(Article searcher) {
 		return ad.getArticleMemberById(searcher);
 	}
+	@Override
+	public List<ArticleMember> hgGetArticlesOfMember(int mem_id) {
+		return ad.hgGetArticlesOfMember(mem_id);
+	}
+	@Override
+	public int hgIncreaseReadCount(Article searcher) {
+		return ad.hgIncreaseReadCount(searcher);
+	}
+	@Override
+	public int hgRecommendArticle(Article searcher) {
+		return ad.hgRecommendArticle(searcher);
+	}
+	
 
 	// 양동균
 	@Override

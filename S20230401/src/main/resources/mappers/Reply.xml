@@ -187,4 +187,15 @@
 				</choose>
 				0)
 	</insert>
+	<select id="hgGetRepliesOfMember" parameterType="int" resultType="ReplyMember">
+		<![CDATA[
+			SELECT *
+			FROM (SELECT R.*, M.MEM_NICKNAME, C.COMM_VALUE BRD_NAME
+				  FROM REPLY R LEFT OUTER JOIN MEMBER M ON (R.MEM_ID = M.MEM_ID)
+				  			   LEFT OUTER JOIN COMM C ON (R.BRD_ID = C.COMM_ID)
+				  WHERE R.MEM_ID = #{mem_id}
+				  ORDER BY R.REP_REGDATE DESC)
+			WHERE ROWNUM <= 10
+		]]>
+	</select>
 </mapper>

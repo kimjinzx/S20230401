@@ -8,7 +8,6 @@
 					<div style="border-left: 2px solid var(--theme-font); width: 50%; opacity: 0.5;"></div>
 				</div>
 			</c:if>
-			<!-- <div class="reply-indented" style="display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch; border: 1px solid var(--subtheme); border-radius: 5px; margin-top: 10px; flex-grow: 1;"> -->
 			<div id="reply-${reply.rep_id }" class="reply-indented" style="display: flex; flex-direction: column; justify-content: flex-start; align-items: stretch; border: 0; border-radius: 5px; margin-top: 10px; flex-grow: 1; background-color: ${reply.rep_id == reply.rep_parent ? 'rgba(var(--subtheme-rgb), 0.25)' : 'rgba(var(--subtheme-rgb), 0.125)'};">
 				<div class="reply-box-title" style="display: flex; justify-content: space-between; align-items: center; padding: 5px 10px;">
 					<div style="display: flex; justify-content: flex-start; align-items: center;">

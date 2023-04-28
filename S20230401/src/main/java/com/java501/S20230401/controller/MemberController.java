@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,12 +30,17 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.java501.S20230401.model.Article;
+import com.java501.S20230401.model.ArticleMember;
 import com.java501.S20230401.model.Member;
 import com.java501.S20230401.model.MemberDetails;
 import com.java501.S20230401.model.Region;
+import com.java501.S20230401.model.ReplyMember;
+import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.CommService;
 import com.java501.S20230401.service.MemberService;
 import com.java501.S20230401.service.RegionService;
+import com.java501.S20230401.service.ReplyService;
 import com.java501.S20230401.util.EmailMessage;
 import com.java501.S20230401.util.MemberSearchKeyword;
 
@@ -46,6 +52,8 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 	private final MemberService ms;
 	private final RegionService rs;
+	private final ArticleService as;
+	private final ReplyService reps;
 	private final CommService cs;
 	
 	@RequestMapping(value = "/login")
@@ -143,7 +151,30 @@ public class MemberController {
 			try { response.sendRedirect(request.getHeader("Referer")); }
 			catch (IOException e) { e.printStackTrace(); }
 		else model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		model.addAttribute("now", new Date());
 		
+		int mem_id = memberDetails.getMemberInfo().getMem_id();
+		// Article 최신 리스트 가져오기
+		List<ArticleMember> articles = as.hgGetArticlesOfMember(mem_id);
+		model.addAttribute("articles", articles);
+		// Reply 최신 리스트 가져오기
+		List<ReplyMember> replies = reps.hgGetRepliesOfMember(mem_id);
+		model.addAttribute("replies", replies);
+		HashMap<Integer, HashMap<Integer, ArticleMember>> repParents = new HashMap<Integer, HashMap<Integer,ArticleMember>>();
+		for (ReplyMember reply : replies) {
+			Article searcher = new Article();
+			int art_id = reply.getArt_id();
+			int brd_id = reply.getBrd_id();
+			searcher.setArt_id(art_id);
+			searcher.setBrd_id(brd_id);
+			ArticleMember am = as.getArticleMemberById(searcher);
+			if (repParents.get(brd_id) == null) {
+				repParents.put(brd_id, new HashMap<Integer, ArticleMember>());
+			}
+			repParents.get(brd_id).put(art_id, am);
+		}
+		model.addAttribute("repParents", repParents);
+		// Trade 항목 별 최신 리스트 가져오기
 		
 		
 		return "user/myPage";

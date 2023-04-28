@@ -21,6 +21,9 @@ public interface ArticleDao {
 	public Article getArticleById(Article searcher);
 	public MemberInfo getMemberInfoById(int mem_id);
 	public ArticleMember getArticleMemberById(Article searcher);
+	public List<ArticleMember> hgGetArticlesOfMember(int mem_id);
+	public int hgIncreaseReadCount(Article searcher);
+	public int hgRecommendArticle(Article searcher);
 	
 	
 	// 양동균
