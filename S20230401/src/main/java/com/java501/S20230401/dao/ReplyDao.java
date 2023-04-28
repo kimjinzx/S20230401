@@ -28,7 +28,9 @@ public interface ReplyDao {
 	
 	// 유현규
 	public List<ReplyMember> getReplyByArticle(Article article);
-
 	public int hgInsertReply(Reply reply);
+	
+	// 임동빈
+	int 	dbInsertReply(Reply reply);
 
 }

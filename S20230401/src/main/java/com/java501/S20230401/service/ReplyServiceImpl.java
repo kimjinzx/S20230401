@@ -68,4 +68,11 @@ public class ReplyServiceImpl implements ReplyService {
 		return rd.hgInsertReply(reply);
 	}
 	
+	
+	// 임동빈
+	@Override
+	public int dbInsertReply(Reply reply) {
+		return rd.dbInsertReply(reply);
+	}
+	
 }

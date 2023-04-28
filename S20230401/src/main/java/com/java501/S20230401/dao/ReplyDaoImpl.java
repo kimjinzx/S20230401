@@ -118,5 +118,19 @@ public class ReplyDaoImpl implements ReplyDao {
 	@Override
 	public int hgInsertReply(Reply reply) {
 		return session.insert("hgInsertReply", reply);
+	}
+	
+	
+	// 임동빈
+	@Override
+	public int dbInsertReply(Reply reply) {
+		
+		int dbInsertReply = 0;
+		try {
+			dbInsertReply = session.insert("dbInsertReply", reply);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dbInsertReply;
 	}	
 }

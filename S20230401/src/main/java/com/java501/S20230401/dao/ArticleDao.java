@@ -48,10 +48,10 @@ public interface ArticleDao {
 	int 			dbtotalArticle(Article article);
 	List<Article> 	dbListArticle(Article article);
 	Article 		dbdetailArticle(Article article);
-	List<Article> 	replyList(Article a);
+	List<Article> 	dbreplyList(Article a);
 	void 			dbWriteArticle(Article article);
 	void 			dbUpdateArticle(Article article);
-	int 			deleteArticle(Article article);
+	int 			dbdeleteArticle(Article article);
 	
 	
 	// 김진현

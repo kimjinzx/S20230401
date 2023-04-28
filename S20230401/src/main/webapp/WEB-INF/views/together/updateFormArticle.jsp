@@ -18,7 +18,7 @@
 		<table>
 			<tr>
 				<th>카테고리</th>
-				<td><select name="brd_id">
+				<td><select name="brd_id" disabled="disabled">
 						<c:forEach var="category" items="${categories }">
 							<option ${category.comm_id == article.brd_id ? 'selected=selected' : ''} value = "${category.comm_id}">${category.comm_value }</option>
 						</c:forEach>

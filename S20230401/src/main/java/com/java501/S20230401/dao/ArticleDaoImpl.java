@@ -328,10 +328,10 @@ public class ArticleDaoImpl implements ArticleDao {
 		return detailArticle;
 	}
 	@Override
-	public List<Article> replyList(Article article) {
+	public List<Article> dbreplyList(Article article) {
 		List<Article> replyList = null;
 		try {
-			replyList = session.selectList("tkReplyList", article);
+			replyList = session.selectList("dbReplyList", article);
 		} catch (Exception e) {
 			System.out.println("ArticleDaoImpl replyList => " + e.getMessage());
 		}
@@ -347,17 +347,17 @@ public class ArticleDaoImpl implements ArticleDao {
 			} else {
 				article.setReg_id(article.getReg_id2());
 			}
-			session.selectOne("insertArticle", article);
+			session.selectOne("dbInsertArticle", article);
 		} catch (Exception e) {
 			System.out.println("ArticleDaoImpl insertArticle => " + e.getMessage());
 		}
 	}
 	@Override
-	public int deleteArticle(Article article) {
+	public int dbdeleteArticle(Article article) {
 		int deleteArticle = 0;
 
 		try {
-			deleteArticle = session.update("deleteArticle", article);
+			deleteArticle = session.update("dbDeleteArticle", article);
 		} catch (Exception e) {
 			System.out.println("ArticleDaoImpl deleteArticle => " + e.getMessage());
 		}
@@ -372,7 +372,7 @@ public class ArticleDaoImpl implements ArticleDao {
 			} else {
 				article.setReg_id(article.getReg_id2());
 			}
-			session.selectOne("updateArticle", article);
+			session.selectOne("dbUpdateArticle", article);
 		} catch (Exception e) {
 			System.out.println("ArticleDaoImpl updateArticle => " + e.getMessage());
 		}

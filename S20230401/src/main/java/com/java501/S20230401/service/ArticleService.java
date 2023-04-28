@@ -46,10 +46,10 @@ public interface ArticleService {
 	List<Region>	parentRegionName();
 	List<Comm> 		categoryName();
 	List<Comm>		genderName();
-	List<Article> 	replyList(Article article);
+	List<Article> 	dbreplyList(Article article);
 	void 			dbWriteArticle(Article article);
 	void			dbUpdateArticle(Article article);
-	int 			deleteArticle(Article article);
+	int 			dbdeleteArticle(Article article);
 	
 	// 김진현
 	List<Article_Trade_Reply> 			getDutchpayList(String boardName);//진현

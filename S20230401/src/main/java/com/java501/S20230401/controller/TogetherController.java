@@ -14,8 +14,10 @@ import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.MemberDetails;
 import com.java501.S20230401.model.Region;
+import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.Paging;
+import com.java501.S20230401.service.ReplyService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,13 +27,14 @@ import lombok.RequiredArgsConstructor;
 public class TogetherController {
 
 	private final ArticleService as;
+	private final ReplyService rs;
 
 	@RequestMapping(value = "/board/together")
 	public String articleList(@AuthenticationPrincipal MemberDetails memberDetails,  // 세션의 로그인 유저 정보
-													   Article article,
-													   int category,
-							     					   String currentPage,
-							     					   Model model) {
+							  Article article,
+							  int category,
+							  String currentPage,
+							  Model model) {
 		
 		// 유저 정보를 다시 리턴  //memberDetails.getMemberInfo() DB의 유저와 대조 & 권한 확인
 		if (memberDetails != null) 
@@ -71,35 +74,32 @@ public class TogetherController {
 		model.addAttribute("detailArticle", detailArticle);
 
 		// 게시글 별 댓글 리스트
-		List<Article> replyList = as.replyList(article);
+		List<Article> replyList = as.dbreplyList(article);
 		model.addAttribute("replyList", replyList);
 
 		return "together/detailArticle";
 	}
 
 	@RequestMapping(value = "/board/writeFormArticle")
-	public String writeFormArticle(@AuthenticationPrincipal MemberDetails memberDetails, Model model) {
+	public String writeFormArticle(@AuthenticationPrincipal MemberDetails memberDetails,
+								   Model model) {
 		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		System.out.println("ArticleController Start writeFormArticle...");
 
 		// 카테고리별 콤보박스
 		List<Comm> categoryList = as.categoryName();
-		System.out.println("ArticleController category => " + categoryList.size());
 		model.addAttribute("categories", categoryList);
 
 		// 성별 콤보박스
 		List<Comm> genderList = as.genderName();
-		System.out.println("ArticleController gender => " + genderList.size());
 		model.addAttribute("genders", genderList);
 
 		// 지역별 콤보박스
 		List<Region> regionList = as.regionName();
-		System.out.println("ArticleController region => " + regionList.size());
 		model.addAttribute("regions", regionList);
 
 		// 지역별 부모 콤보박스
 		List<Region> parentRegionList = as.parentRegionName();
-		System.out.println("ArticleController Parentregion => " + parentRegionList.size());
 		model.addAttribute("parentRegions", parentRegionList);
 
 		return "together/writeFormArticle";
@@ -110,14 +110,12 @@ public class TogetherController {
 							   Model model, 
 							   @RequestParam("trd_enddate1")
 							   @DateTimeFormat(pattern = "yyyy-MM-dd") Date trd_enddate) {
-		System.out.println("ArticleController Start writeEmp...");
 		article.setTrd_enddate(trd_enddate);
 		
 		// 프로시저 Insert_Article 이용 => 게시글 작성
 		as.dbWriteArticle(article);
 		int insertResult = article.getInsert_result();
 		int brd_id = article.getBrd_id();
-		System.out.println("article.getInsert_result() =>" + insertResult);
 
 		model.addAttribute("insertResult", insertResult);
 		model.addAttribute("article", article);
@@ -132,19 +130,18 @@ public class TogetherController {
 	}
 
 	@RequestMapping(value = "/board/deleteArticle")
-	public String deleteArticle(Article article, Model model) {
-		System.out.println("ArticleController Start delete...");
+	public String deleteArticle(Article article,
+								Model model) {
 
 		// 게시글 삭제 (isdelete = 0 => 1)
-		int deleteresult = as.deleteArticle(article);
-
+		int deleteresult = as.dbdeleteArticle(article);
 		model.addAttribute("result", deleteresult);
+		
 		return "redirect:/board/together?category=1000";
 	}
 
 	@RequestMapping(value = "/board/updateFormArticle")
 	public String updateFormArticle(Article article, Model model) {
-		System.out.println("ArticleController Start writeFormArticle...");
 
 		// 게시글 수정 양식 (상세 게시글 값 가져오기)
 		Article updateFormArticle = as.dbdetailArticle(article);
@@ -152,31 +149,27 @@ public class TogetherController {
 
 		// 카테고리별 콤보박스
 		List<Comm> categoryList = as.categoryName();
-		System.out.println("ArticleController category => " + categoryList.size());
 		model.addAttribute("categories", categoryList);
 
 		// 성별 콤보박스
 		List<Comm> genderList = as.genderName();
-		System.out.println("ArticleController category => " + genderList.size());
 		model.addAttribute("genders", genderList);
 
 		// 지역별 콤보박스
 		List<Region> regionList = as.regionName();
-		System.out.println("ArticleController region => " + regionList.size());
 		model.addAttribute("regions", regionList);
 
 		// 지역별 부모 콤보박스
 		List<Region> parentRegionList = as.parentRegionName();
-		System.out.println("ArticleController Parentregion => " + parentRegionList.size());
 		model.addAttribute("parentRegions", parentRegionList);
 
 		return "together/updateFormArticle";
 	}
 
 	@RequestMapping(value = "/board/updateArticle")
-	public String updateArticle(Article article, Model model,
-			@RequestParam("trd_enddate1") @DateTimeFormat(pattern = "yyyy-MM-dd") Date trd_enddate) {
-		System.out.println("ArticleController Start updateArticle...");
+	public String updateArticle(Article article,
+								Model model,
+								@RequestParam("trd_enddate1") @DateTimeFormat(pattern = "yyyy-MM-dd") Date trd_enddate) {
 
 		article.setTrd_enddate(trd_enddate);
 		// 게시글 수정 (프로시저 사용 => Update_Article)
@@ -192,6 +185,20 @@ public class TogetherController {
 			model.addAttribute("msg", "입력실패");
 			return "forward:/board/updateFormArticle";
 		}
+	}
+	
+	@RequestMapping(value= "/board/insertReply")
+	public String insertReply(Reply reply, Model model) {
+		int insertReply = rs.dbInsertReply(reply);
+		
+		int art_id = reply.getArt_id();
+		int brd_id = reply.getBrd_id();
+		
+		System.out.println("rep_content = " + reply.getRep_content());
+		model.addAttribute("insertReply", insertReply);
+		
+		return "redirect:/board/detailArticle?art_id="+art_id+"&brd_id="+brd_id;
+	
 	}
 	
 	

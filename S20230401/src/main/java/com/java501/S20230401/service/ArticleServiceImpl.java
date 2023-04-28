@@ -124,7 +124,9 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 	
 	// 임동빈
-		@Override
+	
+	// 총 게시글 수 Count
+	@Override
 	public int dbtotalArticle(Article article) {
 		System.out.println("ArticleService Start total...");
 		int totArticleCnt = ad.dbtotalArticle(article);
@@ -132,6 +134,7 @@ public class ArticleServiceImpl implements ArticleService {
 
 		return totArticleCnt;
 	}
+	// 게시글 리스트
 	@Override
 	public List<Article> dbListArticle(Article article) {
 		List<Article> articleList = null;
@@ -140,12 +143,16 @@ public class ArticleServiceImpl implements ArticleService {
 		System.out.println("ArticleServiceImpl listArticle ArticleList.size()->" + articleList.size());
 		return articleList;
 	}
+	
+	// 상세 게시글
 	@Override
 	public Article dbdetailArticle(Article article) {
 		Article detailArticle = null;
 		detailArticle = ad.dbdetailArticle(article);
 		return detailArticle;
 	}
+	
+	// 지역 제한 리스트
 	@Override
 	public List<Region> regionName() {
 		List<Region> regionName = null;
@@ -156,12 +163,15 @@ public class ArticleServiceImpl implements ArticleService {
 		return regionName;
 	}
 
+	// 부모 지역 제한 리스트
 	@Override
 	public List<Region> parentRegionName() {
 		List<Region> parentRegionName = null;
 		parentRegionName = rd.parentRegionName();
 		return parentRegionName;
 	}
+	
+	// 카테고리 이름 리스트
 	@Override
 	public List<Comm> categoryName() {
 		List<Comm> categoryName = null;
@@ -171,6 +181,7 @@ public class ArticleServiceImpl implements ArticleService {
 		return categoryName;
 	}
 	
+	// 성별 리스트
 	@Override
 	public List<Comm> genderName() {
 		List<Comm> genderName = null;
@@ -179,23 +190,30 @@ public class ArticleServiceImpl implements ArticleService {
 		System.out.println("ArticleServiceImpl commName.size()=> " + genderName.size());
 		return genderName;
 	}
+	
+	// 댓글 리스트
 	@Override
-	public List<Article> replyList(Article article) {
-		List<Article> replyList = ad.replyList(article);
+	public List<Article> dbreplyList(Article article) {
+		List<Article> replyList = ad.dbreplyList(article);
 		return replyList;
 	}
+	
+	// 게시글 작성
 	@Override
 	public void dbWriteArticle(Article article) {
 		ad.dbWriteArticle(article);
 		System.out.println("ArticleServiceImpl article.getInsert_result() => " + article.getInsert_result());
 	}
+	
+	// 게시글 삭제
 	@Override
-	public int deleteArticle(Article article) {
-		
-		int deleteArticle = ad.deleteArticle(article);
+	public int dbdeleteArticle(Article article) {	
+		int deleteArticle = ad.dbdeleteArticle(article);
 		System.out.println("ArticleServiceImpl deleteArticle.size()=> " + deleteArticle);
 		return deleteArticle;
 	}
+	
+	// 게시글 수정
 	@Override
 	public void dbUpdateArticle(Article article) {
 		ad.dbUpdateArticle(article);

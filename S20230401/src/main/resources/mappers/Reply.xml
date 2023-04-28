@@ -187,4 +187,53 @@
 				</choose>
 				0)
 	</insert>
+	
+	
+	<!-- 임동빈 -->
+	
+	<insert id="dbInsertReply" parameterType="Reply">
+		INSERT 
+		INTO REPLY (  ART_ID
+					, BRD_ID
+					, REP_ID
+					, MEM_ID
+					, REP_CONTENT
+					, REP_REGDATE
+					, REP_GOOD
+					, REP_BAD
+					, REP_PARENT
+					, REP_STEP
+					, ISDELETE)
+		VALUES 	   (  #{art_id}
+					, #{brd_id}
+					, (SELECT NVL(MAX(REP_ID), 0) + 1 FROM REPLY
+					   WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id})
+					, #{mem_id}
+					, #{rep_content, jdbcType=VARCHAR}
+					, SYSDATE
+					, 0
+					, 0
+					, <choose>
+						<when test="rep_parent == null">
+							(SELECT NVL(MAX(REP_ID), 0) + 1 FROM REPLY
+							 WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}),
+						</when>
+						<otherwise>
+							#{rep_parent},
+						</otherwise>
+					  </choose>
+					  	
+					  <choose>
+						<when test="rep_parent == null">
+							1,
+						</when>
+						<otherwise>
+						(SELECT NVL(MAX(REP_STEP), 0) + 1 FROM REPLY
+						 WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
+						 	   AND REP_PARENT = #{rep_parent}),
+						</otherwise>
+					  </choose>
+					  0)
+	</insert>
+	
 </mapper>
