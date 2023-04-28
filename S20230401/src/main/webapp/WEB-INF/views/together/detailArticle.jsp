@@ -5,6 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript">
+</script>
+<script>
+
+</script>
 </head>
 <body>
 	<h2>상세게시글</h2>
@@ -126,35 +131,50 @@
 			<td>(${detailArticle.repCount })</td>
 		</tr>
 	</table>
-		<form action="/board/insertReply" method="post">
-		<!-- form 'action' = '데이터가 도착할 URL을 써준다' 'method' = '데이터를 전달할 방식을 써준다'-->
-		<!-- get 방식으로 넘길 땐 주소값 뒤에 ? 로 파라미터 값을 적어주고 / post 방식으로 넘길 땐 form 안에 input으로 값을 적어서 넘겨준다-->
-		<textarea name="rep_content" cols="50" rows="5" placeholder="댓글을 입력하세요"></textarea>
-		<!-- name = 데이터를 전달 받는 column 이름, value= 들어갈 데이터의 값, id = javascript로 꾸밀 때 지정해주는 이름 -->		
-			
-			<input type="hidden" name="art_id" 		value="${detailArticle.art_id }">
-			<input type="hidden" name="brd_id" 		value="${detailArticle.brd_id }">
-			<input type="hidden" name="mem_id" 		value="${detailArticle.mem_id }">
-			<input type="hidden" name="rep_id" 		value="${reply.rep_id }">
-			<input type="hidden" name="rep_parent" 	value="${reply.rep_parent }">
-			
-			<input type="submit" value="입력">
-		</form>
 	
 	
+	<div class="replyList" style="margin: 10px; border: 1px solid black; padding: 10px;">
+		<div class="insertReply">
+			<form action="/board/insertReply" method="post">
+			<!-- form 'action' = '데이터가 도착할 URL을 써준다' 'method' = '데이터를 전달할 방식을 써준다'-->
+			<!-- get 방식으로 넘길 땐 주소값 뒤에 ? 로 파라미터 값을 적어주고 / post 방식으로 넘길 땐 form 안에 input으로 값을 적어서 넘겨준다-->
+				<span><input type="hidden" name="art_id"  value="${detailArticle.art_id }"></span>
+				<span><input type="hidden" name="brd_id" 		value="${detailArticle.brd_id }"></span>
+				<span><input type="hidden" name="mem_id" 		value="${detailArticle.mem_id }"></span>
+				<span><input type="hidden" name="rep_id" 		value="${reply.rep_id }"></span>
+				<span><input type="hidden" name="rep_parent" 	value="${reply.rep_parent }"></span>
+				<span><input type="text"   name="rep_content"  placeholder="댓글을 입력하세요"
+							 style="width:1200px; height:100px; font-size:10px;"></input></span>
+			<!-- name = 데이터를 전달 받는 column 이름, value= 들어갈 데이터의 값, id = javascript로 꾸밀 때 지정해주는 이름(?) -->		
+				<div class="replySubmit" style="margin: 5px;"><input type="submit" value="입력"></div>
+			</form>
+		</div>	
+				<!-- submit 버튼을 통해 데이터가 입력(?)된다 -->
 	<c:forEach var="reply" items="${replyList }">
-			<table>
-			<tr>
-				<td>${reply.mem_nickname }</td>
-				<td><img src="${pageContext.request.contextPath}/image/picture/${reply.mem_image}" width ="50" height ="50" alt="-"></td>
-				<td>${reply.rep_content }</td>
-			</tr>
-			</table>
-		<form action="/board/insertReply" method="post">
-		<textarea name="rep_content" cols="50" rows="3" placeholder="댓글을 입력하세요"></textarea>
-		<input type="submit" value="댓글작성">
-		</form>			
+		<div class="replyInfo" >
+			<span><img src="${pageContext.request.contextPath}/image/picture/${reply.mem_image}" width ="50" height ="50" alt="-"></span>
+			<span>${reply.mem_nickname }</span>
+			<span>(${reply.mem_username })</span>
+			<span>${reply.rep_regdate }</span>
+			<!-- 날짜형식 바꿔야함!! -->
+			<span></span>
+		<div class="replyButton" style= "margin: 10px; float: right;">
+			<span><input type="button" value="댓글 작성" onclick=""></span>
+			<span><input type="button" value="수정" onclick=""></span>
+			<span><input type="button" value="삭제" onclick=""></span>
+		</div>
+		</div>
+		<div class="replyContent" style= "margin: 10px; border: 1px solid black; padding: 15px;">		
+			<span>${reply.rep_content }</span>
+		</div>
+<!-- 		<form action="/board/insertReply" method="post">
+			<span><input name="rep_content" placeholder="댓글을 입력하세요"
+						 style="width:1200px; height:100px; font-size:10px;"></input></span>
+			<span><input type="submit" value="댓글작성"></span>
+		</form> -->			
 	</c:forEach>
+	</div>
+	
 	
 
 </body>

@@ -112,7 +112,7 @@ $(document).ready(function() {
 								<c:forEach begin="1" end="5" varStatus="status">
 									<c:set var="art_tag" value="art_tag${status.index}"/>
 										<c:if test="${article[art_tag] != null}">
-											<sapn>${article[art_tag]}</sapn>
+											<span>${article[art_tag]}</span>
 										</c:if>
 								</c:forEach>
 							</span>
