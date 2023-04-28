@@ -210,5 +210,16 @@ public class TogetherController {
 		return "redirect:/board/detailArticle?art_id="+art_id+"&brd_id="+brd_id;
 	}
 	
+	@RequestMapping(value="/board/updateReply")
+	public String updateReply(Reply reply, Model model) {
+		int updateReply = rs.dbUpdateReply(reply);
+		
+		int art_id = reply.getArt_id();
+		int brd_id = reply.getBrd_id();
+		model.addAttribute("updateReply", updateReply);
+		
+		return "redirect:/board/detailArticle?art_id="+art_id+"&brd_id="+brd_id;
+	}
+	
 	
 }

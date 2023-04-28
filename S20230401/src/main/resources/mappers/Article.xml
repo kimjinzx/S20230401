@@ -491,6 +491,7 @@
 		WHERE 		a.brd_id = #{brd_id}
 		AND   		a.art_id = #{art_id}
 		AND			r.isdelete = 0
+		ORDER BY    R.rep_parent, R.rep_step
 	</select>
 	
 	<select id = "dbInsertArticle" statementType="CALLABLE" parameterType="Article">

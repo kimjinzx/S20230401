@@ -28,4 +28,6 @@ public interface ReplyService {
 	// 임동빈
 	int 	dbInsertReply(Reply reply);
 	int 	dbDeleteReply(Reply reply);
+	int 	dbUpdateReply(Reply reply);
+	
 }

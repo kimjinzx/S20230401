@@ -166,14 +166,20 @@
 			<span><img src="${pageContext.request.contextPath}/image/picture/${reply.mem_image}" width ="30" height ="30" alt="-"></span>
 			<span>${reply.mem_nickname }</span>
 			<span>(${reply.mem_username })</span>
-			<span>${reply.rep_regdate }</span>
+			<span><fmt:formatDate value="${reply.rep_regdate}" pattern="yy년 MM월 dd일 : HH:mm:ss"/></span>
 		</div>	
 			<!-- 날짜형식 바꿔야함!! -->
 					
 			<div class="replyContent" style= "margin: 10px; border: 1px solid black; padding: 15px; width: 1200px; height: 60px;" >		
 				<span style="font-size: 12px;">${reply.rep_content }</span>
 					<div class="replyButton" id ="box" style= "float: right;">
-							<span><input type="button" value="수정" 		onclick=""></span>
+						<form action="/board/updateReply" method="post">	
+							<span><input type="hidden" name="art_id"  		value="${detailArticle.art_id }"></span>
+							<span><input type="hidden" name="brd_id" 		value="${detailArticle.brd_id }"></span>
+							<span><input type="hidden" name="rep_id" 		value="${reply.rep_id }"></span>
+							<span><input type="text" name="rep_content" value="${reply.rep_content }"></span>
+							<span><input type="submit" value="수정"></span>
+						</form>
 						<form action="/board/deleteReply" method="post">	
 							<span><input type="hidden" name="art_id"  		value="${detailArticle.art_id }"></span>
 							<span><input type="hidden" name="brd_id" 		value="${detailArticle.brd_id }"></span>
