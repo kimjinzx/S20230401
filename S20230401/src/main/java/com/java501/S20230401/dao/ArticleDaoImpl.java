@@ -7,6 +7,10 @@ import org.springframework.stereotype.Repository;
 
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.ArticleMember;
+import com.java501.S20230401.model.Article_Trade_Reply;
+import com.java501.S20230401.model.Comm;
+import com.java501.S20230401.model.MemberInfo;
+import com.java501.S20230401.model.Region;
 import com.java501.S20230401.util.SummaryType;
 
 import lombok.RequiredArgsConstructor;
@@ -16,100 +20,6 @@ import lombok.RequiredArgsConstructor;
 public class ArticleDaoImpl implements ArticleDao {
 	// 마이바티스 db연동
 	private final SqlSession session;
-	
-	// 총리스트
-	@Override
-	public int totalArticle() {
-		int totArticleCount = 0;
-		System.out.println("ArticleImpl Start total...");
-		
-		try {
-			totArticleCount = session.selectOne("ArticleTotal");
-			System.out.println("ArticleImpl totalArticle totArticleCount->" + totArticleCount);
-		} catch (Exception e) {
-			System.out.println("ArticleImpl totalArticle Exception->"+e.getMessage());
-		}
-		
-		return totArticleCount;
-	}
-	// 리스트조회
-	@Override
-	public List<Article> listArticle(Article article) {
-		List<Article> articleList = null;
-		System.out.println("ArticleDaoImpl listArticle Start...");
-		try {
-			articleList = session.selectList("cyArticleListAll", article);
-		} catch (Exception e) {
-			System.out.println("ArticleImpl listArticle e.getMessage()->"+e.getMessage());
-		}
-		return articleList;
-	}
-	//상세페이지
-	@Override
-	public Article cyArticlereadDetail(Article article) {
-		System.out.println("ArticleDaoImpl article Start...");
-		Article result = null;
-		try {
-			result = session.selectOne("cyArticlereadDetail", article);
-		} catch (Exception e) {
-			System.out.println("ArticleImpl article e.getMessage()->"+e.getMessage());
-		}
-		System.out.println("articleDaoImpl detail"+article);
-		return result;
-	}
-	// 상세페이지
-	@Override
-	public Article detatilArticle(int art_title) {
-		System.out.println("ArticleDaoImpl detail start..");
-		Article article = new Article();
-		
-		try {
-			article = session.selectOne("cyArticleSelOne", art_title);
-			System.out.println("ArticleImpl detail brd_id->" +article.getBrd_id());
-		} catch (Exception e) {
-			System.out.println("articleDaoImpl detail Excpetion->"+e.getMessage());
-		}
-		
-		return article;
-	}
-	//상세페이지 수정
-	@Override
-	public Article cyArticlereadupdate(Article article) {
-		System.out.println("ArticleDaoImpl article Start...");
-		Article result = null;
-		try {
-			result = session.selectOne("cyArticlereadupdate", article);
-		} catch (Exception e) {
-			System.out.println("ArticleImpl article e.getMessage()->"+e.getMessage());
-		}
-		return result;
-	}
-	// 게시물 작성
-	@Override
-	public int cyArticleinsert(Article article) {
-		System.out.println("ArticleDaoImpl insert Start...");
-		int result = 0;
-		try {
-			result = session.insert("cyArticleinsert", article);
-		} catch (Exception e) {
-			System.out.println("ArticleImpl article e.getMessage()->"+e.getMessage());
-		}
-		return result;
-	}
-	//게시물 수정
-	@Override
-	public int cyArticlemodify(Article article) {
-		System.out.println(article);
-		System.out.println("ArticleDaoImpl modify Start...");
-		int result = 0;
-		try {
-			result = session.update("cyArticlemodify", article);
-		} catch (Exception e) {
-			System.out.println("ArticleImpl article e.getMessage()->"+e.getMessage());
-		}
-		return result;
-	}
-	
 	
 	// 유현규
 	@Override
@@ -491,13 +401,6 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
 	// 김찬영
 	// 총리스트
 	@Override
@@ -526,6 +429,21 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return articleList;
 	}
+	//댓글 조회
+	@Override
+	public List<Article> listReply(Article article) {
+		List<Article> Replylist = null;
+		System.out.println("ArticleDaoImpl listReply Start..");
+		try {
+			Replylist = session.selectList("cyReply", article);
+		} catch (Exception e) {
+			System.out.println("ArticleImpl listReply e.getMessage()->"+e.getMessage());
+		}
+		return Replylist;
+	}
+
+	
+	
 	//상세페이지
 	@Override
 	public Article cyArticlereadDetail(Article article) {
@@ -590,10 +508,64 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return result;
 	}
+	@Override
+	public int cyArticledelete(Article article) {
+		System.out.println(article);
+		System.out.println("ArticleDaoImpl delete Start...");
+		int result = 0;
+		try {
+			result = session.delete("cyArticledelete", article);
+		} catch (Exception e) {
+			System.out.println("ArticleImpl article e.getMessage()->"+e.getMessage());
+		}
+		return result;
+	}
+		//조회수
+		@Override
+		public int updateView(Article article) {
+			System.out.println(article);
+			System.out.println("ArticleDaoImpl updateView Start..article");
+			int result = 0;
+			try {
+				result = session.update("cyUpdateView", article);
+			} catch (Exception e) {
+				System.out.println("ArticleImpl article e.getMessage()->"+e.getMessage());
+			}
+			return result;
+		}
+		//추천
+		@Override
+		public int updateGood(Article article) {
+			System.out.println(article);
+			System.out.println("ArticleDaoImpl updateView Start..article");
+			int result = 0;
+			try {
+				result = session.update("cyUpdateGood", article);
+			} catch (Exception e) {
+				System.out.println("ArticleImpl article e.getMessage()->"+e.getMessage());
+			}
+			return result;
+		}
+		//비추천
+		@Override
+		public int updateBad(Article article) {
+			System.out.println(article);
+			System.out.println("ArticleDaoImpl updateView Start..article");
+			int result = 0;
+			try {
+				result = session.update("cyUpdateBad", article);
+			} catch (Exception e) {
+				System.out.println("ArticleImpl article e.getMessage()->"+e.getMessage());
+			}
+			return result;
+		}
 	
 	
-	
-	
+		
+		
+		
+		
+		
 	
 	// 최승환
 	@Override
@@ -624,6 +596,8 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return customerList;	
 	}
+	
+	
 	
 	@Override
 	public Article detailCustomer(Article article) {
@@ -661,4 +635,39 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return result;
 	}
+
+	@Override
+	public int allTotalArt(Article article) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<Article> allArticleList(Article article) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Article detailShareArticle(Article article) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int readShareArticle(Article article) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int writeShareArticle(Article article) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+
+
+
 }

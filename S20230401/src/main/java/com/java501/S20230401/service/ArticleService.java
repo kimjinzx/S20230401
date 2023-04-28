@@ -62,13 +62,18 @@ public interface ArticleService {
 	List<Region> 						loc_ud1();
 	
 	// 김찬영
-	int				totalArticle();
-	List<Article> 	listArticle(Article article);
-	Article			cyArticlereadDetail(Article article);
-	Article 		cyArticlereadupdate(Article article);
-	Article 		detailArticle(int art_title);
-	int				cyArticleinsert(Article article);
-	int				cyArticlemodify(Article article);
+	int					totalArticle();
+	List<Article> 		listArticle(Article article);
+	List<Article> 		listReply(Article article);
+	Article				cyArticlereadDetail(Article article);
+	Article 			cyArticlereadupdate(Article article);
+	Article 			detailArticle(int art_title);
+	int					cyArticleinsert(Article article);
+	int					cyArticlemodify(Article article);
+	public Article 		cyArticledelete(Article article);
+	int 				updateView(Article article);
+	int 				updateGood(Article article);
+	int 				updateBad(Article article);
 	
 	// 최승환
 	int 				totalCustomer();

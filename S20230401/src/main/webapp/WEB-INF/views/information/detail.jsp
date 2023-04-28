@@ -6,24 +6,18 @@
 <head>
 <meta charset="UTF-8">
 <title>상세페이지</title>
-<style>
-	#art-tags > li {
-	  float:left;
-	  margin:1px;
-	  display:block;
-	  padding:2px;
-	}
-</style>
 </head>
 <script type="text/javascript">
+function report() {
 
-//작동 안함 신고하기 버튼 클릭시 예 아니요 구현
-/* $(function() {
-	$("input[id$=report]").click(function(){
-		if(!confirm('신고하시겠습니까?')== false) return false;
-			return true;
-	});
-}); */
+  if (confirm("정말로 신고 하시겠습니까??")) {
+
+    window.location.href = "https://www.epeople.go.kr/index.jsp";
+
+  }
+
+}
+
 function functionAlert(){
 	alert("신청완료 되었습니다");
 }
@@ -31,131 +25,88 @@ function functionAlert(){
 function functionAlert2(){
 	alert("관심 등록 되었습니다");
 }
-
-
  </script>
 <body>
-
-<table>
-  <tr>
-   <td>
-    <table width="100%" cellpadding="0" cellspacing="0" border="0">
-     <tr style="background:url('img/table_mid.gif') repeat-x; text-align:center;">
-      <td width="5"><img src="img/table_left.gif" width="5" height="30" /></td>
-      <td>게시글</td>
-      <td width="5"><img src="img/table_right.gif" width="5" height="30" /></td>
-     </tr>
-    </table>
-	<button type="button" onclick="location.href='${pageContext.request.contextPath}/board/information/update?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category }';">수정하기</button>
-	<button onclick="location.href='${pageContext.request.contextPath }/board/information?category=1400';">목록</button>
-	<table>
-     <tr>
-	      <td>&nbsp;</td>
-	      <td align="center">글번호</td>
-	      <td>
-	      	<input name="artId" size="50" maxlength="100" value="${aticle.art_id}">
-	      </td>
-	      <td>&nbsp;</td>
-     </tr>
-     <tr height="1" bgcolor="#dddddd">
-     		<td colspan="4"></td>
-     </tr>
-     
-     
-     <tr>
-	      <td>&nbsp;</td>
-	      <td align="center">게시판 번호</td>
-	      <td>
-	      	<input name="brdId" size="50" maxlength="100" value="${aticle.brd_id}">
-	      </td>
-	      <td>&nbsp;</td>
-     </tr>
-     <tr height="1" bgcolor="#dddddd">
-     		<td colspan="4"></td>
-     </tr>
-     
-     
-     <tr>
-	      <td>&nbsp;</td>
-	      <td align="center">제목</td>
-	      <td>
-	      	<input name="title" size="50" maxlength="100" value="${aticle.art_title}">
-	      </td>
-	      <td>&nbsp;</td>
-     </tr>
-     <tr height="1" bgcolor="#dddddd">
-     		<td colspan="4"></td>
-     </tr>
-
-
+	        <h1>게시글 수정</h1>
+	<form action ="${pageContext.request.contextPath }/board/information/detail" id ="detail">
+		<input type="button" value="목록" onclick="location.href='${pageContext.request.contextPath }/board/information?category=1400'">
+		<input type="button" value="수정하기" onclick="location.href='${pageContext.request.contextPath}/board/information/update?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category }';">
+		<input type="button" value="삭제하기" onclick="location.href='${pageContext.request.contextPath }/board/information/delete?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category }';">
+		<input type="hidden" name="art_id" value="${article.art_id }">
+		<input type="hidden" name="brd_id" value="${article.brd_id }">
+		<input type="hidden" name="category" value="${category}">
+            <table>
+                <tr>
+                    <th>제목</th>
+                    <td><input type="text" name="art_title" value="${article.art_title}"></td>
+                </tr>
+                <tr>
+                    <th>태그1</th>
+                    <td><input type="text" name="art_tag1" value="${article.art_tag1}"></td>
+                </tr>
+                <tr>
+                    <th>태그2</th>
+                    <td><input type="text" name="art_tag2" value="${article.art_tag2}"></td>
+                </tr>
+                <tr>
+                    <th>태그3</th>
+                    <td><input type="text" name="art_tag3" value="${article.art_tag3}"></td>
+                </tr>
+                <tr>
+                    <th>태그4</th>
+                    <td><input type="text" name="art_tag4" value="${article.art_tag4}"></td>
+                </tr>
+                <tr>
+                    <th>태그5</th>
+                    <td><input type="text" name="art_tag5" value="${article.art_tag5}"></td>
+                </tr>
+                <tr>
+                    <th>추천수</th>
+                    <td><input type="text" name="art_good" value="${article.art_good}"></td>
+                </tr>
+                <tr>
+                    <th>비추천수</th>
+                    <td><input type="text" name="art_bad" value="${article.art_bad}"></td>
+                </tr>
+                <tr>
+                    <th>조회수</th>
+                    <td><input type="text" name="art_read" value="${article.art_read}"></td>
+                </tr>
+                <tr>
+                    <th>작성일</th>
+                    <td><fmt:formatDate value="${article.art_regdate}" pattern="YY-MM-dd"/></td>
+                </tr>
+                <tr>
+                    <th>내용</th>
+                    <td><textarea rows="15" cols="50" name="art_content">${article.art_content}</textarea></td>
+                </tr>
+            </table>
+       <input type=button onclick="report()" value="신고하기">
+       <input type=button onclick="functionAlert2()" value="관심">
+       <input type=button onclick="functionAlert()" value="신청">
+       <input type=button value="추천" onclick="location.href='${pageContext.request.contextPath }/board/information/updategood?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category }';">
+       <input type=button value="비추천" onclick="location.href='${pageContext.request.contextPath }/board/information/updatebad?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category }';">
+</form>
+	<table border="1">
 	<tr>
-	  <td>&nbsp;</td>
-	  <td align="center">작성일</td>
-	  <td>
-	    <fmt:formatDate value="${art_regdate}" pattern="yyyy-MM-dd"/>
-	  </td>
-	  <td>&nbsp;</td>
+		<th>댓글 번호</th>
+		<th>닉네임</th>
+		<th>댓글 내용</th>
+		<th>작성 일자</th>
+		<th>댓글 추천수</th>
+		<th>댓글 비추천수</th>
 	</tr>
-	<tr height="1" bgcolor="#dddddd">
-	  <td colspan="4"></td>
+		<c:forEach var="reply" items="${listReply }">
+	<tr>
+		<td>${reply.rep_id }</td>
+		<td>${reply.mem_nickname }</td>
+		<td>${reply.rep_content }</td>
+		<td><fmt:formatDate value="${reply.rep_regdate}" pattern="YYYY-MM-dd"/></td>
+		<td>${reply.rep_good}</td>
+		<td>${reply.rep_bad}</td>
 	</tr>
-     
-     
-     <tr>
-      <td>&nbsp;</td>
-      <td align="center">작성자</td>
-      <td>
-      	<input name="nickname" size="50" maxlength="50" value="${aticle.mem_nickname }">
-      </td>
-      <td>&nbsp;</td>
-     </tr>
-      <tr height="1" bgcolor="#dddddd">
-      		<td colspan="4"></td>
-      </tr>
-      
-      
-    <tr>
-      <td>&nbsp;</td>
-      <td align="center">태그</td>
-      <td>
-      	<ul id="art-tags">
-      		<c:if test="${art_tag1 != null}"><li>#${aticle.art_tag1}</li></c:if>
-      		<c:if test="${art_tag2 != null}"><li>#${aticle.art_tag2}</li></c:if>
-      		<c:if test="${art_tag3 != null}"><li>#${aticle.art_tag3}</li></c:if>
-      		<c:if test="${art_tag4 != null}"><li>#${aticle.art_tag4}</li></c:if>
-      		<c:if test="${art_tag5 != null}"><li>#${aticle.art_tag5}</li></c:if>
-      	</ul>
-      </td>
-      <td>&nbsp;</td>
-     </tr>
-     <tr height="1" bgcolor="#dddddd">
-     	<td colspan="4"></td>
-     </tr>
-     
-     
-     <tr>
-	      <td>&nbsp;</td>
-	      <td align="center">내용</td>
-      <td>
-      	  <textarea name="content" cols="50" rows="13">${aticle.art_content}</textarea>
-      </td>
-      	  <td>&nbsp;</td>
-     </tr>
-     <tr height="1" bgcolor="#dddddd">
-     	<td colspan="4"></td>
-     </tr>
+		</c:forEach>
+	</table>
 
-     <tr align="center">
-      <td>&nbsp;</td>
-      <td colspan="2">
-       <input type=button onclick="report" style="float:right" value="신고하기">
-       <input type=button onclick="functionAlert2()" style="float:right" value="관심">
-       <input type=button onclick="functionAlert()" style="float:right" value="신청">
-      <td>&nbsp;</td>
-     </tr>
-    </table>
-   </td>
-  </tr>
- </table>
 </body>
 </html>

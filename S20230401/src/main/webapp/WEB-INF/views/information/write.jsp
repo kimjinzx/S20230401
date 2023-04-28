@@ -51,7 +51,7 @@ function writeCheck()
     		<option disabled = "disabled">=====선택=====</option>
     		<option value="1410">동네정보</option>
     		<option value="1420">구매정보</option>
-    		<option value="1430">신규정보</option>
+    		<option value="1430">신규점포</option>
     		<option value="1440">지역정보</option>
     	</select>
    <table>
@@ -61,11 +61,50 @@ function writeCheck()
       <td><input name="art_title" size="50" maxlength="100"></td>
       <td>&nbsp;</td>
      </tr>
-     <tr height="1" bgcolor="#dddddd"><td colspan="4"></td></tr>
+     	<tr height="1" bgcolor="#dddddd"><td colspan="4"></td>
+     </tr>
+  
+  
     <tr>
       <td>&nbsp;</td>
-      <td align="center">태그</td>
-      <td><input name="art_tag1" size="50" maxlength="50"></td>
+      <td align="center">태그1</td>
+      <td><input name="art_tag1" size="20" maxlength="50" value="${article.art_art_tag1}"></td>
+      <td>&nbsp;</td>
+     </tr>
+     <tr height="1" bgcolor="#dddddd">
+     	<td colspan="4"></td>
+     </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td align="center">태그2</td>
+      <td><input name="art_tag2" size="20" maxlength="50" value="${article.art_art_tag2}"></td>
+      <td>&nbsp;</td>
+     </tr>
+     <tr height="1" bgcolor="#dddddd">
+     	<td colspan="4"></td>
+     </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td align="center">태그3</td>
+      <td><input name="art_tag3" size="20" maxlength="50" value="${article.art_art_tag3}"></td>
+      <td>&nbsp;</td>
+     </tr>
+     <tr height="1" bgcolor="#dddddd">
+     	<td colspan="4"></td>
+     </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td align="center">태그4</td>
+      <td><input name="art_tag4" size="20" maxlength="50" value="${article.art_art_tag4}"></td>
+      <td>&nbsp;</td>
+     </tr>
+     <tr height="1" bgcolor="#dddddd">
+     	<td colspan="4"></td>
+     </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td align="center">태그5</td>
+      <td><input name="art_tag5" size="20" maxlength="50" value="${article.art_art_tag5}"></td>
       <td>&nbsp;</td>
      </tr>
      <tr height="1" bgcolor="#dddddd">

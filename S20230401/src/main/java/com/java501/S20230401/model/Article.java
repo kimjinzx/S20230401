@@ -100,7 +100,6 @@ public class Article {
 	private Integer     reg_id2;
 	
 	// 김찬영
-	//조회용(강의내용)
 	private String 		keyword;
 	
 	// 최승환

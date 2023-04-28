@@ -274,6 +274,15 @@ public class ArticleServiceImpl implements ArticleService {
 		System.out.println("ArticleServiceImpl listArticle articleList.size()->" +articleList.size());
 		return articleList;
 	}
+	// 댓글 조회
+	@Override
+	public List<Article> listReply(Article article) {
+		List<Article> listReply = null;
+		System.out.println("ArticleServiceImpl listReply Start...");
+		listReply = ad.replyList(article);
+		System.out.println("ArticleServiceImpl listReply articleList.size()->" +listReply.size());
+		return listReply;
+	}
 	// 상세페이지 조회
 	@Override
 	public Article cyArticlereadDetail(Article article) {
@@ -313,6 +322,34 @@ public class ArticleServiceImpl implements ArticleService {
 		int result = ad.cyArticleinsert(article);
 		return result;
 	}
+	//상세페이지에서 삭제하기
+	@Override
+	public Article cyArticledelete(Article article) {
+		System.out.println("ArticleServiceImpl delete...");
+		int result = ad.cyArticledelete(article);
+		return null;
+	}
+	@Override
+	public int updateView(Article article) {
+		System.out.println("ArticleServiceImpl updateView");
+		int result = ad.updateView(article);
+		return result;
+	}
+	@Override
+	public int updateGood(Article article) {
+		System.out.println("ArticleServiceImpl updateView");
+		int result = ad.updateGood(article);
+		return result;
+	}
+	@Override
+	public int updateBad(Article article) {
+		System.out.println("ArticleServiceImpl updateView");
+		int result = ad.updateBad(article);
+		return result;
+	}
+	
+
+
 
 	// 최승환
 	@Override
@@ -350,4 +387,6 @@ public class ArticleServiceImpl implements ArticleService {
 		result = ad.insertCustomer(article);
 		return result;
 	}
+
+
 }
