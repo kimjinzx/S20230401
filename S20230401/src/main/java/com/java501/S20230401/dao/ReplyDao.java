@@ -2,8 +2,6 @@ package com.java501.S20230401.dao;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
-
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.model.ReplyMember;
@@ -32,5 +30,7 @@ public interface ReplyDao {
 	
 	// 임동빈
 	int 	dbInsertReply(Reply reply);
+	int 	dbDeleteReply(Reply reply);
+	
 
 }

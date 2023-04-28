@@ -132,5 +132,15 @@ public class ReplyDaoImpl implements ReplyDao {
 			e.printStackTrace();
 		}
 		return dbInsertReply;
+	}
+	@Override
+	public int dbDeleteReply(Reply reply) {
+		int dbDeleteReply = 0;
+		try {
+			dbDeleteReply = session.update("dbDeleteReply", reply);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return dbDeleteReply;
 	}	
 }

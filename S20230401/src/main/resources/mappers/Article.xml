@@ -299,8 +299,7 @@
 		AND    	isdelete = 0
 	</select>
 
-	<select id="dbArticleBoardCnt" parameterType="Article">
-		resultType="int">
+	<select id="dbArticleBoardCnt" parameterType="Article" resultType="int">
 		SELECT 	Count(*) 
 		FROM 	article 
 		WHERE 	brd_id=#{brd_id}
@@ -575,7 +574,7 @@
 	{
 		call Update_Article(
 			  #{trd_id, 	   mode= IN,  jdbcType=NUMERIC}
-			, 1
+			, #{mem_id,		   mode= IN,  jdbcType=NUMERIC}
 			, 401
 			, #{trd_max,       mode= IN,  jdbcType=NUMERIC}
 			, #{trd_enddate,   mode= IN,  jdbcType=DATE}

@@ -194,11 +194,20 @@ public class TogetherController {
 		int art_id = reply.getArt_id();
 		int brd_id = reply.getBrd_id();
 		
-		System.out.println("rep_content = " + reply.getRep_content());
 		model.addAttribute("insertReply", insertReply);
 		
 		return "redirect:/board/detailArticle?art_id="+art_id+"&brd_id="+brd_id;
+	}
 	
+	@RequestMapping(value="/board/deleteReply")
+	public String deleteReply(Reply reply, Model model) {
+		int deleteReply = rs.dbDeleteReply(reply);
+		
+		int art_id = reply.getArt_id();
+		int brd_id = reply.getBrd_id();
+		model.addAttribute("deleteReply", deleteReply);
+		
+		return "redirect:/board/detailArticle?art_id="+art_id+"&brd_id="+brd_id;
 	}
 	
 	

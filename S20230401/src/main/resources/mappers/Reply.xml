@@ -236,4 +236,12 @@
 					  0)
 	</insert>
 	
+	<update id="dbDeleteReply" parameterType="Reply">
+		UPDATE  	REPLY
+		SET     	ISDELETE = 1
+		WHERE   	BRD_ID = #{brd_id}
+		AND     	ART_ID = #{art_id}
+		AND     	REP_ID = #{rep_id}
+	</update>
+	
 </mapper>

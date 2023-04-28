@@ -74,5 +74,9 @@ public class ReplyServiceImpl implements ReplyService {
 	public int dbInsertReply(Reply reply) {
 		return rd.dbInsertReply(reply);
 	}
+	@Override
+	public int dbDeleteReply(Reply reply) {
+		return rd.dbDeleteReply(reply);
+	}
 	
 }
