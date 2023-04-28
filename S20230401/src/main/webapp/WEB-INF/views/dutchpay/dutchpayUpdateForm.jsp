@@ -26,7 +26,7 @@
 	
 	작성자 : <input type="hidden"    name="member_image" >${updateForm.mem_image }
 		   <input type="hidden"    name="member_username" >${updateForm.mem_username }<p>
-	작성날짜 : ${updateForm.art_regdate }<p>
+	작성날짜 :	 <fmt:formatDate value="${updateForm.art_regdate}" pattern="yyyy년M월d일  hh시mm분"/><p>
 	<table>
 		<tr><th>제목</th><td>
 			<input type="text"     name="art_title"value="${updateForm.art_title }" required="required" ></td></tr>
@@ -38,7 +38,7 @@
 			<input type="text"     name="art_tag5" value="${updateForm.art_tag5}">
 		</td></tr>
 		<tr><th>가격</th><td>
-			<input type="number"   name="trd_cost" value="${updateForm.trd_cost}"   required="required"></td></tr>
+			<input type="number"   name="trd_cost" value="${updateForm.trd_cost}"   required="required"> 원</td></tr>
 		<tr><th>모집인원</th><td>
 			<input type="number"   name="trd_max"  value="${updateForm.trd_max}"	  required="required"> 명 (작성자 제외)</td></tr>
 		<%-- <tr><th>마감일자</th><td>
@@ -46,7 +46,7 @@
 		<tr><th>지역</th><td>
 			<select name="reg_id">
 			<c:forEach var="L_ud" items="${loc_ud }">
-				<option value="${L_ud.reg_id }">${L_ud.reg_name }</option>
+				<option value="${L_ud.reg_id }" ${L_ud.reg_id == updateForm.reg_id ? 'selected' : '' }>${L_ud.reg_name }</option>
 			</c:forEach>
 			</select></td>
 		</tr> 

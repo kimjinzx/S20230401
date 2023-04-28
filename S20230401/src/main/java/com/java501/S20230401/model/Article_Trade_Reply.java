@@ -80,4 +80,8 @@ public class Article_Trade_Reply {
 	
 	private Number 		insert_result;
 	private Integer		reply_count;
+
+	private String	 	pageNum;
+	private Integer		start;
+	private Integer		end;
 }

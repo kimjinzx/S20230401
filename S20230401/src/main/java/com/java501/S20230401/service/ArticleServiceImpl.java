@@ -214,6 +214,12 @@ public class ArticleServiceImpl implements ArticleService {
 		atr1 = ad.detail2(atr);
 		return atr1;
 	}
+	
+	@Override
+	public List<Article_Trade_Reply> repList1(Article_Trade_Reply atr) {
+		List<Article_Trade_Reply> repList = ad.repList2(atr);
+		return repList;
+	}
 
 	@Override
 	public List<Comm> category1() {
@@ -260,6 +266,19 @@ public class ArticleServiceImpl implements ArticleService {
 		
 	}
 
+	@Override
+	public int DeatilRead1(Article_Trade_Reply atr) {
+		int read = 0;
+		read = ad.DeatilRead2(atr);
+		return read;
+	}
+	
+//	@Override
+//	public int totalArticle1() {
+//		int page = 0;
+//		page = ad.totalArticle2();
+//		return page;
+//	}
 
 
 	// 김찬영

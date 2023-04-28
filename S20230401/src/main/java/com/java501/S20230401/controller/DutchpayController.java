@@ -12,6 +12,7 @@ import com.java501.S20230401.model.Article_Trade_Reply;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Region;
 import com.java501.S20230401.service.ArticleService;
+import com.java501.S20230401.service.Paging;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,10 +25,10 @@ public class DutchpayController {
 	private final ArticleService as;
 	
 	@RequestMapping(value = "/board/dutchpay") // 대분류 같이사요 + 중분류 하위카테고리 이동 및 List조회  
-	public String dutchpayList(Article_Trade_Reply atr,int category, Model model) {
+	public String dutchpayList(Article_Trade_Reply atr,int category, String currentPage, Model model) {
 		String viewName;
 		 String boardName;
-	      switch(category) {
+	      switch(category) { //카테고리 이동
 	      case 1110: viewName = "dutchpayFoodList"; boardName = "FoodList"; break;
 	      case 1120: viewName = "dutchpayClothesList"; boardName = "ClothesList"; break;
 	      case 1130: viewName = "dutchpayHouseStuffList"; boardName = "HouseStuffList"; break;
@@ -39,20 +40,35 @@ public class DutchpayController {
 	      System.out.println("controller dutchpayList size() -> "+dutchpayList.size());
 	      model.addAttribute("dutchpayList", dutchpayList);
 	      
+//	      // 페이징
+//	      int totalAticle = as.totalArticle1();
+//	      System.out.println("컨트롤러 페이징 totalArticle -> "+totalAticle);
+//	      
+//	      Paging page = new Paging(totalAticle, currentPage);
+//	      atr.setStart(page.getStart());
+//	      atr.setEnd(page.getEnd());
 	      
 	      return "dutchpay/" + viewName;
 	}
 	
 	@RequestMapping(value ="/dutchpay/dutchpayDetail") //상세 게시글    
 	public String dutchpayDetail(Article_Trade_Reply atr ,Model model) {
+		
+		int read = as.DeatilRead1(atr); // 조회수
+
 		System.out.println("controller detail brd_id -> "+atr.getBrd_id());
 		System.out.println("controller detail art_id -> "+atr.getArt_id());
-		Article_Trade_Reply detail = as.detail1(atr);
+		Article_Trade_Reply detail = as.detail1(atr); //상세페이지
 		model.addAttribute("detail", detail);
 		
-		return "/dutchpay/dutchpayDetail";
 		
+		List<Article_Trade_Reply> repList = as.repList1(atr); // 댓글리스트 조회
+		model.addAttribute("repList", repList);
+		
+		return "/dutchpay/dutchpayDetail";
 	}
+
+	
 
 	@RequestMapping(value = "dutchpay/dutchpayWriteForm") //글쓰기 폼 
 	public String dutchpayWriteForm(Model model) {
@@ -110,7 +126,6 @@ public class DutchpayController {
 		System.out.println(atr);
 		System.out.println("controller update brd_id -> "+atr.getBrd_id());
 		System.out.println("controller update art_id -> "+atr.getArt_id());
-		System.out.println("controller update trd_id -> "+atr.getTrd_id());
 		as.dutchpayUpdate1(atr);
 		ra.addFlashAttribute("atr", atr);  
 		int brd_id = atr.getBrd_id();

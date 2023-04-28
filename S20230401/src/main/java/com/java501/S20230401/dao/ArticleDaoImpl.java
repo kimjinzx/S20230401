@@ -12,11 +12,9 @@ import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.ArticleMember;
 import com.java501.S20230401.model.MemberInfo;
 import com.java501.S20230401.util.SummaryType;
-import oracle.security.o3logon.a;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import oracle.security.o3logon.a;
 
 @Repository
 @RequiredArgsConstructor
@@ -379,8 +377,8 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 	
 	
-	
-	@Override//진현
+	//김진현
+	@Override
 	public List<Article_Trade_Reply> getDutchpayList(String boardName) {
 		List<Article_Trade_Reply> dutchpayList2 = null;
 		
@@ -400,6 +398,17 @@ public class ArticleDaoImpl implements ArticleDao {
 			System.out.println("ArticleDaoImpl detail2 Exception -> "+e.getMessage());
 		}
 		return atr2;
+	}
+	
+	@Override
+	public List<Article_Trade_Reply> repList2(Article_Trade_Reply atr) {
+		List<Article_Trade_Reply> repList = null;
+		try {
+			repList = session.selectList("JHRepList",atr);
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl repList2 Exception -> "+e.getMessage());
+		}
+		return repList;
 	}
 
 	@Override
@@ -475,6 +484,27 @@ public class ArticleDaoImpl implements ArticleDao {
 			System.out.println("ArticleDaoImpl dutchpayDelete2 Exception -> "+e.getMessage());
 		}
 	}
+	
+	@Override
+	public int DeatilRead2(Article_Trade_Reply atr) {
+		int read = 0;
+		try {
+			read = session.update("JHDeatilRead",atr);
+		} catch (Exception e) {
+		}
+		return read;
+	}
+	
+//	@Override
+//	public int totalArticle2() {
+//		int page = 0;
+//		try {
+//			page = session.selectOne("JHPaging");
+//		} catch (Exception e) {
+//			System.out.println("ArticleDaoImpl totalArticle2 Exception -> "+e.getMessage());
+//		}
+//		return page;
+//	}
 	//진현
 	
 	// 김찬영

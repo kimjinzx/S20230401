@@ -9,7 +9,6 @@ import com.java501.S20230401.model.Region;
 
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.ArticleMember;
-import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.model.MemberInfo;
 import com.java501.S20230401.util.SummaryType;
 
@@ -57,13 +56,16 @@ public interface ArticleDao {
 	// 김진현
 	List<Article_Trade_Reply> 			getDutchpayList(String boardName);
 	Article_Trade_Reply                 detail2(Article_Trade_Reply atr);
+	public List<Article_Trade_Reply> 	repList2(Article_Trade_Reply atr);
 	void 								dutchpayInsert2(Article_Trade_Reply atr);
 	List<Comm>           				category2();
 	List<Region>    			        loc2();
 	Article_Trade_Reply 				updateForm2(Article_Trade_Reply atr);
 	List<Region> 						loc_ud2();
-	void dutchpayUpdate2(Article_Trade_Reply atr);
-	void dutchpayDelete2(Article_Trade_Reply atr);
+	void 								dutchpayUpdate2(Article_Trade_Reply atr);
+	void 								dutchpayDelete2(Article_Trade_Reply atr);
+	public int 							DeatilRead2(Article_Trade_Reply atr);
+//	public int 							totalArticle2();
 	
 	
 	// 김찬영

@@ -54,15 +54,16 @@ public interface ArticleService {
 	// 김진현
 	List<Article_Trade_Reply> 			getDutchpayList(String boardName);//진현
 	Article_Trade_Reply                 detail1(Article_Trade_Reply atr);
+	public List<Article_Trade_Reply> 	repList1(Article_Trade_Reply atr);
 	List<Comm> 							category1();
 	List<Region>         				loc1();
 	void 								dutchpayInsert1(Article_Trade_Reply atr);
 	Article_Trade_Reply		 			updateForm1(Article_Trade_Reply atr);
 	List<Region> 						loc_ud1();
-
-	public void dutchpayUpdate1(Article_Trade_Reply atr);
-
-	public void dutchpayDelete1(Article_Trade_Reply atr);
+	public void 						dutchpayUpdate1(Article_Trade_Reply atr);
+	public void 						dutchpayDelete1(Article_Trade_Reply atr);
+	public int 							DeatilRead1(Article_Trade_Reply atr);
+//	public int 							totalArticle1();
 
 
 	
