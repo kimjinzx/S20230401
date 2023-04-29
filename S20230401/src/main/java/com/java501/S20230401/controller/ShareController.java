@@ -68,12 +68,15 @@ public class ShareController {
 		
 		// 접속한 게시판의 카테고리 목록 가져오기
 		List<Comm> commList = commService.commList((category / 100 * 100));
-		// 접속한 카테고리 이름 식별
-		String categoryName = commService.categoryName(category);
+		// 접속한 게시판과 카테고리 식별
+		String boardName = commService.categoryName(category);
+		String categoryName = commService.categoryName(article.getBrd_id());
 		
 		// 페이징 작업 (게시글 수)
 		totalArt = articleService.allTotalArt(article);
+		
 		Paging page = new Paging(totalArt, currentPage);
+		
 		article.setStart(page.getStart());
 		article.setEnd(page.getEnd());
 		
@@ -84,69 +87,12 @@ public class ShareController {
 		model.addAttribute("page", page);
 		model.addAttribute("totalArt", totalArt);
 		model.addAttribute("category", category);
+		model.addAttribute("boardName", boardName);
 		model.addAttribute("categoryName", categoryName);
 		model.addAttribute("commList", commList);
 		
 		return "share/total";
 	}
-	
-	
-//	
-//	
-//	public int dgCheck() {
-//		// url 데이터 변환
-//		
-//		int dgCheck(int art_id, int, brd_id, int mem_id){
-//			
-//		}
-//		article.setArt_id(Integer.parseInt(art_id));
-//
-//		// 쿠키용 조회글 저장
-//		String visitArticle = ""+article.getArt_id()+article.getBrd_id();
-//
-//		// 로그인 후 유저 정보
-//		MemberInfo memberInfo = null;
-//		if(memberDetails != null) {
-//			memberInfo = memberDetails.getMemberInfo();
-//			visitArticle += Integer.toString(memberInfo.getMem_id()); // 중복 방지 유저 id 추가 저장
-//			model.addAttribute("memberInfo", memberInfo);
-//		}
-//		
-//		
-//		// 조회수 로직
-//		Cookie oldCookie = null;
-//		int result = 0;
-//		// 쿠키 중복 체크
-//		Cookie[] cookies = request.getCookies();
-//		if(cookies != null) {
-//			for(Cookie cookie : cookies) {
-//				log.info("쿠키 이름 {} , 쿠키 값{}",cookie.getName(), cookie.getValue());
-//				if (cookie.getName().equals("visitArticle")) {
-//					oldCookie = cookie;
-//				}
-//			}
-//		}
-//		// 처음 방문하거나(기존 쿠키 없음), 처음 조회 하는 글일 경우 실행 
-//		if(oldCookie == null) {
-//			Cookie newCookie = new Cookie("visitArticle", visitArticle);
-//			newCookie.setMaxAge(60*60*2); // 쿠키 생명주기 2시간
-//			newCookie.setPath("/");
-//			response.addCookie(newCookie);
-//			// 조회수 증가
-//			result = articleService.readShareArticle(article);
-//			// 쿠키가 있을 경우 (덧붙임)
-//		}else if(!oldCookie.getValue().contains(visitArticle)) {
-//			// 조회수 증가
-//			result = articleService.readShareArticle(article);
-//			oldCookie.setValue(oldCookie.getValue()+"&"+visitArticle); // 기존 쿠키에 덧붙임
-//			oldCookie.setMaxAge(60*60*2);
-//			oldCookie.setPath("/");
-//			response.addCookie(oldCookie);
-//		}
-//		if(result != 0)
-//			System.out.println("성공");
-//	}
-	
 	
 	
 	
@@ -163,67 +109,78 @@ public class ShareController {
 										HttpServletResponse response) {
 		// url 데이터 변환
 		article.setArt_id(Integer.parseInt(art_id));
-
-		// 쿠키용 조회글 저장
-		String visitArticle = ""+article.getArt_id()+article.getBrd_id();
-
+		// 접속한 게시판과 카테고리 식별
+		String boardName = commService.categoryName(category);
+		String categoryName = commService.categoryName(article.getBrd_id());
+		
+//		// 쿠키용 변수 초기화 
+//		String visitArticle = (article.getArt_id()+"|"+article.getBrd_id());
+		String mem_id = "";
 		// 로그인 후 유저 정보
 		MemberInfo memberInfo = null;
 		if(memberDetails != null) {
 			memberInfo = memberDetails.getMemberInfo();
-			visitArticle += Integer.toString(memberInfo.getMem_id()); // 중복 방지 유저 id 추가 저장
+			mem_id = Integer.toString(memberInfo.getMem_id()); // 중복 방지 유저 별 쿠키 관리
 			model.addAttribute("memberInfo", memberInfo);
 		}
 		
 		
-		// 조회수 로직
-		Cookie oldCookie = null;
-		int result = 0;
-		// 쿠키 중복 체크
-		Cookie[] cookies = request.getCookies();
-		if(cookies != null) {
-			for(Cookie cookie : cookies) {
-				log.info("쿠키 이름 {} , 쿠키 값{}",cookie.getName(), cookie.getValue());
-				if (cookie.getName().equals("visitArticle")) {
-					oldCookie = cookie;
-				}
-			}
+//		// 조회수 로직
+//		Cookie oldCookie = null;
+//		int result = 0;
+//		// 쿠키 중복 체크
+//		Cookie[] cookies = request.getCookies();
+//		if(cookies != null) {
+//			for(Cookie cookie : cookies) {
+//				log.info("쿠키 이름 {} & 쿠키 값 {}",cookie.getName(), cookie.getValue());
+//				if (cookie.getName().equals("share"+mem_id)) {
+//					oldCookie = cookie;
+//				}
+//			}
+//		}
+//		// 처음 방문하거나(기존 쿠키 없음), 처음 조회 하는 글일 경우 실행
+//		// 유저별로 쿠키 중복 관리 share|유저| - 글번호|게시판번호
+//		if(oldCookie == null) {
+//			Cookie newCookie = new Cookie("share"+mem_id, visitArticle);
+//			newCookie.setMaxAge(60*60*2); // 쿠키 생명주기 2시간
+//			newCookie.setPath("/");
+//			response.addCookie(newCookie);
+//			// 조회수 증가
+//			result = articleService.readShareArticle(article);
+//			// 쿠키가 있을 경우 덧붙임 (동일한 유저)
+//		}else if(!oldCookie.getValue().contains(visitArticle)) {
+//			// 조회수 증가
+//			result = articleService.readShareArticle(article);
+//			oldCookie.setValue(oldCookie.getValue()+"&"+visitArticle);
+//			oldCookie.setMaxAge(60*60*2);
+//			oldCookie.setPath("/");
+//			response.addCookie(oldCookie);
+//		}
+//		if(result != 0)
+//			System.out.println("성공");
+		
+		
+		
+		// 쿠키 체크 조회수
+		if(dgCheck(request, response, article.getArt_id(), article.getBrd_id(), mem_id)) {
+			articleService.readShareArticle(article);
+			System.out.println("성공 조회수 증가");
+		}else{
+			System.out.println("실패 조회수 변동 없음");
 		}
-		// 처음 방문하거나(기존 쿠키 없음), 처음 조회 하는 글일 경우 실행 
-		if(oldCookie == null) {
-			Cookie newCookie = new Cookie("visitArticle", visitArticle);
-			newCookie.setMaxAge(60*60*2); // 쿠키 생명주기 2시간
-			newCookie.setPath("/");
-			response.addCookie(newCookie);
-			// 조회수 증가
-			result = articleService.readShareArticle(article);
-			// 쿠키가 있을 경우 (덧붙임)
-		}else if(!oldCookie.getValue().contains(visitArticle)) {
-			// 조회수 증가
-			result = articleService.readShareArticle(article);
-			oldCookie.setValue(oldCookie.getValue()+"&"+visitArticle); // 기존 쿠키에 덧붙임
-			oldCookie.setMaxAge(60*60*2);
-			oldCookie.setPath("/");
-			response.addCookie(oldCookie);
-		}
-		if(result != 0)
-			System.out.println("성공");
 		
 		
-		
-		// 글 조회
+		// 글 정보 저장
 		Article detailArticle = articleService.detailShareArticle(article);
-		// 댓글 조회
+		// 댓글 정보 저장
 		List<Reply> replyList = replyService.replyShareList(article);
-		// 접속한 카테고리 이름
-		String categoryName = commService.categoryName(category);
-		String categoryType = commService.categoryName(article.getBrd_id());
+
 		
 		model.addAttribute("article", detailArticle);
 		model.addAttribute("replyList", replyList);
 		model.addAttribute("category", category);
+		model.addAttribute("boardName", boardName);
 		model.addAttribute("categoryName", categoryName);
-		model.addAttribute("categoryType", categoryType);
 		
 		return "share/article";
 	}
@@ -420,4 +377,49 @@ public class ShareController {
 		return "redirect:/board/share?category="+category;
 	}
 */
+	// 쿠키용 체크
+	public boolean dgCheck(	HttpServletRequest request,
+							HttpServletResponse response,
+							Integer art_id,
+							Integer brd_id,
+							String mem_id) {
+		String visitArticle = "|"+art_id+"|"+brd_id;
+		// 조회수 로직
+		Cookie oldCookie = null;
+		// 쿠키 중복 체크
+		Cookie[] cookies = request.getCookies();
+		if(cookies != null) {
+			for(Cookie cookie : cookies) {
+				log.info("쿠키 이름 {} & 쿠키 값 {}",cookie.getName(), cookie.getValue());
+				if (cookie.getName().equals("share|"+mem_id)) {
+					oldCookie = cookie;
+					break;
+				}
+			}
+		}
+		// 처음 방문하거나(기존 쿠키 없음), 처음 조회 하는 글일 경우 실행
+		// 유저별로 쿠키 중복 관리 share|유저| - 글번호|게시판번호
+		if(oldCookie == null) {
+			Cookie newCookie = new Cookie("share|"+mem_id, visitArticle);
+			newCookie.setMaxAge(60*60*2); // 쿠키 생명주기 2시간
+			newCookie.setPath("/");
+			response.addCookie(newCookie);
+			return true;
+			
+			// 쿠키가 있을 경우 덧붙임 (동일한 유저)
+		}else if(!oldCookie.getValue().contains(visitArticle)) {
+			// 조회수 증가
+			oldCookie.setValue(oldCookie.getValue()+"&"+visitArticle);
+			oldCookie.setMaxAge(60*60*2);
+			oldCookie.setPath("/");
+			response.addCookie(oldCookie);
+			return true;
+		}
+		return false;
+	}
+	
 }
+
+
+
+

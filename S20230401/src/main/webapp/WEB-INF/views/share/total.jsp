@@ -212,7 +212,7 @@
 	<div class="container">
 		<div class="article-view">
 			<div class="board-title" align="center">
-				<h1>${categoryName} 게시판</h1>
+				<h1>${boardName} 게시판</h1>
 			</div>
 			
 			총 글 : ${totalArt }
