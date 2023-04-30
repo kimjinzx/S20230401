@@ -201,7 +201,6 @@ public class ShareController {
 		model.addAttribute("regionList", regionList);
 		model.addAttribute("category", category);
 		
-		System.out.println(regionList);
 		return "share/writeForm";
 	}
 	
@@ -210,9 +209,9 @@ public class ShareController {
 	@PostMapping(value = "board/share/writeArticleForm")
 	public String writeArticleForm(	@AuthenticationPrincipal
 									MemberDetails memberDetails,
-									@RequestParam("trd_enddate")
+									@RequestParam("trd_endDate")
 									@DateTimeFormat(pattern="yyyy-MM-dd")
-									Date trd_enddate,
+									Date trd_endDate,
 									Article article, 
 									RedirectAttributes redirectAttributes, 
 									Integer category) {
@@ -221,22 +220,22 @@ public class ShareController {
 		redirectAttributes.addFlashAttribute("category", category);
 		
 		// 마감 날짜 저장
-		article.getTrade().setTrd_enddate(trd_enddate);
+		article.getTrade().setTrd_enddate(trd_endDate);
 		
 		if(memberDetails != null) {
 			memberInfo = memberDetails.getMemberInfo(); 					// 유저 정보 저장
 			redirectAttributes.addFlashAttribute("memberInfo", memberInfo);	// 유저 정보 리턴
 			article.setMem_id(memberInfo.getMem_id());
 		}else {
-			return "redirect:/board/share?category="+category;
+			System.out.println("로그인 하세요");
+			return "redirect:/login";
 		}
 		
-		log.info("제목은 나옴? [ {} ] 비었으면 안나옴", article.getArt_title());
-		log.info("글쓰기 안에 있음 {}", article);
+		log.info("글쓰기 요청 {}", article);
 		
 		// 글쓰기 실행
 		result = articleService.writeShareArticle(article);
-		
+		System.out.println(result);
 		
 		redirectAttributes.addFlashAttribute("article", article);
 		return "redirect:/board/share?category="+category;
@@ -352,6 +351,12 @@ public class ShareController {
 		log.info("리스트 {}",replyList);
 		}
 		return replyList;
+	}
+	// 지역 선택 (Ajax)
+	@ResponseBody
+	@RequestMapping(value = "board/share/selectRegion")
+	public List<Region> dgSelectRegion(Region region){
+		return regionService.dgSelectRegion(region);
 	}
 	
 

@@ -35,4 +35,8 @@ public class RegionServiceImpl implements RegionService {
 	public List<Region> dgRegionList() {
 		return rd.dgRegionList();
 	}
+	@Override
+	public List<Region> dgSelectRegion(Region region) {
+		return rd.dgSelectRegion(region);
+	}
 }

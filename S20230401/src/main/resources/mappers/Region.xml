@@ -21,15 +21,20 @@
 		<result column="reg_name" 		property="reg_name"/>
 		<result column="reg_parent" 	property="reg_parent"/>
 	</resultMap>
-	
+	<!-- 지역 대분류 -->	
 	<select id="dgRegionList" resultType="Region">
-		SELECT * FROM REGION ORDER BY REG_ID ASC
-	</select>
-<!-- 	<select id="dgRegionList" resultType="Region">
-		SELECT  *
+		SELECT  REG_ID, REG_NAME
 		FROM    REGION
 		WHERE   REG_PARENT IS NULL
-	</select> -->
+		ORDER BY REG_ID ASC
+	</select>
+	<!-- 지역 소분류 -->
+	<select id="dgSelectRegion" resultType="Region" parameterType="Region">
+		SELECT	REG_ID, REG_NAME
+		FROM	REGION
+		WHERE 	REG_PARENT = #{reg_id}
+		ORDER BY REG_ID ASC 
+	</select>
 	
 	
 	

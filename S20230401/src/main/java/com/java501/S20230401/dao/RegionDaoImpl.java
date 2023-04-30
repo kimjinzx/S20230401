@@ -55,7 +55,17 @@ public class RegionDaoImpl implements RegionDao {
 	public List<Region> dgRegionList() {
 		List<Region> regionList = null;
 		try {
-			regionList = session.selectList("dgRegionList");
+			regionList = session.selectList("dgRegionList"); // 지역 대분류
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return regionList;
+	}
+	@Override
+	public List<Region> dgSelectRegion(Region region) {
+		List<Region> regionList = null;
+		try {
+			regionList = session.selectList("dgSelectRegion", region); // 선택 지역 소분류
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

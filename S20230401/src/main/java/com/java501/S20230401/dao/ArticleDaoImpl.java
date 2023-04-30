@@ -1,5 +1,7 @@
 package com.java501.S20230401.dao;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -73,9 +75,21 @@ public class ArticleDaoImpl implements ArticleDao {
 	@Override
 	public int writeShareArticle(Article article) {
 		int result = 0;
+		
 		try {
+			// Not Null
+			Class<?> clazz = article.getClass();
+			Field[] fields = clazz.getDeclaredFields();
+			for(Field field : fields) {
+				field.setAccessible(true); // private 필드 접근
+//				if(field.get(article) == null && !field.getName().equals("trd_id") && !field.getName().equals("art_id") && !field.getName().equals("report_id")) {
+				// Null값인 필드 중에 Not Null 요소
+				if(field.get(article) == null && Arrays.asList("art_good","art_bad","art_read","art_isnotice","isdelete").contains(field.getName())) {
+					field.set(article, 0);
+					log.info("Null 값인 필드 : {} 0으로 저장 후 값 확인 : {}",field.getName(), field.get(article));
+				}
+			}
 			result = session.insert("dgWriteShareArticle",article);
-			if(result>0) System.out.println("성공");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

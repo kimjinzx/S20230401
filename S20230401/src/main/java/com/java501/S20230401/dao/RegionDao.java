@@ -21,6 +21,7 @@ public interface RegionDao {
 	
 	// 양동균
 	public List<Region> dgRegionList();
+	public List<Region> dgSelectRegion(Region region);
 
 
 }

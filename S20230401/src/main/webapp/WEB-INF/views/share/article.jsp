@@ -181,32 +181,31 @@
 				<div class="article-head">
 					
 					<!-- 카테고리 정보 -->
-					<form action="board/share/updateForm">
-						<input type="hidden" name="art_id" value="${article.art_id}">
-						<input type="hidden" name="brd_id" value="${article.brd_id}">
-						<input type="hidden" name="category" value="${category}">
-						
-						<div class="article-category">
-							<span class="category-name">
-								<button>${article.brd_name}</button>
-								<button onclick="location.href='${pageContext.request.contextPath}/board/share?category=${category}';">목록</button>
-							</span>
-						</div>
+					<input type="hidden" name="art_id" value="${article.art_id}">
+					<input type="hidden" name="brd_id" value="${article.brd_id}">
+					<input type="hidden" name="category" value="${category}">
+					
+					<div class="article-category">
+						<span class="category-name">
+							<button>${article.brd_name}</button>
+							<button onclick="location.href='${pageContext.request.contextPath}/board/share?category=${category}';">목록</button>
 							
 						<!-- 글 수정 삭제 -->
 						<c:if test="${article.mem_id == memberInfo.mem_id || memberInfo.mem_authority > 108}">
-							<div class="article-update">
-								<button type="submit">수정</button>
-								<button id="btns-artdelete" onclick="art_delete(${article.art_id},${article.brd_id}">삭제</button>
-							</div>
+							<button type="submit">수정</button>
+							<button id="btns-artdelete" onclick="art_delete(${article.art_id},${article.brd_id}">삭제</button>
 						</c:if>
-					</form>
+						
+						</span>
+					</div>
 					<hr />
 						
 					<!-- 글 제목 및 상태 -->
 					<div class="article-title">
-						<span><button class="btn">${article.status_name}</button></span>
-						<span>${article.art_title}</span>
+						<span>
+							<c:if test="${article.status_name != null}"><button class="btn">${article.status_name}</button></c:if>
+							${article.art_title}
+						</span>
 						<span>마감일 : <fmt:formatDate value="${article.trade.trd_enddate}" pattern="yyyy-MM-dd"/></span>
 						
 						<span>
@@ -232,14 +231,23 @@
 							<span>
 								${article.trade.trd_cost > 0 ? article.trade.trd_cost : '무료나눔'}
 							</span><br>
-							<span>상세장소 :${article.trade.trd_loc}</span>
-							<span>지역제한 :${article.trade.region.reg_name}</span>
 							<span>조회 ${article.art_read}</span>
 							<span>추천 ${article.art_good}</span>
 							<span>비추천 ${article.art_bad}</span><br>
 							<span>${article.member.mem_nickname}</span>
 							<span>${article.gen_name}</span>
 							<span>가입일 : <button class="btn" type="button"><fmt:formatDate value="${article.art_regdate}" pattern="yy-MM-dd :HH:mm:ss"/></button></span>
+							<hr />
+							거래 모집 정보
+							<div>
+								<span>지역제한 :${article.trade.region.reg_name}</span>
+								<span>상세장소 :${article.trade.trd_loc}</span>
+								<hr />
+								<span>최대 인원 : ${article.trade.trd_max}명</span>
+								<span>최소 나이 : ${article.trade.trd_minage>0? article.trade.trd_minage:'제한없음' }</span>
+								<span>최대 나이 : ${article.trade.trd_maxage>0? article.trade.trd_maxage:'제한없음'}</span>
+								<span>성별 제한 : ${article.trade.trd_gender==201? '남자만':article.trade.trd_gender==202? '여자만':'제한없음'}</span>
+							</div>
 						</div>
 					</div>
 					<hr />
