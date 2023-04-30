@@ -33,6 +33,7 @@ import com.java501.S20230401.service.Paging;
 import com.java501.S20230401.service.RegionService;
 import com.java501.S20230401.service.ReplyService;
 
+import groovy.lang.Category;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import lombok.extern.slf4j.Slf4j;
@@ -289,15 +290,31 @@ public class ShareController {
 		return String.format("redirect:/board/share/%s?brd_id=%s&category=%s", reply.getArt_id(), reply.getBrd_id(), category);
 	}
 	
-	
+	// 게시글 수정
+	@RequestMapping(value = "board/share/artUpdate")
+	public String updateArticle(){
+		return "";
+	}
 	
 	// 게시글 삭제
-	@RequestMapping(value = "board/share/artDelete")
-	public void deleteArticle(	@AuthenticationPrincipal
-									MemberDetails memberDetails,
-									Article article,
-									RedirectAttributes redirectAttributes) {
-		log.info("글번호 : {} 게시판 번호 : {}", article.getArt_id(), article.getBrd_id());
+	@RequestMapping(value = "board/share/artDelete/{art_id}")
+	public String deleteArticle(@PathVariable("art_id")
+								String art_id,
+								@AuthenticationPrincipal
+								MemberDetails memberDetails,
+								Article article,
+								Integer category,
+								RedirectAttributes redirectAttributes) {
+		article.setArt_id(Integer.parseInt(art_id));
+		log.info("글번호 : {} 게시판 번호 : {} 카테고리 번호 : {}", article.getArt_id(), article.getBrd_id(), category);
+		int result = articleService.dgDeleteArticle(article);
+		if(result != 0) {
+			System.out.println("삭제 성공");
+			return String.format("redirect:/board/share?category=%s", category);
+		}else{
+			System.out.println("삭제 실패");
+			return String.format("redirect:/board/share/%s?brd_id=%s&category=%s", article.getArt_id(), article.getBrd_id(), category);
+		}
 	}
 	
 	

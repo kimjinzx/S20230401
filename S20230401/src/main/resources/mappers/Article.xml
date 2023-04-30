@@ -24,7 +24,7 @@
 	<resultMap type="Article" id="dgArticleMap">
 		<id 	column="art_id" 		property="art_id"/> <!-- PK	 -->
 		<id 	column="brd_id" 		property="brd_id"/>	<!-- PK -->
-		<result column="art_title" 		property="art_title"/>
+		<result column="art_title" 		property="art_title"/>  
 		<result column="mem_id" 		property="mem_id"/>
 		<result column="art_regdate" 	property="art_regdate"/>
 		<result column="art_content" 	property="art_content"/>
@@ -178,6 +178,13 @@
 			)
 		}
 	</insert>
+	<!-- 글 삭제 -->
+	<update id="dgDeleteArticle" parameterType="Article">
+		UPDATE 	ARTICLE
+		SET		ISDELETE = 1
+		WHERE	ART_ID = #{art_id}
+		AND		BRD_ID = #{brd_id}
+	</update>
 
 	
 	

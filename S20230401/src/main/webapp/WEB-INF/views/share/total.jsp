@@ -239,7 +239,6 @@
 					</span>
 				</div>
 			</div>
-			
 			<div class="notice-customer"></div>
 			<div class="notice-board"></div>
 			

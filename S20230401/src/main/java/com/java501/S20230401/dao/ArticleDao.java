@@ -24,11 +24,12 @@ public interface ArticleDao {
 	
 	
 	// 양동균
-	int allTotalArt(Article article);
-	List<Article> allArticleList(Article article);
-	Article detailShareArticle(Article article);// 댓글
-	int readShareArticle(Article article);
-	int writeShareArticle(Article article);// 글쓰기
+	int allTotalArt(Article article);				// 글 카운트
+	List<Article> allArticleList(Article article);	// 모든 글 조회
+	Article detailShareArticle(Article article);	// 댓글
+	int readShareArticle(Article article);			// 조회수
+	int writeShareArticle(Article article);			// 글쓰기
+	int dgDeleteArticle(Article article); 			// 글 삭제
 
 	
 	// 백준

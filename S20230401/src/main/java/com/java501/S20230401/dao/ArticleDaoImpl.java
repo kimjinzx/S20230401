@@ -38,6 +38,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return allArtCnt;
 	}
+	// 모든 글 조회
 	@Override
 	public List<Article> allArticleList(Article article) {
 		List<Article> allArticleList = null;
@@ -59,7 +60,6 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return detailArticle;
 	}
-	
 	// 게시글 조회수 증가
 	@Override
 	public int readShareArticle(Article article) {
@@ -90,6 +90,17 @@ public class ArticleDaoImpl implements ArticleDao {
 				}
 			}
 			result = session.insert("dgWriteShareArticle",article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	// 글 삭제
+	@Override
+	public int dgDeleteArticle(Article article) {
+		int result = 0;
+		try {
+			result = session.update("dgDeleteArticle", article);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -651,4 +662,5 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return result;
 	}
+
 }

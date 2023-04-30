@@ -69,7 +69,12 @@ public class ArticleServiceImpl implements ArticleService {
 	// 글쓰기
 	@Override
 	public int writeShareArticle(Article article) {	return ad.writeShareArticle(article);}
+	@Override
+	public int dgDeleteArticle(Article article) { return ad.dgDeleteArticle(article);	}
+	
+	
 
+	
 	// 백준
 	@Override
 	public Integer totalArticle(int brd_id) {
@@ -350,4 +355,5 @@ public class ArticleServiceImpl implements ArticleService {
 		result = ad.insertCustomer(article);
 		return result;
 	}
+
 }

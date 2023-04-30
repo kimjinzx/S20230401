@@ -16,12 +16,30 @@
 		});
 	});
 	// 게시글 삭제
-	function art_delete(art_id, brd_id){
+	function art_Delete(){
+		let mem_id = $('#mem_id').val();
+		let login_member = $('#login_member').val();
+		let login_authority = $('#login_authority').val();
+		if(mem_id != login_member && login_authority < 108){
+			alert('권한이 없습니다');
+			return false;
+		}
 		if(confirm('삭제 하시겠습니까?')){
-			//location.href='${pageContext.request.contextPath}/board/share/artDelete?art_id='+art_id+'&brd_id='+brd_id;
-			alert("응 아직 삭제 안돼");
+			let art_id = $('#art_id').val();
+			let brd_id = $('#brd_id').val();
+			let category = $('#category').val();
+			location.href='${pageContext.request.contextPath}/board/share/artDelete/'+art_id+'?brd_id='+brd_id+'&category='+category;
+			alert("삭제 되었습니다.");
 		}else{
 			alert("삭제 취소");
+		}
+	}
+	// 게시글 수정
+	function art_Update(){
+		if(confirm('수정 하시겠습니까?')){
+			location.href='${pageContext.request.contextPath}/board/share/artDelete?art_id='+art_id+'&brd_id='+brd_id;
+		}else{
+			alert("수정 취소");
 		}
 	}
 	
@@ -89,22 +107,27 @@
 	}); */
 	// 글 추천	
 	$(document).ready(() => {
-		$('#btns-good').click(e => {
+		$('#btns-good, #btns-goodcancel').click(e => {
 			$(e.target).closest('.article-vote')
 			.find('#btns-good').toggle().end()
 			.find('#btns-goodcancel').toggle().end();
-			location.href='${pageContext.request.contextPath}/board/share/vote?art_id='+${art_id}+'&brd_id='+${article.brd_id}+'&category='+${category};
+			//location.href='${pageContext.request.contextPath}/board/share/vote?art_id='+${art_id}+'&brd_id='+${article.brd_id}+'&category='+${category};
 			});
-		});
-	// 비추천
-	$(document).ready(() => {
-		$('#btns-goodcancel').click(e => {
+		$('#btns-bad, #btns-badcancel').click(e => {
 			$(e.target).closest('.article-vote')
-			.find('#btns-good').toggle().end()
-			.find('#btns-goodcancel').toggle().end();
-			location.href='${pageContext.request.contextPath}/board/share/vote?art_id='+${art_id}+'&brd_id='+${article.brd_id}+'&category='+${category};
-			});
+			.find('#btns-bad').toggle().end()
+			.find('#btns-badcancel').toggle().end();
 		});
+		});
+	// 추천 취소
+	// $(document).ready(() => {
+	// 	$('#btns-goodcancel').click(e => {
+	// 		$(e.target).closest('.article-vote')
+	// 		.find('#btns-good').toggle().end()
+	// 		.find('#btns-goodcancel').toggle().end();
+	// 		//location.href='${pageContext.request.contextPath}/board/share/vote?art_id='+${art_id}+'&brd_id='+${article.brd_id}+'&category='+${category};
+	// 		});
+	// 	});
 	
 	
 	// 댓글 수정 완료
@@ -163,6 +186,21 @@
 		height: 90%;
 		background-color: transparent;
 	}
+	button{
+		color: white;
+		background-color: #0193F8;
+		border: none;
+		border-radius: 14px;
+	}
+	/* 3번째 부터 4번째 전까지 */
+	.article-vote button:nth-child(n+3){
+		background-color: red;
+	}
+	/* 짝수 버튼 */
+	.article-vote button:nth-child(even){
+		background-color: red;
+		display: none;
+	}
 </style>
 </head>
 <body>
@@ -181,9 +219,13 @@
 				<div class="article-head">
 					
 					<!-- 카테고리 정보 -->
-					<input type="hidden" name="art_id" value="${article.art_id}">
-					<input type="hidden" name="brd_id" value="${article.brd_id}">
-					<input type="hidden" name="category" value="${category}">
+					<input type="hidden" id="art_id" 	name="art_id" 	value="${article.art_id}">
+					<input type="hidden" id="brd_id" 	name="brd_id" 	value="${article.brd_id}">
+					<input type="hidden" id="category" 	name="category" value="${category}">
+					<input type="hidden" id="mem_id" 	name="mem_id" 	value="${article.mem_id}">
+					<input type="hidden" id="login_member" 		name="login_member" 	value="${memberInfo.mem_id}">
+					<input type="hidden" id="login_authority" 	name="login_authority" 	value="${memberInfo.mem_authority}">
+					
 					
 					<div class="article-category">
 						<span class="category-name">
@@ -191,9 +233,9 @@
 							<button onclick="location.href='${pageContext.request.contextPath}/board/share?category=${category}';">목록</button>
 							
 						<!-- 글 수정 삭제 -->
-						<c:if test="${article.mem_id == memberInfo.mem_id || memberInfo.mem_authority > 108}">
-							<button type="submit">수정</button>
-							<button id="btns-artdelete" onclick="art_delete(${article.art_id},${article.brd_id}">삭제</button>
+						<c:if test="${article.mem_id == memberInfo.mem_id || memberInfo.mem_authority >= 108}">
+							<button id="btns-artUpdate" onclick="art_Update()">수정</button>
+							<button id="btns-artDelete" onclick="art_Delete()">삭제</button>
 						</c:if>
 						
 						</span>
@@ -205,22 +247,18 @@
 						<span>
 							<c:if test="${article.status_name != null}"><button class="btn">${article.status_name}</button></c:if>
 							${article.art_title}
-						</span>
-						<span>마감일 : <fmt:formatDate value="${article.trade.trd_enddate}" pattern="yyyy-MM-dd"/></span>
-						
-						<span>
-							<button>아이콘1</button>
-							<button>아이콘2</button>
-							<button>아이콘3</button>
+							<button>마감일 : <fmt:formatDate value="${article.trade.trd_enddate}" pattern="yyyy-MM-dd"/></button>
 						</span>
 					</div>
 					<hr />
+
+					<!-- 태그 출력 -->
 					<div class="article-info">
 						<div class="info-tag">
 							<c:forEach begin="1" end="5" varStatus="status">
 								<c:set var="art_tag" value="art_tag${status.index}"/>
 									<c:if test="${article[art_tag] != null}">
-										<span>${article[art_tag]}</span>
+										<button>${article[art_tag]}</button>
 									</c:if>
 							</c:forEach>
 						</div>
@@ -232,8 +270,6 @@
 								${article.trade.trd_cost > 0 ? article.trade.trd_cost : '무료나눔'}
 							</span><br>
 							<span>조회 ${article.art_read}</span>
-							<span>추천 ${article.art_good}</span>
-							<span>비추천 ${article.art_bad}</span><br>
 							<span>${article.member.mem_nickname}</span>
 							<span>${article.gen_name}</span>
 							<span>가입일 : <button class="btn" type="button"><fmt:formatDate value="${article.art_regdate}" pattern="yy-MM-dd :HH:mm:ss"/></button></span>
@@ -260,16 +296,17 @@
 						<hr />
 						<span>${article.art_content}</span>
 					</div>
-					
+					<hr />
+
 					<!-- 추천 비추천 -->
 					<div class="article-vote">
 						<span>
 							<button id="btns-good">추천 ${article.art_good}</button>
-							<button id="btns-goodcancel" style="display: none;">추천 토그리${article.art_good}</button>
+							<button id="btns-goodcancel">추천 토글${article.art_good}</button>
 						</span>
 						<span>
 							<button id="btns-bad">비추천 ${article.art_bad}</button>
-							<button id="btns-badcancel" style="display: none;">비추천 토그리${article.art_bad}</button>
+							<button id="btns-badcancel">비추천 토글${article.art_bad}</button>
 						</span>
 					</div>
 				</div>
