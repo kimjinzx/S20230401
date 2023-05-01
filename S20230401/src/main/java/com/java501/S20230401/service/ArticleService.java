@@ -27,6 +27,8 @@ public interface ArticleService {
 	int readShareArticle(Article article); // 조회수 증가
 	int writeShareArticle(Article article);	// 글쓰기
     int dgDeleteArticle(Article article); // 글삭제
+	int dgVoteGood(Article article); // 추천
+	int dgVoteBad(Article article); // 비추천
 
 	// 백준
 	Integer 			totalArticle(int brd_id);
@@ -77,4 +79,5 @@ public interface ArticleService {
 	Article 			detailCustomer(Article article);
 	List<Article> 		listCustomerMenu(Article article);
 	public int 			insertCustomer(Article article);
+
 }

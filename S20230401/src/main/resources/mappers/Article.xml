@@ -185,6 +185,19 @@
 		WHERE	ART_ID = #{art_id}
 		AND		BRD_ID = #{brd_id}
 	</update>
+	<!-- 글 추천, 비추천 -->
+	<update id="dgVoteGood" parameterType="Article">
+		UPDATE  ARTICLE
+		SET     ART_GOOD = ART_GOOD + 1
+		WHERE   ART_ID = #{art_id}
+		AND     BRD_ID = #{brd_id}
+	</update>
+	<update id="dgVoteBad" parameterType="Article">
+		UPDATE  ARTICLE
+		SET     ART_BAD = ART_BAD + 1
+		WHERE   ART_ID = #{art_id}
+		AND     BRD_ID = #{brd_id}
+	</update>
 
 	
 	

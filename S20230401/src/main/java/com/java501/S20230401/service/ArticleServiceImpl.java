@@ -69,9 +69,15 @@ public class ArticleServiceImpl implements ArticleService {
 	// 글쓰기
 	@Override
 	public int writeShareArticle(Article article) {	return ad.writeShareArticle(article);}
+	// 글 삭제
 	@Override
 	public int dgDeleteArticle(Article article) { return ad.dgDeleteArticle(article);	}
-	
+	// 글 추천
+	@Override
+	public int dgVoteGood(Article article) { return ad.dgVoteGood(article);}
+	// 글 비추천
+	@Override
+	public int dgVoteBad(Article article) {	return ad.dgVoteBad(article);}
 	
 
 	
@@ -355,5 +361,6 @@ public class ArticleServiceImpl implements ArticleService {
 		result = ad.insertCustomer(article);
 		return result;
 	}
+
 
 }

@@ -243,12 +243,39 @@ public class ShareController {
 	}
 	
 	// 글 추천, 비추천
-	@RequestMapping(value = "board/share/vote")
-	public String shareVote(@AuthenticationPrincipal
+	@RequestMapping(value = "board/share/vote/{vote}")
+	public String shareVote(@PathVariable("vote")
+							String vote,
+							@AuthenticationPrincipal
 							MemberDetails memberDetails,
 							Article article,
-							RedirectAttributes redirectAttributes) {
-		log.info("글번호 : {} 게시판 번호 : {}", article.getArt_id(), article.getBrd_id());
+							RedirectAttributes redirectAttributes,
+							HttpServletRequest request,
+							HttpServletResponse response) {
+		int result = 0;
+		// 유저 정보
+		String mem_id = "";
+		if(memberDetails != null) {
+			redirectAttributes.addFlashAttribute("memberInfo", memberDetails.getMemberInfo());
+			mem_id = Integer.toString(memberDetails.getMemberInfo().getMem_id());
+		}
+		
+		// 쿠키 추천, 비추천 (중복확인)
+		if(dgCheck(request, response, article.getArt_id(), article.getBrd_id(), mem_id, vote)) {
+			// 추천
+			if(vote.equals("good")) {
+				System.out.println("굿!");
+				result = articleService.dgVoteGood(article);
+			// 비추천
+			}else if(vote.equals("bad")) {
+				System.out.println("베드 ㅜㅜ");
+				result = articleService.dgVoteBad(article);
+			}
+		}else {
+			System.out.println("쿠키 중복");
+		}
+		System.out.println(result != 0? "성공" : "실패");
+		
 		return String.format("redirect:/board/share/%s?brd_id=%s&category=%s", article.getArt_id(), article.getBrd_id(), article.getBrd_id());
 	}
 	
@@ -404,8 +431,15 @@ public class ShareController {
 							HttpServletResponse response,
 							Integer art_id,
 							Integer brd_id,
-							String mem_id) {
-		String visitArticle = "|"+art_id+"|"+brd_id;
+							String mem_id,
+							String... params) {
+		// 추가 parameter가 있을 경우 저장 (추천,비추천)
+		String addValues = "";
+		for(String s : params) {
+			addValues += ("|"+s);
+		}
+		// 값 저장
+		String visitArticle = "|"+art_id+"|"+brd_id+addValues;
 		// 조회수 로직
 		Cookie oldCookie = null;
 		// 쿠키 중복 체크
@@ -413,6 +447,7 @@ public class ShareController {
 		if(cookies != null) {
 			for(Cookie cookie : cookies) {
 				log.info("쿠키 이름 {} & 쿠키 값 {}",cookie.getName(), cookie.getValue());
+				// 쿠키에 저장된 유저 확인
 				if (cookie.getName().equals("share|"+mem_id)) {
 					oldCookie = cookie;
 					break;
@@ -423,7 +458,7 @@ public class ShareController {
 		// 유저별로 쿠키 중복 관리 share|유저| - 글번호|게시판번호
 		if(oldCookie == null) {
 			Cookie newCookie = new Cookie("share|"+mem_id, visitArticle);
-			newCookie.setMaxAge(60*60*2); // 쿠키 생명주기 2시간
+			newCookie.setMaxAge(60*60*12); // 쿠키 생명주기 12시간
 			newCookie.setPath("/");
 			response.addCookie(newCookie);
 			return true;
@@ -432,7 +467,7 @@ public class ShareController {
 		}else if(!oldCookie.getValue().contains(visitArticle)) {
 			// 조회수 증가
 			oldCookie.setValue(oldCookie.getValue()+"&"+visitArticle);
-			oldCookie.setMaxAge(60*60*2);
+			oldCookie.setMaxAge(60*60*12);
 			oldCookie.setPath("/");
 			response.addCookie(oldCookie);
 			return true;

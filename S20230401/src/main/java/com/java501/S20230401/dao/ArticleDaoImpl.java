@@ -106,6 +106,30 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return result;
 	}
+	// 글 추천
+	@Override
+	public int dgVoteGood(Article article) {
+		int result = 0;
+		try {
+			result = session.update("dgVoteGood", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	// 글 비추천
+	@Override
+	public int dgVoteBad(Article article) {
+		int result = 0;
+		try {
+			result = session.update("dgVoteBad", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	
 	
 	
 	
@@ -662,5 +686,6 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return result;
 	}
+
 
 }

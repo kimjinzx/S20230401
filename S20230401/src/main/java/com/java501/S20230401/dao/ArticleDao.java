@@ -30,6 +30,8 @@ public interface ArticleDao {
 	int readShareArticle(Article article);			// 조회수
 	int writeShareArticle(Article article);			// 글쓰기
 	int dgDeleteArticle(Article article); 			// 글 삭제
+	int dgVoteGood(Article article);				// 글 추천
+	int dgVoteBad(Article article);					// 글 비추천
 
 	
 	// 백준

@@ -8,14 +8,14 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" >
 
-	// 대댓글 작성
+	// 댓글 기능 - 대댓글 작성
 	$(document).ready(() => {
-		$("#btns-repWrite").click(e => {
+		$(".btns-repWrite").click(e => {
 			console.log(e.target.getAttribute('class')); // 클릭 이벤트 발생시 e.target의 클래스 출력
 			$(e.target).closest('.reply-detail').find(".reply-replyWrite").toggle();
 		});
 	});
-	// 게시글 삭제
+	// 게시글 기능 - 게시글 삭제
 	function art_Delete(){
 		let mem_id = $('#mem_id').val();
 		let login_member = $('#login_member').val();
@@ -34,7 +34,7 @@
 			alert("삭제 취소");
 		}
 	}
-	// 게시글 수정
+	// 게시글 기능 -게시글 수정
 	function art_Update(){
 		if(confirm('수정 하시겠습니까?')){
 			location.href='${pageContext.request.contextPath}/board/share/artDelete?art_id='+art_id+'&brd_id='+brd_id;
@@ -42,100 +42,63 @@
 			alert("수정 취소");
 		}
 	}
+
+	// 게시글 기능 - 추천, 비추천 -----------------------------------------------------------ajax사용 추천 취소기능 추가 요망
+	$(document).ready(() => {
+		// 추천
+	$('#btns-good, #btns-goodcancel').click(e => {
+		if(confirm('추천 하시겠습니까?')){
+			alert('추천');
+			$(e.target).closest('.article-vote')
+			.find('#btns-good').toggle().end()
+			.find('#btns-goodcancel').toggle().end();
+			location.href='${pageContext.request.contextPath}/board/share/vote/good?art_id='+${art_id}+'&brd_id='+${article.brd_id}+'&category='+${category};
+		}
+	});
+		// 비추천
+	$('#btns-bad, #btns-badcancel').click(e => {
+		if(confirm('비추천 하시겠습니까?')){
+			$(e.target).closest('.article-vote')
+			.find('#btns-bad').toggle().end()
+			.find('#btns-badcancel').toggle().end();
+			location.href='${pageContext.request.contextPath}/board/share/vote/bad?art_id='+${art_id}+'&brd_id='+${article.brd_id}+'&category='+${category};
+		}
+	});
+	});
 	
-	
-	// 댓글 삭제
+
+	// 댓글 기능 - 댓글 삭제
 	function rep_delete(brd_id, art_id, rep_id) {
 		location.href = '${pageContext.request.contextPath}/board/share/repDelete?art_id='+art_id+'&brd_id='+brd_id+'&rep_id='+rep_id;
 	}
 	
-	// 댓글 수정 버튼 이벤트
-/* 	$(document).ready(() => {
+	// 댓글 기능 - 댓글 수정
+	$(document).ready(() => {
 		$('.btns-repUpdate, .btns-cancel, .btns-repComplete').click(e => {
-			var condition = $('rep-content').attr('disabled', false);
-			.find('.rep-content').attr('disabled', condition? false : true).focus()
-	}); */
-	
-	// 댓글 수정 버튼 이벤트
-	$(document).ready(() => {
-		$('#btns-repUpdate, #btns-cancel, #btns-repComplete').click(e => {
-			var condition = $('rep-content').attr('disabled', false);
+			var condition = $('.rep-content').prop('disabled');
 			$(e.target)
 			.closest('.reply-view')
-			.find('.rep-content').attr('disabled', condition? false : true).focus()
-			.end()
-			.find('#btns-repUpdate').toggle()
-			.end()
-			.find('#btns-delete').toggle()
-			.end()
-			.find('#btns-repComplete').toggle()
-			.end()
-			.find('#btns-cancel').toggle();
+			.find('.rep-content').prop('disabled', condition ? false : true).focus().end()
+			.find('.btns-repUpdate').toggle().end()
+			.find('.btns-delete').toggle().end()
+			.find('.btns-repComplete').toggle().end()
+			.find('.btns-cancel').toggle();
+		});
+	});
+
+	// 댓글 펼치기
+	$(document).ready(()=>{
+		$('#btns-show, #btns-hide').click(e=>{
+			$(e.target).closest('.reply-list')
+			.find('#btns-show').toggle().end()
+			.find('#btns-hide').toggle().end()
+			.find('.reply-detail').toggle().end();
 		});
 	});
 	
-	// 댓글 수정 취소 / 토글 고려
-	$(document).ready(() => {
-		$('#btns-cancel').click(e => {
-			$(e.target)
-			.closest('.reply-view')
-			.find('.rep-content').attr('disabled', true)
-			.end()
-			.find('#btns-repUpdate').show()
-			.end()
-			.find('#btns-delete').show()
-			.end()
-			.find('#btns-repComplete').hide()
-			.end()
-			.find('#btns-cancel').hide();
-		});
-	});
-	
-	// 댓글 추천
-/* 	$(document).ready(() => {
-		$('#btns-good, #btns-goodcancel').click(e => {
-			$(e.target)
-			.closest('.article-vote')
-			.find('#btns-good').toggle()
-			.end()
-			.find('#btns-goodcancel').toggle()
-			.end()
-			.find('#btns-bad').toggle()
-			.end()
-			.find('#btns-badcancel').toggle();
-		});
-	}); */
-	// 글 추천	
-	$(document).ready(() => {
-		$('#btns-good, #btns-goodcancel').click(e => {
-			$(e.target).closest('.article-vote')
-			.find('#btns-good').toggle().end()
-			.find('#btns-goodcancel').toggle().end();
-			//location.href='${pageContext.request.contextPath}/board/share/vote?art_id='+${art_id}+'&brd_id='+${article.brd_id}+'&category='+${category};
-			});
-		$('#btns-bad, #btns-badcancel').click(e => {
-			$(e.target).closest('.article-vote')
-			.find('#btns-bad').toggle().end()
-			.find('#btns-badcancel').toggle().end();
-		});
-		});
-	// 추천 취소
-	// $(document).ready(() => {
-	// 	$('#btns-goodcancel').click(e => {
-	// 		$(e.target).closest('.article-vote')
-	// 		.find('#btns-good').toggle().end()
-	// 		.find('#btns-goodcancel').toggle().end();
-	// 		//location.href='${pageContext.request.contextPath}/board/share/vote?art_id='+${art_id}+'&brd_id='+${article.brd_id}+'&category='+${category};
-	// 		});
-	// 	});
-	
+
 	
 	// 댓글 수정 완료
-/* 	$(document).ready(() => {
-		$('.btns-update-complete').click((e) => {
-			e.preventDefault(); 			 // 이벤트 동시사용 방지
-			});
-		}); */
 	function rep_Update(pIndex){
 		var rep_content = $('#rep-content'+pIndex).val();
 		var art_id = $('#art_id'+pIndex).val();
@@ -156,6 +119,14 @@
 				}
 		});
 	}
+
+	// 거래 신청 ---------------------------------------------------------
+	$(document).ready(()=>{
+		$('#btns-apply').click(()=>{
+			let art_id = ${article.art_id};
+			console.info(art_id);
+		});
+	});
 </script>
 <style type="text/css">
 	.board-articleList{
@@ -192,14 +163,42 @@
 		border: none;
 		border-radius: 14px;
 	}
-	/* 3번째 부터 4번째 전까지 */
-	.article-vote button:nth-child(n+3){
-		background-color: red;
+	/* 펼치기 버튼 */
+	.reply-list button{
+		background-color: transparent;
+		color: #0193F8;
+		font-size: 16px;
 	}
-	/* 짝수 버튼 */
-	.article-vote button:nth-child(even){
+	/* 홀수 버튼 */
+	.article-vote button:nth-child(odd){
+		width: 100px;
+		height: 100px;
+		font-size: 20px;
+		text-align: center;
+		background-color: #eeeeee;
+		color: black;
+	}
+
+	/* 1번째 부터 2번째 까지 */
+	.article-vote button:nth-child(-n+2):hover {
+		background-color: #0193F8;
+		color: white;
+	}
+
+	/* 3번째 부터 4번째 전까지 */
+	.article-vote button:nth-child(n+3):hover {
 		background-color: red;
-		display: none;
+		color: white;
+	}
+	/* 거래 신청 DIV*/
+	.article-share{
+		width: auto;
+		height: auto;
+		border: 1px solid #0193F8;
+		border-radius: 10px;
+	}
+	div{
+		padding: 5px;
 	}
 </style>
 </head>
@@ -247,7 +246,6 @@
 						<span>
 							<c:if test="${article.status_name != null}"><button class="btn">${article.status_name}</button></c:if>
 							${article.art_title}
-							<button>마감일 : <fmt:formatDate value="${article.trade.trd_enddate}" pattern="yyyy-MM-dd"/></button>
 						</span>
 					</div>
 					<hr />
@@ -274,15 +272,27 @@
 							<span>${article.gen_name}</span>
 							<span>가입일 : <button class="btn" type="button"><fmt:formatDate value="${article.art_regdate}" pattern="yy-MM-dd :HH:mm:ss"/></button></span>
 							<hr />
-							거래 모집 정보
-							<div>
-								<span>지역제한 :${article.trade.region.reg_name}</span>
-								<span>상세장소 :${article.trade.trd_loc}</span>
-								<hr />
-								<span>최대 인원 : ${article.trade.trd_max}명</span>
-								<span>최소 나이 : ${article.trade.trd_minage>0? article.trade.trd_minage:'제한없음' }</span>
-								<span>최대 나이 : ${article.trade.trd_maxage>0? article.trade.trd_maxage:'제한없음'}</span>
-								<span>성별 제한 : ${article.trade.trd_gender==201? '남자만':article.trade.trd_gender==202? '여자만':'제한없음'}</span>
+							
+							<div class="article-share">
+								<span>무료 나눔 신청</span>
+								<span><button>마감일 : <fmt:formatDate value="${article.trade.trd_enddate}" pattern="yyyy-MM-dd"/></button></span>
+
+								<div class="share-trdcontent">
+									<span>지역제한 :${article.trade.region.reg_name}</span>
+									<span>상세장소 :${article.trade.trd_loc}</span>
+									<hr />
+									<span>최대 인원 : ${article.trade.trd_max}명</span>
+									<span>최소 나이 : ${article.trade.trd_minage>0? article.trade.trd_minage:'제한없음' }</span>
+									<span>최대 나이 : ${article.trade.trd_maxage>0? article.trade.trd_maxage:'제한없음'}</span>
+									<span>성별 제한 : ${article.trade.trd_gender==201? '남자만':article.trade.trd_gender==202? '여자만':'제한없음'}</span>
+								</div>
+
+								<div class="share-button">
+									<span>
+										<button id="btns-like">찜하기</button>
+										<button id="btns-apply">신청</button>
+									</span>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -300,24 +310,23 @@
 
 					<!-- 추천 비추천 -->
 					<div class="article-vote">
-						<span>
-							<button id="btns-good">추천 ${article.art_good}</button>
-							<button id="btns-goodcancel">추천 토글${article.art_good}</button>
-						</span>
-						<span>
-							<button id="btns-bad">비추천 ${article.art_bad}</button>
-							<button id="btns-badcancel">비추천 토글${article.art_bad}</button>
-						</span>
+						<button id="btns-good">추천 ${article.art_good}</button>
+						<button id="btns-goodcancel" style="display: none;">추천 토글${article.art_good}</button>
+						<button id="btns-bad">비추천 ${article.art_bad}</button>
+						<button id="btns-badcancel" style="display: none;">비추천 토글${article.art_bad}</button>
 					</div>
 				</div>
 				
 				<hr />
-				<div class="reply-count">
-					<span>댓글 수 : (${article.rep_cnt})</span>
-				</div>
-				<hr />
 				
 				<div class="reply-list">
+					<div class="list-toggle">
+						<button id="btns-show" style="display: none;">▶펼치기</button>
+						<button id="btns-hide">▼접기</button>
+						<span>댓글 수 : (${article.rep_cnt})</span>
+					</div>
+					<hr />
+					<!-- 댓글 리스트 -->
 					<c:forEach var="reply" items="${replyList}" varStatus="status">
 						<div class="reply-detail">
 							<div class="reply-view" style="display: flex; ${(reply.rep_id != reply.rep_parent) ? 'margin-left: 20px;' : ''}">
@@ -342,18 +351,18 @@
 								
 								
 								<!-- 댓글 버튼 -->
-								<c:if test="${article.mem_id == memberInfo.mem_id || memberInfo.mem_authority > 108}">
+								<c:if test="${reply.mem_id == memberInfo.mem_id || memberInfo.mem_authority > 108}">
 									<div class="reply-button">
 										<span>
-											<button id="btns-repWrite">작성</button>
+											<button class="btns-repWrite">작성</button>
 										</span>
 										<span>
-											<button id="btns-repUpdate">수정</button>
-											<button id="btns-repComplete" style="display: none;" onclick="rep_Update(${status.index})">완료</button>
+											<button class="btns-repUpdate">수정</button>
+											<button class="btns-repComplete" style="display: none;" onclick="rep_Update(${status.index})">완료</button>
 										</span>
 										<span>
-											<button id="btns-delete" onclick="rep_delete(${article.brd_id},${article.art_id},${reply.rep_id})">삭제</button>
-											<button id="btns-cancel" style="display: none;">취소</button>
+											<button class="btns-delete" onclick="rep_delete(${article.brd_id},${article.art_id},${reply.rep_id})">삭제</button>
+											<button class="btns-cancel" style="display: none;">취소</button>
 										</span>
 									</div>
 								</c:if>
