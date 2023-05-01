@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/share/writeForm.js">
+<script type="text/javascript">
 	
 	// 첫번째 select박스 선택시 실행
 	function firstSelect(){
