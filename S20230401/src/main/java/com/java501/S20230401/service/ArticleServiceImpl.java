@@ -9,19 +9,12 @@ import com.java501.S20230401.dao.CommDao;
 import com.java501.S20230401.dao.RegionDao;
 import com.java501.S20230401.dao.ReplyDao;
 import com.java501.S20230401.model.Article;
-import com.java501.S20230401.model.Member;
-import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.model.ArticleMember;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Region;
 import com.java501.S20230401.util.SummaryType;
-import com.java501.S20230401.model.Article_Trade_Reply;
-import com.java501.S20230401.model.Comm;
-import com.java501.S20230401.model.Region;
 import com.java501.S20230401.model.MemberInfo;
-import com.java501.S20230401.util.SummaryType;
 import lombok.RequiredArgsConstructor;
-import oracle.security.o3logon.a;
 
 @Service
 @RequiredArgsConstructor
@@ -202,83 +195,7 @@ public class ArticleServiceImpl implements ArticleService {
 		System.out.println("ArticleServiceImpl article.getInsert_result())=> " + article.getInsert_result());
 	}
 	
-	@Override//김진현
-	public List<Article_Trade_Reply> getDutchpayList(String boardName) {
-		List<Article_Trade_Reply> atr = ad.getDutchpayList(boardName);
-		return atr;
-	}
-
-	@Override
-	public Article_Trade_Reply detail1(Article_Trade_Reply atr) {
-		Article_Trade_Reply atr1 = null;
-		atr1 = ad.detail2(atr);
-		return atr1;
-	}
 	
-	@Override
-	public List<Article_Trade_Reply> repList1(Article_Trade_Reply atr) {
-		List<Article_Trade_Reply> repList = ad.repList2(atr);
-		return repList;
-	}
-
-	@Override
-	public List<Comm> category1() {
-		List<Comm> cm = null;
-		cm = ad.category2();
-		return cm;
-	}
-
-	@Override
-	public List<Region> loc1() {
-		List<Region> re = null;
-		re = ad.loc2();
-		return re;
-	}
-
-	@Override
-	public void dutchpayInsert1(Article_Trade_Reply atr) {
-		ad.dutchpayInsert2(atr);
-	}
-	
-	@Override
-	public Article_Trade_Reply updateForm1(Article_Trade_Reply atr) {
-		Article_Trade_Reply updateForm = null;
-		updateForm = ad.updateForm2(atr);
-		return updateForm;
-	}
-
-	@Override
-	public List<Region> loc_ud1() {
-		List<Region> re = null;
-		re = ad.loc_ud2();
-		return re;
-	}
-
-	@Override
-	public void dutchpayUpdate1(Article_Trade_Reply atr) {
-		ad.dutchpayUpdate2(atr);
-		
-	}
-
-	@Override
-	public void dutchpayDelete1(Article_Trade_Reply atr) {
-		ad.dutchpayDelete2(atr);
-		
-	}
-
-	@Override
-	public int DeatilRead1(Article_Trade_Reply atr) {
-		int read = 0;
-		read = ad.DeatilRead2(atr);
-		return read;
-	}
-	
-//	@Override
-//	public int totalArticle1() {
-//		int page = 0;
-//		page = ad.totalArticle2();
-//		return page;
-//	}
 
 
 	// 김찬영
@@ -375,5 +292,96 @@ public class ArticleServiceImpl implements ArticleService {
 		result = ad.insertCustomer(article);
 		return result;
 	}
+	
+	
+	
+	
+	
+	@Override//김진현
+	public List<Article> getDutchpayList(String boardName) {
+		List<Article> article = ad.getDutchpayList(boardName);
+		return article;
+	}
+
+	@Override
+	public Article detail1(Article article) {
+		Article article1 = null;
+		article1 = ad.detail2(article);
+		return article1;
+	}
+	
+	@Override
+	public List<Article> repList1(Article article) {
+		List<Article> repList = ad.repList2(article);
+		return repList;
+	}
+
+	@Override
+	public List<Comm> category1() {
+		List<Comm> cm = null;
+		cm = ad.category2();
+		return cm;
+	}
+
+	@Override
+	public List<Region> loc1() {
+		List<Region> re = null;
+		re = ad.loc2();
+		return re;
+	}
+
+	@Override
+	public void dutchpayInsert1(Article article) {
+		ad.dutchpayInsert2(article);
+	}
+	
+	@Override
+	public Article updateForm1(Article article) {
+		Article updateForm = null;
+		updateForm = ad.updateForm2(article);
+		return updateForm;
+	}
+
+	@Override
+	public List<Region> loc_ud1() {
+		List<Region> re = null;
+		re = ad.loc_ud2();
+		return re;
+	}
+
+	@Override
+	public void dutchpayUpdate1(Article article) {
+		ad.dutchpayUpdate2(article);
+		
+	}
+
+	@Override
+	public void dutchpayDelete1(Article article) {
+		ad.dutchpayDelete2(article);
+		
+	}
+
+	@Override
+	public int DeatilRead1(Article article) {
+		int read = 0;
+		read = ad.DeatilRead2(article);
+		return read;
+	}
+	
+	@Override
+	public int totalArticle1() {
+		int page = 0;
+		page = ad.totalArticle2();
+		return page;
+	}
+	
+	@Override
+	public void applyInsert1(Article article) {
+		ad.applyInsert2(article);
+	}
+
+	
+	
+	
 
 }

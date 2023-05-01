@@ -106,4 +106,8 @@ public class Article {
 	// 최승환
 	// 조인
 	private Integer		rep_count;
+	
+	//김진현 
+	private Integer		reply_count; // (조회수 오라클 함수)
+	private Date 		wait_date;
 }

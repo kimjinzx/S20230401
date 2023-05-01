@@ -2,9 +2,9 @@ package com.java501.S20230401.service;
 
 import java.util.List;
 
-import com.java501.S20230401.model.Article_Trade_Reply;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Region;
+import com.java501.S20230401.model.Waiting;
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Region;
@@ -51,22 +51,6 @@ public interface ArticleService {
 	void			dbUpdateArticle(Article article);
 	int 			deleteArticle(Article article);
 	
-	// 김진현
-	List<Article_Trade_Reply> 			getDutchpayList(String boardName);//진현
-	Article_Trade_Reply                 detail1(Article_Trade_Reply atr);
-	public List<Article_Trade_Reply> 	repList1(Article_Trade_Reply atr);
-	List<Comm> 							category1();
-	List<Region>         				loc1();
-	void 								dutchpayInsert1(Article_Trade_Reply atr);
-	Article_Trade_Reply		 			updateForm1(Article_Trade_Reply atr);
-	List<Region> 						loc_ud1();
-	public void 						dutchpayUpdate1(Article_Trade_Reply atr);
-	public void 						dutchpayDelete1(Article_Trade_Reply atr);
-	public int 							DeatilRead1(Article_Trade_Reply atr);
-//	public int 							totalArticle1();
-
-
-	
 	// 김찬영
 	int				totalArticle();
 	List<Article> 	listArticle(Article article);
@@ -82,4 +66,24 @@ public interface ArticleService {
 	Article 			detailCustomer(Article article);
 	List<Article> 		listCustomerMenu(Article article);
 	public int 			insertCustomer(Article article);
+	
+	
+	// 김진현
+	List<Article> 			getDutchpayList(String boardName);//진현
+	Article                 detail1(Article article);
+	public List<Article> 	repList1(Article article);
+	List<Comm> 				category1();
+	List<Region>         	loc1();
+	void 					dutchpayInsert1(Article article);
+	Article		 			updateForm1(Article article);
+	List<Region> 			loc_ud1();
+	public void 			dutchpayUpdate1(Article article);
+	public void 			dutchpayDelete1(Article article);
+	public int 				DeatilRead1(Article article);
+	public int 				totalArticle1();
+	void 			        applyInsert1(Article article);
+
+	
+	
+	
 }

@@ -26,7 +26,7 @@
 <input type="button" value="글쓰기" onclick="location.href='/dutchpay/dutchpayWriteForm'"> 
 	 <c:forEach var="ATR" items="${dutchpayList }">
 	<div class="container" >
-		<span>작성자 : ${ART.mem_image}   ${ATR.mem_username }</span><p>
+		<span>작성자 : ${ATR.mem_image}  ${ATR.mem_nickname } (${ATR.mem_username })</span><p>
 		<span>${ATR.comm_value }</span>
 		<span><a href="/dutchpay/dutchpayDetail?art_id=${ATR.art_id}&brd_id=${ATR.brd_id}">제목 : ${ATR.art_title }</a>
 		작성날짜 : <fmt:formatDate value="${ATR.art_regdate}" pattern="yyyy년M월d일  h시mm분"/> </span><p>

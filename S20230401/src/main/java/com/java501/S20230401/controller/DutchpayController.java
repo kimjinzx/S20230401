@@ -8,11 +8,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.java501.S20230401.model.Article_Trade_Reply;
+import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Region;
+import com.java501.S20230401.model.Waiting;
 import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.Paging;
+import com.java501.S20230401.service.WaitingService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +27,7 @@ public class DutchpayController {
 	private final ArticleService as;
 	
 	@RequestMapping(value = "/board/dutchpay") // 대분류 같이사요 + 중분류 하위카테고리 이동 및 List조회  
-	public String dutchpayList(Article_Trade_Reply atr,int category, String currentPage, Model model) {
+	public String dutchpayList(Article article,int category, String currentPage, Model model) {
 		String viewName;
 		 String boardName;
 	      switch(category) { //카테고리 이동
@@ -36,33 +38,37 @@ public class DutchpayController {
 	      case 1150: viewName = "dutchpayEtcList"; boardName = "EtcList"; break;
 	      default: viewName = "dutchpayList"; boardName = "List"; break;
 	      }
-	      List<Article_Trade_Reply> dutchpayList = as.getDutchpayList(boardName);
+	      List<Article> dutchpayList = as.getDutchpayList(boardName);
 	      System.out.println("controller dutchpayList size() -> "+dutchpayList.size());
 	      model.addAttribute("dutchpayList", dutchpayList);
 	      
-//	      // 페이징
-//	      int totalAticle = as.totalArticle1();
-//	      System.out.println("컨트롤러 페이징 totalArticle -> "+totalAticle);
-//	      
-//	      Paging page = new Paging(totalAticle, currentPage);
-//	      atr.setStart(page.getStart());
-//	      atr.setEnd(page.getEnd());
+	      // 페이징
+	      int totalAticle = as.totalArticle();
+	      System.out.println("컨트롤러 페이징 totalArticle -> "+totalAticle);
+	      
+	      Paging page = new Paging(totalAticle, currentPage);
+	      article.setStart(page.getStart());
+	      article.setEnd(page.getEnd());
+	      
+	      
+	      
 	      
 	      return "dutchpay/" + viewName;
 	}
 	
 	@RequestMapping(value ="/dutchpay/dutchpayDetail") //상세 게시글    
-	public String dutchpayDetail(Article_Trade_Reply atr ,Model model) {
+	public String dutchpayDetail(Article article ,Model model) {
 		
-		int read = as.DeatilRead1(atr); // 조회수
+		int read = as.DeatilRead1(article); // 조회수
 
-		System.out.println("controller detail brd_id -> "+atr.getBrd_id());
-		System.out.println("controller detail art_id -> "+atr.getArt_id());
-		Article_Trade_Reply detail = as.detail1(atr); //상세페이지
+		Article detail = as.detail1(article); //상세페이지
 		model.addAttribute("detail", detail);
+		System.out.println("controller detail brd_id -> "+detail.getBrd_id());
+		System.out.println("controller detail art_id -> "+detail.getArt_id());
+		System.out.println("controller detail trd_id -> "+detail.getTrd_id());
 		
 		
-		List<Article_Trade_Reply> repList = as.repList1(atr); // 댓글리스트 조회
+		List<Article> repList = as.repList1(article); // 댓글리스트 조회
 		model.addAttribute("repList", repList);
 		
 		return "/dutchpay/dutchpayDetail";
@@ -90,11 +96,11 @@ public class DutchpayController {
 	
 
 	@RequestMapping(value = "dutchpay/dutchpayUpdateForm") //업데이트(수정) 폼 + 드롭다운 
-	public String dutchpayUpdateForm(Article_Trade_Reply atr, Model model) {
+	public String dutchpayUpdateForm(Article article, Model model) {
 		System.out.println("dutchpay/dutchpayUpdateForm start..");
-		System.out.println("controller updateForm brd_id  -> "+atr.getBrd_id());
-		System.out.println("controller updateForm art_id  -> "+atr.getArt_id());
-		Article_Trade_Reply updateForm = as.updateForm1(atr);
+		System.out.println("controller updateForm brd_id  -> "+article.getBrd_id());
+		System.out.println("controller updateForm art_id  -> "+article.getArt_id());
+		Article updateForm = as.updateForm1(article);
 		model.addAttribute("updateForm", updateForm);
 		
 		List<Region> loc_ud = as.loc_ud1();
@@ -107,44 +113,68 @@ public class DutchpayController {
 	}
 	
 	@PostMapping(value = "dutchpay/dutchpayWritePro") // 글내용 삽입 (insert) 
-	public String insert(Article_Trade_Reply atr ,RedirectAttributes ra) {
+	public String insert(Article article ,RedirectAttributes ra) {
 		
 		System.out.println("start insert button");
-		System.out.println(atr);
-		System.out.println("controller insert brd_id  -> "+atr.getBrd_id());
-		as.dutchpayInsert1(atr);
-		ra.addFlashAttribute("atr", atr);  //model.addAttribute와 다른점은 컨트롤러 내에서 매핑할 시 이렇게 사용하는게 좋음
-		int brd_id = atr.getBrd_id(); //확인 버튼 누르면 드롭다운(카테고리) 에서 고른 해당카테고리로 이동 
+		System.out.println(article);
+		System.out.println("controller insert brd_id  -> "+article.getBrd_id());
+		as.dutchpayInsert1(article);
+		ra.addFlashAttribute("article", article);  //model.addAttribute와 다른점은 컨트롤러 내에서 매핑할 시 이렇게 사용하는게 좋음
+		int brd_id = article.getBrd_id(); //확인 버튼 누르면 드롭다운(카테고리) 에서 고른 해당카테고리로 이동 
 		return "redirect:/board/dutchpay?category="+brd_id;
 	}
 	
-	//detail에서 쓰던 brd_id,atr_id,trd_id들을 가져온 updateForm에서 그것들을 사용해 update
+	//detail에서 쓰던 brd_id,article_id,trd_id들을 가져온 updateForm에서 그것들을 사용해 update
 	@PostMapping(value = "dutchpay/dutchpayUpdatePro") //글내용 수정(update)
-	public String update(Article_Trade_Reply atr, RedirectAttributes ra) {
+	public String update(Article article, RedirectAttributes ra) {
 		
 		System.out.println("start update button");
-		System.out.println(atr);
-		System.out.println("controller update brd_id -> "+atr.getBrd_id());
-		System.out.println("controller update art_id -> "+atr.getArt_id());
-		as.dutchpayUpdate1(atr);
-		ra.addFlashAttribute("atr", atr);  
-		int brd_id = atr.getBrd_id();
+		System.out.println(article);
+		System.out.println("controller update brd_id -> "+article.getBrd_id());
+		System.out.println("controller update art_id -> "+article.getArt_id());
+		as.dutchpayUpdate1(article);
+		ra.addFlashAttribute("article", article);  
+		int brd_id = article.getBrd_id();
 		return "redirect:/board/dutchpay?category="+brd_id;
 	}
 	
 	@PostMapping(value = "/dutchpay/dutchpayDelete") //게시글 삭제
-	public String delete(Article_Trade_Reply atr, RedirectAttributes ra) {
+	public String delete(Article article, RedirectAttributes ra) {
 		
 		System.out.println("start delete button");
-		System.out.println("controller delete brd_id -> "+atr.getBrd_id());
-		System.out.println("controller delete isdelete -> "+atr.getIsdelete());
-		as.dutchpayDelete1(atr);
-		ra.addFlashAttribute("atr",atr);
-		int brd_id = atr.getBrd_id();
+		System.out.println("controller delete brd_id -> "+article.getBrd_id());
+		System.out.println("controller delete isdelete -> "+article.getIsdelete());
+		as.dutchpayDelete1(article);
+		ra.addFlashAttribute("article",article);
+		int brd_id = article.getBrd_id();
 		return "redirect:/board/dutchpay?category="+brd_id;
 	}
 
+	@RequestMapping("/joinForm") // 상세게시글의 신청하기 버튼 (새창 띄우기)
+	public String joinForm(Article article, Model model) {
+		Article detail = as.detail1(article); 
+		model.addAttribute("detail", detail);
+		System.out.println("controller confirm brd_id -> "+detail.getBrd_id());
+		System.out.println("controller confirm art_id -> "+detail.getArt_id());
+		System.out.println("controller confirm trd_id -> "+detail.getTrd_id());
+	    return "dutchpay/JoinForm";
+	}
+	
+	@PostMapping(value = "/dutchpay/ApplyInsert") // 신청서의 신청하기 버튼 (waiting테이블에 insert)
+	public String Apply(Article article, Model model, RedirectAttributes ra) {
+		
+		Article detail = as.detail1(article); 
+		model.addAttribute("detail", detail);	//trd_id만 받아오기
+		System.out.println("controller confirm2 trd_id -> "+detail.getTrd_id());
 
+		as.applyInsert1(article);
+		ra.addFlashAttribute("article", article);
+
+//		int brd_id = article.getBrd_id();
+//		int art_id = article.getArt_id();
+		return "dutchpay/JoinForm";
+//		"redirect:/board/dutchpay?category="+brd_id+"&art_id="+art_id;
+	}
 }
 
 		

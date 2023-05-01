@@ -3,7 +3,6 @@ package com.java501.S20230401.dao;
 import java.util.List;
 
 
-import com.java501.S20230401.model.Article_Trade_Reply;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Region;
 
@@ -53,19 +52,6 @@ public interface ArticleDao {
 	int 			deleteArticle(Article article);
 	
 	
-	// 김진현
-	List<Article_Trade_Reply> 			getDutchpayList(String boardName);
-	Article_Trade_Reply                 detail2(Article_Trade_Reply atr);
-	public List<Article_Trade_Reply> 	repList2(Article_Trade_Reply atr);
-	void 								dutchpayInsert2(Article_Trade_Reply atr);
-	List<Comm>           				category2();
-	List<Region>    			        loc2();
-	Article_Trade_Reply 				updateForm2(Article_Trade_Reply atr);
-	List<Region> 						loc_ud2();
-	void 								dutchpayUpdate2(Article_Trade_Reply atr);
-	void 								dutchpayDelete2(Article_Trade_Reply atr);
-	public int 							DeatilRead2(Article_Trade_Reply atr);
-//	public int 							totalArticle2();
 	
 	
 	// 김찬영
@@ -88,5 +74,21 @@ public interface ArticleDao {
 	int 			insertCustomer(Article article);
 
 	
+	
+	// 김진현
+	List<Article> 			getDutchpayList(String boardName);
+	Article                 detail2(Article article);
+	public List<Article> 	repList2(Article article);
+	void 					dutchpayInsert2(Article article);
+	List<Comm>           	category2();
+	List<Region>    		loc2();
+	Article 				updateForm2(Article article);
+	List<Region> 			loc_ud2();
+	void 					dutchpayUpdate2(Article article);
+	void 					dutchpayDelete2(Article article);
+	public int 				DeatilRead2(Article article);
+	public int 				totalArticle2();
+	void                    applyInsert2(Article article);
+
 	
 }

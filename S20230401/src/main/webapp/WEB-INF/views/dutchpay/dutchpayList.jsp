@@ -34,7 +34,7 @@
 		
 		
 		
-		<span>작성자 : ${ART.mem_image}   ${A.mem_username }</span>
+		<span>작성자 : ${ATR.mem_image}  ${ATR.mem_nickname } (${ATR.mem_username })</span><p>
 		<span>${ATR.comm_value }</span>
 		<span><a href="/dutchpay/dutchpayDetail?art_id=${ATR.art_id}&brd_id=${ATR.brd_id}">제목 : ${ATR.art_title }</a>
 		
@@ -50,16 +50,17 @@
 	</div>
 	<hr>
 	</c:forEach>
-
-	<%-- <c:if test ="${page.startPage > page.pageBlock }">
+                       <!-- 1              10    -->
+ 	 <c:if test ="${page.startPage > page.pageBlock }">
     	<a href="${pageContext.request.contextPath }/board/dutchpay?currentpage=${page.startPage-page.pageBlock}&category=${category}">[이전]</a>
 	</c:if>
 	<c:forEach var="i" begin="${page.startPage}" end="${page.endPage}">
     	<a href="${pageContext.request.contextPath }/board/dutchpay?currentPage=${i}&category=${category}">[${i}]</a>
 	</c:forEach>
+					<!-- 10              5    -->
     <c:if test="${page.endPage < page.totalPage }">
     	<a href="${pageContext.request.contextPath }/board/dutchpay?currentPage=${page.startPage+page.pageBlock}&category=${category}">[다음]</a>
     </c:if>
-    --%>
+ 
 </body>
 </html>

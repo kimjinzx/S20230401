@@ -33,7 +33,7 @@
 		
 		<tr><th>가격</th><td><input     type="number" name="trd_cost"     	required="required"> 원</td></tr>
 		<tr><th>모집인원</th><td><input  type="number" name="trd_max" 	    	required="required"> 명 (작성자 제외)</td></tr>
-	    <tr><th>마감일자</th><td><input  type="date"   name="trd_enddate" 	    required="required"></td></tr>
+	    <tr><th>마감일자</th><!-- <td><input  type="date"   name="trd_enddate" 	    required="required"></td> --></tr>
 		
 		<tr><th>지역</th><td>
 			<select name="reg_id">

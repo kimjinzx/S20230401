@@ -25,7 +25,8 @@
 	<input type="hidden" name="trd_id" value="${updateForm.trd_id }" ><p>
 	
 	작성자 : <input type="hidden"    name="member_image" >${updateForm.mem_image }
-		   <input type="hidden"    name="member_username" >${updateForm.mem_username }<p>
+		   <input type="hidden"    name="member_image" >${updateForm.mem_nickname }
+		   <input type="hidden"    name="member_username" >(${updateForm.mem_username })<p>
 	작성날짜 :	 <fmt:formatDate value="${updateForm.art_regdate}" pattern="yyyy년M월d일  hh시mm분"/><p>
 	<table>
 		<tr><th>제목</th><td>
