@@ -30,16 +30,12 @@
 			let category = $('#category').val();
 			location.href='${pageContext.request.contextPath}/board/share/artDelete/'+art_id+'?brd_id='+brd_id+'&category='+category;
 			alert("삭제 되었습니다.");
-		}else{
-			alert("삭제 취소");
 		}
 	}
 	// 게시글 기능 -게시글 수정
 	function art_Update(){
 		if(confirm('수정 하시겠습니까?')){
 			location.href='${pageContext.request.contextPath}/board/share/artDelete?art_id='+art_id+'&brd_id='+brd_id;
-		}else{
-			alert("수정 취소");
 		}
 	}
 
@@ -120,11 +116,42 @@
 		});
 	}
 
+//	<button id="btns-like">찜하기</button>
+//	<button id="btns-apply">신청</button>
+
 	// 거래 신청 ---------------------------------------------------------
-	$(document).ready(()=>{
+	$(document).ready(()=>{ 
 		$('#btns-apply').click(()=>{
-			let art_id = ${article.art_id};
-			console.info(art_id);
+			if(confirm('거래 신청')){
+				let art_id = ${article.art_id};
+				console.info(art_id);
+				$('.myModal').css('display', 'flex'); // flex로 변경
+				// x버튼 누를 시 모달 사라짐
+				const modal = document.getElementById('modal')
+				const modalClose = document.getElementById('modal-close');
+				modalClose.addEventListener("click", e => {
+					modal.style.display = 'none';
+				});
+				//window.open('${pageContext.request.contextPath}/board/share/tradeApply', 'trade_apply', 'width=400, height=400');
+				// modal 외의 영역 클릭시 사라짐
+				//$('html').click(e=>{
+				//	if(!$(e.target).hasClass('.myModal')){
+						//$('#modal').css('display', 'none');
+						//modal.style.display = 'none';
+						//$('#modal').toggle();
+				//	}
+				//});
+			}else alert('취소');
+		});
+	});
+	// 찜하기
+	$(document).ready(()=>{
+		$('#btns-like').click(()=>{
+			if(confirm('찜하기')){
+				alert('아직 찜하기 구현 안함');
+			}else{
+				alert('찜하기 취소');
+			}
 		});
 	});
 </script>
@@ -158,6 +185,9 @@
 		background-color: transparent;
 	}
 	button{
+		width: auto;
+		height: 25px;
+		margin: 0 5px;
 		color: white;
 		background-color: #0193F8;
 		border: none;
@@ -169,14 +199,15 @@
 		color: #0193F8;
 		font-size: 16px;
 	}
-	/* 홀수 버튼 */
-	.article-vote button:nth-child(odd){
+	/* 추천 비추천 버튼 */
+	.article-vote button{
 		width: 100px;
 		height: 100px;
 		font-size: 20px;
 		text-align: center;
 		background-color: #eeeeee;
 		color: black;
+		margin: 5px;
 	}
 
 	/* 1번째 부터 2번째 까지 */
@@ -190,7 +221,7 @@
 		background-color: red;
 		color: white;
 	}
-	/* 거래 신청 DIV*/
+	/* DIV 태그 테두리 */
 	.article-share{
 		width: auto;
 		height: auto;
@@ -198,7 +229,11 @@
 		border-radius: 10px;
 	}
 	div{
-		padding: 5px;
+		padding: 3px;
+	}
+	/* 글의 유저 정보 첫번째 요소를 제외한 span태그전에 적용 */
+	.article-memberInfo span:not(:first-child)::before{
+		content: ' | ';
 	}
 </style>
 </head>
@@ -206,13 +241,6 @@
 	<div class="board-articleList">
 		<div class="view-content">
 		
-			<div class="view-member">
-				<span><img alt="회원 프사" src="${pageContext.request.contextPath}/uploads/profile/${article.member.mem_image}" style="width: 120px; height: 120px;"></span>
-				<span>${article.member.mem_nickname}</span>
-				<span>${article.member.mem_gender}</span>
-			</div>
-			<hr />
-			
 			<!-- 게시글 -->
 			<div class="view-article">
 				<div class="article-head">
@@ -225,22 +253,22 @@
 					<input type="hidden" id="login_member" 		name="login_member" 	value="${memberInfo.mem_id}">
 					<input type="hidden" id="login_authority" 	name="login_authority" 	value="${memberInfo.mem_authority}">
 					
-					
-					<div class="article-category">
+					<!-- 카테고리 표시 -->
+					<div class="article-category" style="display: flex;">
 						<span class="category-name">
-							<button>${article.brd_name}</button>
+							<button style="border-radius: 5px; font-size: x-large; height: auto; background-color: #6c757d;">${article.brd_name}</button>
+						</span>
+						<span style="display: flex; flex-grow: 1; justify-content: flex-end;">
+							<!-- 글 수정 삭제 -->
+							<c:if test="${article.mem_id == memberInfo.mem_id || memberInfo.mem_authority >= 108}">
+								<button id="btns-artUpdate" onclick="art_Update()">수정</button>
+								<button id="btns-artDelete" onclick="art_Delete()">삭제</button>
+							</c:if>
 							<button onclick="location.href='${pageContext.request.contextPath}/board/share?category=${category}';">목록</button>
-							
-						<!-- 글 수정 삭제 -->
-						<c:if test="${article.mem_id == memberInfo.mem_id || memberInfo.mem_authority >= 108}">
-							<button id="btns-artUpdate" onclick="art_Update()">수정</button>
-							<button id="btns-artDelete" onclick="art_Delete()">삭제</button>
-						</c:if>
-						
 						</span>
 					</div>
 					<hr />
-						
+					
 					<!-- 글 제목 및 상태 -->
 					<div class="article-title">
 						<span>
@@ -249,7 +277,22 @@
 						</span>
 					</div>
 					<hr />
-
+					<!-- 글쓴이 -->
+					<div class="article-memberRow" style="display: flex; align-items: center;">
+						<div class="article-member" style="display: flex; align-items: center;">
+							<span><img alt="profile" src="${pageContext.request.contextPath}/uploads/profile/${article.member.mem_image}" style="width: 30px; height: 30px; border-radius: 30px;"></span>
+							<span>${article.member.mem_nickname}</span>
+						</div>
+						<div class="article-memberInfo" style="flex-grow: 1; text-align: right;">
+							<span>추천 ${article.art_good}</span>
+							<span>비추천 ${article.art_bad}</span>
+							<span>댓글 ${article.rep_cnt == null ? 0:article.rep_cnt}</span>
+							<span>조회수 ${article.art_read}</span>
+							<span>작성일 <fmt:formatDate value="${article.art_regdate}" pattern="yyyy-MM-dd HH:mm:ss"/></span>
+						</div>
+					</div>
+					<hr />
+					
 					<!-- 태그 출력 -->
 					<div class="article-info">
 						<div class="info-tag">
@@ -286,13 +329,29 @@
 									<span>최대 나이 : ${article.trade.trd_maxage>0? article.trade.trd_maxage:'제한없음'}</span>
 									<span>성별 제한 : ${article.trade.trd_gender==201? '남자만':article.trade.trd_gender==202? '여자만':'제한없음'}</span>
 								</div>
-
+								<!-- 거래 신청, 찜 -->
 								<div class="share-button">
 									<span>
 										<button id="btns-like">찜하기</button>
 										<button id="btns-apply">신청</button>
 									</span>
 								</div>
+
+
+
+
+								<!-- (임시) 모달 팝업 -->
+								<div class="myModal" id="modal" style="display: none;">
+									<div class="myModal-window">
+										<div class="modal-title"><h2>모달 팝업창 제목</h2></div>
+										<div class="modal-close" id="modal-close">&times;</div>
+										<div class="modal-body">모달 팝업창 내용</div>
+									</div>
+								</div>
+								  
+								  
+
+
 							</div>
 						</div>
 					</div>
@@ -306,10 +365,9 @@
 						<hr />
 						<span>${article.art_content}</span>
 					</div>
-					<hr />
 
 					<!-- 추천 비추천 -->
-					<div class="article-vote">
+					<div class="article-vote" style="display: flex; justify-content: center;">
 						<button id="btns-good">추천 ${article.art_good}</button>
 						<button id="btns-goodcancel" style="display: none;">추천 토글${article.art_good}</button>
 						<button id="btns-bad">비추천 ${article.art_bad}</button>
@@ -332,8 +390,8 @@
 							<div class="reply-view" style="display: flex; ${(reply.rep_id != reply.rep_parent) ? 'margin-left: 20px;' : ''}">
 								
 								<div class="reply-image">
-									<span><img alt="프로필 사진" src="${pageContext.request.contextPath}/uploads/profile/${reply.member.mem_image}" style="width: 80px; height: 80px;"></span>
-								</div>
+									<span><img alt="profile" src="${pageContext.request.contextPath}/uploads/profile/${reply.member.mem_image}" style="width: 80px; height: 80px;"></span>
+								</div> 
 								
 								<!-- 댓글 내용 -->
 								<div class="reply-inner" style="flex-grow: 1">
