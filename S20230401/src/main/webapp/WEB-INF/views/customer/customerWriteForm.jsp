@@ -167,7 +167,7 @@
 	</aside>
 	<main>
 		<!-- 내용작성 -->
-		<div align="center">
+		<div class="container" align="center">
 			<h2>고객센터 글쓰기</h2>
 			<form action="writeCustomer" method="get" name="frm">
 				<table>

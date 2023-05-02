@@ -190,7 +190,7 @@
 		</span>
 	</div>
 	
-	<p style="text-align:left">게시글수: ${totalCustomer}</p>
+	<%-- <p style="text-align:left">게시글수: ${totalCustomer}</p> --%>
 	<c:set var="num" value="${page.total-page.start+1 }"></c:set>
 	
 	<table border="1">

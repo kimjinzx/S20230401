@@ -759,7 +759,7 @@
 			 	 		FROM REPLY
 			 	 		GROUP BY ART_ID, BRD_ID) R
 			 	 		ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID)
-			 	 		WHERE A.ART_ID = #{art_id} AND A.BRD_ID = #{brd_id} and isdelete=0
+			 	 		WHERE A.ART_ID = #{art_id} AND A.BRD_ID = #{brd_id} and A.isdelete=0
 	  ]]>
 	</select>
 	
