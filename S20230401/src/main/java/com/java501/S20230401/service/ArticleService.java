@@ -50,6 +50,7 @@ public interface ArticleService {
 	void 			dbWriteArticle(Article article);
 	void			dbUpdateArticle(Article article);
 	int 			dbdeleteArticle(Article article);
+	int				dbReadArticleCnt(Article article);
 	
 	// 김진현
 	List<Article_Trade_Reply> 			getDutchpayList(String boardName);//진현

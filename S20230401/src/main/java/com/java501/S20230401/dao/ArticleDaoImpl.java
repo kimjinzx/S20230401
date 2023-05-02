@@ -378,7 +378,16 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 	}
 	
-	
+	@Override
+	public int dbReadArticleCnt(Article article) {
+		int dbReadArticleCnt = 0;
+		try {
+			dbReadArticleCnt = session.update("dbReadArticleCnt", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dbReadArticleCnt;
+	}
 	
 	
 	
@@ -637,4 +646,5 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return result;
 	}
+
 }

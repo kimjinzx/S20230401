@@ -220,6 +220,14 @@ public class ArticleServiceImpl implements ArticleService {
 		System.out.println("ArticleServiceImpl article.getInsert_result())=> " + article.getInsert_result());
 	}
 	
+	// 조회수 Count
+	@Override
+	public int dbReadArticleCnt(Article article) {
+		int dbReadArticleCnt = ad.dbReadArticleCnt(article);
+		return dbReadArticleCnt;
+	}
+	
+	
 	// 김진현
 	@Override
 	public List<Article_Trade_Reply> getDutchpayList(String boardName) {

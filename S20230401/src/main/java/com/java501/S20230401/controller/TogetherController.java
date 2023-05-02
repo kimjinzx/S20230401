@@ -2,13 +2,17 @@ package com.java501.S20230401.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import org.json.JSONObject;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Comm;
@@ -72,6 +76,9 @@ public class TogetherController {
 		if (memberDetails != null) 
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 
+		// 게시글 조회수 증가
+		int ReadArticleCnt = as.dbReadArticleCnt(article);
+		
 		// 상세게시글 요소 구현
 		Article detailArticle = as.dbdetailArticle(article);
 		model.addAttribute("detailArticle", detailArticle);
@@ -79,6 +86,7 @@ public class TogetherController {
 		// 게시글 별 댓글 리스트
 		List<Article> replyList = as.dbreplyList(article);
 		model.addAttribute("replyList", replyList);
+		
 
 		return "together/detailArticle";
 	}
@@ -117,6 +125,7 @@ public class TogetherController {
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		
 		article.setTrd_enddate(trd_enddate);
+		article.setMem_id(memberDetails.getMemberInfo().getMem_id());
 		
 
 		// 프로시저 Insert_Article 이용 => 게시글 작성
@@ -124,6 +133,7 @@ public class TogetherController {
 		int insertResult = article.getInsert_result();
 		int brd_id = article.getBrd_id();
 
+		
 		model.addAttribute("insertResult", insertResult);
 		model.addAttribute("article", article);
 
@@ -215,6 +225,8 @@ public class TogetherController {
 		if (memberDetails != null) 
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		
+		reply.setMem_id(memberDetails.getMemberInfo().getMem_id());
+		
 		int insertReply = rs.dbInsertReply(reply);
 		
 		int art_id = reply.getArt_id();
@@ -242,10 +254,16 @@ public class TogetherController {
 	}
 	
 	@RequestMapping(value="/board/updateReply")
+	@ResponseBody
 	public String updateReply(@AuthenticationPrincipal MemberDetails memberDetails,  // 세션의 로그인 유저 정보
-			  				  Reply reply,
-			  				  Model model) {
+			  				  @RequestBody Reply reply,
+			  				  Model model,
+			  				  Map<String, Object> data) {
 		
+		JSONObject jsonObj = new JSONObject();
+		
+		System.out.println(reply);
+
 		if (memberDetails != null) 
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		
@@ -258,9 +276,12 @@ public class TogetherController {
 		System.out.println("reply.rep_content =>" + reply.getRep_content() );
 		model.addAttribute("updateReply", updateReply);
 		
+		jsonObj.append("result", updateReply);
+		jsonObj.append("content", reply.getRep_content());
 		
-		return "redirect:/board/detailArticle?art_id="+art_id+"&brd_id="+brd_id;
-		// return reply;
+		
+		return jsonObj.toString();
+		// return repy;
 	}
 	
 	

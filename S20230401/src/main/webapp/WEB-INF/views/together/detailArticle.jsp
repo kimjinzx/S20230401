@@ -7,6 +7,49 @@
 <title>Insert title here</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.0.min.js" ></script>
 
+<script>
+	
+	$(() => {
+		$('.reply-modify').click(e => {
+			if ($(e.target).closest('.reply-box').find('.rep_content2').css('display') == 'none') {
+				$(e.target).closest('.reply-box').find('.rep_content1').toggle();
+				$(e.target).closest('.reply-box').find('.rep_content2').toggle();
+			} else {
+				// 수정작업 ex... AJAX
+				let rawData = {art_id : ${detailArticle.art_id}, brd_id:${detailArticle.brd_id},
+							   rep_id : $(e.target).closest('.reply-box').find('input[name="rep_id"]').val(),
+							   rep_content : $(e.target).closest('.reply-box').find('.rep_content2').val()};
+				
+				let sendData = JSON.stringify(rawData);
+				
+				$.ajax({
+					  url : "/board/updateReply",
+					  type : 'post',
+					  data : sendData,
+					  dataType :'json',
+					  contentType : 'application/json',
+					  success : data => {
+						  
+						  if (data.result == 1) {	// 성공
+							  	$(e.target).closest('.reply-box').find('.rep_content1').text(data.content);
+							  	$(e.target).closest('.reply-box').find('.rep_content2').val(data.content);
+							  	
+								$(e.target).closest('.reply-box').find('.rep_content1').toggle();
+								$(e.target).closest('.reply-box').find('.rep_content2').toggle();
+						  } else 
+							  alert('수정 실패.');
+					  }
+				  }
+				);
+			}
+		});
+	});
+	
+</script>
+<!-- closest => 가장 가까운 (.->클래스, #->아이디,) 이름을 가진 놈 찾아 타겟으로 만듦.
+	find => 아래의 태그 찾음.
+	css => 해당 속성을 찾아서 속성의 값을 알려줌 (두개면 앞에 놈의 값을 뒤에놈으로 바꿔줌)  -->
+
 <!--  <script>
 
 	function createButton() {
@@ -157,6 +200,11 @@
 					<c:when test="${memberInfo.mem_id != null}">
 					<input type="text"   name="rep_content"   placeholder="댓글을 입력하세요"
 								 style="margin : 10px; width:1225px; height:20px; font-size:12px;"></input>
+					<div style = "display: block;" id="replyButton">
+					<input type="submit" id = "replySubmit" value="댓글">
+					<!-- submit 버튼을 통해 데이터가 입력(?)된다 -->
+					<input type="reset"  id = "replyReset"  value="취소">
+					</div>
 					</c:when>
 					<c:otherwise>
 					<span> 로그인이 필요합니다 </span>
@@ -164,11 +212,6 @@
 				</c:choose>
 				
 			<!-- name = 데이터를 전달 받는 column 이름, value= 들어갈 데이터의 값, id = javascript로 꾸밀 때 지정해주는 이름(?) -->		
-					<div style = "display: block;" id="replyButton">
-					<input type="submit" id = "replySubmit" value="댓글">
-					<!-- submit 버튼을 통해 데이터가 입력(?)된다 -->
-					<input type="reset"  id = "replyReset"  value="취소">
-					</div>
 			</form>
 		</div>
 		<p>
@@ -176,7 +219,7 @@
 	<!-- 댓글리스트 -->
 	
 		<c:forEach var="reply" items="${replyList }">
-			<div>
+			<div class="reply-box" style="${reply.rep_step > 1 ? 'margin-left: 30px' : ''}">    
 				<input type="hidden" name="art_id"  	value="${reply.art_id }">
 				<input type="hidden" name="brd_id" 		value="${reply.brd_id }">
 				<input type="hidden" name="mem_id" 		value="${reply.mem_id }">
@@ -186,13 +229,26 @@
 				<span>(${reply.mem_username })</span>
 				<fmt:formatDate value="${reply.rep_regdate}" pattern="yy년 MM월 dd일 : HH:mm:ss"/>
 			    <p>
-			      <span class="reply-content">${reply.rep_content}</span>
-			      <input type="button" value="수정" onclick="${pageContext.request.contextPath }location.href='/board/updateReply?brd_id=${reply.brd_id}&art_id=${reply.art_id}&rep_id=${reply.rep_id}&mem_id=${reply.mem_id}';">
-			      <input type="button" value="삭제" onclick="${pageContext.request.contextPath }location.href='/board/deleteReply?brd_id=${reply.brd_id}&art_id=${reply.art_id}&rep_id=${reply.rep_id}&mem_id=${reply.mem_id}';">
-			    </p>
+				      <span class="rep_content1"> ${reply.rep_content}</span>
+				      <input type="text" class="rep_content2" style="display: none" value="${reply.rep_content }">
+				      
+				      <span style="float: right; ;">비추천수 : ${reply.rep_bad }  </span>
+				      <span style="float: right; ;">추천수 : ${reply.rep_good }&nbsp;</span>
+				     
+				<p>      
+			    <c:choose>
+				    <c:when test="${memberInfo.mem_id == reply.mem_id}">
+				      <!-- <input type="button" value="수정" onclick="updateReply(this)"> -->
+				      <input class="reply-modify" type="button" value="수정">
+				      <input type="button" value="삭제" onclick="${pageContext.request.contextPath }location.href='/board/deleteReply?brd_id=${reply.brd_id}&art_id=${reply.art_id}&rep_id=${reply.rep_id}&mem_id=${reply.mem_id}';">
+					</c:when>
+					<c:otherwise>
+					</c:otherwise>
+				</c:choose>	
+				</p>
 			</div>
 			
-			<div class="insertRe-Reply" style = "display: block;">
+			<div class="insertRe-Reply" style = "display: block; ${reply.rep_step > 1 ? 'margin-left: 30px' : ''}">
 				<form action="/board/insertReply" id="insertRe-Reply" method="post">
 					<input type="hidden" name="art_id"  	value="${detailArticle.art_id }">
 					<input type="hidden" name="brd_id" 		value="${detailArticle.brd_id }">
@@ -203,6 +259,11 @@
 						<c:when test="${memberInfo.mem_id != null}">
 						<input type="text"   name="rep_content"   placeholder="댓글을 입력하세요"
 									 style="margin : 10px; width:1225px; height:20px; font-size:12px;"></input>
+							<div style = "display: block;" id="replyButton">
+								<input type="submit" id = "replySubmit" value="댓글">
+								<!-- submit 버튼을 통해 데이터가 입력(?)된다 -->
+								<input type="reset"  id = "replyReset"  value="취소">
+							</div>
 						</c:when>
 						<c:otherwise>
 						<span> 로그인이 필요합니다 </span>
@@ -210,11 +271,6 @@
 					</c:choose>
 				
 			<!-- name = 데이터를 전달 받는 column 이름, value= 들어갈 데이터의 값, id = javascript로 꾸밀 때 지정해주는 이름(?) -->		
-					<div style = "display: block;" id="replyButton">
-						<input type="submit" id = "replySubmit" value="댓글">
-						<!-- submit 버튼을 통해 데이터가 입력(?)된다 -->
-						<input type="reset"  id = "replyReset"  value="취소">
-					</div>
 					<p>
 				</form>
 			</div>

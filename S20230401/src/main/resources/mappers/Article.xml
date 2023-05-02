@@ -497,7 +497,7 @@
 	<select id = "dbInsertArticle" statementType="CALLABLE" parameterType="Article">
 		{
 		call Insert_Article(
-			1
+			  #{mem_id,		   mode= IN,  jdbcType=NUMERIC}
 			, 401
 			, #{trd_max,       mode= IN,  jdbcType=NUMERIC}
 			, #{trd_enddate,   mode= IN,  jdbcType=DATE}
@@ -597,6 +597,13 @@
 			, #{insert_result, mode= OUT, jdbcType=NUMERIC})
 		}
 	</select>
+	
+	<update id="dbReadArticleCnt" parameterType="Article">
+		UPDATE      ARTICLE
+        SET         ART_READ = ART_READ + 1
+        WHERE       BRD_ID = #{brd_id}
+        AND         ART_ID = #{art_id}
+	</update>
 
 
 	

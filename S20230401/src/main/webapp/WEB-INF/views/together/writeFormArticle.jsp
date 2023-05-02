@@ -166,8 +166,7 @@
 	<main>
 		<h2>게시글 작성</h2>
 	<c:if test="${msg!=null }">${msg }</c:if>
-	<form action="${pageContext.request.contextPath }/board/writeArticle"
-		method="POST" name="frm">
+	<form action="${pageContext.request.contextPath }/board/writeArticle" method="POST" name="frm">
 		<table>
 			<tr>
 				<th>카테고리</th>
