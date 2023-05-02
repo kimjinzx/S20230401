@@ -578,7 +578,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		System.out.println("ArticleDaoImpl Start totalCustomer...");
 		
 		try {
-			totCustomerCount = session.selectOne("shCustomerCount");
+			totCustomerCount = session.selectOne("shCustomerCount", brd_id);
 			System.out.println("ArticleDaoImpl shCustomerCount totCustomerCount->" +totCustomerCount);
 			
 		} catch (Exception e) {

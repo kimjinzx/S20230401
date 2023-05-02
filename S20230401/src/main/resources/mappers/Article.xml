@@ -703,7 +703,7 @@
 	<![CDATA[
 		SELECT Count(*)
 		FROM article
-		WHERE brd_id = #{brd_id}
+		WHERE brd_id BETWEEN #{brd_id} AND #{brd_id}+99
  	 ]]>	
 	</select>
 	
@@ -764,8 +764,8 @@
 	</select>
 	
 	<insert id="shInsertCustomer" parameterType="Article">
-		INSERT into article (art_id, brd_id, art_title, mem_id, art_content, art_regdate) 
-		VALUES (#{art_id}, #{brd_id}, #{art_title}, #{mem_id}, #{art_content}, #{art_regdate})
+		INSERT into article (art_id, brd_id, art_title, mem_id, art_content, art_regdate, art_tag1, art_tag2, art_tag3, art_tag4, art_tag5) 
+		VALUES ((Select max(art_id) + 1 from article where brd_id = #{brd_id}), #{brd_id}, #{art_title}, #{mem_id}, #{art_content}, SYSDATE, #{art_tag1}, #{art_tag2}, #{art_tag3}, #{art_tag4}, #{art_tag5})
 	</insert>
 	
 </mapper>

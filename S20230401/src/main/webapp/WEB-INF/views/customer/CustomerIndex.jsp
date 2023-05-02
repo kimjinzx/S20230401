@@ -194,13 +194,20 @@
 	<c:set var="num" value="${page.total-page.start+1 }"></c:set>
 	
 	<table border="1">
-		<tr><th>글번호</th><th>제목</th><th>작성자</th><th>프사</th><th>작성일</th><th>댓글수</th><th>조회수</th><th>추천수</th><th>비추천수</th></tr>
+		<tr><th>글번호</th><th>제목</th><th>작성자</th><th>프사</th><th>태그</th><th>작성일</th><th>댓글수</th><th>조회수</th><th>추천수</th><th>비추천수</th></tr>
 		<c:forEach var="article" items="${listCustomer }">
 			<tr>
 			<td>${article.art_id }</td>
-			<td><a href="${pageContext.request.contextPath}/board/customer/detailCustomer?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${article.brd_id}">${article.art_title}</a></td>
+			<td><a href="${pageContext.request.contextPath}/board/customer/detailCustomer?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category}">${article.art_title}</a></td>
 			<td>${article.mem_nickname }</td>
 			<td><img src="${pageContext.request.contextPath}/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
+			<td>
+			${article.art_tag1 != '' ? article.art_tag1 : ''}
+  			${article.art_tag2 != '' ? article.art_tag2 : ''}
+  			${article.art_tag3 != '' ? article.art_tag3 : ''}
+  			${article.art_tag4 != '' ? article.art_tag4 : ''}
+  			${article.art_tag5 != '' ? article.art_tag5 : ''}
+  			</td>
 			<td style="font-size : 12px">
 			<fmt:formatDate value="${article.art_regdate }" pattern="yy-MM-dd"/>
 			</td>
@@ -214,13 +221,13 @@
 	</table>	
 	
 	<c:if test="${page.startPage > page.pageBlock }">
-		<a href="customer?currentPage=${page.startPage-page.pageBlock}&category=${category}">[이전]</a>
+		<a href="${pageContext.request.contextPath}/board/customer?currentPage=${page.startPage-page.pageBlock}&category=${category}">[이전]</a>
 	</c:if>
 	<c:forEach var="i" begin="${page.startPage}" end="${page.endPage}">
-		<a href="customer?currentPage=${i}&category=${brd_id}">[${i}]</a>
+		<a href="${pageContext.request.contextPath}/board/customer?currentPage=${i}&category=${brd_id}">[${i}]</a>
 	</c:forEach>
 	<c:if test="${page.endPage < page.totalPage }">
-		<a href="customer?currentPage=${page.startPage+page.pageBlock}&category=${category}">[다음]</a>
+		<a href="${pageContext.request.contextPath}/board/customer?currentPage=${page.startPage+page.pageBlock}&category=${category}">[다음]</a>
 	</c:if>	
 	<!-- 글쓰기 버튼 -->
 	

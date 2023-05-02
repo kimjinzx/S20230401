@@ -167,49 +167,28 @@
 	</aside>
 	<main>
 		<!-- 내용작성 -->
+		<p>
 		<div class="container" align="center">
-			<h2>고객센터 글쓰기</h2>
-			<form action="writeCustomer" method="post" name="frm">
-				<table>
-					<tr><th>작성자 :</th>
-					<td>${memberInfo.mem_nickname }<td>
-					<input type="hidden" name="mem_id" value="${memberInfo.mem_id}">
-					
-					<tr><th>분류:</th><td>
-					<select name="brd_id">
-						<option value="1510" selected>공지</option>
-						<option value="1520">Q&amp;A</option>
-						<option value="1530">이벤트</option>
-						<option value="1540">문의/건의</option>
-					</select>
-					
-					<tr><th>제목</th><td>
-					<input type="text" name="art_title" placeholder="제목을 입력해 주세요" required="required">
 	
-				
-					<tr><th>내용</th><td>
-					<textarea rows="20" cols="50" name="art_content" placeholder="내용을 입력해 주세요" required="required"></textarea>
-					
-					
-					<tr><th>태그1</th><td>
-					<input type="text" name="art_tag1" class="tag"><br>
-					<tr><th>태그2</th><td>
-					<input type="text" name="art_tag2" class="tag"><br>
-					<tr><th>태그3</th><td>
-					<input type="text" name="art_tag3" class="tag"><br>
-					<tr><th>태그4</th><td>
-					<input type="text" name="art_tag4" class="tag"><br>
-					<tr><th>태그5</th><td>
-					<input type="text" name="art_tag5" class="tag"><br>
-					<tr>
-					<td colspan="2">
-					<input type="submit" value="등록" />
-					<input type="button" value="목록" onclick="location.href='${pageContext.request.contextPath}/board/customer?category=1500'"/>
-					</td>
-				</table>
-			</form>
-		</div>	
-
+		<div class="board-category" align="center" style="font-size: 20px">
+		<span class="item">
+			<a href="/board/customer?category=1500" class="active">&nbsp;전체&nbsp;</a>
+		</span>
+		<span class="item">
+			<a href="/board/customer?category=1510" class="active">&nbsp;공지&nbsp;</a>
+		</span>
+		<span class="item">
+			<a href="/board/customer?category=1520" class="active">&nbsp;Q&A&nbsp;</a>
+		</span>
+		<span class="item">
+			<a href="/board/customer?category=1530" class="active">&nbsp;이벤트&nbsp;</a>
+		</span>
+		<span class="item">
+			<a href="/board/customer?category=1540" class="active">&nbsp;문의/건의&nbsp;</a>
+		</span>
+		</div>
+		
+		</div>
 		<!-- 여기까지 -->
 
 		<button id="scrollToTop" class="adv-hover">

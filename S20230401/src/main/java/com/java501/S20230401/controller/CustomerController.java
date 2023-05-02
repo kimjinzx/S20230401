@@ -31,16 +31,15 @@ public class CustomerController {
 	// 고객센터 목록
 	@RequestMapping(value = "/board/customer")
 	public String customerList(@AuthenticationPrincipal MemberDetails mD,
-								Article article, int category, String currentPage, Model model) {
+								Article article, Integer category, String currentPage, Model model) {
 		System.out.println("CustomerController Start customerList..." );
-		
 		// 유저 권한 확인
 		if (mD != null) {
 			model.addAttribute("memberInfo", mD.getMemberInfo());
 		}
 		
-		article.setBrd_id(category);
 		int brd_id = category;
+		article.setBrd_id(category);
 		
 		// 전체 게시글 갯수
 		int totalCustomer =  as.totalCustomer(category);
@@ -132,10 +131,39 @@ public class CustomerController {
 			model.addAttribute("memberInfo", mD.getMemberInfo());
 		}
 		
-		model.addAttribute("category", category);
-		System.out.println("CustomerController Start writeCustomer...");
-
-		return "forward:/board/customer/customerWriteForm";
+		int insertResult = as.insertCustomer(article);
+		if(insertResult > 0) return "redirect:/board/customer?category="+article.getBrd_id();
+		else {
+			model.addAttribute("msg","입력 실패 확인해 보세요");
+			return "forward:/board/customer/writeCustomer";
+		}	
+	}
+	
+	@GetMapping(value = "/board/customer/updateFormC")
+	public String updateFormC(@AuthenticationPrincipal MemberDetails mD,
+							  Article article, Model model) {
+		if (mD != null) {
+			model.addAttribute("memberInfo", mD.getMemberInfo());
+		}
+		System.out.println("updateFormC start");
 		
+		Article customFormUpdate = as.detailCustomer(article);
+		
+		model.addAttribute("article", customFormUpdate);
+		
+		return "customer/updateFormC";
+	}
+	
+	
+	@PostMapping(value = "/board/customer/updateCustomer")
+	public String updateCustomer(@AuthenticationPrincipal MemberDetails mD,
+								Article article, Model model) {
+		if (mD != null) {
+			model.addAttribute("memberInfo", mD.getMemberInfo());
+		}
+		
+		int updateCnt = as.updateCustomer(article);
+		
+		return "redirect:/board/customer?category="+article.getBrd_id();
 	}
 }
