@@ -573,7 +573,7 @@ public class ArticleDaoImpl implements ArticleDao {
 	
 	// 최승환
 	@Override
-	public int totalCustomer(Article article) {
+	public Integer totalCustomer(int brd_id) {
 		int totCustomerCount = 0;
 		System.out.println("ArticleDaoImpl Start totalCustomer...");
 		

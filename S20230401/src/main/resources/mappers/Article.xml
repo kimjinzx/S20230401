@@ -699,11 +699,11 @@
 	
 	
 	<!-- 최승환 -->
-	<select id="shCustomerCount" resultType="int" parameterType="Article">
+	<select id="shCustomerCount" resultType="int" parameterType="int">
 	<![CDATA[
 		SELECT Count(*)
 		FROM article
-		WHERE brd_id >=1500 and brd_id <1600 AND isdelete=0
+		WHERE brd_id = #{brd_id}
  	 ]]>	
 	</select>
 	
