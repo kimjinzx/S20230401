@@ -35,7 +35,7 @@
 	});
 </script>
 <style type="text/css">
-	.btn-tag{
+	button{
 		width: auto;
 		height: 25px;
 		font-size:12px;
@@ -56,6 +56,14 @@
 		background: red;
 		border: none;
 		border-radius: 8px;
+	}
+	.btns-tag{
+		padding: 0px 2px;
+		background-color: transparent;
+		color: #0193F8;
+	}
+	.btns-tag::before{
+		content: '#';
 	}
 </style>
 </head>
@@ -216,22 +224,23 @@
 			</div>
 			
 			총 글 : ${totalArt }
-			
-			<div class="board-category" align="center" style="font-size: 30px">
+			<!-- 게시판 목록 출력 -->
+			<div class="board-category" align="center" style="font-size: 22px; padding: 15px; display: flex; justify-content: center;">
 				<c:forEach var="comm" items="${commList}">
-					<span class="item">
+					<div class="item" style="border-bottom: 2px solid #eeeeee; ${comm.comm_id == category? 'border: 2px solid #eeeeee; border-bottom: 0px;':''} padding: 0px 20px;">
 						<a href="${pageContext.request.contextPath}/board/share?category=${comm.comm_id}" class="active">${comm.comm_id == commList.get(0).comm_id ? '전체' : comm.comm_value}</a>
-					</span>
+					</div>
 				</c:forEach>
 			</div>
 			
-			<div class="board-btns" style="display: flex; margin: 30px;">
-				<div class="btns-left" style="margin-left: 10%">
-					<span><button>벋뜬1</button></span>
-					<span><button>벋뜬2</button></span>
-					<span><button>벋뜬3</button></span>
+			<!-- 왼쪽 오른쪽(글쓰기) 버튼 -->
+			<div class="board-btns" style="display: flex; flex-grow:1; margin: 15px 0px;">
+				<div class="btns-left">
+					<span><button>거래 모집 중</button></span>
+					<span><button>거래 완료</button></span>
+					<span><button>거래 취소</button></span>
 				</div>
-				<div class="btns-right" style="margin-left: 40%">
+				<div class="btns-right" style="display: flex; justify-content: flex-end; flex-grow: 1;">
 					<span>
 						<c:if test="${category % 100 != 0 && memberInfo != null}">
 							<button class="btn-write" onclick="location.href='${pageContext.request.contextPath}/board/share/write?category=${category}';">글쓰기</button>
@@ -239,30 +248,42 @@
 					</span>
 				</div>
 			</div>
+			<!-- 공지사항 -->
 			<div class="notice-customer"></div>
 			<div class="notice-board"></div>
 			
-			<div class="board-articleList" style="display: flex; flex-direction: column; width: 80%; margin: auto;">
+			<!-- 글 출력 -->
+			<div class="board-articleList" style="display: flex; flex-direction: column;">
 				<c:forEach var="article" items="${articleList}">
-					<div class="article-view" style="display: flex;">
-						<div class="view-preview" style="flex-direction: row; margin-right: 14px">
-							<span><img style="width: 100px; height: 100px" alt="${article.member.mem_image}" src="${pageContext.request.contextPath}/uploads/profile/${article.member.mem_image}"></span>
+				<!-- 글 시작 -->
+					<div class="article-info" style="display: flex; padding: 10px; flex-grow: 1;">
+						<div class="view-preview" style="display: flex; align-items: center; margin-right: 14px">
+							<img style="width: 80px; height: 80px;" alt="${article.member.mem_image}" src="${pageContext.request.contextPath}/uploads/profile/${article.member.mem_image}">
 						</div>
-						<div class="view-inner" style="display: flex; flex-direction: column; justify-content: center;">
-							<div class="view-top">
+						<div class="view-inner" style="display: flex; flex-direction: column; justify-content: center; flex-grow: 1;">
+							<!-- 글의 첫 줄 -->
+							<div class="view-top" style="display: flex; flex-grow: 1;">
 								<c:if test="${article.status_name != null}">
 									<button class="btn">${article.status_name}</button>
 								</c:if>
 								<span class="category-name">${article.brd_name}</span>
-								<span class="tag-value">
-									<c:forEach begin="1" end="5" varStatus="status">
-										<c:set var="art_tag" value="art_tag${status.index}"/>
-											<c:if test="${article[art_tag] != null}">
-												<button class="btn-tag">${article[art_tag]}</button>
-											</c:if>
-									</c:forEach>
-								</span>
+								
+								<!-- 태그 출력 및 클릭 시 검색 -->
+								<div class="view-tag" style="display: flex; justify-content: flex-end; flex-grow: 1;">
+									<form action="${pageContext.request.contextPath}/board/share/searchForm">
+										<input type="hidden" name="category" value="${category}">
+										<input type="hidden" name="brd_id" value="${article.brd_id}">
+										<input type="hidden" name="search" value="articleTag">
+										<c:forEach begin="1" end="5" varStatus="status">
+											<c:set var="art_tag" value="art_tag${status.index}"/>
+												<c:if test="${article[art_tag] != null}">
+													<button class="btns-tag" name="keyWord" value="${article[art_tag]}">${article[art_tag]}</button>
+												</c:if>
+										</c:forEach>
+									</form>
+								</div>
 							</div>
+							<!-- 글의 두번째 줄 -->
 							<div class="view-bottom">
 								<%-- <span class="article-title"><a href="${pageContext.request.contextPath}/board/share/article?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category}">${article.art_title}</a></span> --%>
 								<span class="article-title"><a href="${pageContext.request.contextPath}/board/share/${article.art_id}?brd_id=${article.brd_id}&category=${category}">${article.art_title}</a></span>

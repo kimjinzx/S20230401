@@ -240,11 +240,19 @@
 	.article-memberInfo span:not(:first-child)::before{
 		content: ' | ';
 	}
+	.btns-tag{
+	padding: 0px 2px;
+	background-color: transparent;
+	color: #0193F8;
+	}
+	.btns-tag::before{
+		content: '#';
+	}
 </style>
 </head>
 <body>
 	<!-- 임시 로그인 -->
-	<c:if test="${memberInfo == null}"><div class="login" style="text-align: right;"><a href="${pageContext.request.contextPath}/login"><h1>로그인</h1></a></div></c:if>
+	<c:if test="${memberInfo == null}"><div class="login" style="text-align: right;"><a href="${pageContext.request.contextPath}/login"><h1>로그인좀 해보시겠소..?</h1></a></div></c:if>
 	<div class="board-articleList">
 		<div class="view-content">
 		
@@ -300,15 +308,20 @@
 					</div>
 					<hr />
 					
-					<!-- 태그 출력 -->
+					<!-- 태그 출력 및 검색 -->
 					<div class="article-info">
-						<div class="info-tag">
-							<c:forEach begin="1" end="5" varStatus="status">
-								<c:set var="art_tag" value="art_tag${status.index}"/>
-									<c:if test="${article[art_tag] != null}">
-										<button>${article[art_tag]}</button>
-									</c:if>
-							</c:forEach>
+						<div class="view-tag">
+							<form action="${pageContext.request.contextPath}/board/share/searchForm">
+								<input type="hidden" name="category" value="${category}">
+								<input type="hidden" name="brd_id" value="${brd_id}">
+								<input type="hidden" name="search" value="articleTag">
+								<c:forEach begin="1" end="5" varStatus="status">
+									<c:set var="art_tag" value="art_tag${status.index}"/>
+										<c:if test="${article[art_tag] != null}">
+											<button class="btns-tag" name="keyWord" value="${article[art_tag]}">${article[art_tag]}</button>
+										</c:if>
+								</c:forEach>
+							</form>
 						</div>
 						<hr />
 						
@@ -355,8 +368,6 @@
 										<div class="modal-body">여기는 대충 거래 신청하는 곳인데 어쩌고 저쩌고</div>
 									</div>
 								</div>
-								  
-								  
 
 
 							</div>
