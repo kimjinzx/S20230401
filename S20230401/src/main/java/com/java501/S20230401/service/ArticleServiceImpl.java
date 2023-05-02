@@ -318,8 +318,9 @@ public class ArticleServiceImpl implements ArticleService {
 	
 	// 최승환
 	@Override
-	public int totalCustomer(Article article) {
-		return ad.totalCustomer(article);
+	public Integer totalCustomer(int brd_id) {
+		Integer totalCustomerC = ad.totalCustomer(brd_id);
+		return totalCustomerC;
 	}
 	@Override
 	public List<Article> listCustomer(Article article) {

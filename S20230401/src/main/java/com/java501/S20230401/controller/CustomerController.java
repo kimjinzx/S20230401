@@ -30,7 +30,7 @@ public class CustomerController {
 	
 	@RequestMapping(value = "/board/customer")
 	public String customerList(@AuthenticationPrincipal MemberDetails mD,
-								Article article, Integer category, String currentPage, Model model) {
+								Article article, int category, String currentPage, Model model) {
 		System.out.println("CustomerController Start customerList..." );
 		
 		if (mD != null) {
@@ -41,8 +41,7 @@ public class CustomerController {
 		int brd_id = category;
 		
 		// 전체 게시글 갯수
-		int totalCustomer = 0;
-		totalCustomer =  as.totalCustomer(article);
+		int totalCustomer =  as.totalCustomer(category);
 		System.out.println("CustomerController totalCustomer=>" + totalCustomer);
 		
 		// Paging 작업
