@@ -50,7 +50,7 @@ public class ShareController {
 	private final RegionService regionService;
 	
 	
-	// 나눔해요 글 목록
+	// 나눔해요 글 목록 + 검색
 	@RequestMapping(value = "board/share")
 	public String totalPage(@AuthenticationPrincipal
 							MemberDetails memberDetails,	// 세션의 로그인 유저 정보
@@ -403,6 +403,27 @@ public class ShareController {
 		return regionService.dgSelectRegion(region);
 	}
 	
+	// 검색
+	@RequestMapping(value = "board/share/searchForm")
+	public String shareSearch(Article article, Integer category, RedirectAttributes redirectAttributes){
+		
+//		List<Article> searchList = articleService.shareSearch(article);
+//		System.out.println("결과 확인 \n"+searchList);
+//		int totalArt = 0;
+//		String currentPage = null;
+//		List<Article> articleList = null;
+//		// 페이징 작업 (게시글 수)
+//		totalArt = articleService.allTotalArt(article);
+//		Paging page = new Paging(totalArt, currentPage);
+//		article.setStart(page.getStart());
+//		article.setEnd(page.getEnd());
+//		// 게시글 조회
+//		articleList = articleService.allArticleList(article);
+//		System.out.println(articleList);
+		//log.info("\n카테고리 : {} \n키워드 : {} \n검색 내용 : {} \n널임? {}", category, article.getKeyWord(), article.getSearch());
+		redirectAttributes.addFlashAttribute("article", article);
+		return "redirect:/board/share?category="+category;
+	}
 
 	 
 /* 머지 후 영업 종료

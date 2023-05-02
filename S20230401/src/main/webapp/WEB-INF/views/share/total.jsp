@@ -293,13 +293,23 @@
 					</div>
 				</c:forEach>
 			</div>
-			
-			<div class="board-search" align="center" style="height: 20px;">
-				<form action="">
-					<span><input type="text" name="search" placeholder="검색어 입력 하셈"></span>
-					<span><button type="submit">검색</button></span>
+			<!-- 검색 -->
+			<div class="board-search" align="center" style="height: 20px; margin: 15px;">
+				<form action="${pageContext.request.contextPath}/board/share/searchForm">
+					<input type="hidden" name="category" value="${category}">
+					<input type="hidden" name="brd_id" value="${category}">
+					<select name="search">
+						<option value="article">제목+내용</option>
+						<option value="title">제목</option>
+						<option value="content">내용</option>
+						<option value="nickname">닉네임</option>
+						<option value="articleTag">태그</option>
+					</select>
+					<input type="text" name="keyWord" placeholder="검색어 입력" required="required">
+					<button type="submit">검색</button>
 				</form>
 			</div>
+			<!-- 페이징 -->
 			<div class="board_paging" align="center" style="font-size: 18px; clear: both;">
 				<c:if test="${page.startPage > page.pageBlock }">
 					<a href="share?currentPage=${page.startPage-page.pageBlock }&category=${category}">[이전]</a>

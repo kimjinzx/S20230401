@@ -66,6 +66,24 @@
 			</otherwise>
 		</choose>
 		AND		ISDELETE = 0
+		<choose>
+	       	<when test="search == 'article'">
+	       		AND (ART_TITLE || ART_CONTENT) LIKE '%'|| #{keyWord} ||'%'
+	       	</when>
+	       	<when test="search == 'title'">
+	       		AND ART_TITLE LIKE '%'|| #{keyWord} ||'%'
+	       	</when>
+	       	<when test="search == 'content'">
+	       		AND ART_CONTENT LIKE '%'|| #{keyWord} ||'%'
+	       	</when>
+	       	<when test="search == 'nickname'">
+	       		AND MEM_NICKNAME LIKE '%'|| #{keyWord} ||'%'
+	       	</when>
+	       	<when test="search == 'articleTag'">
+	       		AND (ART_TAG1||ART_TAG2||ART_TAG3||ART_TAG4||ART_TAG5) LIKE '%'|| #{keyWord} ||'%'
+	       	</when>
+	       	<otherwise></otherwise>
+       </choose>
 	</select>
 
 	<!-- 전체 조회 -->
@@ -95,18 +113,36 @@
 		                                                GROUP BY(ART_ID, BRD_ID)
 		                                            )USING(BRD_ID, ART_ID)
                                 WHERE 	A.ISDELETE = 0
+				                AND     BRD_ID <choose>
+			                 						<when test="brd_id == 999">
+														BETWEEN #{brd_id} and #{brd_id}+600
+													</when>
+													<when test="brd_id % 100 != 0">
+														= #{brd_id}
+													</when>
+													<otherwise>
+														BETWEEN #{brd_id} and #{brd_id}+99
+													</otherwise>
+												</choose>
 		                       )
-		                 WHERE      BRD_ID <choose>
-		                 						<when test="brd_id == 999">
-													BETWEEN #{brd_id} and #{brd_id}+600
-												</when>
-												<when test="brd_id % 100 != 0">
-													= #{brd_id}
-												</when>
-												<otherwise>
-													BETWEEN #{brd_id} and #{brd_id}+99
-												</otherwise>
-											</choose>
+		                 <choose>
+		                 	<when test="search == 'article'">
+		                 		WHERE (ART_TITLE || ART_CONTENT) LIKE '%'|| #{keyWord} ||'%'
+		                 	</when>
+		                 	<when test="search == 'title'">
+		                 		WHERE ART_TITLE LIKE '%'|| #{keyWord} ||'%'
+		                 	</when>
+		                 	<when test="search == 'content'">
+		                 		WHERE ART_CONTENT LIKE '%'|| #{keyWord} ||'%'
+		                 	</when>
+		                 	<when test="search == 'nickname'">
+		                 		WHERE MEM_NICKNAME LIKE '%'|| #{keyWord} ||'%'
+		                 	</when>
+		                 	<when test="search == 'articleTag'">
+		                 		WHERE (ART_TAG1||ART_TAG2||ART_TAG3||ART_TAG4||ART_TAG5) LIKE '%'|| #{keyWord} ||'%'
+		                 	</when>
+		                 	<otherwise></otherwise>
+		                 </choose>
 		                 ORDER BY   ART_REGDATE DESC) J)
 		WHERE 	RN BETWEEN #{start} and #{end}
 	</select>
@@ -198,7 +234,6 @@
 		WHERE   ART_ID = #{art_id}
 		AND     BRD_ID = #{brd_id}
 	</update>
-
 	
 	
 	

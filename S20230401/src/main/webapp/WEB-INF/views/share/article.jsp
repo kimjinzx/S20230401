@@ -121,7 +121,9 @@
 
 	// 거래 신청 ---------------------------------------------------------
 	$(document).ready(()=>{ 
-		$('#btns-apply').click(()=>{
+		$('#btns-apply').click((e)=>{
+			// 버블링 방지
+			e.stopPropagation();
 			if(confirm('거래 신청')){
 				let art_id = ${article.art_id};
 				console.info(art_id);
@@ -134,13 +136,16 @@
 				});
 				//window.open('${pageContext.request.contextPath}/board/share/tradeApply', 'trade_apply', 'width=400, height=400');
 				// modal 외의 영역 클릭시 사라짐
-				//$('html').click(e=>{
-				//	if(!$(e.target).hasClass('.myModal')){
-						//$('#modal').css('display', 'none');
+				$('html').click(e=>{
+					if(!$(e.target).hasClass('.myModal')){
+						$('#modal').css('display', 'none');
 						//modal.style.display = 'none';
 						//$('#modal').toggle();
-				//	}
-				//});
+					}
+				});
+				$('.myModal').click(e => {
+					e.stopPropagation();
+				});
 			}else alert('취소');
 		});
 	});
@@ -238,6 +243,8 @@
 </style>
 </head>
 <body>
+	<!-- 임시 로그인 -->
+	<c:if test="${memberInfo == null}"><div class="login" style="text-align: right;"><a href="${pageContext.request.contextPath}/login"><h1>로그인</h1></a></div></c:if>
 	<div class="board-articleList">
 		<div class="view-content">
 		
@@ -343,9 +350,9 @@
 								<!-- (임시) 모달 팝업 -->
 								<div class="myModal" id="modal" style="display: none;">
 									<div class="myModal-window">
-										<div class="modal-title"><h2>모달 팝업창 제목</h2></div>
+										<div class="modal-title"><h2>거래 신청하기</h2></div>
 										<div class="modal-close" id="modal-close">&times;</div>
-										<div class="modal-body">모달 팝업창 내용</div>
+										<div class="modal-body">여기는 대충 거래 신청하는 곳인데 어쩌고 저쩌고</div>
 									</div>
 								</div>
 								  
