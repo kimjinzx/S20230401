@@ -73,9 +73,15 @@ public class CustomerController {
 	
 	// 게시글, 댓글
 	@GetMapping(value = "/board/customer/detailCustomer")
-	public String detailCustomer(Article article, Integer category, Model model) {
+	public String detailCustomer(@AuthenticationPrincipal MemberDetails mD,
+								Article article, Integer category, Model model) {
 		System.out.println("CustomerController Start detailCustomer...");
-
+		
+		// 유저 권한 확인
+		if (mD != null) {
+			model.addAttribute("memberInfo", mD.getMemberInfo());
+		}
+		
 //		1. ArticleService안에 detailCustomer method 선언
 //		   1) parameter : brd_id
 //		   2) Return      Article
@@ -111,14 +117,22 @@ public class CustomerController {
 	@RequestMapping(value = "/board/customer/customerWriteForm")
 	public String customerWriteForm(@AuthenticationPrincipal MemberDetails mD,
 									Article article, Integer category, Model model) {
-		model.addAttribute("memberInfo", mD.getMemberInfo());
+		if (mD != null) {
+			model.addAttribute("memberInfo", mD.getMemberInfo());
+		}
+		
 		model.addAttribute("category", category);
 		return "/customer/customerWriteForm";
 	}
 	
-	@PostMapping(value = "writeCustomer")
+	@PostMapping(value = "/board/customer/writeCustomer")
 	public String writeCustomer(@AuthenticationPrincipal MemberDetails mD,
-								Article article, Model model) {
+								Article article, Integer category, Model model) {
+		if (mD != null) {
+			model.addAttribute("memberInfo", mD.getMemberInfo());
+		}
+		
+		model.addAttribute("category", category);
 		System.out.println("CustomerController Start writeCustomer...");
 
 		return "forward:/board/customer/customerWriteForm";

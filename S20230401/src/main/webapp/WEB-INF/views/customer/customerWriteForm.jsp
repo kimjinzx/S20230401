@@ -172,12 +172,12 @@
 			<form action="writeCustomer" method="get" name="frm">
 				<table>
 					
+					<tr><th>작성자</th><td>
+					<input type="hidden" name="mem_nickname"  value="${memberInfo.mem_nickname}" readonly>
+					
+					
 					<tr><th>제목</th><td>
 					<input type="text" name="art_title" placeholder="제목을 입력해 주세요" required="required">
-	
-			
-					<tr><th>작성자</th><td>
-					<input type="text" name="mem_nickname"  value="${mem_nickname}" readonly>
 	
 				
 					<tr><th>내용</th><td>
