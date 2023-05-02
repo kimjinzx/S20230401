@@ -68,6 +68,7 @@ public class ReplyDaoImpl implements ReplyDao {
 		}
 		return countReply;
 	}
+	
 	@Override
 	public List<Reply> replyMain(Reply reply) {
 		List<Reply> mainReply = null;
@@ -79,6 +80,17 @@ public class ReplyDaoImpl implements ReplyDao {
 		return mainReply;
 	}
 	
+	@Override
+	public int bjreReply(Reply reply) {
+		int reReply = 0;
+		try {
+			reReply = session.update("bjreReply",reply);
+		} catch (Exception e) {
+			System.out.println("대댓글에러"+e.getMessage());
+		}
+		System.out.println("대댓글 다오임플 ->"+ reply);
+		return reReply;
+	}	
 	
 	
 	
@@ -118,5 +130,6 @@ public class ReplyDaoImpl implements ReplyDao {
 	@Override
 	public int hgInsertReply(Reply reply) {
 		return session.insert("hgInsertReply", reply);
-	}	
+	}
+	
 }

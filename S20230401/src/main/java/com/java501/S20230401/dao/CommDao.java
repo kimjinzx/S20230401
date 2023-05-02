@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import com.java501.S20230401.model.Comm;
 
 public interface CommDao {
-	public String getValueById(int comm_id);
 
 	// 양동균
 	String categoryName(int comm_id);

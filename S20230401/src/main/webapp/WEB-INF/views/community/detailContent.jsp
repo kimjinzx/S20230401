@@ -25,7 +25,45 @@
 		$('#scrollToTop').click(e => $(window).scrollTop(0));
 		$('#scrollToBottom').click(e => $(window).scrollTop($(document).height() - 1120));
 	});
+	
+	
 </script>
+<!-- 	function rereplyWrite(rep_id) {
+	    const rereplyDiv = document.getElementById("rereply_"+rep_id);
+	    if (rereplyDiv.style.display == "none") {
+	        rereplyDiv.style.display = "block";
+	    } else {
+	        rereplyDiv.style.display = "none";
+	    }
+	}
+	
+	function hideRereply(rep_id) {
+	    const rereplyDiv = document.getElementById("rereply_$"+rep_id);
+	    rereplyDiv.style.display = "none";
+	} -->
+
+<script type="text/javascript">
+	let rereplyOpen = false; // 대댓글 창이 열려있는지 여부
+	
+	function rereplyWrite(rep_id) {
+	    if (!rereplyOpen) {
+	        const rereplyDiv = document.getElementById("rereply_"+rep_id);
+	        rereplyDiv.style.display = "block";
+	        rereplyOpen = true;
+	    } else {
+	        hideRereply();
+	    }
+	}
+	
+	function hideRereply() {
+	    const rereplyDiv = document.querySelector("div[id^='rereply_']:not([style='display: none;'])");
+	    if (rereplyDiv) {
+	        rereplyDiv.style.display = "none";
+	        rereplyOpen = false;
+	    }
+	}
+</script>
+
 <link href="https://unpkg.com/sanitize.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/preference.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/presets.css">
@@ -283,21 +321,18 @@
 		justify-content: space-between;
 		align-items: center;
 	}
+	
 </style>
 </head>
 <body>
 	<header>
 		<div id="usernav">
-			<!-- <a href="">로그인</a>
-			<a href="">회원가입</a>
-			<a href="">마이페이지</a> -->
 			<a href="">이용 약관</a>
 			<a href="">개인정보 취급 방침</a>
 		</div>
 		<div id="topbar">
 			<div id="logo-div" class="full-height" style="display: flex; justify-content: flex-start; align-items: center; padding: 0 10px;">
-				<a id="logo" class="full-height" href="/">
-					<!-- <img class="full-height" src="image/ShareGo_forLight.png"/> -->
+				<a id="logo" class="full-height" href="${pageContext.request.contextPath}/">
 					<div style="width: auto; display: flex; flex-direction: column; justify-content: center; align-items: flex-end;">
 						<img src="${pageContext.request.contextPath}/image/ShareGo_Img.png" style="height: 30px;">
 						<span style="font-size: 24px; font-weight: 900; margin: -5px 0 0 0;">ShareGo</span>
@@ -305,40 +340,40 @@
 				</a>
 			</div>
 			<div id="topmenu">
-				<a class="adv-hover menuitem" href="">함께해요</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/together?category=1000">함께해요</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="">같이사요</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/dutchpay?category=1100">같이사요</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="">나눔해요</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/share?category=1200">나눔해요</a>
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/community?category=1300">커뮤니티</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="">정보공유</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath }/board/information?category=1400">정보공유</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="">고객센터</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/customer?category=1500">고객센터</a>
 				<div id="dropdown">
 					<div style="width: 200px;"></div>
 					<div class="submenu-items">
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">밥 / 카페</a>
-							<a class="submenuitem adv-hover" href="">스포츠 / 운동</a>
-							<a class="submenuitem adv-hover" href="">쇼핑</a>
-							<a class="submenuitem adv-hover" href="">문화생활</a>
-							<a class="submenuitem adv-hover" href="">취미생활</a>
-							<a class="submenuitem adv-hover" href="">기타</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1010">밥 / 카페</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1020">스포츠 / 운동</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1030">쇼핑</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1040">문화생활</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1050">취미생활</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1060">기타</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">식료품</a>
-							<a class="submenuitem adv-hover" href="">의류 / 잡화</a>
-							<a class="submenuitem adv-hover" href="">생활용품</a>
-							<a class="submenuitem adv-hover" href="">해외배송</a>
-							<a class="submenuitem adv-hover" href="">기타</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/dutchpay?category=1110">식료품</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/dutchpay?category=1120">의류 / 잡화</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/dutchpay?category=1130">생활용품</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/dutchpay?category=1140">해외배송</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/dutchpay?category=1150">기타</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">식품</a>
-							<a class="submenuitem adv-hover" href="">패션 / 잡화</a>
-							<a class="submenuitem adv-hover" href="">가전 / 가구</a>
-							<a class="submenuitem adv-hover" href="">기타</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/share?category=1210">식품</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/share?category=1220">패션 / 잡화</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/share?category=1230">가전 / 가구</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/share?category=1240">기타</a>
 						</div>
 						<div class="submenu">
 							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/community?category=1310">일상수다</a>
@@ -347,16 +382,16 @@
 							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/community?category=1340">질문 / 요청</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">동네정보</a>
-							<a class="submenuitem adv-hover" href="">구매정보</a>
-							<a class="submenuitem adv-hover" href="">신규점포</a>
-							<a class="submenuitem adv-hover" href="">지역활동</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/information?category=1410">동네정보</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/information?category=1420">구매정보</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/information?category=1430">신규점포</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath }/board/information?category=1440">지역활동</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">공지</a>
-							<a class="submenuitem adv-hover" href="">Q&A</a>
-							<a class="submenuitem adv-hover" href="">이벤트</a>
-							<a class="submenuitem adv-hover" href="">문의 / 건의</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/customer?category=1510">공지</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/customer?category=1520">Q&A</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/customer?category=1530">이벤트</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/customer?category=1540">문의 / 건의</a>
 						</div>
 					</div>
 					<div style="width: 200px;"></div>
@@ -451,11 +486,11 @@
 			</c:when>
 			</c:choose>
 			</p>
-			<table >
+			<table border="1">
 				<tr><th>닉네임</th>
-				<td><img src="${pageContext.request.contextPath}/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
+				<td><img src="${pageContext.request.contextPath}/uploads/profile/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
 				${article.mem_nickname}</td></tr>
-				<tr><th>제목</th><td>${article.art_title }</td></tr>
+				<tr><th>제목</th><td style="width: 200px;">${article.art_title }</td></tr>
 				<tr><th>조회수</th><td>${article.art_read}</td>
 				<th>추천</th><th>${article.art_good }<br><button>추천</button></th>
 				<th>비추천</th><th>${article.art_bad }<br><button>비추천</button></th>
@@ -464,7 +499,8 @@
 				<fmt:formatDate value="${article.art_regdate}" pattern="hh:mm" var="regtime" />
 				<td style="font-size : 10px">${regdate }<br>${regtime}</td>
 				</tr>
-				<tr><th>내용</th><td>${article.art_content }</td></tr>
+				<tr><th>내용</th></tr>
+				<tr><td style="width: 600px; height: 500px;" colspan="6">${article.art_content }</td></tr>
 				<tr><td colspan="2">
 					<input type="button" value="목록" 
 						onclick="location.href='${pageContext.request.contextPath}/board/community?category=${category }'">
@@ -479,15 +515,16 @@
 					</td>
 				</tr>	
 			</table>
-			<div align="left" style="margin-left: 400px;">	
-			<div>	
+			<div align="left" style="margin-left: 450px;">	
+			<!-- 총댓글갯수 -->	
+			<div>
 				 ${reply.rep_cnt }개의 댓글 
 				<c:choose>
 					<c:when test="${memberInfo.mem_id != null }">
 						<form action="bjReplyWrite" method="post" name="reply">
-							<div><img src="${pageContext.request.contextPath}/${memberInfo.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
+							<div><img src="${pageContext.request.contextPath}/uploads/profile/${memberInfo.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
 							${memberInfo.mem_nickname }<br>
-							<input type="text" name="rep_content" maxlength="200" style="width: 500px; height: 100px;" required="required">
+							<input type="text" name="rep_content" maxlength="200" style="width: 500px; height: 100px;" required="required" placeholder="댓글을 입력하세요" >
 							<input type="hidden" name="mem_id" value="${memberInfo.mem_id}">									
 							<input type="hidden" name="art_id" value="${article.art_id}">									
 							<input type="hidden" name="brd_id" value="${article.brd_id}">									
@@ -497,15 +534,17 @@
 				</c:choose>
 			</div>
 				
+			<!-- 댓글메인 -->
 			<div>
 				<c:forEach var="reply" items="${replyMain }">
+					<div style="width: 600px; height: 150px; display : inline-block; border-style: solid; border-width :1px;">
 					<div >
 						<span>프사</span> <span>작성자</span> <span>댓글내용</span> <span>작성시간</span>	<span>추천</span> <span>비추천</span> <span>최상위댓글번호</span> <span>댓글순서</span>
 					</div>
 					<div>	
-						<span><img src="${pageContext.request.contextPath}/${reply.mem_image }" alt="예시" style="max-height: 40px; max-width: 40px;"></span>
+						<span><img src="${pageContext.request.contextPath}/uploads/profile/${reply.mem_image }" alt="예시" style="max-height: 40px; max-width: 40px;"></span>
 						<span>${reply.mem_nickname }</span>
-						<span>${reply.rep_content }</span>
+						<span style="display : inline-block; border-style: solid; border-width :1px; height: 100px; width: 300px;">${reply.rep_content }</span>
 						<fmt:formatDate value="${reply.rep_regdate}" pattern="MM.dd" var="regdate" />
 						<fmt:formatDate value="${reply.rep_regdate}" pattern="hh:mm" var="regtime" />
 						<span style="font-size : 10px">${regdate }${regtime}</span>
@@ -514,19 +553,41 @@
 						<span>${reply.rep_parent}</span>
 						<span>${reply.rep_step }</span>
 						<c:choose>
-							<c:when test="${memberInfo.mem_id != null }">
-								<span><button>대댓글쓰기</button></span>
-							</c:when>
-						</c:choose>
-						<c:choose>
 							<c:when test="${memberInfo.mem_id == reply.mem_id }">
 								<input type="button" value="댓글삭제" 
 								onclick="location.href='${pageContext.request.contextPath}/board/community/bjReplyDelete?art_id=${article.art_id }&rep_id=${reply.rep_id }&brd_id=${article.brd_id }&category=${category}'">
 							</c:when>
 						</c:choose>
+						<br>
+					</div>
+			<!-- 대댓글 -->
+						<div>
+						<c:choose>
+							<c:when test="${memberInfo.mem_id != null }">
+								<form action="bjreReply" method="post" name="reReply" >
+								<span><input type="button" onclick="rereplyWrite(${reply.rep_id})" value="대댓글쓰기"></span>
+									<div id="rereply_${reply.rep_id}" style="display: none;">
+										<img src="${pageContext.request.contextPath}/uploads/profile/${memberInfo.mem_image }" alt="예시" style="max-height: 40px; max-width: 40px;">
+										${memberInfo.mem_nickname }<br>
+										<input type="hidden" name ="art_id" value="${article.art_id }"> 
+										<input type="hidden" name ="brd_id" value="${article.brd_id }"> 
+										<input type="hidden" name ="mem_id" value="${memberInfo.mem_id }"> 
+										<input type="hidden" name ="rep_step" value="${reply.rep_step }"> 
+										<input type="hidden" name ="rep_parent" value="${reply.rep_parent}"> 
+										<input type="hidden" name ="category" value="${category }"> 
+										<input type="text" name="rep_content" placeholder="대댓글" style="width: 500px; height: 100px;">
+										<input type="submit" onclick="rereplySubmit" value="등록">
+										<input type="reset" onclick="hiderereply()" value="취소">
+									</div>
+								</form>	
+							</c:when>
+						</c:choose>
+						<br>
+						</div>
 					</div>
 				</c:forEach>
 			</div>	 
+		</div>
 		</div>
 		<button id="scrollToTop" class="adv-hover">
 			<svg style="fill: var(--subtheme); stroke: var(--subtheme); stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round;" width="20" height="10" viewBox="0 0 32 16">

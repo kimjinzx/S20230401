@@ -231,5 +231,15 @@ public class CommunityController {
 
 		return "redirect:/board/community/detailContent?art_id="+reply.getArt_id()+"&brd_id="+reply.getBrd_id()+"&category="+reply.getBrd_id();  
 	}
+	
+	@PostMapping(value = "board/community/bjreReply")
+	public String bjreReply(@AuthenticationPrincipal MemberDetails memberDetails, Reply reply , Model model) {
+		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		int reReply = rs.bjreReply(reply);
+		
+		model.addAttribute("reply", reply);
+		System.out.println("대댓글 reply 값 ->" +reply);
+		return "redirect:/board/community/detailContent?art_id="+reply.getArt_id()+"&brd_id="+reply.getBrd_id()+"&category="+reply.getBrd_id();
+	}
 }
 

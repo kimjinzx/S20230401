@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.java501.S20230401.model.Article_Trade_Reply;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Region;
+import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.ArticleMember;
 import com.java501.S20230401.model.MemberInfo;
