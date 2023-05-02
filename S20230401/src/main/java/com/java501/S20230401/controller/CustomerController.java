@@ -28,11 +28,13 @@ public class CustomerController {
 	@Autowired
 	private final ReplyService rs;
 	
+	// 고객센터 목록
 	@RequestMapping(value = "/board/customer")
 	public String customerList(@AuthenticationPrincipal MemberDetails mD,
 								Article article, int category, String currentPage, Model model) {
 		System.out.println("CustomerController Start customerList..." );
 		
+		// 유저 권한 확인
 		if (mD != null) {
 			model.addAttribute("memberInfo", mD.getMemberInfo());
 		}
@@ -69,6 +71,7 @@ public class CustomerController {
 		return "/customer/CustomerIndex";
 	}
 	
+	// 게시글, 댓글
 	@GetMapping(value = "/board/customer/detailCustomer")
 	public String detailCustomer(Article article, Integer category, Model model) {
 		System.out.println("CustomerController Start detailCustomer...");
