@@ -36,10 +36,11 @@ public interface ArticleService {
 	Integer 			upreadCount(Article article);
 	List<Article> 		listMagnager();
 	int 				bjWriteArticle(Article article);
-	public int 			bjUpdateArticle(Article article);
-	public int 			delete(Article article);
-	public int 			replyWrite(Reply reply);
-	public int			replyDelete(Reply reply);
+	int 				bjUpdateArticle(Article article);
+	int 				delete(Article article);
+	int 				replyWrite(Reply reply);
+	int					replyDelete(Reply reply);
+	List<Article>		bjArtSearch(Article article);
 	
 	// 임동빈
 	int 			totalArticle(Article article);
@@ -79,4 +80,5 @@ public interface ArticleService {
 	Article 			detailCustomer(Article article);
 	List<Article> 		listCustomerMenu(Article article);
 	public int 			insertCustomer(Article article);
+	
 }

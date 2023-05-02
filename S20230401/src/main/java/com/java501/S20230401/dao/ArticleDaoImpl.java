@@ -290,7 +290,20 @@ public class ArticleDaoImpl implements ArticleDao {
 		return reDelete;
 	}
 	
-	
+	@Override
+	public List<Article> bjArtSearch(Article article) {
+		List<Article> bjSearch = null;
+		try {
+			bjSearch = session.selectList("bjSearch", article);
+		} catch (Exception e) {
+			System.out.println("검색 다오임플 에러" + e.getMessage());
+		}
+		System.out.println("아티클 다오 검색 값" + bjSearch);
+		for (Article art : bjSearch) System.out.println(art);
+		System.out.println("아티클 다오 아티클 값" + article);
+		
+		return bjSearch;
+	}
 	
 	
 	
@@ -659,4 +672,5 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return result;
 	}
+	
 }

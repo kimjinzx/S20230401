@@ -72,53 +72,70 @@ public class CommunityController {
 		return "community/communityIndex";
 	}
 	
-	/*
-	 * @GetMapping(value = "board/community/detailContent") public String
-	 * detailContent(HttpServletRequest request, @AuthenticationPrincipal
-	 * MemberDetails memberDetails,Article article, int category, Model model) { if
-	 * (memberDetails != null) model.addAttribute("memberInfo",
-	 * memberDetails.getMemberInfo());
-	 * System.out.println("CommunityController detail 시작");
-	 * System.out.println("아티클정보"+article); Integer readCount =
-	 * as.upreadCount(article); System.out.println("업데이트 결과  =>"+readCount); Article
-	 * detailCon = as.detailContent(article); Reply reply = new Reply();
-	 * reply.setArt_id(article.getArt_id()); reply.setBrd_id(article.getBrd_id());
-	 * // 댓글 갯수 Reply countReply = rs.replyCount(reply); // 댓글 정보 List<Reply>
-	 * replyMain = rs.replyMain(reply);
-	 * System.out.println("detailContent art_id 값"+article);
-	 * 
-	 * model.addAttribute("article", detailCon); model.addAttribute("reply",
-	 * countReply); model.addAttribute("replyMain", replyMain);
-	 * model.addAttribute("category", category);
-	 * 
-	 * return "community/detailContent"; }
-	 */
+	@RequestMapping(value = "board/community/bjSearch")
+	public String bjSearch(@AuthenticationPrincipal MemberDetails memberDetails, Article article, int category, String currentPage, Model model) {
+		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		System.out.println("검색 컨트롤러 시작");
+		
+		int totalArticle = as.totalArticle(article);
+		model.addAttribute("totalArticle", totalArticle);
+		
+		Paging page = new Paging(totalArticle, currentPage);
+		System.out.println("page"+page);
+		article.setStart(page.getStart());
+		article.setEnd(page.getEnd());
+		
+		Map<Integer, String> boardMap = new HashMap<>();
+	    boardMap.put(1310, "일상수다");
+	    boardMap.put(1320, "자랑하기");
+	    boardMap.put(1330, "홍보하기");
+	    boardMap.put(1340, "질문/요청");
+	    model.addAttribute("boardMap", boardMap);
+	    
+		List<Article> bjSearch = as.bjArtSearch(article);
+	    model.addAttribute("listArticle", bjSearch);
+	    model.addAttribute("article", article);
+	    model.addAttribute("page", page);
+	    model.addAttribute("category", category);
+	    
+		
+		return "community/communityIndex";
+	}
 	
 	@GetMapping(value = "board/community/detailContent")
 	public String detailContent(HttpServletRequest request, @AuthenticationPrincipal MemberDetails memberDetails, Article article, int category, Model model, HttpServletResponse response) {
 	    if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 	    System.out.println("CommunityController detail 시작");
 	    System.out.println("아티클정보"+article);
-	    Integer readCount = as.upreadCount(article);
-	    System.out.println("업데이트 결과  =>"+readCount);
+//	    Integer readCount = as.upreadCount(article);
+//	    System.out.println("업데이트 결과  =>"+readCount);
 	    
 	    // 쿠키 중복 체크
 	    Cookie oldCookie = null;
 	    Cookie[] cookies = request.getCookies();
 	    if (cookies != null) {
 	        for (Cookie cookie : cookies) {
-	            if (cookie.getName().equals("postView")) {
+	            if (cookie.getName().equals("readcookie")) {
 	                oldCookie = cookie;
+	                log.info("\n쿠키 이름 {} 쿠키 값 {}",cookie.getName(), cookie.getValue());
 	            }
 	        }
 	    }
 
-	    if (oldCookie == null || !oldCookie.getValue().contains("[" + article.getArt_id() + "_" + article.getBrd_id() + "]")) {
+	    if (oldCookie == null) {
 	        as.upreadCount(article); // 조회수 업데이트
-	        Cookie newCookie = new Cookie("postView", "[" + article.getArt_id() + "_" + article.getBrd_id() + "]");
+	        Cookie newCookie = new Cookie("readcookie", "[" + article.getArt_id() + "_" + article.getBrd_id() + "]");
 	        newCookie.setPath("/");
+	        				// 60초  60분  24시간
 	        newCookie.setMaxAge(60 * 60 * 24);
 	        response.addCookie(newCookie); // 쿠키 저장
+	    }else if (!oldCookie.getValue().contains("[" + article.getArt_id() + "_" + article.getBrd_id() + "]")) {
+	    	as.upreadCount(article); // 조회수 업데이트
+	    	oldCookie.setValue(oldCookie.getValue()+("[" + article.getArt_id() + "_" + article.getBrd_id() + "]"));
+	    	oldCookie.setPath("/");
+	    	// 60초  60분  24시간
+	    	oldCookie.setMaxAge(60 * 60 * 24);
+	    	response.addCookie(oldCookie); // 쿠키 저장
 	    }
 
 	    Article detailCon = as.detailContent(article);

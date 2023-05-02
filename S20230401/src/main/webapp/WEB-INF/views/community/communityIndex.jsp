@@ -491,7 +491,7 @@
 				</tr>
 			</c:forEach>
 		</table>
-		
+		<div style="margin: 10px;">
 		<c:if test ="${page.startPage > page.pageBlock }">
 			<a href="${pageContext.request.contextPath}/board/community?currentpage=${page.startPage-page.pageBlock }&category=${category}">[이전]</a>
 		</c:if>
@@ -501,6 +501,18 @@
 		<c:if test="${page.endPage < page.totalPage }">
 			<a href="${pageContext.request.contextPath}/board/community?currentPage=${page.startPage+page.pageBlock }&category=${category}">[다음]</a>
 		</c:if>
+		</div>
+		
+		<form action="${pageContext.request.contextPath}/board/community/bjSearch?brd_id=${category }&category=${category }" method="post" name="bjSearch">
+		<select name="bjSearchOption">
+			<option value="bjStitle">제목</option>
+			<option value="bjScontent">내용</option>
+			<option value="bjStiCon">제목+내용</option>
+			<option value="bjSnick">작성자</option>
+		</select>
+		<input type="text" name="bjKeyword" placeholder="검색어를 입력하세요." >
+		<input type="submit" value="검색">
+		</form>
 	</div>
 	
 	

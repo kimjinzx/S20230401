@@ -136,6 +136,14 @@ public class ArticleServiceImpl implements ArticleService {
 		return reDelete;
 	}
 	
+	@Override
+	public List<Article> bjArtSearch(Article article) {
+		List<Article> bjSearch = null;
+		bjSearch = ad.bjArtSearch(article);
+		
+		return bjSearch;
+	}
+	
 	// 임동빈
 		@Override
 	public int totalArticle(Article article) {
@@ -363,4 +371,5 @@ public class ArticleServiceImpl implements ArticleService {
 		result = ad.insertCustomer(article);
 		return result;
 	}
+	
 }

@@ -515,13 +515,13 @@
 					</td>
 				</tr>	
 			</table>
-			<div align="left" style="margin-left: 450px;">	
+			<div style="position: relative;">	
 			<!-- 총댓글갯수 -->	
-			<div>
 				 ${reply.rep_cnt }개의 댓글 
 				<c:choose>
 					<c:when test="${memberInfo.mem_id != null }">
 						<form action="bjReplyWrite" method="post" name="reply">
+			<div style="width: 600px; height: 150px; display : block; border-style: solid; border-width :1px; margin-bottom: 10px;">
 							<div><img src="${pageContext.request.contextPath}/uploads/profile/${memberInfo.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
 							${memberInfo.mem_nickname }<br>
 							<input type="text" name="rep_content" maxlength="200" style="width: 500px; height: 100px;" required="required" placeholder="댓글을 입력하세요" >
@@ -529,18 +529,18 @@
 							<input type="hidden" name="art_id" value="${article.art_id}">									
 							<input type="hidden" name="brd_id" value="${article.brd_id}">									
 																<input type="submit" value="댓글쓰기"></div>
+			</div>
 						</form>
 					</c:when>
 				</c:choose>
-			</div>
 				
-			<!-- 댓글메인 -->
+			<!-- 댓글메인 and 대댓글까지 보기 -->
 			<div>
 				<c:forEach var="reply" items="${replyMain }">
-					<div style="width: 600px; height: 150px; display : inline-block; border-style: solid; border-width :1px;">
+					<div style="width: 600px; height: 150px; display : block; border-style: solid; border-width :1px; margin-bottom: 10px;">
 					<div >
 						<span>프사</span> <span>작성자</span> <span>댓글내용</span> <span>작성시간</span>	<span>추천</span> <span>비추천</span> <span>최상위댓글번호</span> <span>댓글순서</span>
-					</div>
+					
 					<div>	
 						<span><img src="${pageContext.request.contextPath}/uploads/profile/${reply.mem_image }" alt="예시" style="max-height: 40px; max-width: 40px;"></span>
 						<span>${reply.mem_nickname }</span>
@@ -552,39 +552,44 @@
 						<span>${reply.rep_bad }<button>비추천</button> </span>
 						<span>${reply.rep_parent}</span>
 						<span>${reply.rep_step }</span>
+						
+						
+						<span>
 						<c:choose>
 							<c:when test="${memberInfo.mem_id == reply.mem_id }">
 								<input type="button" value="댓글삭제" 
 								onclick="location.href='${pageContext.request.contextPath}/board/community/bjReplyDelete?art_id=${article.art_id }&rep_id=${reply.rep_id }&brd_id=${article.brd_id }&category=${category}'">
 							</c:when>
 						</c:choose>
-						<br>
-					</div>
-			<!-- 대댓글 -->
-						<div>
-						<c:choose>
-							<c:when test="${memberInfo.mem_id != null }">
-								<form action="bjreReply" method="post" name="reReply" >
-								<span><input type="button" onclick="rereplyWrite(${reply.rep_id})" value="대댓글쓰기"></span>
-									<div id="rereply_${reply.rep_id}" style="display: none;">
-										<img src="${pageContext.request.contextPath}/uploads/profile/${memberInfo.mem_image }" alt="예시" style="max-height: 40px; max-width: 40px;">
-										${memberInfo.mem_nickname }<br>
-										<input type="hidden" name ="art_id" value="${article.art_id }"> 
-										<input type="hidden" name ="brd_id" value="${article.brd_id }"> 
-										<input type="hidden" name ="mem_id" value="${memberInfo.mem_id }"> 
-										<input type="hidden" name ="rep_step" value="${reply.rep_step }"> 
-										<input type="hidden" name ="rep_parent" value="${reply.rep_parent}"> 
-										<input type="hidden" name ="category" value="${category }"> 
-										<input type="text" name="rep_content" placeholder="대댓글" style="width: 500px; height: 100px;">
-										<input type="submit" onclick="rereplySubmit" value="등록">
-										<input type="reset" onclick="hiderereply()" value="취소">
-									</div>
-								</form>	
-							</c:when>
-						</c:choose>
-						<br>
+						</span>
+						<!-- <br> -->
+					
+			<!-- 대댓글 쓰기-->
+							<div>
+								<c:choose>
+									<c:when test="${memberInfo.mem_id != null }">
+										<form action="bjreReply" method="post" name="reReply" >
+										<span><input type="button" onclick="rereplyWrite(${reply.rep_id})" value="대댓글쓰기"></span>
+											<div id="rereply_${reply.rep_id}" style="display: none;">
+												<img src="${pageContext.request.contextPath}/uploads/profile/${memberInfo.mem_image }" alt="예시" style="max-height: 40px; max-width: 40px;">
+												${memberInfo.mem_nickname }<br>
+												<input type="hidden" name ="art_id" value="${article.art_id }"> 
+												<input type="hidden" name ="brd_id" value="${article.brd_id }"> 
+												<input type="hidden" name ="mem_id" value="${memberInfo.mem_id }"> 
+												<input type="hidden" name ="rep_step" value="${reply.rep_step }"> 
+												<input type="hidden" name ="rep_parent" value="${reply.rep_parent}"> 
+												<input type="hidden" name ="category" value="${category }"> 
+												<input type="text" name="rep_content" placeholder="대댓글" style="width: 500px; height: 100px;">
+												<input type="submit" onclick="rereplySubmit" value="등록">
+												<input type="reset" onclick="hiderereply()" value="취소">
+											</div>
+										</form>	
+									</c:when>
+								</c:choose>
+							</div>
 						</div>
 					</div>
+				</div>
 				</c:forEach>
 			</div>	 
 		</div>
