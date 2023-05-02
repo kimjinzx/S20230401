@@ -230,7 +230,7 @@
 				<fmt:formatDate value="${reply.rep_regdate}" pattern="yy년 MM월 dd일 : HH:mm:ss"/>
 			    <p>
 				      <span class="rep_content1"> ${reply.rep_content}</span>
-				      <input type="text" class="rep_content2" style="display: none" value="${reply.rep_content }">
+				      <input type="text" class="rep_content2" style="display: none; margin : 10px; width:1225px; height:20px; font-size:12px;'" value="${reply.rep_content }">
 				      
 				      <span style="float: right; ;">비추천수 : ${reply.rep_bad }  </span>
 				      <span style="float: right; ;">추천수 : ${reply.rep_good }&nbsp;</span>

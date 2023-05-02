@@ -52,11 +52,7 @@ public class ReplyDaoImpl implements ReplyDao {
 	}
 	
 	
-	
-	
-	
-	
-	
+
 	// 백준
 	@Override
 	public Reply replyCount(Reply reply) {
