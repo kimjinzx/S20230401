@@ -209,7 +209,8 @@ public class ArticleController {
 		model.addAttribute("writerInfo", writerInfo);
 		model.addAttribute("article", article);
 		model.addAttribute("brd_id", brd_id);
-		return "viewArticle_Backup";
+		//return "viewArticle_Backup";
+		return "viewArticle";
 	}
 	
 	@ResponseBody
