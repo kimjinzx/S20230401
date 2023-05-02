@@ -65,9 +65,12 @@ public class TogetherController {
 	}
 
 	@RequestMapping(value = "/board/detailArticle")
-	public String detailArticle(Article article,
+	public String detailArticle(@AuthenticationPrincipal MemberDetails memberDetails,  // 세션의 로그인 유저 정보
+			  					Article article,
 								Model model) {
-		System.out.println("ArticleController Start detailArticle...");
+		
+		if (memberDetails != null) 
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 
 		// 상세게시글 요소 구현
 		Article detailArticle = as.dbdetailArticle(article);
@@ -84,7 +87,6 @@ public class TogetherController {
 	public String writeFormArticle(@AuthenticationPrincipal MemberDetails memberDetails,
 								   Model model) {
 		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
-		System.out.println("ArticleController Start writeFormArticle...");
 
 		// 카테고리별 콤보박스
 		List<Comm> categoryList = as.categoryName();
@@ -106,12 +108,17 @@ public class TogetherController {
 	}
 
 	@RequestMapping(value = "/board/writeArticle")
-	public String writeArticle(Article article,
+	public String writeArticle(@AuthenticationPrincipal MemberDetails memberDetails,
+							   Article article,
 							   Model model, 
 							   @RequestParam("trd_enddate1")
 							   @DateTimeFormat(pattern = "yyyy-MM-dd") Date trd_enddate) {
+		if (memberDetails != null) 
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		
 		article.setTrd_enddate(trd_enddate);
 		
+
 		// 프로시저 Insert_Article 이용 => 게시글 작성
 		as.dbWriteArticle(article);
 		int insertResult = article.getInsert_result();
@@ -130,9 +137,13 @@ public class TogetherController {
 	}
 
 	@RequestMapping(value = "/board/deleteArticle")
-	public String deleteArticle(Article article,
+	public String deleteArticle(@AuthenticationPrincipal MemberDetails memberDetails,  // 세션의 로그인 유저 정보
+			  					Article article,
 								Model model) {
 
+		if (memberDetails != null) 
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		
 		// 게시글 삭제 (isdelete = 0 => 1)
 		int deleteresult = as.dbdeleteArticle(article);
 		model.addAttribute("result", deleteresult);
@@ -141,7 +152,12 @@ public class TogetherController {
 	}
 
 	@RequestMapping(value = "/board/updateFormArticle")
-	public String updateFormArticle(Article article, Model model) {
+	public String updateFormArticle(@AuthenticationPrincipal MemberDetails memberDetails,  // 세션의 로그인 유저 정보
+			  						Article article,
+			  						Model model) {
+		
+		if (memberDetails != null) 
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 
 		// 게시글 수정 양식 (상세 게시글 값 가져오기)
 		Article updateFormArticle = as.dbdetailArticle(article);
@@ -167,10 +183,14 @@ public class TogetherController {
 	}
 
 	@RequestMapping(value = "/board/updateArticle")
-	public String updateArticle(Article article,
+	public String updateArticle(@AuthenticationPrincipal MemberDetails memberDetails,  // 세션의 로그인 유저 정보
+			  					Article article,
 								Model model,
 								@RequestParam("trd_enddate1") @DateTimeFormat(pattern = "yyyy-MM-dd") Date trd_enddate) {
 
+		if (memberDetails != null) 
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		
 		article.setTrd_enddate(trd_enddate);
 		// 게시글 수정 (프로시저 사용 => Update_Article)
 		as.dbUpdateArticle(article);
@@ -188,7 +208,13 @@ public class TogetherController {
 	}
 	
 	@RequestMapping(value= "/board/insertReply")
-	public String insertReply(Reply reply, Model model) {
+	public String insertReply(@AuthenticationPrincipal MemberDetails memberDetails,  // 세션의 로그인 유저 정보
+			  				  Reply reply,
+			  				  Model model) {
+		
+		if (memberDetails != null) 
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		
 		int insertReply = rs.dbInsertReply(reply);
 		
 		int art_id = reply.getArt_id();
@@ -200,7 +226,12 @@ public class TogetherController {
 	}
 	
 	@RequestMapping(value="/board/deleteReply")
-	public String deleteReply(Reply reply, Model model) {
+	public String deleteReply(@AuthenticationPrincipal MemberDetails memberDetails,  // 세션의 로그인 유저 정보
+			  				  Reply reply,
+			  				  Model model) {
+		if (memberDetails != null) 
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		
 		int deleteReply = rs.dbDeleteReply(reply);
 		
 		int art_id = reply.getArt_id();
@@ -211,14 +242,25 @@ public class TogetherController {
 	}
 	
 	@RequestMapping(value="/board/updateReply")
-	public String updateReply(Reply reply, Model model) {
+	public String updateReply(@AuthenticationPrincipal MemberDetails memberDetails,  // 세션의 로그인 유저 정보
+			  				  Reply reply,
+			  				  Model model) {
+		
+		if (memberDetails != null) 
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		
 		int updateReply = rs.dbUpdateReply(reply);
+		// String updateReply = Integer.toString(updateReply);
+		
 		
 		int art_id = reply.getArt_id();
 		int brd_id = reply.getBrd_id();
+		System.out.println("reply.rep_content =>" + reply.getRep_content() );
 		model.addAttribute("updateReply", updateReply);
 		
+		
 		return "redirect:/board/detailArticle?art_id="+art_id+"&brd_id="+brd_id;
+		// return reply;
 	}
 	
 	

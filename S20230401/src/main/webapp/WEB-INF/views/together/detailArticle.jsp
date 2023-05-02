@@ -5,20 +5,23 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script>
-/* 		const add_textbox = () => {
-		    const box = document.getElementById("box");
-		    const newP = document.createElement('p');
-		    newP.innerHTML = "<input type='text'> <input type='button' value='삭제' onclick='remove(this)'>";
-		    box.appendChild(newP);
-		}
-		const remove = (obj) => {
-		    document.getElementById('box').removeChild(obj.parentNode);
-		} */
-		
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.0.min.js" ></script>
+
+<!--  <script>
+
+	function createButton() {
+    // 버튼 엘리먼트의 disply 속성을 'block'으로 변경.
+    	const replyButton = document.getElementById('replyButton');
+    	replyButton.style.display = 'block';
+    }
 	
-	
-</script>
+	function deleteButton() {
+	// 버튼 엘리먼트의 disply 속성을 'none'으로 변경.
+		const replyButton = document.getElementById('replyButton');
+		replyButton.style.display = 'none';
+	} 	
+</script>-->
+     
 </head>
 <body>
 	<h2>상세게시글</h2>
@@ -33,9 +36,9 @@
 	<input type="button" value="기타" 	onclick="${pageContext.request.contextPath}location.href='together?category=1060'">
 	
 	<p>
-	<input type="button" value="목록" 	onclick="location.href='${pageContext.request.contextPath }together?category=1000';">
-	<input type="button" value="수정하기" 	onclick="location.href='${pageContext.request.contextPath }/board/updateFormArticle?brd_id=${detailArticle.brd_id }&art_id=${detailArticle.art_id }';">
-	<input type="button" value="삭제하기"  onclick="location.href='${pageContext.request.contextPath }/board/deleteArticle?brd_id=${detailArticle.brd_id }&art_id=${detailArticle.art_id }';">
+	<input type="button" value="목록" 	onclick="${pageContext.request.contextPath }location.href='together?category=1000';">
+	<input type="button" value="수정하기" 	onclick="${pageContext.request.contextPath }location.href='/board/updateFormArticle?brd_id=${detailArticle.brd_id }&art_id=${detailArticle.art_id }';">
+	<input type="button" value="삭제하기"  onclick="${pageContext.request.contextPath }location.href='/board/deleteArticle?brd_id=${detailArticle.brd_id }&art_id=${detailArticle.art_id }';">
 	
 	<table>
 		<tr>
@@ -130,75 +133,93 @@
 		<tr>
 			<td></td>
 			<th><input type="button" value="관심목록"  onclick="location.href='">
-			<input 	   type="button" value="신청하기" 	onclick="location.href='"></th>
+				<input type="button" value="신청하기" 	onclick="location.href='"></th>
 		<tr>
 			<th>내용</th>
       		<td>${detailArticle.art_content }</td>
 		</tr>
-		<tr>
-			<th>댓글</th>
-			<td>(${detailArticle.repCount })</td>
-		</tr>
 	</table>
+	<p>
 	
-	
-	<div class="replyList" style="margin: 10px; border: 1px solid black; padding: 10px;">
+	<span><br>댓글 (${detailArticle.repCount })</span>
+	<p>
+	<!-- 댓글입력 -->
 		<div class="insertReply">
-			<form action="/board/insertReply" method="post">
+			<form action="/board/insertReply" id = "insertReply" method="post">
 			<!-- form 'action' = '데이터가 도착할 URL을 써준다' 'method' = '데이터를 전달할 방식을 써준다'-->
 			<!-- get 방식으로 넘길 땐 주소값 뒤에 ? 로 파라미터 값을 적어주고 / post 방식으로 넘길 땐 form 안에 input으로 값을 적어서 넘겨준다-->
-				<span><input type="hidden" name="art_id"  		value="${detailArticle.art_id }"></span>
-				<span><input type="hidden" name="brd_id" 		value="${detailArticle.brd_id }"></span>
-				<span><input type="hidden" name="mem_id" 		value="${detailArticle.mem_id }"></span>
-				<span><input type="hidden" name="rep_id" 		value="${reply.rep_id }"></span>
-				<span><input type="hidden" name="rep_parent" 	value="${reply.rep_parent }"></span>
-				<span><input type="text"   name="rep_content"   placeholder="댓글을 입력하세요"
-							 style="margin : 10px; width:1225px; height:100px; font-size:12px;"></input></span>
+				<input type="hidden" name="art_id"  	value="${detailArticle.art_id }">
+				<input type="hidden" name="brd_id" 		value="${detailArticle.brd_id }">
+				<input type="hidden" name="mem_id" 		value="${detailArticle.mem_id }">
+				<input type="hidden" name="rep_id" 		value="${reply.rep_id }">
+				<input type="hidden" name="rep_parent" 	value="${reply.rep_parent }">
+				<c:choose>
+					<c:when test="${memberInfo.mem_id != null}">
+					<input type="text"   name="rep_content"   placeholder="댓글을 입력하세요"
+								 style="margin : 10px; width:1225px; height:20px; font-size:12px;"></input>
+					</c:when>
+					<c:otherwise>
+					<span> 로그인이 필요합니다 </span>
+					</c:otherwise>
+				</c:choose>
+				
 			<!-- name = 데이터를 전달 받는 column 이름, value= 들어갈 데이터의 값, id = javascript로 꾸밀 때 지정해주는 이름(?) -->		
-				<div class="replySubmit" style="margin: 5px; float: right;">
-					<input type="submit" value="입력">
-				</div>
-			</form>
-		</div>	
-				<!-- submit 버튼을 통해 데이터가 입력(?)된다 -->
-	<c:forEach var="reply" items="${replyList }">
-		<div class="replyInfo" >
-			<span><img src="${pageContext.request.contextPath}/image/picture/${reply.mem_image}" width ="30" height ="30" alt="-"></span>
-			<span>${reply.mem_nickname }</span>
-			<span>(${reply.mem_username })</span>
-			<span><fmt:formatDate value="${reply.rep_regdate}" pattern="yy년 MM월 dd일 : HH:mm:ss"/></span>
-		</div>	
-			<!-- 날짜형식 바꿔야함!! -->
-					
-			<div class="replyContent" style= "margin: 10px; border: 1px solid black; padding: 15px; width: 1200px; height: 60px;" >		
-				<span style="font-size: 12px;">${reply.rep_content }</span>
-					<div class="replyButton" id ="box" style= "float: right;">
-						<form action="/board/updateReply" method="post">	
-							<span><input type="hidden" name="art_id"  		value="${detailArticle.art_id }"></span>
-							<span><input type="hidden" name="brd_id" 		value="${detailArticle.brd_id }"></span>
-							<span><input type="hidden" name="rep_id" 		value="${reply.rep_id }"></span>
-							<span><input type="text" name="rep_content" value="${reply.rep_content }"></span>
-							<span><input type="submit" value="수정"></span>
-						</form>
-						<form action="/board/deleteReply" method="post">	
-							<span><input type="hidden" name="art_id"  		value="${detailArticle.art_id }"></span>
-							<span><input type="hidden" name="brd_id" 		value="${detailArticle.brd_id }"></span>
-							<span><input type="hidden" name="rep_id" 		value="${reply.rep_id }"></span>
-							<span><input type="submit" value="삭제"></span>
-						</form>	
-							<span><input type="button" value="댓글 작성"    onclick=""></span>
+					<div style = "display: block;" id="replyButton">
+					<input type="submit" id = "replySubmit" value="댓글">
+					<!-- submit 버튼을 통해 데이터가 입력(?)된다 -->
+					<input type="reset"  id = "replyReset"  value="취소">
 					</div>
+			</form>
+		</div>
+		<p>
+
+	<!-- 댓글리스트 -->
+	
+		<c:forEach var="reply" items="${replyList }">
+			<div>
+				<input type="hidden" name="art_id"  	value="${reply.art_id }">
+				<input type="hidden" name="brd_id" 		value="${reply.brd_id }">
+				<input type="hidden" name="mem_id" 		value="${reply.mem_id }">
+				<input type="hidden" name="rep_id" 		value="${reply.rep_id }">
+				<span><img src="${pageContext.request.contextPath}/image/picture/${reply.mem_image}" width ="30" height ="30" alt="-"></span>
+				<span>${reply.mem_nickname }</span>
+				<span>(${reply.mem_username })</span>
+				<fmt:formatDate value="${reply.rep_regdate}" pattern="yy년 MM월 dd일 : HH:mm:ss"/>
+			    <p>
+			      <span class="reply-content">${reply.rep_content}</span>
+			      <input type="button" value="수정" onclick="${pageContext.request.contextPath }location.href='/board/updateReply?brd_id=${reply.brd_id}&art_id=${reply.art_id}&rep_id=${reply.rep_id}&mem_id=${reply.mem_id}';">
+			      <input type="button" value="삭제" onclick="${pageContext.request.contextPath }location.href='/board/deleteReply?brd_id=${reply.brd_id}&art_id=${reply.art_id}&rep_id=${reply.rep_id}&mem_id=${reply.mem_id}';">
+			    </p>
 			</div>
-<!-- 		<form action="/board/insertReply" method="post">
-		        <div id="box">
-            		<input type="text"> <input type="button" value="추가" onclick="add_textbox()">
-        		</div>
- 			<span><input name="rep_content" placeholder="댓글을 입력하세요"
-						 style="width:1200px; height:100px; font-size:10px;"></input></span>
-			<span><input type="submit" value="댓글작성"></span>
-		</form>	 -->	
-	</c:forEach>
-	</div>
+			
+			<div class="insertRe-Reply" style = "display: block;">
+				<form action="/board/insertReply" id="insertRe-Reply" method="post">
+					<input type="hidden" name="art_id"  	value="${detailArticle.art_id }">
+					<input type="hidden" name="brd_id" 		value="${detailArticle.brd_id }">
+					<input type="hidden" name="mem_id" 		value="${detailArticle.mem_id }">
+					<input type="hidden" name="rep_id" 		value="${reply.rep_id }">
+					<input type="hidden" name="rep_parent" 	value="${reply.rep_parent }">
+					<c:choose>
+						<c:when test="${memberInfo.mem_id != null}">
+						<input type="text"   name="rep_content"   placeholder="댓글을 입력하세요"
+									 style="margin : 10px; width:1225px; height:20px; font-size:12px;"></input>
+						</c:when>
+						<c:otherwise>
+						<span> 로그인이 필요합니다 </span>
+						</c:otherwise>
+					</c:choose>
+				
+			<!-- name = 데이터를 전달 받는 column 이름, value= 들어갈 데이터의 값, id = javascript로 꾸밀 때 지정해주는 이름(?) -->		
+					<div style = "display: block;" id="replyButton">
+						<input type="submit" id = "replySubmit" value="댓글">
+						<!-- submit 버튼을 통해 데이터가 입력(?)된다 -->
+						<input type="reset"  id = "replyReset"  value="취소">
+					</div>
+					<p>
+				</form>
+			</div>
+		</c:forEach>
+						
 
 </body>
 </html>
