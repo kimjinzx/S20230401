@@ -614,12 +614,12 @@
 	
 	<!-- 김찬영 -->
 	<!-- 리스트 조회-->
-	<select id="ArticleTotal" resultType="int">
+ <select id="ArticleTotal" resultType="int">
 		select Count(*) 
 		FROM article
 		where brd_id between 1400 and 1499
-	</select>
-	
+	</select> 
+		
 	<!-- 페이지 불러오기 -->
    	<select id="cyArticleListAll" parameterType="Article" resultType="Article">
 		SELECT *
@@ -723,17 +723,7 @@
 		where art_id = #{art_id} and brd_id = #{brd_id}
 	</update>
 		
-	<!-- 댓글 달기 -->	
-	<select id="cyReply" parameterType="Reply">
-	select r.rep_id, m.mem_nickname, r.rep_content, r.rep_regdate, r.rep_parent, r.rep_step
-	from reply
-	left join member m 
-	on r.mem_id = m.mem_id
-	where brd_id = #{brd_id} and art_id = #{art_id}
-	order by rep_regdate desc, rep_parent asc, rep_step asc
-	</select>		
-			
-			
+		
 			
 			
 			

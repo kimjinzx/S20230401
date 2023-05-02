@@ -31,4 +31,8 @@ public interface ReplyDao {
 
 	public int hgInsertReply(Reply reply);
 
+	
+	// 김찬영
+	List<Reply> 	listReply(Reply reply);	
+	int cywriteReply(Reply reply);
 }

@@ -118,5 +118,30 @@ public class ReplyDaoImpl implements ReplyDao {
 	@Override
 	public int hgInsertReply(Reply reply) {
 		return session.insert("hgInsertReply", reply);
-	}	
+	}
+	
+	// 김찬영
+	//댓글 조회
+	@Override
+	public List<Reply> listReply(Reply reply) {
+		List<Reply> Replylist = null;
+		System.out.println("ArticleDaoImpl listReply Start..");
+		try {
+			Replylist = session.selectList("cyReply", reply);
+		} catch (Exception e) {
+			System.out.println("ArticleImpl listReply e.getMessage()->"+e.getMessage());
+		}
+		return Replylist;
+	}
+	//댓글 작성
+	@Override
+	public int cywriteReply(Reply reply) {
+		int reulst = 0;
+		try {
+			reulst = session.insert("cywriteReply", reply);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return reulst;
+	}
 }

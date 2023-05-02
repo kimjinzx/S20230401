@@ -99,8 +99,6 @@ public class Article {
 	private Integer		reg_id1;
 	private Integer     reg_id2;
 	
-	// 김찬영
-	private String 		keyword;
 	
 	// 최승환
 	// 조인

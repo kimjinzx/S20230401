@@ -274,15 +274,15 @@ public class ArticleServiceImpl implements ArticleService {
 		System.out.println("ArticleServiceImpl listArticle articleList.size()->" +articleList.size());
 		return articleList;
 	}
-	// 댓글 조회
-	@Override
-	public List<Article> listReply(Article article) {
-		List<Article> listReply = null;
-		System.out.println("ArticleServiceImpl listReply Start...");
-		listReply = ad.replyList(article);
-		System.out.println("ArticleServiceImpl listReply articleList.size()->" +listReply.size());
-		return listReply;
-	}
+//	// 댓글 조회
+//	@Override
+//	public List<Article> listReply(Article article) {
+//		List<Article> listReply = null;
+//		System.out.println("ArticleServiceImpl listReply Start...");
+//		listReply = ad.replyList(article);
+//		System.out.println("ArticleServiceImpl listReply articleList.size()->" +listReply.size());
+//		return listReply;
+//	}
 	// 상세페이지 조회
 	@Override
 	public Article cyArticlereadDetail(Article article) {

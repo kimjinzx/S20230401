@@ -68,4 +68,20 @@ public class ReplyServiceImpl implements ReplyService {
 		return rd.hgInsertReply(reply);
 	}
 	
+	//김찬영
+	// 댓글 조회
+	@Override
+	public List<Reply> listReply(Reply reply) {
+		List<Reply> listReply = null;
+		System.out.println("ArticleServiceImpl listReply Start...");
+		listReply = rd.replyList(reply);
+		System.out.println("ArticleServiceImpl listReply articleList.size()->" +listReply.size());
+		return listReply;
+	}
+	//댓글 작성
+	@Override
+	public int cywriteReply(Reply reply) {
+		return rd.writeReply(reply);
+	}
+	
 }

@@ -429,18 +429,18 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return articleList;
 	}
-	//댓글 조회
-	@Override
-	public List<Article> listReply(Article article) {
-		List<Article> Replylist = null;
-		System.out.println("ArticleDaoImpl listReply Start..");
-		try {
-			Replylist = session.selectList("cyReply", article);
-		} catch (Exception e) {
-			System.out.println("ArticleImpl listReply e.getMessage()->"+e.getMessage());
-		}
-		return Replylist;
-	}
+//	//댓글 조회
+//	@Override
+//	public List<Article> listReply(Article article) {
+//		List<Article> Replylist = null;
+//		System.out.println("ArticleDaoImpl listReply Start..");
+//		try {
+//			Replylist = session.selectList("cyReply", article);
+//		} catch (Exception e) {
+//			System.out.println("ArticleImpl listReply e.getMessage()->"+e.getMessage());
+//		}
+//		return Replylist;
+//	}
 
 	
 	

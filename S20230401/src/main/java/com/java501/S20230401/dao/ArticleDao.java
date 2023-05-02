@@ -68,7 +68,7 @@ public interface ArticleDao {
 	// 김찬영
 	int				totalArticle();								
 	List<Article> 	listArticle(Article article);				
-	List<Article> 	listReply(Article article);				
+//	List<Article> 	listReply(Article article);				
 	Article			cyArticlereadDetail(Article article);		
 	Article 		cyArticlereadupdate(Article article);		
 	Article 		detatilArticle(int art_title);				

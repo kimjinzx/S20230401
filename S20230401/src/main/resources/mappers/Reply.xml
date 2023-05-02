@@ -101,13 +101,23 @@
 
 
 
-	<!-- 김찬영 댓글 조회 -->
-<!-- 	<select = id="Reply" parameterType="Reply">
-	INSERT INTO 
-		reply (art_id, brd_id, rep_id, mem_id, rep_content, rep_regdate, rep_good, rep_bad, rep_parent, rep_step)
-		VALUES (#{art_id}, #{brd_id}, #{red_id}, #{mem_id}, #{rep_content},
-		#{rep_regdate}, #{rep_good}, #{rep_bad}, #{rep_parent}, #{rep_step});	
-	</select> -->
+	<!-- 김찬영  -->
+	<select id="cyReply" parameterType="Reply">
+	select r.rep_id, m.mem_nickname, r.rep_content, r.rep_regdate, r.rep_parent, r.rep_step
+	from reply
+	left join member m 
+	on r.mem_id = m.mem_id
+	where brd_id = #{brd_id} and art_id = #{art_id}
+	order by rep_regdate desc, rep_parent asc, rep_step asc, rep_id asc
+	</select>		
+			
+	<!-- 댓글작성 -->
+	<insert id="cywriteReply" parameterType="Reply">
+	insert into reply(rep_id, art_id, brd_id, mem_id, rep_content, rep_regdate, rep_good, rep_bad, rep_parent, rep_step, isdelete)
+	values(#{art_id},#{brd_id},(Select NVL(max(rep_id),0) + 1 
+	from reply
+	where art_id = #{art_id} and brd_id=#{brd_id}), #{mem_id}, #{rep_content}, SYSDATE, #{rep_good}, #{rep_bad}, #{rep_parent}, #{rep_step},0)
+	</insert>
 
 
 

@@ -64,7 +64,7 @@ public interface ArticleService {
 	// 김찬영
 	int					totalArticle();
 	List<Article> 		listArticle(Article article);
-	List<Article> 		listReply(Article article);
+//	List<Article> 		listReply(Article article);
 	Article				cyArticlereadDetail(Article article);
 	Article 			cyArticlereadupdate(Article article);
 	Article 			detailArticle(int art_title);

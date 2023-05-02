@@ -24,4 +24,8 @@ public interface ReplyService {
 	// 유현규
 	public List<ReplyMember> getReplyByArticle(Article article);
 	public int hgInsertReply(Reply reply);
+	
+	//김찬영
+	List<Reply> 		listReply(Reply reply);
+	int cywriteReply(Reply reply);
 }
