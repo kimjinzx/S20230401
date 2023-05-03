@@ -52,17 +52,35 @@
 	
 	$(() => {
 		$('.reply_cancel').click(e => {
-			$(e.target).closest('.reply_box').find('.rep_content1').toggle();			// 내용은 none으로
-			$(e.target).closest('.reply_box').find('.rep_content2').toggle();
+			$(e.target).closest('.reply_box').find('.rep_content1').toggle();			// 내용은 block으로
+			$(e.target).closest('.reply_box').find('.rep_content2').toggle();			// 텍스트 박스는 none으로?
 			$(e.target).closest('.reply_box').find('.reply_cancel').toggle();			// 취소버튼 보이게
 			$(e.target).closest('.reply_box').find('.reply_delete').toggle();			// 삭제버튼 안보이게
 		});
 	});
 	
+	
+	
+/* 	$(() => {
+		$('.article_report').click(e => {
+			alert('신고하시겠습니까?')
+			
+			$.ajax({
+					  url : "/board/updateReply",
+					  type : 'post',
+					  data : sendData,
+					  dataType :'json',
+					  contentType : 'application/json',
+					  success : data => {
+			
+		});
+	}); */
+	
 </script>
+
 <!-- closest => 가장 가까운 (.->클래스, #->아이디,) 이름을 가진 놈 찾아 타겟으로 만듦.
 	find => 아래의 태그 찾음.
-	css => 해당 속성을 찾아서 속성의 값을 알려줌 (두개면 앞에 놈의 값을 뒤에놈으로 바꿔줌)  -->
+	css => 속성을 입력하면 해당 속성을 찾아서 속성의 값을 알려줌 (두개면 앞에 놈의 값을 뒤에놈으로 바꿔줌)  -->
 
 <!--  <script>
 
@@ -189,10 +207,12 @@
 		</tr>
 		<tr>
 			<td></td>
-			<td><input type="button" value="관심목록"  onclick="location.href='">
-				<input type="button" value="신청하기" 	onclick="location.href='">
-				<input type="button" value="추천" 	onclick="location.href='">
-				<input type="button" value="비추천" 	onclick="location.href='"></td>
+			<td><input type="button" class ="article_favoriet" value="관심목록"    onclick="location.href='">
+				<input type="button" class ="article_submit"   value="신청하기" 	onclick="location.href='">
+				<input type="button" class ="article_good"     value="추천" 	    onclick="location.href='">
+				<input type="button" class ="article_bad"      value="비추천" 	    onclick="location.href='">
+				<input type="button" class ="article_report"   value="신고하기"    onclick="location.href='">
+			</td>
 		<tr>
 			<th>내용</th>
       		<td>${detailArticle.art_content }</td>
@@ -235,10 +255,10 @@
 		</div>
 		</td>
 		</tr>
+		</table>
 
 	<!-- 댓글리스트 -->
-		<tr>
-		<td>
+
 		<c:forEach var="reply" items="${replyList }">
 			<div class="reply_box" style= "border: solid; ${reply.rep_step > 1 ? 'margin-left: 50px' : ''}">    
 				<input type="hidden" name="art_id"  	value="${reply.art_id }">
@@ -256,7 +276,7 @@
 				      
 				      <span style="float: right;">비추천수 : ${reply.rep_bad }  </span>
 				      <span style="float: right;">추천수 : ${reply.rep_good }&nbsp;</span>
-				     
+				</p>
 				<p>      
 			    <c:choose>
 				    <c:when test="${memberInfo.mem_id == reply.mem_id}">
@@ -272,6 +292,7 @@
 						<c:when test="${memberInfo.mem_id != null}">
 							<input class="reply_bad"   style="float: right;" type="button" value="비추천">
 							<input class="reply_good"  style="float: right;" type="button" value="추천">
+							<input class="reply_report"  style="float: right;" type="button" value="신고">
 						</c:when>
 						<c:otherwise>
 						</c:otherwise>
@@ -302,9 +323,7 @@
 				</form>
 			</div>
 		</c:forEach>
-		</td>
-		</tr>
-		</table>
+
 
 </body>
 </html>

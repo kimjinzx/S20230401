@@ -268,11 +268,11 @@ public class TogetherController {
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		
 		int updateReply = rs.dbUpdateReply(reply);
-		// String updateReply = Integer.toString(updateReply);
+		// 		String updateReply = Integer.toString(updateReply);
 		
 		
-		int art_id = reply.getArt_id();
-		int brd_id = reply.getBrd_id();
+		//		int art_id = reply.getArt_id();
+		//		int brd_id = reply.getBrd_id();
 		System.out.println("reply.rep_content =>" + reply.getRep_content() );
 		model.addAttribute("updateReply", updateReply);
 		
@@ -283,5 +283,19 @@ public class TogetherController {
 		return jsonObj.toString();
 	}
 	
-	
+	/*
+	 * @RequestMapping(value="/board/reportArticleForm") public String
+	 * reportArticle(@AuthenticationPrincipal MemberDetails memberDetails, Article
+	 * article, Model model) {
+	 * 
+	 * if (memberDetails != null) model.addAttribute("memberInfo",
+	 * memberDetails.getMemberInfo());
+	 * 
+	 * int reportArticle = as.dbReportArtice(article);
+	 * 
+	 * 
+	 * 
+	 * 
+	 * return "together/detailArticle"; }
+	 */
 }
