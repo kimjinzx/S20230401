@@ -335,6 +335,53 @@
 		white-space: nowrap;
 		text-overflow: ellipsis;
 	}
+	
+	/* Trade 섹션 */
+	.trade-box:not(:last-child) {
+		border-bottom: 2px solid var(--subtheme);
+	}
+	.trade-item {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: stretch;
+		padding: 5px 10px;
+	}
+	.trade-item:not(:last-child) {
+		border-bottom: 1px solid var(--subtheme);
+	}
+	.trade-item-top {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: 30px;
+	}
+	.status-tag {
+		padding: 2.5px 5px;
+		border-radius: 2.5px;
+		background-color: var(--subtheme);
+		color: var(--subtheme-font);
+		font-weight: bold;
+	}
+	.trade-item-bottom {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: 30px;
+	}
+	.trade_tags {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+	}
+	.art-tag {
+		opacity: 0.5;
+	}
+	.trade-participants {
+		color: var(--subtheme);
+		font-size: 20px;
+		font-weight: bolder;
+	}
 </style>
 </head>
 <body>
@@ -568,7 +615,63 @@
 				</c:forEach>
 			</div>
 			<div id="trades-menu-document" data-group="info-menu-document">
-				
+				<c:set var="trd_type">OFFERED,JOINED,WAITING</c:set>
+				<c:forTokens var="type" items="${trd_type }" delims=",">
+					<div class="trade-box">
+						<c:set var="str">
+							<c:choose>
+								<c:when test="${type == 'OFFERED' }">제안한</c:when>
+								<c:when test="${type == 'JOINED' }">참가한</c:when>
+								<c:otherwise>신청한</c:otherwise>
+							</c:choose>
+						</c:set>
+						<div class="document-subtitle-box">
+							<h2 class="document-subtitle">최근에 ${str } 거래</h2>
+							<span class="document-subtitle-desc">
+								최근 ${str } 10개의 거래가 노출됩니다
+							</span>
+						</div>
+						<div class="trade-content">
+							<c:forEach var="entry" items="${trades[type] }">
+								<c:forEach var="trade" items="${entry.value }">
+									<div class="trade-item">
+										<fmt:formatDate var="enddate" value="${trade.trd_enddate }" pattern="yyyy-MM-dd hh:mm:ss"/>
+										<div class="trade-item-top">
+											<div class="trade-item-info">
+												<span class="status-tag">${trade.trd_statusname }</span>
+												<c:set var="category" value="${trade.brd_id - (trade.brd_id % 100) }"/>
+												<c:set var="boardName">
+													<c:choose>
+														<c:when test="${category == 1000 }">together</c:when>
+														<c:when test="${category == 1100 }">dutchpay</c:when>
+														<c:when test="${category == 1200 }">share</c:when>
+														<c:when test="${category == 1300 }">information</c:when>
+														<c:when test="${category == 1400 }">customer</c:when>
+													</c:choose>
+												</c:set>
+												<a href="${pageContext.request.contextPath }/board/${boardName }/${trade.art_id }?brd_id=${trade.brd_id }&category=${category }">${trade.art_title }</a>
+											</div>
+											<span class="trade-enddate">~ ${enddate }</span>
+										</div>
+										<div class="trade-item-bottom">
+											<div class="trade-tags">
+												<c:forEach var="i" begin="1" end="5">
+													<c:set var="tat" value="art_tag${i }"/>
+													<c:if test="${trade[tat] != null }">
+														<span class="art-tag">#${trade[tat] }</span>
+													</c:if>
+												</c:forEach>
+											</div>
+											<span class="trade-participants">
+												${trade.join_count } / ${trade.trd_max }
+											</span>
+										</div>
+									</div>
+								</c:forEach>
+							</c:forEach>
+						</div>
+					</div>
+				</c:forTokens>
 			</div>
 		</div>
 	</div>

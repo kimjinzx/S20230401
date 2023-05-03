@@ -36,13 +36,17 @@ import com.java501.S20230401.model.Member;
 import com.java501.S20230401.model.MemberDetails;
 import com.java501.S20230401.model.Region;
 import com.java501.S20230401.model.ReplyMember;
+import com.java501.S20230401.model.Trade;
+import com.java501.S20230401.model.TradeInfo;
 import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.CommService;
 import com.java501.S20230401.service.MemberService;
 import com.java501.S20230401.service.RegionService;
 import com.java501.S20230401.service.ReplyService;
+import com.java501.S20230401.service.TradeService;
 import com.java501.S20230401.util.EmailMessage;
 import com.java501.S20230401.util.MemberSearchKeyword;
+import com.java501.S20230401.util.TradeType;
 
 import lombok.RequiredArgsConstructor;
 
@@ -54,6 +58,7 @@ public class MemberController {
 	private final RegionService rs;
 	private final ArticleService as;
 	private final ReplyService reps;
+	private final TradeService ts;
 	private final CommService cs;
 	
 	@RequestMapping(value = "/login")
@@ -175,7 +180,19 @@ public class MemberController {
 		}
 		model.addAttribute("repParents", repParents);
 		// Trade 항목 별 최신 리스트 가져오기
-		
+		Trade searcher = new Trade();
+		searcher.setMem_id(mem_id);
+		Map<String, Map<Integer, List<TradeInfo>>> trades = new HashMap<String, Map<Integer,List<TradeInfo>>>();
+		for (TradeType type : TradeType.values()) {
+			String mainKey = type.toString();
+			Map<Integer, List<TradeInfo>> trdList = new HashMap<Integer, List<TradeInfo>>();
+			for (Integer status : new Integer[] { 401, 402, 403, 404 }) {
+				searcher.setTrd_status(status);
+				trdList.put(status, ts.hgGetTradesByType(searcher, type));
+			}
+			trades.put(mainKey, trdList);
+		}
+		model.addAttribute("trades", trades);
 		
 		return "user/myPage";
 	}
