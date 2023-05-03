@@ -9,19 +9,14 @@ import com.java501.S20230401.dao.CommDao;
 import com.java501.S20230401.dao.RegionDao;
 import com.java501.S20230401.dao.ReplyDao;
 import com.java501.S20230401.model.Article;
-import com.java501.S20230401.model.Member;
-import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.model.ArticleMember;
-import com.java501.S20230401.model.Comm;
-import com.java501.S20230401.model.Region;
-import com.java501.S20230401.util.SummaryType;
 import com.java501.S20230401.model.Article_Trade_Reply;
 import com.java501.S20230401.model.Comm;
-import com.java501.S20230401.model.Region;
 import com.java501.S20230401.model.MemberInfo;
+import com.java501.S20230401.model.Region;
 import com.java501.S20230401.util.SummaryType;
+
 import lombok.RequiredArgsConstructor;
-import oracle.security.o3logon.a;
 
 @Service
 @RequiredArgsConstructor
@@ -78,7 +73,10 @@ public class ArticleServiceImpl implements ArticleService {
 	// 글 비추천
 	@Override
 	public int dgVoteBad(Article article) {	return ad.dgVoteBad(article);}
-	
+	@Override
+	public int dgVoteGoodCancel(Article article) {	return ad.dgVoteGoodCancel(article);}
+	@Override
+	public int dgVoteBadCancel(Article article) {	return ad.dgVoteBadCancel(article);}
 
 	
 	// 백준
@@ -361,6 +359,7 @@ public class ArticleServiceImpl implements ArticleService {
 		result = ad.insertCustomer(article);
 		return result;
 	}
+
 
 
 

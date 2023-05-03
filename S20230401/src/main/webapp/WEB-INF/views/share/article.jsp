@@ -6,249 +6,19 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script type="text/javascript" >
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/share/article.js"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/share/article.css">
+<script type="text/javascript">
 
-	// 댓글 기능 - 대댓글 작성
-	$(document).ready(() => {
-		$(".btns-repWrite").click(e => {
-			console.log(e.target.getAttribute('class')); // 클릭 이벤트 발생시 e.target의 클래스 출력
-			$(e.target).closest('.reply-detail').find(".reply-replyWrite").toggle();
-		});
-	});
-	// 게시글 기능 - 게시글 삭제
-	function art_Delete(){
-		let mem_id = $('#mem_id').val();
-		let login_member = $('#login_member').val();
-		let login_authority = $('#login_authority').val();
-		if(mem_id != login_member && login_authority < 108){
-			alert('권한이 없습니다');
-			return false;
-		}
-		if(confirm('삭제 하시겠습니까?')){
-			let art_id = $('#art_id').val();
-			let brd_id = $('#brd_id').val();
-			let category = $('#category').val();
-			location.href='${pageContext.request.contextPath}/board/share/artDelete/'+art_id+'?brd_id='+brd_id+'&category='+category;
-			alert("삭제 되었습니다.");
-		}
-	}
-	// 게시글 기능 -게시글 수정
-	function art_Update(){
-		if(confirm('수정 하시겠습니까?')){
-			location.href='${pageContext.request.contextPath}/board/share/artDelete?art_id='+art_id+'&brd_id='+brd_id;
-		}
-	}
+	// 세션 스토리지에 pageContext 저장 URL용
+	sessionStorage.setItem('contextPath', '${pageContext.request.contextPath}');
+	sessionStorage.setItem('artId', '${article.art_id}');
+	sessionStorage.setItem('brdId', '${article.brd_id}');
+	sessionStorage.setItem('category', '${category}');
+	sessionStorage.setItem('memId', '${memberInfo.mem_id}')
 
-	// 게시글 기능 - 추천, 비추천 -----------------------------------------------------------ajax사용 추천 취소기능 추가 요망
-	$(document).ready(() => {
-		// 추천
-	$('#btns-good, #btns-goodcancel').click(e => {
-		if(confirm('추천 하시겠습니까?')){
-			alert('추천');
-			$(e.target).closest('.article-vote')
-			.find('#btns-good').toggle().end()
-			.find('#btns-goodcancel').toggle().end();
-			location.href='${pageContext.request.contextPath}/board/share/vote/good?art_id='+${art_id}+'&brd_id='+${article.brd_id}+'&category='+${category};
-		}
-	});
-		// 비추천
-	$('#btns-bad, #btns-badcancel').click(e => {
-		if(confirm('비추천 하시겠습니까?')){
-			$(e.target).closest('.article-vote')
-			.find('#btns-bad').toggle().end()
-			.find('#btns-badcancel').toggle().end();
-			location.href='${pageContext.request.contextPath}/board/share/vote/bad?art_id='+${art_id}+'&brd_id='+${article.brd_id}+'&category='+${category};
-		}
-	});
-	});
-	
-
-	// 댓글 기능 - 댓글 삭제
-	function rep_delete(brd_id, art_id, rep_id) {
-		location.href = '${pageContext.request.contextPath}/board/share/repDelete?art_id='+art_id+'&brd_id='+brd_id+'&rep_id='+rep_id;
-	}
-	
-	// 댓글 기능 - 댓글 수정
-	$(document).ready(() => {
-		$('.btns-repUpdate, .btns-cancel, .btns-repComplete').click(e => {
-			var condition = $('.rep-content').prop('disabled');
-			$(e.target)
-			.closest('.reply-view')
-			.find('.rep-content').prop('disabled', condition ? false : true).focus().end()
-			.find('.btns-repUpdate').toggle().end()
-			.find('.btns-delete').toggle().end()
-			.find('.btns-repComplete').toggle().end()
-			.find('.btns-cancel').toggle();
-		});
-	});
-
-	// 댓글 펼치기
-	$(document).ready(()=>{
-		$('#btns-show, #btns-hide').click(e=>{
-			$(e.target).closest('.reply-list')
-			.find('#btns-show').toggle().end()
-			.find('#btns-hide').toggle().end()
-			.find('.reply-detail').toggle().end();
-		});
-	});
-	
-
-	
-	// 댓글 수정 완료
-	function rep_Update(pIndex){
-		var rep_content = $('#rep-content'+pIndex).val();
-		var art_id = $('#art_id'+pIndex).val();
-		var brd_id = $('#brd_id'+pIndex).val();
-		var rep_id = $('#rep_id'+pIndex).val();
-		console.log(rep_content);
-		console.log(art_id);
-		console.log(brd_id);
-		console.log(rep_id);
-		
-		$.ajax({
-			url:"${pageContext.request.contextPath}/board/share/update",
-			data:{art_id, brd_id, rep_id, rep_content},
-			dataType:'json',
-			success:function(data){
-				console.log(data)
-				$('body').load(location.href);
-				}
-		});
-	}
-
-//	<button id="btns-like">찜하기</button>
-//	<button id="btns-apply">신청</button>
-
-	// 거래 신청 ---------------------------------------------------------
-	$(document).ready(()=>{ 
-		$('#btns-apply').click((e)=>{
-			// 버블링 방지
-			e.stopPropagation();
-			if(confirm('거래 신청')){
-				let art_id = ${article.art_id};
-				console.info(art_id);
-				$('.myModal').css('display', 'flex'); // flex로 변경
-				// x버튼 누를 시 모달 사라짐
-				const modal = document.getElementById('modal')
-				const modalClose = document.getElementById('modal-close');
-				modalClose.addEventListener("click", e => {
-					modal.style.display = 'none';
-				});
-				//window.open('${pageContext.request.contextPath}/board/share/tradeApply', 'trade_apply', 'width=400, height=400');
-				// modal 외의 영역 클릭시 사라짐
-				$('html').click(e=>{
-					if(!$(e.target).hasClass('.myModal')){
-						$('#modal').css('display', 'none');
-						//modal.style.display = 'none';
-						//$('#modal').toggle();
-					}
-				});
-				$('.myModal').click(e => {
-					e.stopPropagation();
-				});
-			}else alert('취소');
-		});
-	});
-	// 찜하기
-	$(document).ready(()=>{
-		$('#btns-like').click(()=>{
-			if(confirm('찜하기')){
-				alert('아직 찜하기 구현 안함');
-			}else{
-				alert('찜하기 취소');
-			}
-		});
-	});
 </script>
-<style type="text/css">
-	.board-articleList{
-		width: 80%;
-		margin: auto;
-	}
-	.reply-detail{
-		display: flex;
-		flex-direction: column;
-		padding: 10px;
-	}
-	.reply-view{
-		border: 1px solid #0193F8;
-		border-radius: 2.5px;
-	}
-	.reply-member{
-		border-bottom: 1px solid #0193F8;
-		
-	}
-	.reply-login > span{
-		display: block;
-		text-align: center;
-	}
-	.rep-content{
-		border: none;
-		resize: none;
-		width: 90%;
-		height: 90%;
-		background-color: transparent;
-	}
-	button{
-		width: auto;
-		height: 25px;
-		margin: 0 5px;
-		color: white;
-		background-color: #0193F8;
-		border: none;
-		border-radius: 14px;
-	}
-	/* 펼치기 버튼 */
-	.reply-list button{
-		background-color: transparent;
-		color: #0193F8;
-		font-size: 16px;
-	}
-	/* 추천 비추천 버튼 */
-	.article-vote button{
-		width: 100px;
-		height: 100px;
-		font-size: 20px;
-		text-align: center;
-		background-color: #eeeeee;
-		color: black;
-		margin: 5px;
-	}
 
-	/* 1번째 부터 2번째 까지 */
-	.article-vote button:nth-child(-n+2):hover {
-		background-color: #0193F8;
-		color: white;
-	}
-
-	/* 3번째 부터 4번째 전까지 */
-	.article-vote button:nth-child(n+3):hover {
-		background-color: red;
-		color: white;
-	}
-	/* DIV 태그 테두리 */
-	.article-share{
-		width: auto;
-		height: auto;
-		border: 1px solid #0193F8;
-		border-radius: 10px;
-	}
-	div{
-		padding: 3px;
-	}
-	/* 글의 유저 정보 첫번째 요소를 제외한 span태그전에 적용 */
-	.article-memberInfo span:not(:first-child)::before{
-		content: ' | ';
-	}
-	.btns-tag{
-	padding: 0px 2px;
-	background-color: transparent;
-	color: #0193F8;
-	}
-	.btns-tag::before{
-		content: '#';
-	}
-</style>
 </head>
 <body>
 	<!-- 임시 로그인 -->
@@ -352,8 +122,16 @@
 								<!-- 거래 신청, 찜 -->
 								<div class="share-button">
 									<span>
-										<button id="btns-like">찜하기</button>
-										<button id="btns-apply">신청</button>
+									<c:choose>
+										<c:when test="${favorite > 0}">
+											<button id="btns-favoriteDel">찜 취소</button>
+										</c:when>
+										<c:otherwise>
+											<button id="btns-favorite">찜</button>
+										</c:otherwise>
+									</c:choose>
+											<button id="btns-apply">신청</button>
+											<!-- <button id="btns-applySeleted">신청</button> -->
 									</span>
 								</div>
 

@@ -32,6 +32,8 @@ public interface ArticleDao {
 	int dgDeleteArticle(Article article); 			// 글 삭제
 	int dgVoteGood(Article article);				// 글 추천
 	int dgVoteBad(Article article);					// 글 비추천
+	int dgVoteGoodCancel(Article article);
+	int dgVoteBadCancel(Article article);
 
 	
 	// 백준
@@ -86,4 +88,5 @@ public interface ArticleDao {
 	Article 		detailCustomer(Article article);
 	List<Article> 	listCustomerMenu(Article article);
 	int 			insertCustomer(Article article);
+	
 }

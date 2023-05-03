@@ -1,0 +1,89 @@
+@charset "UTF-8";
+
+.board-articleList{
+    width: 80%;
+    margin: auto;
+}
+.reply-detail{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+.reply-view{
+    border: 1px solid #0193F8;
+    border-radius: 2.5px;
+}
+.reply-member{
+    border-bottom: 1px solid #0193F8;
+    
+}
+.reply-login > span{
+    display: block;
+    text-align: center;
+}
+.rep-content{
+    border: none;
+    resize: none;
+    width: 90%;
+    height: 90%;
+    background-color: transparent;
+}
+button{
+    width: auto;
+    height: 25px;
+    margin: 0 5px;
+    color: white;
+    background-color: #0193F8;
+    border: none;
+    border-radius: 14px;
+}
+/* 펼치기 버튼 */
+.reply-list button{
+    background-color: transparent;
+    color: #0193F8;
+    font-size: 16px;
+}
+/* 추천 비추천 버튼 */
+.article-vote button{
+    width: 100px;
+    height: 100px;
+    font-size: 20px;
+    text-align: center;
+    background-color: #eeeeee;
+    color: black;
+    margin: 5px;
+}
+
+/* 1번째 부터 2번째 까지 */
+.article-vote button:nth-child(-n+2):hover {
+    background-color: #0193F8;
+    color: white;
+}
+
+/* 3번째 부터 4번째 전까지 */
+.article-vote button:nth-child(n+3):hover {
+    background-color: red;
+    color: white;
+}
+/* DIV 태그 테두리 */
+.article-share{
+    width: auto;
+    height: auto;
+    border: 1px solid #0193F8;
+    border-radius: 10px;
+}
+div{
+    padding: 3px;
+}
+/* 글의 유저 정보 첫번째 요소를 제외한 span태그전에 적용 */
+.article-memberInfo span:not(:first-child)::before{
+    content: ' | ';
+}
+.btns-tag{
+padding: 0px 2px;
+background-color: transparent;
+color: #0193F8;
+}
+.btns-tag::before{
+    content: '#';
+}

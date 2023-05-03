@@ -128,6 +128,26 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return result;
 	}
+	@Override
+	public int dgVoteGoodCancel(Article article) {
+		int result = 0;
+		try {
+			result = session.update("dgVoteGoodCancel", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	@Override
+	public int dgVoteBadCancel(Article article) {
+		int result = 0;
+		try {
+			result = session.update("dgVoteBadCancel", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 	
 	
@@ -686,6 +706,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return result;
 	}
+
 
 
 

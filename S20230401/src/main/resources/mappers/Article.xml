@@ -234,6 +234,18 @@
 		WHERE   ART_ID = #{art_id}
 		AND     BRD_ID = #{brd_id}
 	</update>
+	<update id="dgVoteGoodCancel" parameterType="Article">
+		UPDATE  ARTICLE
+		SET     ART_GOOD = ART_GOOD - 1
+		WHERE   ART_ID = #{art_id}
+		AND     BRD_ID = #{brd_id}
+	</update>
+	<update id="dgVoteBadCancel" parameterType="Article">
+		UPDATE  ARTICLE
+		SET     ART_BAD = ART_BAD - 1
+		WHERE   ART_ID = #{art_id}
+		AND     BRD_ID = #{brd_id}
+	</update>
 	
 	
 	
