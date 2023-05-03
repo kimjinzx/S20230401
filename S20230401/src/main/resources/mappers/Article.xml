@@ -617,9 +617,9 @@
 		        	</otherwise></choose>, 
 		        	  #{mem_id}
 		        	, #{report_content}
-		        	, regdate
+		        	, sysdate
 		        	, 0
-		        	, "-")
+		        	, null)
 	</insert>
 	
 	<insert id="dbUpdateReport" parameterType="Article">

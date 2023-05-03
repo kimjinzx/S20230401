@@ -89,6 +89,15 @@ public class Article {
 	// Region
 	private String 		reg_name;
 	private Integer 	reg_parent;
+	
+	// Report
+	
+	private String 	report_content;
+	private Date 	report_date;
+	private Integer report_status;
+	private String 	report_reason;
+	
+	
 	// 조회용
 	private Integer 	repCount;
 	private Integer 	artCount;

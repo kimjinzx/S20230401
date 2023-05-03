@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -255,7 +256,7 @@ public class TogetherController {
 
 		// int art_id = reply.getArt_id();
 		// int brd_id = reply.getBrd_id();
-		System.out.println("reply.rep_content =>" + reply.getRep_content());
+
 		model.addAttribute("updateReply", updateReply);
 
 		jsonObj.append("result", updateReply);
@@ -265,7 +266,7 @@ public class TogetherController {
 	}
 
 	 @RequestMapping(value="/board/ArticleReportForm")
-	 public String reportArticle(@AuthenticationPrincipal MemberDetails memberDetails
+	 public String reportFormArticle(@AuthenticationPrincipal MemberDetails memberDetails
 			 					, @RequestParam int art_id
 			 					, @RequestParam int brd_id
 			 					, Model model) {
@@ -280,13 +281,24 @@ public class TogetherController {
 	 
 	 Article detailArticle = as.dbdetailArticle(article);
 	 
-	 System.out.println(art_id);
 	 model.addAttribute("article", detailArticle);
 	 
-
 	 return "together/ArticleReportForm";
 
 	 }
-
-	 // as.dbReportArtice(article);
+	 
+	 @RequestMapping(value="/board/ArticleReport")
+	 @ResponseBody
+	 public String reportArticle(@AuthenticationPrincipal MemberDetails memberDetails,
+			 					 @RequestBody Article article, Model model) {
+		 JSONObject jsonObj = new JSONObject();
+		 
+		 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		 
+		 int reportArticle = as.dbReportArticle(article);
+		 
+		 jsonObj.append("result", reportArticle);
+		 jsonObj.append("content", article.getReport_content());
+		 return jsonObj.toString() ;
+	 }
 }

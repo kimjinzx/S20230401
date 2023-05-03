@@ -65,7 +65,7 @@
 	
 	$(() => {
 	  $('.article_report').click(e => {
-	    alert('신고하시겠습니까?');
+
 	    let art_id = $('#art_id').val();
 	    let brd_id = $('#brd_id').val();
 	    
@@ -74,16 +74,8 @@
 	    let popOption = "width=650px,height=550px,top=300px,left=300px,scrollbars=yes";
 	      
 	    window.open(popUrl, "신고하기", popOption);
-			
-/* 			$.ajax({
-					  url : "/board/updateReply",
-					  type : 'post',
-					  data : sendData,
-					  dataType :'json',
-					  contentType : 'application/json',
-					  success : data => {
-			
- */		});
+	    
+		});
 	});
 	
 </script>

@@ -279,7 +279,6 @@ public class ArticleDaoImpl implements ArticleDao {
 	@Override
 	public int dbtotalArticle(Article article) {
 		int totArticleCount = 0;
-		System.out.println("ArticleDaoImple Start total...");
 
 		try {
 			if (article.getBrd_id() == 1000) {
@@ -287,9 +286,8 @@ public class ArticleDaoImpl implements ArticleDao {
 			} else {
 				totArticleCount = session.selectOne("dbArticleBoardCnt", article);
 			}
-			System.out.println("ArticleDaoImpl totalArticle totArticleCount-> " + totArticleCount);
 		} catch (Exception e) {
-			System.out.println("ArticleDaoImpl totalArticle Exception-> " + e.getMessage());
+			System.out.println(e.getMessage());
 		}
 		return totArticleCount;
 	}
@@ -297,7 +295,6 @@ public class ArticleDaoImpl implements ArticleDao {
 	@Override
 	public List<Article> dbListArticle(Article article) {
 		List<Article> articleList = null;
-		System.out.println("ArticleDaoImpl listArticle Start...");
 		try {
 			// article.getBrd_id() 따라서 분기 --> 전체
 			if (article.getBrd_id() == 1000) {
@@ -311,20 +308,18 @@ public class ArticleDaoImpl implements ArticleDao {
 				// 1060 기타
 				articleList = session.selectList("dbArticleListBoard", article);
 			}
-			System.out.println("ArticleDaoImpl listArticle ArticleList.size()-> " + articleList.size());
 		} catch (Exception e) {
-			System.out.println("ArticleDaoImpl listArticle e.getMessage()-> " + e.getMessage());
+			System.out.println( e.getMessage());
 		}
 		return articleList;
 	}
 	@Override
 	public Article dbdetailArticle(Article article) {
 		Article detailArticle = null;
-		System.out.println("ArticleDaoImpl detailArticle Start...");
 		try {
 			detailArticle = session.selectOne("dbArticleDetail", article);
 		} catch (Exception e) {
-			System.out.println("ArticleDaoImpl detailArticle e.getMessage()->" + e.getMessage());
+			System.out.println(e.getMessage());
 		}
 		return detailArticle;
 	}
@@ -334,14 +329,13 @@ public class ArticleDaoImpl implements ArticleDao {
 		try {
 			replyList = session.selectList("dbReplyList", article);
 		} catch (Exception e) {
-			System.out.println("ArticleDaoImpl replyList => " + e.getMessage());
+			System.out.println(e.getMessage());
 		}
 		return replyList;
 	}
 
 	@Override
 	public void dbWriteArticle(Article article) {
-		System.out.println("ArticleDaoImpl wirteArticle start...");
 		try {
 			if (article.getReg_id2() == null) {
 				article.setReg_id(article.getReg_id1());
@@ -350,7 +344,7 @@ public class ArticleDaoImpl implements ArticleDao {
 			}
 			session.selectOne("dbInsertArticle", article);
 		} catch (Exception e) {
-			System.out.println("ArticleDaoImpl insertArticle => " + e.getMessage());
+			System.out.println(e.getMessage());
 		}
 	}
 	@Override
@@ -366,7 +360,6 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 	@Override
 	public void dbUpdateArticle(Article article) {
-		System.out.println("ArticleDaoImpl updateArticle start...");
 		try {
 			if (article.getReg_id2() == null) {
 				article.setReg_id(article.getReg_id1());
@@ -375,7 +368,7 @@ public class ArticleDaoImpl implements ArticleDao {
 			}
 			session.selectOne("dbUpdateArticle", article);
 		} catch (Exception e) {
-			System.out.println("ArticleDaoImpl updateArticle => " + e.getMessage());
+			System.out.println(e.getMessage());
 		}
 	}
 	
@@ -391,22 +384,28 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 	
 	@Override
-	public void dbInsertReport(Article article) {
+	public int dbInsertReport(Article article) {
+		int dbInsertReport = 0;
 		try {
-			session.insert("dbInsertReport", article);
+			dbInsertReport = session.insert("dbInsertReport", article);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return dbInsertReport;
 	}
 	
 	@Override
-	public void dbUpdateReport(Article article) {
+	public int dbUpdateReport(Article article) {
+		int dbUpdateReport = 0;
 		try {
-			session.update("dbUpdateReport", article);
+			dbUpdateReport = session.update("dbUpdateReport", article);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return dbUpdateReport;
 	}
+	
+	
 	
 	
 	

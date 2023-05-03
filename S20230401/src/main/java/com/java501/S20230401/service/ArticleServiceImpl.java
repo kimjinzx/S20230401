@@ -129,9 +129,7 @@ public class ArticleServiceImpl implements ArticleService {
 	// 총 게시글 수 Count
 	@Override
 	public int dbtotalArticle(Article article) {
-		System.out.println("ArticleService Start total...");
 		int totArticleCnt = ad.dbtotalArticle(article);
-		System.out.println("ArticleServiceImpl totalArticle totArticleCnt-> " + totArticleCnt);
 
 		return totArticleCnt;
 	}
@@ -139,9 +137,7 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public List<Article> dbListArticle(Article article) {
 		List<Article> articleList = null;
-		System.out.println("ArticleServiceImpl listManager Start...");
 		articleList = ad.dbListArticle(article);
-		System.out.println("ArticleServiceImpl listArticle ArticleList.size()->" + articleList.size());
 		return articleList;
 	}
 	
@@ -157,9 +153,8 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public List<Region> regionName() {
 		List<Region> regionName = null;
-		System.out.println("ArticleServiceImpl regionName start...");
 		regionName = rd.regionName();
-		System.out.println("ArticleServiceImpl regionName.size()=> " + regionName.size());
+
 		
 		return regionName;
 	}
@@ -176,9 +171,7 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public List<Comm> categoryName() {
 		List<Comm> categoryName = null;
-		System.out.println("ArticleServiceImpl categoryName start...");
 		categoryName = cd.boardName();
-		System.out.println("ArticleServiceImpl commName.size()=> " + categoryName.size());
 		return categoryName;
 	}
 	
@@ -186,9 +179,7 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public List<Comm> genderName() {
 		List<Comm> genderName = null;
-		System.out.println("ArticleServiceImpl categoryName start...");
 		genderName = cd.genderName();
-		System.out.println("ArticleServiceImpl commName.size()=> " + genderName.size());
 		return genderName;
 	}
 	
@@ -203,14 +194,12 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public void dbWriteArticle(Article article) {
 		ad.dbWriteArticle(article);
-		System.out.println("ArticleServiceImpl article.getInsert_result() => " + article.getInsert_result());
 	}
 	
 	// 게시글 삭제
 	@Override
 	public int dbdeleteArticle(Article article) {	
 		int deleteArticle = ad.dbdeleteArticle(article);
-		System.out.println("ArticleServiceImpl deleteArticle.size()=> " + deleteArticle);
 		return deleteArticle;
 	}
 	
@@ -218,7 +207,6 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public void dbUpdateArticle(Article article) {
 		ad.dbUpdateArticle(article);
-		System.out.println("ArticleServiceImpl article.getInsert_result())=> " + article.getInsert_result());
 	}
 	
 	// 조회수 Count
@@ -231,9 +219,12 @@ public class ArticleServiceImpl implements ArticleService {
 	// 신고하기
 	@Override
 	@Transactional
-	public void dbReportArtice(Article article) {
-		ad.dbInsertReport(article);
-		ad.dbUpdateReport(article);
+	public int dbReportArticle(Article article) {
+		int dbInsertReport = ad.dbInsertReport(article);
+		int dbUpdateReport = ad.dbUpdateReport(article);
+		if ((dbInsertReport + dbUpdateReport) == 0)
+			return 0;
+		else return 1;
 	}
 	
 	
