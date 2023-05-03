@@ -53,6 +53,10 @@ public interface ArticleDao {
 	void 			dbUpdateArticle(Article article);
 	int 			dbdeleteArticle(Article article);
 	int 			dbReadArticleCnt(Article article);
+	void			dbInsertReport(Article article);
+	void			dbUpdateReport(Article article);
+	
+	
 	
 	
 	// 김진현

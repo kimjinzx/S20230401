@@ -9,6 +9,7 @@
 
 <script>
 	
+	// 댓글 수정 버튼
 	$(() => {
 		$('.reply_modify').click(e => {								// 수정버튼을 누른다
 			if ($(e.target).closest('.reply_box').find('.rep_content2').css('display') == 'none') { // 댓글 textbox가 none이면?
@@ -50,6 +51,7 @@
 		});
 	});
 	
+	// 댓글 취소 버튼
 	$(() => {
 		$('.reply_cancel').click(e => {
 			$(e.target).closest('.reply_box').find('.rep_content1').toggle();			// 내용은 block으로
@@ -59,13 +61,21 @@
 		});
 	});
 	
+	// 신고 팝업창
 	
-	
-/* 	$(() => {
-		$('.article_report').click(e => {
-			alert('신고하시겠습니까?')
+	$(() => {
+	  $('.article_report').click(e => {
+	    alert('신고하시겠습니까?');
+	    let art_id = $('#art_id').val();
+	    let brd_id = $('#brd_id').val();
+	    
+	      
+	    let popUrl = "/board/ArticleReportForm?art_id=" + art_id + "&brd_id=" + brd_id
+	    let popOption = "width=650px,height=550px,top=300px,left=300px,scrollbars=yes";
+	      
+	    window.open(popUrl, "신고하기", popOption);
 			
-			$.ajax({
+/* 			$.ajax({
 					  url : "/board/updateReply",
 					  type : 'post',
 					  data : sendData,
@@ -73,8 +83,8 @@
 					  contentType : 'application/json',
 					  success : data => {
 			
-		});
-	}); */
+ */		});
+	});
 	
 </script>
 
@@ -115,6 +125,10 @@
 	<input type="button" value="수정하기" 	onclick="${pageContext.request.contextPath }location.href='/board/updateFormArticle?brd_id=${detailArticle.brd_id }&art_id=${detailArticle.art_id }';">
 	<input type="button" value="삭제하기"  onclick="${pageContext.request.contextPath }location.href='/board/deleteArticle?brd_id=${detailArticle.brd_id }&art_id=${detailArticle.art_id }';">
 	
+	
+		<input type="hidden" name="art_id" id="art_id" value="${detailArticle.art_id }">
+		<input type="hidden" name="brd_id" id="brd_id" value="${detailArticle.brd_id }">
+		<input type="hidden" name="mem_id" value="${detailArticle.mem_id }">
 	<table>
 		<tr>
 			<th>거래상태</th>
@@ -211,7 +225,7 @@
 				<input type="button" class ="article_submit"   value="신청하기" 	onclick="location.href='">
 				<input type="button" class ="article_good"     value="추천" 	    onclick="location.href='">
 				<input type="button" class ="article_bad"      value="비추천" 	    onclick="location.href='">
-				<input type="button" class ="article_report"   value="신고하기"    onclick="location.href='">
+				<input type="button" class ="article_report"   value="신고하기">
 			</td>
 		<tr>
 			<th>내용</th>

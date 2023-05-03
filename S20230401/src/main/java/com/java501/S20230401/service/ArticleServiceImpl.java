@@ -3,6 +3,7 @@ package com.java501.S20230401.service;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.java501.S20230401.dao.ArticleDao;
 import com.java501.S20230401.dao.CommDao;
@@ -226,6 +227,19 @@ public class ArticleServiceImpl implements ArticleService {
 		int dbReadArticleCnt = ad.dbReadArticleCnt(article);
 		return dbReadArticleCnt;
 	}
+	
+	// 신고하기
+	@Override
+	@Transactional
+	public void dbReportArtice(Article article) {
+		ad.dbInsertReport(article);
+		ad.dbUpdateReport(article);
+	}
+	
+	
+	
+	
+	
 	
 	
 	// 김진현

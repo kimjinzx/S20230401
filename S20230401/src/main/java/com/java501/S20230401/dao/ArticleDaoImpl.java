@@ -274,6 +274,7 @@ public class ArticleDaoImpl implements ArticleDao {
 	
 	
 	
+	
 	// 임동빈
 	@Override
 	public int dbtotalArticle(Article article) {
@@ -388,6 +389,28 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return dbReadArticleCnt;
 	}
+	
+	@Override
+	public void dbInsertReport(Article article) {
+		try {
+			session.insert("dbInsertReport", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void dbUpdateReport(Article article) {
+		try {
+			session.update("dbUpdateReport", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	
+	
 	
 	
 	
@@ -646,5 +669,6 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return result;
 	}
+
 
 }

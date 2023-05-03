@@ -604,6 +604,36 @@
         WHERE       BRD_ID = #{brd_id}
         AND         ART_ID = #{art_id}
 	</update>
+	
+	<insert id="dbInsertReport" parameterType="Article">
+		INSERT
+		INTO        report(report_id, mem_id, report_content, report_date, report_status, report_reason)
+		VALUES     (<choose>
+		        	<when test="report_id != null">
+		        		#{report_id}, 
+		        	</when>
+		        	<otherwise>
+		        		report_id_seq.nextval
+		        	</otherwise></choose>, 
+		        	  #{mem_id}
+		        	, #{report_content}
+		        	, regdate
+		        	, 0
+		        	, "-")
+	</insert>
+	
+	<insert id="dbUpdateReport" parameterType="Article">
+		UPDATE      ARTICLE
+        SET         REPORT_ID = REPORT_ID_SEQ.CURRVAL
+        WHERE       brd_id = #{brd_id}
+        AND         ART_ID = #{art_id}
+	</insert>
+	
+	
+	
+	
+	
+	
 
 
 	
