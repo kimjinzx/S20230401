@@ -223,8 +223,14 @@
 	</update>
 	<!-- 글 추천, 비추천 -->
 	<update id="dgVoteGood" parameterType="Article">
+<!--보류 		<selectKey keyProperty="art_good" resultType="int" order="BEFORE">
+		SELECT	ART_GOOD + 1
+		FROM 	ARTICLE
+		WHERE   ART_ID = #{art_id}
+		AND     BRD_ID = #{brd_id}
+		</selectKey> -->
 		UPDATE  ARTICLE
-		SET     ART_GOOD = ART_GOOD + 1
+		SET     ART_GOOD = #{art_good}
 		WHERE   ART_ID = #{art_id}
 		AND     BRD_ID = #{brd_id}
 	</update>

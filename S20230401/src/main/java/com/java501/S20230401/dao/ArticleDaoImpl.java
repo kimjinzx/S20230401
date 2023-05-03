@@ -112,6 +112,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		int result = 0;
 		try {
 			result = session.update("dgVoteGood", article);
+			System.out.println("selectKey의 결과 값"+result);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

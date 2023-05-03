@@ -143,48 +143,43 @@ function art_Update(){
 
 //     });
 // });
-// 게시글 기능 - 추천, 비추천 -----------------------------------------------------------ajax사용 추천 취소기능 추가 요망
+// 게시글 기능 - 추천, 비추천 ----------------------------------------------------------ajax사용 추천 취소기능 추가 요망
 $(document).ready(() => {
+    let btns;
+    let action;
+    let message;
     // 추천
-    $('#btns-good, #btns-goodcancel, #btns-bad, #btns-badcancel').click(e => {
-        let url;
+    $('#btns-good, #btns-goodcancel, #btns-bad, #btns-badcancel').click(e => { 
         if(e.target.getAttribute('id')==='btns-good'){
-            if(confirm('추천 하시겠습니까?')){
-                $(e.target).closest('.article-vote')
-                .find('#btns-good').toggle().end()
-                .find('#btns-goodcancel').toggle().end();
-                url=contextPath+'/board/share/vote/good?art_id='+artId+'&brd_id='+brdId+'&category='+category;
-            }
+            message = '추천 하시겠습니까?';
+            btns = 'good';
+            action = '.btns-good';
         }else if(e.target.getAttribute('id')==='btns-goodcancel'){
-            if(confirm('취소 하시겠습니까?')){
-                $(e.target).closest('.article-vote')
-                .find('#btns-good').toggle().end()
-                .find('#btns-goodcancel').toggle().end();
-                url=contextPath+'/board/share/vote/good?art_id='+artId+'&brd_id='+brdId+'&category='+category;
-            }
-        }
-        // 비추천
-        else if(e.target.getAttribute('id')==='btns-bad'){
-            if(confirm('비추천 하시겠습니까?')){
-                $(e.target).closest('.article-vote')
-                url=contextPath+'/board/share/vote/bad?art_id='+artId+'&brd_id='+brdId+'&category='+category;
-            }
-        // 비추천 취소
+            message = '취소 하시겠습니까?';
+            btns = 'goodcancel';
+            action = '.btns-good';
+        }else if(e.target.getAttribute('id')==='btns-bad'){
+            message = '비추천 하시겠습니까?';
+            btns = 'bad';
+            action = '.btns-bad';
         }else if(e.target.getAttribute('id')==='btns-badcancel'){
-            if(confirm('취소 하시겠습니까?')){
-                $(e.target).closest('.article-vote')
-                url=contextPath+'/board/share/vote/badcancel?art_id='+artId+'&brd_id='+brdId+'&category='+category;
-            }
+            message = '취소 하시겠습니까?';
+            btns = 'badcancel';
+            action = '.btns-bad';
         }
-        $.ajax({
-            url:url,
-            success:function(data){
-                console.log(data)
-                $(e.target).closest('.article-vote')
-                .find('#btns-bad').toggle().end()
-                .find('#btns-badcancel').toggle().end();
-            }
-        })
+        console.info(btns);
+        console.info(action);
+        console.info(message);
+        if(confirm(message)){
+            $.ajax({
+                url:contextPath+'/board/share/vote/'+btns+'?art_id='+artId+'&brd_id='+brdId+'&category='+category,
+                success:function(data){
+                    console.log(data)
+                    $(e.target).closest('.article-vote')
+                    .find(action).toggle().end();
+                }
+            })
+        }
     });
 });
 

@@ -164,10 +164,10 @@
 
 					<!-- 추천 비추천 -->
 					<div class="article-vote" style="display: flex; justify-content: center;">
-						<button id="btns-good">추천 ${article.art_good}</button>
-						<button id="btns-goodcancel" style="display: none;">추천 토글${article.art_good}</button>
-						<button id="btns-bad">비추천 ${article.art_bad}</button>
-						<button id="btns-badcancel" style="display: none;">비추천 토글${article.art_bad}</button>
+						<button class="btns-good" id="btns-good">추천 ${article.art_good}</button>
+						<button class="btns-good" id="btns-goodcancel" style="display: none; background-color: #0193F8;">추천 취소${article.art_good}</button>
+						<button class="btns-bad" id="btns-bad">비추천 ${article.art_bad}</button>
+						<button class="btns-bad" id="btns-badcancel" style="display: none; background-color: red;">비추천 취소${article.art_bad}</button>
 					</div>
 				</div>
 				

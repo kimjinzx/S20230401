@@ -245,13 +245,15 @@ public class ShareController {
 				// 추천, 비추천
 				if(vote.equals("good")) {
 					result = articleService.dgVoteGood(article);
+					System.err.println("추천");
 				// 비추천
 				}else if(vote.equals("bad")) {
 					result = articleService.dgVoteBad(article);
+					System.err.println("비추천");
 				}
 			}
 		// 쿠키 삭제 (추천, 비추천 취소)
-		}else if(!toRemove.equals("") || toRemove != null){
+		}else if(!toRemove.equals("") && toRemove != null){
 			Cookie oldCookie = null;
 			Cookie[] cookies = request.getCookies();
 			if(cookies != null) {
@@ -261,8 +263,14 @@ public class ShareController {
 						oldCookie.setValue(oldCookie.getValue().replace(toRemove, ""));
 						oldCookie.setPath("/");
 						response.addCookie(oldCookie);
-						if(vote.equals("good")) result = articleService.dgVoteGoodCancel(article);
-						if(vote.equals("bad")) result = articleService.dgVoteBadCancel(article);
+						if(vote.equals("good")) {
+							result = articleService.dgVoteGoodCancel(article);
+							System.err.println("추천 취소");
+						}
+						if(vote.equals("bad")) {
+							result = articleService.dgVoteBadCancel(article);
+							System.err.println("비추천 취소");
+						}
 						break;
 					}
 				}
