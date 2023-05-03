@@ -298,7 +298,7 @@
 						<c:when test="${memberInfo.mem_id != null}">
 							<input class="reply_bad"   style="float: right;" type="button" value="비추천">
 							<input class="reply_good"  style="float: right;" type="button" value="추천">
-							<input class="reply_report"  style="float: right;" type="button" value="신고">
+							<input class="reply_report"  style="float: right;" type="button" value="신고" onclick="warning(${rep_id})">
 						</c:when>
 						<c:otherwise>
 						</c:otherwise>
