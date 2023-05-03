@@ -175,10 +175,10 @@
 					<td>${memberInfo.mem_nickname }<td>
 					<input type="hidden" name="mem_id" value="${memberInfo.mem_id}">
 					
-					<tr><th>분류:</th><td>
+					<tr><th>분류:</th><
 					<select name="brd_id">
 						<option value="1510" selected>공지</option>
-						<option value="1520">Q&amp;A</option>
+						<option value="1520">Q&A</option>
 						<option value="1530">이벤트</option>
 						<option value="1540">문의/건의</option>
 					</select>

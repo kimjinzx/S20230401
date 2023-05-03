@@ -2,6 +2,7 @@
 <%@ include file="../preset.jsp" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -165,32 +166,50 @@
 	<aside id="leftside">
 		
 	</aside>
+	
 	<main>
 		<!-- 내용작성 -->
-		<p>
 		<div class="container" align="center">
-	
-		<div class="board-category" align="center" style="font-size: 20px">
-		<span class="item">
-			<a href="/board/customer?category=1500" class="active">&nbsp;전체&nbsp;</a>
-		</span>
-		<span class="item">
-			<a href="/board/customer?category=1510" class="active">&nbsp;공지&nbsp;</a>
-		</span>
-		<span class="item">
-			<a href="/board/customer?category=1520" class="active">&nbsp;Q&A&nbsp;</a>
-		</span>
-		<span class="item">
-			<a href="/board/customer?category=1530" class="active">&nbsp;이벤트&nbsp;</a>
-		</span>
-		<span class="item">
-			<a href="/board/customer?category=1540" class="active">&nbsp;문의/건의&nbsp;</a>
-		</span>
-		</div>
-		
+		<h2>글 수정</h2>
+		<form action="updateCustomer" method="post" name="update">
+				<input type="hidden" name="mem_id" value="${memberInfo.mem_id}">
+				<input type="hidden" name="art_id" value="${article.art_id}">
+			<table>
+				<tr><th>작성자</th><td><img src="${pageContext.request.contextPath}/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">${article.mem_nickname}</td></tr>
+				<tr><th>분류</th><td>
+				<select name="brd_id" id="brd_id">
+		      		<option value="1510" ${article.brd_id == 1510 ? 'selected' : ''}>공지</option>
+			      	<option value="1520" ${article.brd_id == 1520 ? 'selected' : ''}>Q&amp;A</option>
+			      	<option value="1530" ${article.brd_id == 1530 ? 'selected' : ''}>이벤트</option>
+			      	<option value="1540" ${article.brd_id == 1540 ? 'selected' : ''}>문의/건의</option>
+		    	</select></td></tr>
+				<tr><th>작성일</th><td><fmt:formatDate value="${article.art_regdate }" pattern="yy-MM-dd"/></td></tr>
+				<tr><th>조회수</th><td>${article.art_read}</td></tr>
+				<tr><th>제목</th><td>
+				<input type="text" name="art_title" required="required" value="${article.art_title }"></td></tr>
+				<tr><th>내용</th><td>
+				<textarea rows="20" cols="50" name="art_content" required="required">${article.art_content }</textarea>
+				<tr><th>추천수</th><td>${article.art_good}</td></tr>
+				<tr><th>비추천수</th><td>${article.art_bad}</td></tr>
+				<tr><th>태그1</th><td>
+				<input type="text" name="art_tag1" value="${article.art_tag1}"><br>
+				<tr><th>태그2</th><td>
+				<input type="text" name="art_tag2" value="${article.art_tag2}"><br>
+				<tr><th>태그3</th><td>
+				<input type="text" name="art_tag3" value="${article.art_tag3}"><br>
+				<tr><th>태그4</th><td>
+				<input type="text" name="art_tag4" value="${article.art_tag4}"><br>
+				<tr><th>태그5</th><td>
+				<input type="text" name="art_tag5" value="${article.art_tag5}"><br>
+				<tr><td colspan="2">
+					<input type="submit" value="확인">
+					<input type="button" value="취소" onclick="location.href='${pageContext.request.contextPath}/board/customer?category=${category}'"></td>
+			</table>
+			<%-- 분류 변경
+			<input type="number" name="brd_id" value="${article.brd_id}"> --%>
+		</form>
 		</div>
 		<!-- 여기까지 -->
-
 		<button id="scrollToTop" class="adv-hover">
 			<svg style="fill: var(--subtheme); stroke: var(--subtheme); stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round;" width="20" height="10" viewBox="0 0 32 16">
 				<path d="M 15 1 L 1 15 31 15 Z"/>

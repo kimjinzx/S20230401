@@ -764,8 +764,27 @@
 	</select>
 	
 	<insert id="shInsertCustomer" parameterType="Article">
-		INSERT into article (art_id, brd_id, art_title, mem_id, art_content, art_regdate, art_tag1, art_tag2, art_tag3, art_tag4, art_tag5) 
-		VALUES ((Select max(art_id) + 1 from article where brd_id = #{brd_id}), #{brd_id}, #{art_title}, #{mem_id}, #{art_content}, SYSDATE, #{art_tag1}, #{art_tag2}, #{art_tag3}, #{art_tag4}, #{art_tag5})
+    INSERT INTO article (art_id, brd_id, art_title, mem_id, art_content, art_regdate, art_tag1, art_tag2, art_tag3, art_tag4, art_tag5, art_good, art_bad, art_read, art_isnotice, isdelete) 
+    VALUES ((Select max(art_id) + 1 from article where brd_id = #{brd_id}), #{brd_id}, #{art_title}, #{mem_id}, #{art_content}, SYSDATE, #{art_tag1}, #{art_tag2}, #{art_tag3}, #{art_tag4}, #{art_tag5}, 0, 0, 0, 0, 0)
 	</insert>
+	
+	<update id="shCustomerUpdate" parameterType="Article">
+		UPDATE article
+		SET 
+			art_title = #{art_title}, 
+			art_content = #{art_content}, 
+			art_tag1 = #{art_tag1, jdbcType = VARCHAR}, 
+			art_tag2 = #{art_tag2, jdbcType = VARCHAR}, 
+			art_tag3 = #{art_tag3, jdbcType = VARCHAR}, 
+			art_tag4 = #{art_tag4, jdbcType = VARCHAR}, 
+			art_tag5 = #{art_tag5, jdbcType = VARCHAR}
+		WHERE brd_id = #{brd_id} AND art_id = #{art_id}
+	</update>
+	
+	<update id="shDeleteCustomer" parameterType="Article">
+		UPDATE article
+		SET isdelete = 1
+		WHERE art_id = #{art_id} AND brd_id = #{brd_id}
+	</update>
 	
 </mapper>

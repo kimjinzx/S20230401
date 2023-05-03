@@ -350,4 +350,18 @@ public class ArticleServiceImpl implements ArticleService {
 		result = ad.insertCustomer(article);
 		return result;
 	}
+	@Override
+	public int updateCustomer(Article article) {
+		int updateCustomer = 0;
+		System.out.println("ArticleServiceImpl updateCustomer Start");
+		updateCustomer = ad.updateCustomer(article);
+		return updateCustomer;
+	}
+	@Override
+	public int deleteCustomer(Article article) {
+		int dresult = 0;
+		System.out.println("ArticleServiceImpl deleteCustomer Start");
+		dresult = ad.deleteCustomer(article);
+		return dresult;
+	}
 }

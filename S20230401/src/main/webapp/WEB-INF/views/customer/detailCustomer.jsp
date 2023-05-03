@@ -167,22 +167,29 @@
 	</aside>
 	<main>
 		<!-- detailCustomer코드 -->
-	<div class="container" align="center">
-	<h2>공지사항</h2>
-	<table border="1" style="width: 500px;">
-		<tr><th>작성자</th><td>${article.mem_nickname}</td></tr>
-		<tr><th>이미지</th><td><img src="${pageContext.request.contextPath}/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;"></td></tr>
-		<tr><th>작성일</th><td><fmt:formatDate value="${article.art_regdate }" pattern="yy-MM-dd"/></td></tr>
-		<tr><th>조회수</th><td>${article.art_read}</td></tr>
-		<tr><th>제목</th><td >${article.art_title }</td></tr>
-		<tr><th height="300">내용</th><td valign="top">${article.art_content }</td></tr>
-		<tr><td colspan="2">
-			<input type="button" value="수정" onclick="location.href=''">
-			<input type="button" value="삭제" onclick="location.href=''">
-			<input type="button" value="목록" onclick="location.href='${pageContext.request.contextPath}/board/customer?category=${category}'"></td>
-		<tr><th>추천수</th><td>${article.art_good}</td></tr>
-		<tr><th>비추천수</th><td>${article.art_bad}</td></tr>
-	</table>
+		<div class="container" align="center">
+		<h2>작성글</h2>
+		<table border="1" style="width: 500px;">
+			<tr><th>작성자</th><td><img src="${pageContext.request.contextPath}/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">${article.mem_nickname}</td></tr>
+			<tr><th>작성일</th><td><fmt:formatDate value="${article.art_regdate }" pattern="yy-MM-dd"/></td></tr>
+			<tr><th>조회수</th><td>${article.art_read}</td></tr>
+			<tr><th>제목</th><td >${article.art_title }</td></tr>
+			<tr><th height="300">내용</th><td valign="top">${article.art_content }</td></tr>
+			<tr><th>추천수</th><td>${article.art_good}</td></tr>
+			<tr><th>비추천수</th><td>${article.art_bad}</td></tr>
+			<tr><th>태그</th><td>
+			${article.art_tag1 != '' ? article.art_tag1 : ''}
+  			${article.art_tag2 != '' ? article.art_tag2 : ''}
+  			${article.art_tag3 != '' ? article.art_tag3 : ''}
+  			${article.art_tag4 != '' ? article.art_tag4 : ''}
+  			${article.art_tag5 != '' ? article.art_tag5 : ''}
+  			</td></tr>
+			<tr><td colspan="2">
+				<input type="button" value="수정" onclick="location.href='${pageContext.request.contextPath}/board/customer/updateFormC?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category}'">
+				<input type="button" value="삭제" onclick="location.href='${pageContext.request.contextPath}/board/customer/deleteCustomer?art_id=${article.art_id }&brd_id=${article.brd_id }&category=${category}'">
+				<input type="button" value="목록" onclick="location.href='${pageContext.request.contextPath}/board/customer?category=${category}'"></td>
+			
+		</table>
 	
 		<p>${replyCount}개의 댓글 <button>댓글 작성</button></p>
 		

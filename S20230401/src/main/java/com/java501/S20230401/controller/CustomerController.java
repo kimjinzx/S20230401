@@ -113,13 +113,26 @@ public class CustomerController {
 		return "/customer/detailCustomer";
 	}
 	
+	@PostMapping(value = "board/customer/customerWriteReply")
+	public String customerWriteReply(@AuthenticationPrincipal MemberDetails mD,
+									 Article article, Integer category, Model model) {
+		if (mD != null) {
+			model.addAttribute("memberInfo", mD.getMemberInfo());
+		}		
+		System.out.println("CustomerController customerWriteReply start");
+		model.addAttribute("category", category);
+		
+		return "board/customer/customerWriteReply";
+	}
+	
+	
 	@RequestMapping(value = "/board/customer/customerWriteForm")
 	public String customerWriteForm(@AuthenticationPrincipal MemberDetails mD,
 									Article article, Integer category, Model model) {
 		if (mD != null) {
 			model.addAttribute("memberInfo", mD.getMemberInfo());
 		}
-		
+		System.out.println("CustomerController customerWriteForm start");
 		model.addAttribute("category", category);
 		return "/customer/customerWriteForm";
 	}
@@ -131,6 +144,9 @@ public class CustomerController {
 			model.addAttribute("memberInfo", mD.getMemberInfo());
 		}
 		
+		System.out.println("CustomerController writeCustomer start");
+		
+		model.addAttribute("category", category);
 		int insertResult = as.insertCustomer(article);
 		if(insertResult > 0) return "redirect:/board/customer?category="+article.getBrd_id();
 		else {
@@ -141,14 +157,15 @@ public class CustomerController {
 	
 	@GetMapping(value = "/board/customer/updateFormC")
 	public String updateFormC(@AuthenticationPrincipal MemberDetails mD,
-							  Article article, Model model) {
+							  Article article, Integer category, Model model) {
 		if (mD != null) {
 			model.addAttribute("memberInfo", mD.getMemberInfo());
 		}
-		System.out.println("updateFormC start");
+		System.out.println("CustomerController updateFormC start");
 		
 		Article customFormUpdate = as.detailCustomer(article);
 		
+		model.addAttribute("category", category);
 		model.addAttribute("article", customFormUpdate);
 		
 		return "customer/updateFormC";
@@ -157,13 +174,35 @@ public class CustomerController {
 	
 	@PostMapping(value = "/board/customer/updateCustomer")
 	public String updateCustomer(@AuthenticationPrincipal MemberDetails mD,
-								Article article, Model model) {
+								Article article, Integer category, Model model) {
+		if (mD != null) {
+			model.addAttribute("memberInfo", mD.getMemberInfo());
+		}
+		System.out.println("CustomerController updateCustomer start");
+		
+		int update = as.updateCustomer(article);
+		
+		model.addAttribute("category", category);
+		model.addAttribute("upCnt", update);
+		
+		
+		return "redirect:/board/customer?category="+article.getBrd_id();
+	}
+	
+	@RequestMapping(value = "/board/customer/deleteCustomer")
+	public String deleteCustomer(@AuthenticationPrincipal MemberDetails mD,
+								 Article article, Integer category, Model model) {
 		if (mD != null) {
 			model.addAttribute("memberInfo", mD.getMemberInfo());
 		}
 		
-		int updateCnt = as.updateCustomer(article);
+		System.out.println("CustomerController deleteCustomer start");
+		int dresult = as.deleteCustomer(article);
+		model.addAttribute("category", category);
 		
 		return "redirect:/board/customer?category="+article.getBrd_id();
 	}
+	
+	
+	
 }

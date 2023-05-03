@@ -76,5 +76,7 @@ public interface ArticleService {
 	Article 			detailCustomer(Article article);
 	List<Article> 		listCustomerMenu(Article article);
 	int		 			insertCustomer(Article article);
+	int 				updateCustomer(Article article);
+	int 				deleteCustomer(Article article);
 	
 }

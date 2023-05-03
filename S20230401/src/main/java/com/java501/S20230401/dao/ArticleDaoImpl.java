@@ -637,4 +637,28 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return result;
 	}
+	@Override
+	public int updateCustomer(Article article) {
+		int updateCount = 0;
+		System.out.println("ArticleDaoImpl updateCustomer start");
+		try {
+			updateCount = session.update("shCustomerUpdate", article);
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl updateCustomer Exception->"+e.getMessage());
+		}
+		
+		System.out.println("아티클다오임플 업데이트"+ article);
+		return updateCount;
+	}
+	@Override
+	public int deleteCustomer(Article article) {
+		int dresult = 0;
+		System.out.println("ArticleDaoImpl deleteCustomer start");
+		try {
+			dresult = session.delete("shDeleteCustomer", article);
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl delete Exception->"+e.getMessage());
+		}
+		return dresult;
+	}
 }
