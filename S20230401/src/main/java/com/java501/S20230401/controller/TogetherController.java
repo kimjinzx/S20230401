@@ -300,27 +300,4 @@ public class TogetherController {
 		 return jsonObj.toString() ;
 	 }
 	 
-//	 @RequestMapping(value="/board/ArticleReportForm")
-//	 public String reportFormReply(@AuthenticationPrincipal MemberDetails memberDetails
-//			 						, @RequestParam int art_id
-//			 						, @RequestParam int brd_id
-//			 						, @RequestParam int rep_id
-//			 						, Model model) {
-//	 
-//	 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
-//
-//	 Reply reply = new Reply();
-//	 reply.setArt_id(art_id);
-//	 reply.setBrd_id(brd_id);
-//	 reply.setRep_id(rep_id);
-//	 // article.setMem_id(memberDetails.getMemberInfo().getMem_id());
-//	 
-//	 Article detailArticle = as.dbdetailArticle(article);
-//	 List<Articel> 
-//	 
-//	 model.addAttribute("article", detailArticle);
-//	 
-//	 return "together/ArticleReportForm";
-//
-//	 }
 }
