@@ -12,7 +12,7 @@
       div {
         margin: 10px;
         padding: 10px;
-        border: 10px solid #dddddd;
+        border: 10px solid #D9E5FF;
         width: 500px;
       }
       .box1 {
@@ -23,22 +23,23 @@
       }
 </style>
 <script type="text/javascript">
-	if(document.getElementsByName("agree").checked!=true){
+/* 	if(document.getElementsByName("agree").checked!=true){
 		alert("해당 내용에 동의하셔야 신청 및 참여가능합니다.");
 		f.agree.focus();
 		return false;
-	}
+	} */
 	
 	/* if(!$('input[name="agree"]').attr('checked')){
 		alert("해당 내용에 동의하셔야 신청 및 참여가능합니다.");
 		$('input[name="agree"]').focus();
 		return false;
-	} */
+	} */	
+
+	
 </script>    
 </head>
 <body>
 <form method="post"></form>
-	<input type="hidden" name="trd_id" value="${detail.trd_id }">
 	
 	<div class="box1">
     	<h3>주의사항</h3>
@@ -65,14 +66,19 @@
     </div>
 	
 	<div>
+<form name="frm" method="post">
 		<span>위 내용에 모두 동의하십니까?</span>
-		<input type="checkbox" id="agree" name="agree" value="y">
-		<span><label for="agree">동의</label></span>	
-	</div>
+		<input type="checkbox" id="agree" name="agree" required="required">
+		
 	
-<form method="post">
+
+	<input type="hidden" name="trd_id" value="${article.trd_id }">
+	<input type="hidden" name="brd_id" value="${article.brd_id }">
+	<input type="hidden" name="art_id" value="${article.art_id }">
+	
 	<input type="submit" value="취소" 	onclick="javascript:self.close();">
 	<input type="submit" value="신청하기" formaction="${pageContext.request.contextPath }/dutchpay/ApplyInsert">
 </form>
+	</div>
 </body>
 </html>

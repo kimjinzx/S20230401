@@ -89,6 +89,11 @@ public interface ArticleDao {
 	public int 				DeatilRead2(Article article);
 	public int 				totalArticle2();
 	void                    applyInsert2(Article article);
+	public int              applyCancel2(int trd_id);
+	public List<Article>    joinList2(Article article);
+	public List<Article>    waitList2(Article article);
+	public Article 			joinDeny2(Article article);
+	public Article          joinAccept2(Article article);
 
 	
 }

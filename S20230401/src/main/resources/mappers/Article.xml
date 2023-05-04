@@ -771,6 +771,10 @@
 	
 	
 	
+	
+	
+	
+	
 	<!-- 김진현 -->
 		<select id="JHDutchpayList" parameterType="Article" resultType="Article"><!-- 진현 -->
 		SELECT a.art_id, a.brd_id,
@@ -894,7 +898,7 @@
 	</select>
 	
 	<select id="JHDutchpayDetail" parameterType="Article" resultType="Article">
-		SELECT a.art_id, a.brd_id, t.trd_id,
+		SELECT a.art_id, a.brd_id, t.trd_id, mem_id	,
 			   m.mem_image, m.mem_username, m.mem_nickname,
        		   c.comm_value, a.art_title, a.art_regdate, 
        		   a.art_tag1, a.art_tag2, a.art_tag3, a.art_tag4, a.art_tag5,
@@ -935,6 +939,7 @@
 				#{art_tag5, 		mode=IN,  jdbcType=VARCHAR},
 				#{art_content, 		mode=IN,  jdbcType=CLOB},
 				#{isdelete, 		mode=IN,  jdbcType=NUMERIC},
+				#{mem_id, 			mode=IN,  jdbcType=NUMERIC},
 				#{trd_status, 		mode=IN,  jdbcType=NUMERIC},
 				#{trd_enddate, 		mode=IN,  jdbcType=DATE},
 				#{trd_max, 			mode=IN,  jdbcType=NUMERIC},
@@ -1016,10 +1021,47 @@
 		WHERE rn between #{start} and #{end}
 	</select>
 	
-	<select id="JHApplyInsert" parameterType="Article" statementType="CALLABLE">
+	<select id="JHJoinApply" parameterType="Article" statementType="CALLABLE">
 		{
 			CALL APPLY_INSERT(
-				#{trd_id, 		mode=IN,  jdbcType=INTEGER}
+				#{art_id, 		mode=IN,  jdbcType=INTEGER},
+				#{brd_id, 		mode=IN,  jdbcType=INTEGER},
+				#{mem_id, 		mode=IN,  jdbcType=INTEGER}
+			)
+		}
+	</select>
+	
+	<delete id="JHJoinCancel" parameterType="int" >
+		DELETE FROM waiting WHERE trd_id = #{trd_id} and mem_id = 3
+	</delete>
+	
+	<select id="JHJoinList" parameterType="Article" resultType="Article" >
+		SELECT m.mem_image, m.mem_username, m.mem_nickname
+		FROM member m
+		LEFT JOIN join j
+		ON j.mem_id = m.mem_id
+		WHERE j.trd_id = #{trd_id}
+		ORDER BY join_date asc
+	</select>
+	
+	<select id="JHWaitList" parameterType="Article" resultType="Article" >
+		SELECT m.mem_image, m.mem_username, m.mem_nickname, w.wait_date, m.mem_id
+		FROM member m
+		LEFT join waiting w
+		ON w.mem_id = m.mem_id
+		WHERE w.trd_id = #{trd_id}
+		ORDER BY wait_date asc
+	</select>
+	
+	<delete id="JHJoinDeny" parameterType="Article" >
+		DELETE FROM waiting WHERE trd_id = #{trd_id} and mem_id = #{mem_id}
+	</delete>
+	
+	<select id="JHJoinAccept" parameterType="Article" statementType="CALLABLE">
+		{
+			CALL WAITINGTOJOIN(
+				#{trd_id, 		mode=IN,  jdbcType=INTEGER},
+				#{mem_id, 		mode=IN,  jdbcType=INTEGER}
 			)
 		}
 	</select>

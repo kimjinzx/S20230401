@@ -380,6 +380,37 @@ public class ArticleServiceImpl implements ArticleService {
 		ad.applyInsert2(article);
 	}
 
+	@Override
+	public int applyCancel1(int trd_id) {
+		int cancel = 0;
+		cancel = ad.applyCancel2(trd_id);
+		return cancel;
+	}
+	@Override
+	public List<Article> joinList1(Article article) {
+		List<Article> joinList = null;
+		joinList = ad.joinList2(article);
+		return joinList;
+	}
+	@Override
+	public List<Article> waitList1(Article article) {
+		List<Article> waitList = null;
+		waitList = ad.waitList2(article);
+		return waitList;
+	}
+	@Override
+	public Article joinDeny1(Article article) {
+		Article joinDeny1 = null;
+		joinDeny1 = ad.joinDeny2(article);
+		return joinDeny1;
+	}
+	@Override
+	public Article joinAccept1(Article article) {
+		Article joinAccept1 = null;
+		joinAccept1 = ad.joinAccept2(article);
+		return joinAccept1;
+	}
+
 	
 	
 	

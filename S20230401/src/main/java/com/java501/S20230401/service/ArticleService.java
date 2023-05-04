@@ -82,6 +82,11 @@ public interface ArticleService {
 	public int 				DeatilRead1(Article article);
 	public int 				totalArticle1();
 	void 			        applyInsert1(Article article);
+	public int              applyCancel1(int trd_id);
+	public List<Article>    joinList1(Article article);
+	public List<Article>    waitList1(Article article);
+	public Article 			joinDeny1(Article article);
+	public Article          joinAccept1(Article article);
 
 	
 	

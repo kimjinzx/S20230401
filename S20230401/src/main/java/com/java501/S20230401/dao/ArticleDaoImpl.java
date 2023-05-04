@@ -677,11 +677,64 @@ public class ArticleDaoImpl implements ArticleDao {
 		@Override
 		public void applyInsert2(Article article) {
 			try {
-				System.out.println("WaitingDaoImpl article trd_id-> "+article.getTrd_id());
-				session.selectOne("JHApplyInsert",article);
+				session.selectOne("JHJoinApply",article);
 			} catch (Exception e) {
-				System.out.println("WaitingDaoImpl applyInsert2 Exception -> "+e.getMessage());
+				System.out.println("ArticleDaoImpl applyInsert2 Exception -> "+e.getMessage());
 			}
+		}
+		
+		@Override
+		public int applyCancel2(int trd_id) {
+			int cancel = 0;
+			try {
+				cancel = session.delete("JHJoinCancel",trd_id);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl applyCancel2 Exception -> "+e.getMessage());
+
+			}
+			return cancel;
+		}
+		@Override
+		public List<Article> joinList2(Article article) {
+			List<Article> joinList2 = null;
+			try {
+				joinList2 = session.selectList("JHJoinList",article);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl joinList2 Exception -> "+e.getMessage());
+			}
+			return joinList2;
+		}
+		@Override
+		public List<Article> waitList2(Article article) {
+			List<Article> waitList2 = null;
+			try {
+				waitList2 = session.selectList("JHWaitList",article);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl waitList2 Exception -> "+e.getMessage());
+			}
+			return waitList2;
+		}
+		
+		@Override
+		public Article joinDeny2(Article article) {
+			Article joinDeny2 = null;
+			try {
+				joinDeny2 = session.selectOne("JHJoinDeny",article);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl joinDeny2 Exception -> "+e.getMessage());
+			}
+			return joinDeny2;
+		}
+		
+		@Override
+		public Article joinAccept2(Article article) {
+			Article joinAccept2 = null;
+			try {
+				joinAccept2 = session.selectOne("JHJoinAccept",article);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl joinAccept2 Exception -> "+e.getMessage());
+			}
+			return joinAccept2;
 		}
 
 }

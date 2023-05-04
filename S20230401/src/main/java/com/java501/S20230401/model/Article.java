@@ -110,4 +110,6 @@ public class Article {
 	//김진현 
 	private Integer		reply_count; // (조회수 오라클 함수)
 	private Date 		wait_date;
+	private Date		join_date;
+
 }
