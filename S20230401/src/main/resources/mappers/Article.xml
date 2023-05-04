@@ -638,15 +638,15 @@
 	</insert>
 	
 	<select id="dbTradeJoinMember" parameterType="Article" resultType="Article">
-		select j.*, m.*
-		from join j left join member m  on (j.mem_id = m.mem_id)
-		where trd_id = #{trd_id}
+		select 	j.*, m.*
+		from 	join j left join member m  on (j.mem_id = m.mem_id)
+		where 	trd_id = #{trd_id}
 	</select>
 	
 	<select id="dbTradeWaitingMember" parameterType="Article" resultType="Article">
-		select w.*, m.*
-		from Waiting w left join member m  on (w.mem_id = m.mem_id)
-		where trd_id = #{trd_id}
+		select 	w.*, m.*
+		from 	Waiting w left join member m  on (w.mem_id = m.mem_id)
+		where 	trd_id = #{trd_id}
 	</select>
 	
 	

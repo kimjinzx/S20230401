@@ -288,9 +288,7 @@ public class TogetherController {
 	 article.setBrd_id(brd_id);
 	 // article.setMem_id(memberDetails.getMemberInfo().getMem_id());
 	 
-	 Article detailArticle = as.dbdetailArticle(article);
-	 
-	 model.addAttribute("article", detailArticle);
+	 model.addAttribute("article", article);
 	 
 	 return "together/ArticleReportForm";
 

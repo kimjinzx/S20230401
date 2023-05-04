@@ -261,10 +261,14 @@
 		</tr>
 	</table>
 	<br>
-			<input type="button" class ="article_favoriet" value="관심목록"    onclick="location.href='">
-			<input type="button" class ="article_good"     value="추천" 	    onclick="location.href='">
-			<input type="button" class ="article_bad"      value="비추천" 	    onclick="location.href='">
-			<input type="button" class ="article_report"   value="신고하기">
+			<c:choose>
+			<c:when test="${memberInfo.mem_id != null}">
+				<input type="button" class ="article_favoriet" value="관심목록"    onclick="location.href='">
+				<input type="button" class ="article_good"     value="추천" 	    onclick="location.href='">
+				<input type="button" class ="article_bad"      value="비추천" 	    onclick="location.href='">
+				<input type="button" class ="article_report"   value="신고하기">
+			</c:when>
+			</c:choose>	
 	<br>
 	<br>
 
@@ -395,17 +399,14 @@
 				      <input class="reply_delete" type="button" value="삭제" style="display:inline;" 
 				      		 onclick="${pageContext.request.contextPath }location.href='/board/deleteReply?brd_id=${reply.brd_id}&art_id=${reply.art_id}&rep_id=${reply.rep_id}&mem_id=${reply.mem_id}';">
 					</c:when>
-					<c:otherwise>
-					</c:otherwise>
 				</c:choose>	
+				
 					<c:choose>
 						<c:when test="${memberInfo.mem_id != null}">
 							<input class="reply_bad"   		style="float: right;" type="button" value="비추천">
 							<input class="reply_good"  		style="float: right;" type="button" value="추천">
 							<input class="reply_report"  	style="float: right;" type="button" value="신고">
 						</c:when>
-						<c:otherwise>
-						</c:otherwise>
 					</c:choose>	
 				</p>
 			</div>

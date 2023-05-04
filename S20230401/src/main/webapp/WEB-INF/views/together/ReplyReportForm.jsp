@@ -28,11 +28,11 @@
 			  success : data => {
 					  console.log(data.result);
 				  if(data.result == 1) {
-					  alert('신고 완료.');
+					  alert('신고 완료');
 					  window.close();
 					  
 				  } else {
-					  alert('신고 실패.');
+					  alert('신고 실패');
 				  }
 	  			
 	  			}
