@@ -5,7 +5,7 @@
 
 	<!-- 양동균 -->
 	<!-- 관심목록 여부 조회 -->
-	<select id="dgFavorite" parameterType="Article" resultType="Integer">
+	<select id="dgUserFavorite" parameterType="Article" resultType="Integer">
 		SELECT	COUNT(*)
 		FROM 	FAVORITE
 		WHERE	ART_ID = #{art_id}

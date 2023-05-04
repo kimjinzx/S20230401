@@ -14,14 +14,14 @@ public class FavoriteServiceImpl implements FavoriteService {
 	private final FavoriteDao fd;
 	
 	// 양동균
-	// 찜목록 조회
-	@Override
-	public int dgFavorite(Favorite favorite) { return fd.dgFavorite(favorite); }
 	// 찜목록 추가
 	@Override
 	public int shareFavoriteAdd(Article article) {	return fd.shareFavoriteAdd(article); }
 	// 찜목록 삭제
 	@Override
 	public int shareFavoriteDel(Article article) {	return fd.shareFavoriteDel(article); }
+	@Override
+	// 찜목록 조회
+	public int dgUserFavorite(Article shareUser) { return fd.dgUserFavorite(shareUser); }
 
 }

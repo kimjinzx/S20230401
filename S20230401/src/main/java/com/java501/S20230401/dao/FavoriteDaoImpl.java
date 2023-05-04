@@ -19,10 +19,10 @@ public class FavoriteDaoImpl implements FavoriteDao{
 	// 양동균
 	// 찜목록 조회
 	@Override
-	public int dgFavorite(Favorite favorite) {
+	public int dgUserFavorite(Article shareUser) {
 		int result = 0;
 		try {
-			result = session.selectOne("dgFavorite", favorite);
+			result = session.selectOne("dgUserFavorite", shareUser);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

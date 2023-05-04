@@ -25,6 +25,7 @@ import com.java501.S20230401.model.MemberDetails;
 import com.java501.S20230401.model.MemberInfo;
 import com.java501.S20230401.model.Region;
 import com.java501.S20230401.model.Reply;
+import com.java501.S20230401.model.Waiting;
 import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.CommService;
 import com.java501.S20230401.service.FavoriteService;
@@ -32,6 +33,7 @@ import com.java501.S20230401.service.MemberService;
 import com.java501.S20230401.service.Paging;
 import com.java501.S20230401.service.RegionService;
 import com.java501.S20230401.service.ReplyService;
+import com.java501.S20230401.service.WaitingService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,6 +49,7 @@ public class ShareController {
 	private final ReplyService replyService;
 	private final RegionService regionService;
 	private final FavoriteService favoriteService;
+	private final WaitingService waitingService;
 	
 	
 	// 나눔해요 글 목록 + 검색
@@ -119,12 +122,16 @@ public class ShareController {
 			model.addAttribute("memberInfo", memberInfo);
 			
 			// 로그인 유저의 찜 목록 확인
-			Favorite userFavorite = new Favorite();
-			userFavorite.setArt_id(article.getArt_id());
-			userFavorite.setBrd_id(article.getBrd_id());
-			userFavorite.setMem_id(memberInfo.getMem_id());
-			int favorite = favoriteService.dgFavorite(userFavorite);
-			model.addAttribute("favorite", favorite);
+			Article shareUser = new Article();
+			shareUser.setArt_id(article.getArt_id());
+			shareUser.setBrd_id(article.getBrd_id());
+			shareUser.setMem_id(memberInfo.getMem_id());
+			// 찜 목록 확인
+			int userFavorite = favoriteService.dgUserFavorite(shareUser);
+			// 대기열 확인
+			int userWaiting = waitingService.dgUserWaiting(shareUser);
+			model.addAttribute("userFavorite", userFavorite);
+			model.addAttribute("userWaiting", userWaiting);
 		}
 		
 		
@@ -143,8 +150,10 @@ public class ShareController {
 		// 접속한 게시판과 카테고리 식별
 		String boardName = commService.categoryName(category);
 		String categoryName = commService.categoryName(article.getBrd_id());
+		// 거래 대기열 목록 저장
+		List<Waiting> waitingList = waitingService.dgShareWaitingList(detailArticle.getTrade().getTrd_id());
 		
-		
+		model.addAttribute("waitingList", waitingList);
 		model.addAttribute("article", detailArticle);
 		model.addAttribute("replyList", replyList);
 		model.addAttribute("category", category);
@@ -458,6 +467,30 @@ public class ShareController {
 		}
 		return String.format("redirect:/board/share/%s?brd_id=%s&category=%s",article.getArt_id(), article.getBrd_id(), category);
 	}
+
+
+	// 거래 신청
+	@RequestMapping(value = "board/share/waiting/{wait}")
+	public String shareWaiting(@AuthenticationPrincipal MemberDetails memberDetails, @PathVariable("wait") String wait, Article article, Integer category){
+		if(memberDetails != null) {
+			int result = 0;
+			article.setMem_id(memberDetails.getMemberInfo().getMem_id());
+			// 거래 대기열 추가
+			if(wait.equals("add")) result = waitingService.shareWaitingAdd(article);
+			// 거래 대기열 삭제
+			if(wait.equals("del")) result = waitingService.shareWaitingDel(article);
+		}
+		return String.format("redirect:/board/share/%s?brd_id=%s&category=%s",article.getArt_id(), article.getBrd_id(), category);
+	}
+
+
+
+
+
+
+
+
+
 /* 머지 후 영업 종료
 	// 메인
 	@RequestMapping(value = "/")

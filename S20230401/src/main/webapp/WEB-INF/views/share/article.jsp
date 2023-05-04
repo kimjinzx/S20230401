@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="../preset.jsp" %>
+<%@ include file="/WEB-INF/views/preset.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -119,18 +119,34 @@
 									<span>최대 나이 : ${article.trade.trd_maxage>0? article.trade.trd_maxage:'제한없음'}</span>
 									<span>성별 제한 : ${article.trade.trd_gender==201? '남자만':article.trade.trd_gender==202? '여자만':'제한없음'}</span>
 								</div>
+								<!-- 거래 대기열 -->
+								<div class="share-waiting">
+									<c:forEach var="waiting" items="${waitingList}">
+										거래 번호 : ${waiting.trd_id}
+										회원 닉네임 : ${waiting.member.mem_nickname}
+										회원 아이디 : ${waiting.member.mem_username}
+									</c:forEach>
+								</div>
+
 								<!-- 거래 신청, 찜 -->
 								<div class="share-button">
 									<span>
 									<c:choose>
-										<c:when test="${favorite > 0}">
-											<button id="btns-favoriteDel">찜 취소</button>
+										<c:when test="${userFavorite > 0}">
+											<button class="btns-action" id="btns-favoriteDel">찜 취소</button>
 										</c:when>
 										<c:otherwise>
-											<button id="btns-favorite">찜</button>
+											<button class="btns-action" id="btns-favorite">찜</button>
 										</c:otherwise>
 									</c:choose>
-											<button id="btns-apply">신청</button>
+									<c:choose>
+										<c:when test="${userWaiting > 0}">
+											<button class="btns-action" id="btns-applyDel">신청 취소</button>
+										</c:when>
+										<c:otherwise>
+											<button class="btns-action" id="btns-apply">신청</button>
+										</c:otherwise>
+									</c:choose>
 											<!-- <button id="btns-applySeleted">신청</button> -->
 									</span>
 								</div>
@@ -139,11 +155,40 @@
 
 
 								<!-- (임시) 모달 팝업 -->
-								<div class="myModal" id="modal" style="display: none;">
+								<div class="myModal" id="myModal" style="display: none;">
 									<div class="myModal-window">
-										<div class="modal-title"><h2>거래 신청하기</h2></div>
-										<div class="modal-close" id="modal-close">&times;</div>
-										<div class="modal-body">여기는 대충 거래 신청하는 곳인데 어쩌고 저쩌고</div>
+										<div class="modal-head">
+											<div class="modal-title">무료나눔 신청</div>
+											<div class="modal-close" id="modal-close">&times;</div>
+										</div>
+										<div class="modal-body">
+											<div class="body-warning">
+												<h2>사용시 주의해야 할 점</h2>
+												<p>ShareGo은 사용자가 아래와 같이 잘못된 방법이나 행위로 서비스를 이용할 경우 사용에 대한 제재(이용정지, 강제탈퇴 등)를 가할 수 있습니다.</p>
+												<ul>
+													<li>잘못된 방법으로 서비스의 제공을 방해하거나 당근마켓이 안내하는 방법 이외의 다른 방법을 사용하여 당근마켓 서비스에 접근하는 행위</li>
+													<li>다른 이용자의 정보를 무단으로 수집, 이용하거나 다른 사람들에게 제공하는 행위</li>
+													<li>서비스를 영리나 홍보 목적으로 이용하는 행위</li>
+													<li>음란 정보나 저작권 침해 정보 등 공서양속 및 법령에 위반되는 내용의 정보 등을 발송하거나 게시하는 행위</li>
+													<li>당근마켓의 동의 없이 당근마켓 서비스 또는 이에 포함된 소프트웨어의 일부를 복사, 수정, 배포, 판매, 양도, 대여, 담보제공하거나 타인에게 그 이용을 허락하는 행위</li>
+													<li>소프트웨어를 역설계하거나 소스 코드의 추출을 시도하는 등 당근마켓 서비스를 복제, 분해 또는 모방하거나 기타 변형하는 행위</li>
+													<li>관련 법령, 당근마켓의 모든 약관 또는 운영정책을 준수하지 않는 행위</li>
+												</ul>
+												<p>개인정보는 당근마켓 서비스의 원활한 제공을 위하여 사용자가 동의한 목적과 범위 내에서만 이용됩니다. 개인정보 보호 관련 기타 상세한 사항은 당근마켓 개인정보처리방침을 참고하시기 바랍니다.</p>
+											</div>
+											<div class="body-info">
+												<h2>무료 나눔 정보</h2>
+												<ul>
+													<li>가격 : 무료나눔</li>
+													<li>장소 : ${article.trade.trd_loc}</li>
+													<li>인원 : ${article.trade.trd_max}</li>
+												</ul>
+											</div>
+										</div>
+										<div class="modal-button">
+											<button class="btns-action" id="btns-modalApply">신청</button>
+											<button class="btns-action" id="btns-modalCancel">취소</button>
+										</div>
 									</div>
 								</div>
 
@@ -164,10 +209,10 @@
 
 					<!-- 추천 비추천 -->
 					<div class="article-vote" style="display: flex; justify-content: center;">
-						<button class="btns-good" id="btns-good">추천 ${article.art_good}</button>
-						<button class="btns-good" id="btns-goodcancel" style="display: none; background-color: #0193F8;">추천 취소${article.art_good}</button>
-						<button class="btns-bad" id="btns-bad">비추천 ${article.art_bad}</button>
-						<button class="btns-bad" id="btns-badcancel" style="display: none; background-color: red;">비추천 취소${article.art_bad}</button>
+						<button class="btns-good" id="btns-good">추천 <span>${article.art_good}</span></button>
+						<button class="btns-good" id="btns-goodcancel" style="display: none; background-color: #0193F8;">추천 <span>${article.art_good}</span></button>
+						<button class="btns-bad" id="btns-bad">비추천 <span>${article.art_bad}<span></button>
+						<button class="btns-bad" id="btns-badcancel" style="display: none; background-color: red;">비추천 <span>${article.art_bad}</span></button>
 					</div>
 				</div>
 				

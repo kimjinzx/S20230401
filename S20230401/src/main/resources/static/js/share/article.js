@@ -148,39 +148,40 @@ $(document).ready(() => {
     let btns;
     let action;
     let message;
-    // 추천
     $('#btns-good, #btns-goodcancel, #btns-bad, #btns-badcancel').click(e => { 
-        if(e.target.getAttribute('id')==='btns-good'){
-            message = '추천 하시겠습니까?';
-            btns = 'good';
-            action = '.btns-good';
-        }else if(e.target.getAttribute('id')==='btns-goodcancel'){
-            message = '취소 하시겠습니까?';
-            btns = 'goodcancel';
-            action = '.btns-good';
-        }else if(e.target.getAttribute('id')==='btns-bad'){
-            message = '비추천 하시겠습니까?';
-            btns = 'bad';
-            action = '.btns-bad';
-        }else if(e.target.getAttribute('id')==='btns-badcancel'){
-            message = '취소 하시겠습니까?';
-            btns = 'badcancel';
-            action = '.btns-bad';
-        }
-        console.info(btns);
-        console.info(action);
-        console.info(message);
-        if(confirm(message)){
-            $.ajax({
-                url:contextPath+'/board/share/vote/'+btns+'?art_id='+artId+'&brd_id='+brdId+'&category='+category,
-                success:function(data){
-                    console.log(data)
-                    $(e.target).closest('.article-vote')
-                    .find(action).toggle().end();
-                }
-            })
-        }
-    });
+        if(memId > 0){
+            if(e.target.getAttribute('id')==='btns-good'){
+                message = '추천 하시겠습니까?';
+                btns = 'good';
+                action = '.btns-good';
+            }else if(e.target.getAttribute('id')==='btns-goodcancel'){
+                message = '취소 하시겠습니까?';
+                btns = 'good';
+                action = '.btns-good';
+            }else if(e.target.getAttribute('id')==='btns-bad'){
+                message = '비추천 하시겠습니까?';
+                btns = 'bad';
+                action = '.btns-bad';
+            }else if(e.target.getAttribute('id')==='btns-badcancel'){
+                message = '취소 하시겠습니까?';
+                btns = 'bad';
+                action = '.btns-bad';
+            }
+            console.info(btns);
+            console.info(action);
+            console.info(message);
+            if(confirm(message)){
+                $.ajax({
+                    url:contextPath+'/board/share/vote/'+btns+'?art_id='+artId+'&brd_id='+brdId+'&category='+category,
+                    success:function(data){
+                        console.log(data)
+                        $(e.target).closest('.article-vote')
+                        .find(action).toggle().find('span').text(data).end();
+                    }
+                })
+            }
+        }else alert('로그인 하세요');
+        });
 });
 
 
@@ -189,33 +190,28 @@ $(document).ready(() => {
 
 // 거래 신청 ---------------------------------------------------------
 $(document).ready(()=>{ 
-    $('#btns-apply').click((e)=>{
-        // 버블링 방지
-        e.stopPropagation();
+    $('#btns-applyDel').click(()=>{
         if(memId > 0){
-            if(confirm('거래 신청')){
-                let art_id = artId;
-                console.info(art_id);
-                $('.myModal').css('display', 'flex'); // flex로 변경
-                // x버튼 누를 시 모달 사라짐
-                const modal = document.getElementById('modal')
-                const modalClose = document.getElementById('modal-close');
-                modalClose.addEventListener("click", e => {
-                    modal.style.display = 'none';
-                });
-                //window.open('${pageContext.request.contextPath}/board/share/tradeApply', 'trade_apply', 'width=400, height=400');
-                // modal 외의 영역 클릭시 사라짐
-                $('html').click(e=>{
-                    if(!$(e.target).hasClass('.myModal')){
-                        $('#modal').css('display', 'none');
-                        //modal.style.display = 'none';
-                        //$('#modal').toggle();
-                    }
-                });
-                $('.myModal').click(e => {
-                    e.stopPropagation();
-                });
-            }else alert('취소');
+            if(confirm('취소 하시겠습니까?'))
+            location.href=contextPath+'/board/share/waiting/del?art_id='+artId+'&brd_id='+brdId+'&category='+category;
         }else alert('로그인 하세요');
+    });
+    $('#btns-apply').click((e)=>{
+        if(memId > 0){
+            $('.myModal').css('display', 'flex'); // flex로 변경
+        }else alert('로그인 하세요');
+    });
+    // 클릭시 닫기 이벤트
+    $('.myModal').click(e=>{
+        console.info(e.target.getAttribute('id'));
+        console.info(e.target.getAttribute('class'));
+        // 바깥 영역, 취소 버튼, X 버튼
+        if(!$(e.target).closest('.myModal-window').length || e.target.getAttribute('id')==='btns-modalCancel' || e.target.getAttribute('id')==='modal-close'){
+            $('#myModal').css('display', 'none');
+        }else if(e.target.getAttribute('id')==='btns-modalApply')
+            if(confirm('거래 신청 하시겠습니까?')){
+                location.href=contextPath+'/board/share/waiting/add?art_id='+artId+'&brd_id='+brdId+'&category='+category;
+            }
+        e.stopPropagation();
     });
 });
