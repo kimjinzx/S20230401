@@ -112,7 +112,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		int result = 0;
 		try {
 			result = session.update("dgVoteGood", article);
-			System.out.println("selectKey의 결과 값"+result);
+			if(result != 0) result = session.selectOne("dgArtGood", article);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -124,26 +124,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		int result = 0;
 		try {
 			result = session.update("dgVoteBad", article);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
-	@Override
-	public int dgVoteGoodCancel(Article article) {
-		int result = 0;
-		try {
-			result = session.update("dgVoteGoodCancel", article);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
-	@Override
-	public int dgVoteBadCancel(Article article) {
-		int result = 0;
-		try {
-			result = session.update("dgVoteBadCancel", article);
+			if(result != 0) result = session.selectOne("dgArtBad", article);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -73,10 +73,6 @@ public class ArticleServiceImpl implements ArticleService {
 	// 글 비추천
 	@Override
 	public int dgVoteBad(Article article) {	return ad.dgVoteBad(article);}
-	@Override
-	public int dgVoteGoodCancel(Article article) {	return ad.dgVoteGoodCancel(article);}
-	@Override
-	public int dgVoteBadCancel(Article article) {	return ad.dgVoteBadCancel(article);}
 
 	
 	// 백준

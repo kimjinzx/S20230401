@@ -223,12 +223,6 @@
 	</update>
 	<!-- 글 추천, 비추천 -->
 	<update id="dgVoteGood" parameterType="Article">
-<!--보류 		<selectKey keyProperty="art_good" resultType="int" order="BEFORE">
-		SELECT	ART_GOOD + 1
-		FROM 	ARTICLE
-		WHERE   ART_ID = #{art_id}
-		AND     BRD_ID = #{brd_id}
-		</selectKey> -->
 		UPDATE  ARTICLE
 		SET     ART_GOOD = #{art_good}
 		WHERE   ART_ID = #{art_id}
@@ -236,22 +230,22 @@
 	</update>
 	<update id="dgVoteBad" parameterType="Article">
 		UPDATE  ARTICLE
-		SET     ART_BAD = ART_BAD + 1
+		SET     ART_BAD = #{art_bad}
 		WHERE   ART_ID = #{art_id}
 		AND     BRD_ID = #{brd_id}
 	</update>
-	<update id="dgVoteGoodCancel" parameterType="Article">
-		UPDATE  ARTICLE
-		SET     ART_GOOD = ART_GOOD - 1
+ 	<select id="dgArtGood" parameterType="Article" resultType="int">
+		SELECT	ART_GOOD
+		FROM	ARTICLE
 		WHERE   ART_ID = #{art_id}
 		AND     BRD_ID = #{brd_id}
-	</update>
-	<update id="dgVoteBadCancel" parameterType="Article">
-		UPDATE  ARTICLE
-		SET     ART_BAD = ART_BAD - 1
+	</select>
+	<select id="dgArtBad" parameterType="Article" resultType="int">
+		SELECT	ART_BAD
+		FROM	ARTICLE
 		WHERE   ART_ID = #{art_id}
 		AND     BRD_ID = #{brd_id}
-	</update>
+	</select>
 	
 	
 	

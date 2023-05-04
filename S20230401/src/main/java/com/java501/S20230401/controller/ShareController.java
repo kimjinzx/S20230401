@@ -211,6 +211,8 @@ public class ShareController {
 		return "redirect:/board/share?category="+category;
 	}
 	
+	
+	
 	// 글 추천, 비추천
 	@ResponseBody
 	@RequestMapping(value = "board/share/vote/{vote}")
@@ -224,6 +226,8 @@ public class ShareController {
 							HttpServletResponse response) {
 		int result = 0;
 		String toRemove = "";
+		Article detailArticle = articleService.detailShareArticle(article); // 글 정보
+		
 		// 유저 정보
 		String mem_id = "";
 		if(memberDetails != null) {
@@ -231,51 +235,65 @@ public class ShareController {
 			mem_id = Integer.toString(memberDetails.getMemberInfo().getMem_id());
 		}
 		
-		if(vote.equals("goodcancel")) {
-			vote = "good";
-			toRemove = "|"+article.getArt_id()+article.getBrd_id()+vote;
-		}else if(vote.equals("badcancel")) {
-			vote = "bad";
-			toRemove = "|"+article.getArt_id()+article.getBrd_id()+vote;
-		}
+		// 추천 취소
+//		if(vote.equals("goodcancel")) {
+//			vote = "good";
+//			toRemove = "|"+article.getArt_id()+article.getBrd_id()+vote;
+//		}else if(vote.equals("badcancel")) {
+//			vote = "bad";
+//			toRemove = "|"+article.getArt_id()+article.getBrd_id()+vote;
+//		}
 		
 		// 쿠키 추천, 비추천 (중복확인)
 		if(dgCheck(request, response, article.getArt_id(), article.getBrd_id(), mem_id, vote)) {
-			if(toRemove.equals("") || toRemove == null) {
-				// 추천, 비추천
-				if(vote.equals("good")) {
-					result = articleService.dgVoteGood(article);
-					System.err.println("추천");
-				// 비추천
-				}else if(vote.equals("bad")) {
-					result = articleService.dgVoteBad(article);
-					System.err.println("비추천");
-				}
+			// 추천, 비추천
+			if(vote.equals("good")) {
+				article.setArt_good(detailArticle.getArt_good()+1);
+				result = articleService.dgVoteGood(article);
+				System.err.println("추천");
+				
+			// 비추천
+			}else if(vote.equals("bad")) {
+				article.setArt_bad(detailArticle.getArt_bad()+1);
+				result = articleService.dgVoteBad(article);
+				System.err.println("비추천");
 			}
 		// 쿠키 삭제 (추천, 비추천 취소)
-		}else if(!toRemove.equals("") && toRemove != null){
+		}else {
 			Cookie oldCookie = null;
 			Cookie[] cookies = request.getCookies();
 			if(cookies != null) {
 				for(Cookie cookie : cookies) {
 					if (cookie.getName().equals("share|"+mem_id)) {
 						oldCookie = cookie;
-						oldCookie.setValue(oldCookie.getValue().replace(toRemove, ""));
-						oldCookie.setPath("/");
-						response.addCookie(oldCookie);
+						
+						// 삭제 요소
+						toRemove = "|"+article.getArt_id()+article.getBrd_id()+vote;
+
 						if(vote.equals("good")) {
-							result = articleService.dgVoteGoodCancel(article);
+							article.setArt_good(detailArticle.getArt_good()-1);
+							result = articleService.dgVoteGood(article);
+							oldCookie.setValue(oldCookie.getValue().replace(toRemove, ""));
 							System.err.println("추천 취소");
+							
 						}
 						if(vote.equals("bad")) {
-							result = articleService.dgVoteBadCancel(article);
+							article.setArt_bad(detailArticle.getArt_bad()-1);
+							result = articleService.dgVoteBad(article);
+							oldCookie.setValue(oldCookie.getValue().replace(toRemove, ""));
 							System.err.println("비추천 취소");
 						}
+						oldCookie.setPath("/");
+						response.addCookie(oldCookie);
 						break;
 					}
 				}
 			}
 		}
+		
+		
+		
+		System.err.println(result);
 		//System.out.println(result != 0? "추천 or 비추천 성공" : "추천 or 비추천 실패");
 		//return String.format("redirect:/board/share/%s?brd_id=%s&category=%s", article.getArt_id(), article.getBrd_id(), article.getBrd_id());
 		return result;
