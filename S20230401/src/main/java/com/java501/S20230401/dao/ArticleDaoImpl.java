@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.java501.S20230401.model.Article_Trade_Reply;
 import com.java501.S20230401.model.Comm;
+import com.java501.S20230401.model.Join;
 import com.java501.S20230401.model.Region;
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.ArticleMember;
@@ -404,6 +405,19 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return dbUpdateReport;
 	}
+
+		@Override
+		public List<Article> dbTradeJoinMember(Article article) {
+			List<Article> joinList = null;
+			
+			try {
+				joinList = session.selectList("dbTradeJoinMember", article);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			 
+			return joinList;
+		}
 	
 	
 	

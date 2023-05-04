@@ -629,7 +629,13 @@
         AND         ART_ID = #{art_id}
 	</insert>
 	
-	
+	<select id="dbTradeJoinMember" parameterType="Article" resultType="Article">
+		select j.*, t.*, m.*, a.*
+		from join j left join trade t on (j.trd_id = t.trd_id)
+            		left join member m on (j.mem_id = m.mem_id)
+            		left join article a on (t.trd_id = a.trd_id)
+		where trd_id = #{trd_id}
+	</select>
 	
 	
 	

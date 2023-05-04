@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.java501.S20230401.model.Article_Trade_Reply;
 import com.java501.S20230401.model.Comm;
+import com.java501.S20230401.model.Join;
 import com.java501.S20230401.model.Region;
 
 import com.java501.S20230401.model.Article;
@@ -55,6 +56,7 @@ public interface ArticleDao {
 	int 			dbReadArticleCnt(Article article);
 	int				dbInsertReport(Article article);
 	int				dbUpdateReport(Article article);
+	List<Article> 		dbTradeJoinMember(Article article);
 	
 	
 	

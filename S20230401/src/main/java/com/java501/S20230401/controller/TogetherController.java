@@ -11,12 +11,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Comm;
+import com.java501.S20230401.model.Join;
 import com.java501.S20230401.model.MemberDetails;
 import com.java501.S20230401.model.Region;
 import com.java501.S20230401.model.Reply;
@@ -68,7 +69,7 @@ public class TogetherController {
 
 	@RequestMapping(value = "/board/detailArticle")
 	public String detailArticle(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
-			Article article, Model model) {
+			Article article, Join join, Model model) {
 
 		if (memberDetails != null)
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
@@ -83,7 +84,13 @@ public class TogetherController {
 		// 게시글 별 댓글 리스트
 		List<Article> replyList = as.dbreplyList(article);
 		model.addAttribute("replyList", replyList);
-
+		
+		article.setTrd_id(detailArticle.getTrd_id());
+		
+		// 게시글 별 신청자 리스트
+		List<Article> joinList =  as.dbTradeJoinMember(article);
+		model.addAttribute("joinList", joinList);
+		 
 		return "together/detailArticle";
 	}
 
@@ -263,6 +270,7 @@ public class TogetherController {
 		return jsonObj.toString();
 	}
 
+	// 게시글신고폼
 	 @RequestMapping(value="/board/ArticleReportForm")
 	 public String reportFormArticle(@AuthenticationPrincipal MemberDetails memberDetails
 			 						, @RequestParam int art_id
@@ -284,6 +292,7 @@ public class TogetherController {
 
 	 }
 	 
+	 // 게시글 신고 (ajax 사용)
 	 @RequestMapping(value="/board/ArticleReport")
 	 @ResponseBody
 	 public String reportArticle(@AuthenticationPrincipal MemberDetails memberDetails,
@@ -299,5 +308,17 @@ public class TogetherController {
 		 
 		 return jsonObj.toString() ;
 	 }
+
+//	 @RequestMapping(value="/board/TradeJoinMember")
+//	 public String TradeJoinMember(@AuthenticationPrincipal MemberDetails memberDetails,
+//			 					   Join join, Model model) {
+//	 
+//	 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+//	 
+//	 List<Join> joinList =  js.dbTradeJoinMember(join);
+//	 model.addAttribute("joinList", joinList);
+//
+//	 return "together/detailArticle";
+//	}
 	 
 }

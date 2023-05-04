@@ -14,6 +14,7 @@ import com.java501.S20230401.model.Member;
 import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.model.ArticleMember;
 import com.java501.S20230401.model.Comm;
+import com.java501.S20230401.model.Join;
 import com.java501.S20230401.model.Region;
 import com.java501.S20230401.util.SummaryType;
 import com.java501.S20230401.model.Article_Trade_Reply;
@@ -225,6 +226,13 @@ public class ArticleServiceImpl implements ArticleService {
 		if ((dbInsertReport + dbUpdateReport) == 0)
 			return 0;
 		else return 1;
+	}
+	
+	
+	@Override
+	public List<Article> dbTradeJoinMember(Article article) {
+		List<Article> joinList = ad.dbTradeJoinMember(article);
+		return joinList;
 	}
 	
 	

@@ -97,6 +97,9 @@ public class Article {
 	private Integer report_status;
 	private String 	report_reason;
 	
+	// Join
+	private Date	join_date;
+	
 	
 	// 조회용
 	private Integer 	repCount;

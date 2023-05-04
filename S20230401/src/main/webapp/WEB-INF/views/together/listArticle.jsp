@@ -224,6 +224,7 @@
 
 			</tr>
 			<c:forEach var="art" items="${listArticle }">
+					<input type="hidden" value ="${art.trd_id }">
 				<tr style="cursor: pointer;" onclick="location.href='detailArticle?brd_id=${art.brd_id}&art_id=${art.art_id}';">
 					<td>${art.c1_comm_value }</td>
 					<td>${art.art_tag1 }</td>
