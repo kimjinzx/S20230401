@@ -115,12 +115,14 @@ public class CustomerController {
 	
 	@PostMapping(value = "board/customer/customerWriteReply")
 	public String customerWriteReply(@AuthenticationPrincipal MemberDetails mD,
-									 Article article, Integer category, Model model) {
+									 Article article, Reply reply, Integer category, Model model) {
 		if (mD != null) {
 			model.addAttribute("memberInfo", mD.getMemberInfo());
 		}		
+		int cReplyWrite = as.customerWriteReply(reply);
 		System.out.println("CustomerController customerWriteReply start");
 		model.addAttribute("category", category);
+		model.addAttribute("cReplyW", cReplyWrite);
 		
 		return "board/customer/customerWriteReply";
 	}
@@ -199,6 +201,7 @@ public class CustomerController {
 		System.out.println("CustomerController deleteCustomer start");
 		int dresult = as.deleteCustomer(article);
 		model.addAttribute("category", category);
+		model.addAttribute("dresult", dresult);
 		
 		return "redirect:/board/customer?category="+article.getBrd_id();
 	}
