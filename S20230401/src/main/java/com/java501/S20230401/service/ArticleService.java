@@ -52,7 +52,9 @@ public interface ArticleService {
 	int 			dbdeleteArticle(Article article);
 	int				dbReadArticleCnt(Article article);
 	int 			dbReportArticle(Article article);
+	int 			dbReportReply(Article article);
 	List<Article>   dbTradeJoinMember(Article article);
+	List<Article> 	dbTradeWaitingMember(Article article);
 	
 	// 김진현
 	List<Article_Trade_Reply> 			getDutchpayList(String boardName);//진현

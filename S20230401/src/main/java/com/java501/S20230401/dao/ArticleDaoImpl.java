@@ -396,28 +396,51 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 	
 	@Override
-	public int dbUpdateReport(Article article) {
-		int dbUpdateReport = 0;
+	public int dbUpdateArticleReport(Article article) {
+		int dbUpdateArticleReport = 0;
 		try {
-			dbUpdateReport = session.update("dbUpdateReport", article);
+			dbUpdateArticleReport = session.update("dbUpdateArticleReport", article);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return dbUpdateReport;
+		return dbUpdateArticleReport;
+	}
+	
+	@Override
+	public int dbUpdateReplyReport(Article article) {
+		int dbUpdateReplyReport = 0;
+		try {
+			dbUpdateReplyReport = session.update("dbUpdateReplyReport", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dbUpdateReplyReport;
 	}
 
-		@Override
-		public List<Article> dbTradeJoinMember(Article article) {
-			List<Article> joinList = null;
-			
-			try {
-				joinList = session.selectList("dbTradeJoinMember", article);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			 
-			return joinList;
+	@Override
+	public List<Article> dbTradeJoinMember(Article article) {
+		List<Article> joinList = null;
+		
+		try {
+			joinList = session.selectList("dbTradeJoinMember", article);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		 
+		return joinList;
+	}
+		
+	public List<Article> dbTradeWaitingMember(Article article) {
+		List<Article> WaitingList = null;
+		
+		try {
+			WaitingList = session.selectList("dbTradeWaitingMember", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		 
+		return WaitingList;
+	}
 	
 	
 	

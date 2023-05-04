@@ -61,7 +61,7 @@
 		});
 	});
 	
-	// 신고 팝업창
+	// 게시글 신고 팝업창
 	
 	$(() => {
 		  $('.article_report').click(e => {
@@ -78,6 +78,27 @@
 			});
 		});
 	
+	// 댓글신고
+	
+	$(() => {
+		  $('.reply_report').click(e => {
+	
+		    let art_id = $('#art_id').val();
+		    let brd_id = $('#brd_id').val();
+		    let rep_id = $(e.target).closest('.reply_box').find('input[name="rep_id"]').val();
+		    
+		      
+		    let popUrl = "/board/ReplyReportForm?art_id=" + art_id + "&brd_id=" + brd_id + "&rep_id=" + rep_id
+		    let popOption = "width=650px,height=550px,top=300px,left=300px,scrollbars=yes";
+		      
+		    window.open(popUrl, "신고하기", popOption);
+		    
+			});
+		});
+	
+	
+	
+	
 	
 	// 신청 팝업창
 	
@@ -88,7 +109,7 @@
 		    let brd_id = $('#brd_id').val();
 		    
 		      
-		    let popUrl = "/board/ArticleReportForm?art_id=" + art_id + "&brd_id=" + brd_id
+		    let popUrl = "/board/TradeJoinForm?art_id=" + art_id + "&brd_id=" + brd_id
 		    let popOption = "width=650px,height=550px,top=300px,left=300px,scrollbars=yes";
 		      
 		    window.open(popUrl, "신고하기", popOption);
@@ -260,16 +281,13 @@
 
 	<table border="1">
 		<tr>
-			<th colspan="3" width="500px" >함께해요 참여하기</th>
+			<th colspan="3" width="500px" >함께해요 참여자 목록</th>
 		</tr>
 		<tr>
 			<th colspan="2">신청자</th>
 			<th>신청일자</th>
 		</tr>
 				<c:forEach var="joinList" items="${joinList }">
-				<input type="hidden" name="art_id"  	value="${detailArticle.art_id }">
-				<input type="hidden" name="brd_id" 		value="${detailArticle.brd_id }">
-				<input type="hidden" name="trd_id" 		value="${detailArticle.trd_id }">
 		<tr>		
 				<td><img src="${pageContext.request.contextPath}/image/picture/${joinList.mem_image}" width ="30" height ="30" alt="-"></td>				
 				<td>${joinList.mem_nickname }(${joinList.mem_username })	</td>				
@@ -282,6 +300,23 @@
 			<input type="button" class ="article_submit"   value="취소하기">
 			<br>
 			<br>
+			
+		<table border="1">
+		<tr>
+			<th colspan="3" width="500px" >함께해요 참여 대기 목록</th>
+		</tr>
+		<tr>
+			<th colspan="2">대기자</th>
+			<th>신청 대기 일자</th>
+		</tr>
+				<c:forEach var="waitingList" items="${waitingList }">
+		<tr>		
+				<td><img src="${pageContext.request.contextPath}/image/picture/${waitingList.mem_image}" width ="30" height ="30" alt="-"></td>				
+				<td>${waitingList.mem_nickname }(${waitingList.mem_username })	</td>				
+				<td><fmt:formatDate value="${waitingList.wait_date}" pattern="yy년 MM월 dd일 : HH:mm:ss"/></td>
+		</tr>		
+				</c:forEach>
+	</table>		
 
 
 
@@ -365,9 +400,9 @@
 				</c:choose>	
 					<c:choose>
 						<c:when test="${memberInfo.mem_id != null}">
-							<input class="reply_bad"   style="float: right;" type="button" value="비추천">
-							<input class="reply_good"  style="float: right;" type="button" value="추천">
-							<input class="reply_report"  style="float: right;" type="button" value="신고">
+							<input class="reply_bad"   		style="float: right;" type="button" value="비추천">
+							<input class="reply_good"  		style="float: right;" type="button" value="추천">
+							<input class="reply_report"  	style="float: right;" type="button" value="신고">
 						</c:when>
 						<c:otherwise>
 						</c:otherwise>

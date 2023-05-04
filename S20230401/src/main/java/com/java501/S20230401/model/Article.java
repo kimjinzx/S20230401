@@ -100,6 +100,9 @@ public class Article {
 	// Join
 	private Date	join_date;
 	
+	// Wait
+	private Date    wait_date;
+	
 	
 	// 조회용
 	private Integer 	repCount;

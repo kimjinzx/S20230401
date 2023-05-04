@@ -622,18 +622,30 @@
 		        	, null)
 	</insert>
 	
-	<insert id="dbUpdateReport" parameterType="Article">
+	<insert id="dbUpdateArticleReport" parameterType="Article">
 		UPDATE      ARTICLE
         SET         REPORT_ID = REPORT_ID_SEQ.CURRVAL
         WHERE       brd_id = #{brd_id}
         AND         ART_ID = #{art_id}
 	</insert>
 	
+	<insert id="dbUpdateReplyReport" parameterType="Article">
+		UPDATE      Reply
+        SET         REPORT_ID = REPORT_ID_SEQ.CURRVAL
+        WHERE       brd_id = #{brd_id}
+        AND         ART_ID = #{art_id}
+        AND			REP_ID = #{rep_id}
+	</insert>
+	
 	<select id="dbTradeJoinMember" parameterType="Article" resultType="Article">
-		select j.*, t.*, m.*, a.*
-		from join j left join trade t on (j.trd_id = t.trd_id)
-            		left join member m on (j.mem_id = m.mem_id)
-            		left join article a on (t.trd_id = a.trd_id)
+		select j.*, m.*
+		from join j left join member m  on (j.mem_id = m.mem_id)
+		where trd_id = #{trd_id}
+	</select>
+	
+	<select id="dbTradeWaitingMember" parameterType="Article" resultType="Article">
+		select w.*, m.*
+		from Waiting w left join member m  on (w.mem_id = m.mem_id)
 		where trd_id = #{trd_id}
 	</select>
 	

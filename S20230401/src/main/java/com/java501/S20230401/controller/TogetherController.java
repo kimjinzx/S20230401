@@ -90,6 +90,10 @@ public class TogetherController {
 		// 게시글 별 신청자 리스트
 		List<Article> joinList =  as.dbTradeJoinMember(article);
 		model.addAttribute("joinList", joinList);
+		
+		// 게시글 별 신청 대기자 리스트
+		List<Article> waitingList =  as.dbTradeWaitingMember(article);
+		model.addAttribute("waitingList", waitingList);
 		 
 		return "together/detailArticle";
 	}
@@ -270,7 +274,7 @@ public class TogetherController {
 		return jsonObj.toString();
 	}
 
-	// 게시글신고폼
+	// 게시글 신고폼
 	 @RequestMapping(value="/board/ArticleReportForm")
 	 public String reportFormArticle(@AuthenticationPrincipal MemberDetails memberDetails
 			 						, @RequestParam int art_id
@@ -308,17 +312,69 @@ public class TogetherController {
 		 
 		 return jsonObj.toString() ;
 	 }
+	 
+	// 댓글 신고폼
+	 @RequestMapping(value="/board/ReplyReportForm")
+	 public String reportFormReply(@AuthenticationPrincipal MemberDetails memberDetails
+			 						, @RequestParam int art_id
+			 						, @RequestParam int brd_id
+			 						, @RequestParam int rep_id
+			 						, Model model) {
+	 
+	 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 
-//	 @RequestMapping(value="/board/TradeJoinMember")
-//	 public String TradeJoinMember(@AuthenticationPrincipal MemberDetails memberDetails,
-//			 					   Join join, Model model) {
-//	 
-//	 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
-//	 
-//	 List<Join> joinList =  js.dbTradeJoinMember(join);
-//	 model.addAttribute("joinList", joinList);
-//
-//	 return "together/detailArticle";
-//	}
+	 Article article = new Article();
+	 article.setArt_id(art_id);
+	 article.setBrd_id(brd_id);
+	 article.setRep_id(rep_id);
+	 // article.setMem_id(memberDetails.getMemberInfo().getMem_id());
+	 
+	 
+	 model.addAttribute("article", article);
+	 
+	 return "together/ReplyReportForm";
+
+	 }
+	 
+	 // 댓글 신고 (ajax 사용)
+	 @RequestMapping(value="/board/ReplyReport")
+	 @ResponseBody
+	 public String reportReply(@AuthenticationPrincipal MemberDetails memberDetails,
+			 					 @RequestBody Article article, Model model) {
+		 JSONObject jsonObj = new JSONObject();
+		 
+		 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		 
+		 int reportReply = as.dbReportReply(article);
+		 
+		 jsonObj.append("result", reportReply);
+		 jsonObj.append("content", article.getReport_content());
+		 
+		 return jsonObj.toString() ;
+	 }
+	 
+	 // 거래 신청하기 폼
+	 @RequestMapping(value="/board/TradeJoinForm")
+	 public String TradeJoinForm(@AuthenticationPrincipal MemberDetails memberDetails
+			 						, @RequestParam int art_id
+			 						, @RequestParam int brd_id
+			 						, Model model) {
+	 
+	 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+
+	 Article article = new Article();
+	 article.setArt_id(art_id);
+	 article.setBrd_id(brd_id);
+	 // article.setMem_id(memberDetails.getMemberInfo().getMem_id());
+	 
+	 Article detailArticle = as.dbdetailArticle(article);
+	 
+	 
+	 model.addAttribute("article", detailArticle);
+	 
+	 return "together/TradeJoinForm";
+
+	 }
+
 	 
 }

@@ -14,12 +14,13 @@
 	$(() => {
 		$('.rep_submit').click(e => {
 			let rawData = { art_id : ${article.art_id}, brd_id : ${article.brd_id}, mem_id:${memberInfo.mem_id},
+							rep_id : ${article.rep_id},
 							report_content : $(e.target).closest('.report_table').find('.report_content').val()};
 		
 			let sendData = JSON.stringify(rawData);
 	
 			$.ajax({
-			  url : "/board/ArticleReport",
+			  url : "/board/ReplyReport",
 			  type : 'post',
 			  data : sendData,
 			  dataType :'json',
@@ -48,8 +49,8 @@
 </script>
 </head>
 <body>
-<h2>게시글 신고</h2>
-    <form action="${pageContext.request.contextPath }/board/ArticleReport" method="POST">  
+<h2>댓글 신고</h2>
+    <form action="${pageContext.request.contextPath }/board/ReplyReport" method="POST">
         <table class="report_table" border="1">
             <tr>
                 <th>신고내용</th>

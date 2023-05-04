@@ -55,8 +55,10 @@ public interface ArticleDao {
 	int 			dbdeleteArticle(Article article);
 	int 			dbReadArticleCnt(Article article);
 	int				dbInsertReport(Article article);
-	int				dbUpdateReport(Article article);
+	int				dbUpdateArticleReport(Article article);
+	int 			dbUpdateReplyReport(Article article);
 	List<Article> 		dbTradeJoinMember(Article article);
+	List<Article>		dbTradeWaitingMember(Article article);
 	
 	
 	

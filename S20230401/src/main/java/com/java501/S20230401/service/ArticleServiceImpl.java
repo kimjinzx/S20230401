@@ -222,11 +222,24 @@ public class ArticleServiceImpl implements ArticleService {
 	@Transactional
 	public int dbReportArticle(Article article) {
 		int dbInsertReport = ad.dbInsertReport(article);
-		int dbUpdateReport = ad.dbUpdateReport(article);
-		if ((dbInsertReport + dbUpdateReport) == 0)
+		int dbUpdateArticleReport = ad.dbUpdateArticleReport(article);
+		if ((dbInsertReport + dbUpdateArticleReport) == 0)
 			return 0;
 		else return 1;
 	}
+	
+	
+	@Override
+	public int dbReportReply(Article article) {
+		int dbInsertReport = ad.dbInsertReport(article);
+		int dbUpdateReplyReport = ad.dbUpdateReplyReport(article);
+		if ((dbInsertReport + dbUpdateReplyReport) == 0)
+			return 0;
+		else return 1;
+	}
+	
+	
+	
 	
 	
 	@Override
@@ -234,6 +247,15 @@ public class ArticleServiceImpl implements ArticleService {
 		List<Article> joinList = ad.dbTradeJoinMember(article);
 		return joinList;
 	}
+	
+	@Override
+	public List<Article> dbTradeWaitingMember(Article article) {
+		List<Article> WaitingList = ad.dbTradeWaitingMember(article);
+		return WaitingList;
+	}
+	
+	
+	
 	
 	
 	
@@ -389,4 +411,5 @@ public class ArticleServiceImpl implements ArticleService {
 		result = ad.insertCustomer(article);
 		return result;
 	}
+
 }
