@@ -100,7 +100,7 @@ function art_Delete(){
 // 게시글 기능 -게시글 수정
 function art_Update(){
     if(confirm('수정 하시겠습니까?')){
-        location.href=contextPath+'/board/share/artDelete?art_id='+artId+'&brd_id='+brdId;
+        location.href=contextPath+'/board/share/artUpdate?art_id='+artId+'&brd_id='+brdId+'&category='+category;
     }
 }
 
