@@ -206,11 +206,7 @@
 				#{art_tag3,	        mode=IN, 	jdbcType=VARCHAR},
 				#{art_tag4,	        mode=IN, 	jdbcType=VARCHAR},
 				#{art_tag5,	        mode=IN, 	jdbcType=VARCHAR},
-				#{art_good,	        mode=IN, 	jdbcType=INTEGER},
-				#{art_bad,	        mode=IN, 	jdbcType=INTEGER},
-				#{art_read,	        mode=IN, 	jdbcType=INTEGER},
-				#{art_isnotice,	    mode=IN, 	jdbcType=INTEGER},
-				#{isdelete,	        mode=IN, 	jdbcType=INTEGER}
+				#{art_isnotice,	    mode=IN, 	jdbcType=INTEGER}
 			)
 		}
 	</insert>

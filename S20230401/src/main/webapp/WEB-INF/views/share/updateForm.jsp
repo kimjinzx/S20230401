@@ -41,19 +41,15 @@
 <body>
 	<div class="container">
 
-		<h1>글쓰기</h1>
+		<h1>글 수정</h1>
 
 		<div>
-			<form action="${pageContext.request.contextPath}/board/share/writeArticleForm" method="post">
+			<form action="${pageContext.request.contextPath}/board/share/updateArticleForm" method="post">
 				<input type="hidden" 	name="category" 		value="${category}">
 				<input type="hidden" 	name="brd_id" 			value="${category}">
 			<!-- 임시 기본값 저장 -->
 				<input type="hidden" 	name="trade.trd_status" value="401">
 				<input type="hidden" 	name="trade.trd_cost" 	value="0">
-				<input type="hidden" 	name="art_good" 		value="0">
-				<input type="hidden" 	name="art_bad" 			value="0">
-				<input type="hidden" 	name="art_read" 		value="0">
-				<input type="hidden" 	name="isdelete" 		value="0">
 				
 				
 				<div class="form-group">

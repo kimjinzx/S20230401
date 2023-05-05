@@ -158,7 +158,6 @@ public class ShareController {
 		model.addAttribute("replyList", replyList);
 		model.addAttribute("category", category);
 		model.addAttribute("boardName", boardName);
-
 		model.addAttribute("categoryName", categoryName);
 		
 		return "share/article";
@@ -166,7 +165,7 @@ public class ShareController {
 	
 	
 	
-	// 글 작성 페이지 이동
+	// 게시글 작성 페이지 이동
 	@RequestMapping(value = "board/share/write")
 	public String writeForm(@AuthenticationPrincipal MemberDetails memberDetails, Article article, Model model, Integer category) {
 		// 로그인 유저 정보
@@ -176,11 +175,30 @@ public class ShareController {
 		// 지역 제한 조회
 		List<Region> regionList = regionService.dgRegionList();
 		
-		
 		model.addAttribute("regionList", regionList);
 		model.addAttribute("category", category);
 		
 		return "share/writeForm";
+	}
+	
+	
+	// 게시글 수정 페이지 이동
+	@RequestMapping(value = "board/share/artUpdate")
+	public String updateForm(@AuthenticationPrincipal MemberDetails memberDetails, Article article, Model model, Integer category) {
+		// 로그인 유저 정보
+		if(memberDetails != null)
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		
+		// 글 정보 저장
+		Article detailArticle = articleService.detailShareArticle(article);
+		// 지역 제한 조회
+		List<Region> regionList = regionService.dgRegionList();
+		
+		model.addAttribute("detailArticle", detailArticle);
+		model.addAttribute("regionList", regionList);
+		model.addAttribute("category", category);
+		
+		return "share/updateForm";
 	}
 	
 	
@@ -346,11 +364,7 @@ public class ShareController {
 		return String.format("redirect:/board/share/%s?brd_id=%s&category=%s", reply.getArt_id(), reply.getBrd_id(), category);
 	}
 	
-	// 게시글 수정
-	@RequestMapping(value = "board/share/artUpdate")
-	public String updateArticle(){
-		return "";
-	}
+
 	
 	// 게시글 삭제
 	@RequestMapping(value = "board/share/artDelete/{art_id}")
