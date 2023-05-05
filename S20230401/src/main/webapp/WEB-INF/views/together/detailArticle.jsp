@@ -78,7 +78,7 @@
 			});
 		});
 	
-	// 댓글신고
+	// 댓글 신고
 	
 	$(() => {
 		  $('.reply_report').click(e => {
@@ -96,11 +96,8 @@
 			});
 		});
 	
-	
-	
-	
-	
-	// 신청 팝업창
+
+	// 거래 신청 팝업창
 	
 		$(() => {
 		  $('.article_submit').click(e => {
@@ -118,8 +115,68 @@
 		});
 
 	
+	// 수락버튼 -> 대기명단 => 신청자명단으로(ajax)
+		
+	$(() => {
+			$('.joinAccept').click(e => {
+				let rawData = { mem_id : $(e.target).closest('.waitingList').find('input[name="mem_id"]').val(),
+								trd_id : ${detailArticle.trd_id} }
+			
+				let sendData = JSON.stringify(rawData);
+		
+				$.ajax({
+				  url : "/board/joinAccept",
+				  type : 'post',
+				  data : sendData,
+				  dataType :'json',
+				  contentType : 'application/json',
+				  success : data => {
+						  console.log(data.result);
+					  if(data.result == 1) {
+						  alert('수락 완료');
+						  window.close();
+						  
+					  } else {
+						  alert('수락 실패');
+					  }
+		  			
+		  			}
+				});
+			});
+		});
+		
+		
+	// 거래 대기자 거절 (ajax)
+	$(() => {
+		$('.joinRefuse').click(e => {
+			let rawData = { mem_id : $(e.target).closest('.waitingList').find('input[name="mem_id"]').val(),
+							trd_id : ${detailArticle.trd_id} }
+		
+			let sendData = JSON.stringify(rawData);
 	
-	
+			$.ajax({
+			  url : "/board/joinRefuse",
+			  type : 'post',
+			  data : sendData,
+			  dataType :'json',
+			  contentType : 'application/json',
+			  success : data => {
+					  console.log(data.result);
+				  if(data.result == 1) {
+					  alert('거절 완료');
+					  window.close();
+					  
+				  } else {
+					  alert('거절 실패');
+				  }
+	  			
+	  			}
+			});
+		});
+	});
+		
+
+			
 </script>
 
 <!-- closest => 가장 가까운 (.->클래스, #->아이디,) 이름을 가진 놈 찾아 타겟으로 만듦.
@@ -283,7 +340,7 @@
 
 
 
-	<table border="1">
+	<table class="joinList" border="1">
 		<tr>
 			<th colspan="3" width="500px" >함께해요 참여자 목록</th>
 		</tr>
@@ -292,6 +349,7 @@
 			<th>신청일자</th>
 		</tr>
 				<c:forEach var="joinList" items="${joinList }">
+				<input type="hidden" name="mem_id" value="${joinList.mem_id }">
 		<tr>		
 				<td><img src="${pageContext.request.contextPath}/image/picture/${joinList.mem_image}" width ="30" height ="30" alt="-"></td>				
 				<td>${joinList.mem_nickname }(${joinList.mem_username })	</td>				
@@ -300,28 +358,37 @@
 				</c:forEach>
 	</table>
 			<br>
-			<input type="button" class ="article_submit"   value="신청하기">
-			<input type="button" class ="article_submit"   value="취소하기">
+			<c:choose>
+			<c:when test="${memberInfo.mem_id != null}">
+				<input type="button" class ="article_submit"   value="신청하기">
+				<input type="button" class ="article_submit"   value="취소하기">
+			</c:when>
+			</c:choose>	
 			<br>
 			<br>
 			
-		<table border="1">
+			
+		<table class="waitingList" border="1">
 		<tr>
-			<th colspan="3" width="500px" >함께해요 참여 대기 목록</th>
+			<th colspan="5" width="500px" >함께해요 참여 대기 목록</th>
 		</tr>
 		<tr>
 			<th colspan="2">대기자</th>
-			<th>신청 대기 일자</th>
+			<th colspan="2">신청 대기 일자</th>
 		</tr>
 				<c:forEach var="waitingList" items="${waitingList }">
+				<input type="hidden" name="mem_id" value="${waitingList.mem_id }">
 		<tr>		
 				<td><img src="${pageContext.request.contextPath}/image/picture/${waitingList.mem_image}" width ="30" height ="30" alt="-"></td>				
 				<td>${waitingList.mem_nickname }(${waitingList.mem_username })	</td>				
-				<td><fmt:formatDate value="${waitingList.wait_date}" pattern="yy년 MM월 dd일 : HH:mm:ss"/></td>
+				<td><fmt:formatDate value="${waitingList.wait_date}" pattern="yy년 MM월 dd일 : HH:mm:ss"/>
+					<button type="button" class="joinAccept">수락</button>
+					<button type="button" class="joinRefuse">취소</button>
+				</td>
 		</tr>		
 				</c:forEach>
 	</table>		
-
+	<br>
 
 
 
@@ -374,7 +441,7 @@
 	<!-- 댓글리스트 -->
 
 		<c:forEach var="reply" items="${replyList }">
-			<div class="reply_box" style= "border: solid; ${reply.rep_step > 1 ? 'margin-left: 50px' : ''}">    
+			<div class="reply_box" style= " ${reply.rep_step > 1 ? 'margin-left: 50px' : ''}">    
 				<input type="hidden" name="art_id"  	value="${reply.art_id }">
 				<input type="hidden" name="brd_id" 		value="${reply.brd_id }">
 				<input type="hidden" name="mem_id" 		value="${reply.mem_id }">
@@ -433,6 +500,7 @@
 					</c:choose>	
 				</form>
 			</div>
+			<br>
 		</c:forEach>
 
 

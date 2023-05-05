@@ -57,8 +57,8 @@
                 <td><textarea class="report_content" name="report_content" rows="30" cols="50" style="resize: none;"></textarea></td>
             </tr>
             <tr>
-                <td><button type="button" class="rep_submit">신고하기</button></td>
-                <td><button type="button" class="rep_cancel">취소하기</button></td>
+             	<td> <button type="button" class="rep_submit">신고하기</button> </td>
+              	<td> <button type="button" class="rep_cancel">취소하기</button> </td>
             </tr>
         </table>
     </form>

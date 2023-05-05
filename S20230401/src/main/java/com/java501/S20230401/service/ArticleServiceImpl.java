@@ -125,6 +125,9 @@ public class ArticleServiceImpl implements ArticleService {
 		return delResult;
 	}
 	
+	
+	
+	
 	// 임동빈
 	
 	// 총 게시글 수 Count
@@ -228,7 +231,7 @@ public class ArticleServiceImpl implements ArticleService {
 		else return 1;
 	}
 	
-	
+	// 댓글신고하기
 	@Override
 	public int dbReportReply(Article article) {
 		int dbInsertReport = ad.dbInsertReport(article);
@@ -238,21 +241,51 @@ public class ArticleServiceImpl implements ArticleService {
 		else return 1;
 	}
 	
-	
-	
-	
-	
+	// 거래 신청자 목록
 	@Override
 	public List<Article> dbTradeJoinMember(Article article) {
 		List<Article> joinList = ad.dbTradeJoinMember(article);
 		return joinList;
 	}
 	
+	// 거래 대기자 목록
 	@Override
 	public List<Article> dbTradeWaitingMember(Article article) {
 		List<Article> WaitingList = ad.dbTradeWaitingMember(article);
 		return WaitingList;
 	}
+	
+	// 거래 대기자로 등록
+	@Override
+	public int dbTradeWaiting(Article article) {
+		int TradeWaiting = ad.dbTradeWaiting(article);
+		return TradeWaiting;
+	}
+	
+	// 거래 대기자 -> 신청자로 등록
+	@Override
+	@Transactional
+	public int dbTradeJoinAccept(Article article) {
+		int TradeInsertJoin    = ad.dbTradeInsertJoin(article);
+		int TradeDeleteWaiting = ad.dbTradeDeleteWaiting(article); 
+		if ((TradeInsertJoin + TradeDeleteWaiting) == 0)
+			return 0;
+		return 1;
+	}
+	
+	@Override
+	public int dbTradeJoinRefuse(Article article) {
+		int TradeDeleteWaiting = ad.dbTradeDeleteWaiting(article); 
+		return TradeDeleteWaiting;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

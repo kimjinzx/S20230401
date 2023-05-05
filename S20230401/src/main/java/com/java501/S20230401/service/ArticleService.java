@@ -6,8 +6,6 @@ import com.java501.S20230401.model.Article_Trade_Reply;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Region;
 import com.java501.S20230401.model.Article;
-import com.java501.S20230401.model.Comm;
-import com.java501.S20230401.model.Region;
 import com.java501.S20230401.model.ArticleMember;
 import com.java501.S20230401.model.MemberInfo;
 import com.java501.S20230401.util.SummaryType;
@@ -38,6 +36,10 @@ public interface ArticleService {
 	public int 			bjUpdateArticle(Article article);
 	public int 			delete(Article article);
 	
+	
+	
+	
+	
 	// 임동빈
 	int 			dbtotalArticle(Article article);
 	List<Article> 	dbListArticle(Article article);
@@ -55,6 +57,14 @@ public interface ArticleService {
 	int 			dbReportReply(Article article);
 	List<Article>   dbTradeJoinMember(Article article);
 	List<Article> 	dbTradeWaitingMember(Article article);
+	int 			dbTradeWaiting(Article article);
+	int 			dbTradeJoinAccept(Article article);
+	int 			dbTradeJoinRefuse(Article article);
+	
+	
+	
+	
+	
 	
 	// 김진현
 	List<Article_Trade_Reply> 			getDutchpayList(String boardName);//진현

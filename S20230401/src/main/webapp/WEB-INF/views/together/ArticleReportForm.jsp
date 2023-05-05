@@ -50,6 +50,7 @@
 <body>
 <h2>게시글 신고</h2>
     <form action="${pageContext.request.contextPath }/board/ArticleReport" method="POST">  
+
         <table class="report_table" border="1">
             <tr>
                 <th>신고내용</th>

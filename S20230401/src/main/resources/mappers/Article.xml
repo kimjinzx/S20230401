@@ -649,6 +649,26 @@
 		where 	trd_id = #{trd_id}
 	</select>
 	
+	<insert id="dbTradeWaiting" parameterType="Article">
+		Insert into waiting (trd_id, mem_id, wait_date)
+		values              (#{trd_id}, #{mem_id}, sysdate)
+	</insert>
+	
+		
+	<insert id="dbTradeInsertJoin" parameterType="Article">
+		Insert into Join (trd_id, mem_id, join_date)
+		values           (#{trd_id}, #{mem_id}, sysdate)
+	</insert>
+	
+	<delete id="dbTradeDeleteWaiting" parameterType="Article">
+		DELETE From waiting
+		WHERE trd_id   = #{trd_id}
+		AND   mem_id   = #{mem_id}
+	
+	</delete>
+	
+
+	
 	
 	
 	

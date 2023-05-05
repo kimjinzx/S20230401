@@ -443,6 +443,42 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 	
 	
+	@Override
+	public int dbTradeWaiting(Article article) {
+		int TradeWaiting = 0;
+		
+		try {
+			TradeWaiting = session.insert("dbTradeWaiting", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return TradeWaiting;                                    
+	}
+	
+	@Override
+	public int dbTradeInsertJoin(Article article) {
+		int TradeInsertJoin = 0;
+		try {
+			TradeInsertJoin = session.insert("dbTradeInsertJoin", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return TradeInsertJoin;
+	}
+	
+	
+	@Override
+	public int dbTradeDeleteWaiting(Article article) {
+		int TradeDeleteWaiting = 0;
+		try {
+			TradeDeleteWaiting = session.delete("dbTradeDeleteWaiting", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return TradeDeleteWaiting;
+	}
+	
+	
 	
 	
 	

@@ -75,7 +75,7 @@ public class TogetherController {
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 
 		// 게시글 조회수 증가
-		int ReadArticleCnt = as.dbReadArticleCnt(article);
+		as.dbReadArticleCnt(article);
 
 		// 상세게시글 요소 구현
 		Article detailArticle = as.dbdetailArticle(article);
@@ -338,7 +338,7 @@ public class TogetherController {
 	 @RequestMapping(value="/board/ReplyReport")
 	 @ResponseBody
 	 public String reportReply(@AuthenticationPrincipal MemberDetails memberDetails,
-			 					 @RequestBody Article article, Model model) {
+			 				   @RequestBody Article article, Model model) {
 		 JSONObject jsonObj = new JSONObject();
 		 
 		 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
@@ -363,15 +363,66 @@ public class TogetherController {
 	 Article article = new Article();
 	 article.setArt_id(art_id);
 	 article.setBrd_id(brd_id);
-	 // article.setMem_id(memberDetails.getMemberInfo().getMem_id());
-	 
 	 Article detailArticle = as.dbdetailArticle(article);
 	 
+	 // article.setMem_id(memberDetails.getMemberInfo().getMem_id());
 	 
 	 model.addAttribute("article", detailArticle);
 	 
 	 return "together/TradeJoinForm";
 
+	 }
+	 
+	 // 거래 신청 (ajax 사용)
+	 @RequestMapping(value="/board/TradeWaiting")
+	 @ResponseBody
+	 public String TradeWaiting(@AuthenticationPrincipal MemberDetails memberDetails,
+			 					 @RequestBody Article article, Model model) {
+		 JSONObject jsonObj = new JSONObject();
+		 
+		 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		 
+		  int TradeWaiting = as.dbTradeWaiting(article);
+		 
+		  jsonObj.append("result", TradeWaiting);
+//		  jsonObj.append("content", article.getReport_content());
+		 
+		 return jsonObj.toString() ;
+	 }
+	 
+	 // 거래 대기자 -> 거래 신청자 수락 (ajax 사용)
+	 @RequestMapping(value="/board/joinAccept")
+	 @ResponseBody
+	 public String TradeJoinAccept(@AuthenticationPrincipal MemberDetails memberDetails,
+			 					   @RequestBody Article article, Model model) {
+		 JSONObject jsonObj = new JSONObject();
+		 
+		 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		 
+		  int TradeJoinAccept = as.dbTradeJoinAccept(article);
+		 
+		  jsonObj.append("result", TradeJoinAccept);
+//		  jsonObj.append("content", article.getReport_content());
+		 
+		 return jsonObj.toString();
+	 }
+	 
+	 
+	 // 거래 대기자 -> 거래 신청자 수락 (ajax 사용)
+	 @RequestMapping(value="/board/joinRefuse")
+	 @ResponseBody
+	 public String TradeJoinRefuse(@AuthenticationPrincipal MemberDetails memberDetails,
+			 					   @RequestBody Article article, Model model) {
+		 JSONObject jsonObj = new JSONObject();
+		 
+		 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		 
+		  int TradeJoinRefuse = as.dbTradeJoinRefuse(article);
+		 
+		  jsonObj.append("result", TradeJoinRefuse);
+//		  jsonObj.append("content", article.getReport_content());
+		 
+		 return jsonObj.toString();
 	 }
 
 	 
