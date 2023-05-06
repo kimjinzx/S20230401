@@ -14,6 +14,12 @@
 				#{art_tag4, jdbcType=VARCHAR}, #{art_tag5, jdbcType=VARCHAR}, NULL,
 				0, 0, 0, 0, 0, NULL)
 	</insert>
+	<update id="hgCompressedUpdateArticle" parameterType="Article">
+		UPDATE ARTICLE SET ART_TITLE = #{art_title}, ART_CONTENT = #{art_content}, ART_TAG1 = #{art_tag1, jdbcType=VARCHAR},
+								   ART_TAG2 = #{art_tag2, jdbcType=VARCHAR}, ART_TAG3 = #{art_tag3, jdbcType=VARCHAR},
+								   ART_TAG4 = #{art_tag4, jdbcType=VARCHAR}, ART_TAG5 = #{art_tag5, jdbcType=VARCHAR}
+		WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
+	</update>
 	<select id="hgGetArticleById" parameterType="Article" resultType="Article">
 		SELECT * FROM ARTICLE
 		WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}

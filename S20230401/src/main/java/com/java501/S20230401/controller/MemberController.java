@@ -69,7 +69,7 @@ public class MemberController {
 		if (memberDetails != null)
 			try { response.sendRedirect(referer); }
 			catch (IOException e) { e.printStackTrace(); }
-		request.getSession().setAttribute("prevPage", referer);
+		if (request.getSession().getAttribute("prevPage") == null) request.getSession().setAttribute("prevPage", referer);
 		return "loginForm";
 	}
 	

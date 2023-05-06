@@ -22,6 +22,7 @@ public interface ArticleService {
 	public List<ArticleMember> hgGetArticlesOfMember(int mem_id);
 	public int hgIncreaseReadCount(Article searcher);
 	public int hgRecommendArticle(Article searcher);
+	public int hgCompressedUpdateArticle(Article article);
 
 	// 양동균
 	int allTotalArt(Article article);

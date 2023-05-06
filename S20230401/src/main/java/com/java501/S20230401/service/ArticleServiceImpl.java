@@ -67,6 +67,10 @@ public class ArticleServiceImpl implements ArticleService {
 	public int hgRecommendArticle(Article searcher) {
 		return ad.hgRecommendArticle(searcher);
 	}
+	@Override
+	public int hgCompressedUpdateArticle(Article article) {
+		return ad.hgCompressedUpdateArticle(article);
+	}
 	
 
 	// 양동균

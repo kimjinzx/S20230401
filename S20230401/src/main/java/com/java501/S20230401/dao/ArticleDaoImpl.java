@@ -148,6 +148,10 @@ public class ArticleDaoImpl implements ArticleDao {
 		return session.update("hgRecommendArticle", searcher);
 	}
 	
+	@Override
+	public int hgCompressedUpdateArticle(Article article) {
+		return session.update("hgCompressedUpdateArticle", article);
+	}
 	
 	
 	

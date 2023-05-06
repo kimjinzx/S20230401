@@ -12,14 +12,18 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/presets.css">
 <script type="text/javascript">
 	$(() => {
-		$('.radio-button').click(e => {
+		$('.radio-button').on('click', e => {
 			let group = $(e.target).attr('data-group');
-			$('.radio-button[data-group="' + group + '"]').each((index, item) => {
-				if (item !== e.target) $(item).attr('data-selected', 'false');
-				else $(item).attr('data-selected', 'true');
+			$('.radio-button[data-group="' + group + '"]').not($(e.target)).css('background-color', '').attr({
+				'data-selected' : 'false',
+				'disabled' : false
+			});
+			$(e.target).css('background-color', '').attr({
+				'data-selected' : 'true',
+				'disabled' : true
 			});
 		});
-		$('.side-menu').click(e => {
+		$('.side-menu').on('click', e => {
 			let ajaxUrl = '${pageContext.request.contextPath}/admin/' + $(e.target).attr('data-value');
 			$.ajax({
 				url: ajaxUrl,
@@ -116,10 +120,6 @@
 		outline: none;
 		cursor: pointer;
 	}
-	aside > div#admin-menu > button.side-menu:hover {
-		background-color: rgba(var(--theme-rgb), 0.5);
-		color: var(--theme-font);
-	}
 	aside > div#admin-menu > button.side-menu[data-selected="true"] {
 		background-color: var(--theme);
 		color: var(--theme-font);
@@ -182,6 +182,28 @@
 		flex-grow: 1;
 		overflow-y: auto;
 	}
+	div.admin-main-title-box {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	h2.admin-main-title {
+		color: var(--subtheme);
+		font-weight: bolder;
+	}
+	div.admin-main-title-box > button {
+		border: 2px solid var(--subtheme);
+		background-color: var(--theme);
+		color: var(--theme-font);
+		padding: 2.5px 5px;
+		border-radius: 5px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 14px;
+		font-weight: bold;
+		cursor: pointer;
+	}
 	div.admin-side-panel {
 		position: absolute;
 		height: 100%;
@@ -197,6 +219,63 @@
 		border-left: 5px solid var(--subtheme);
 		transition: width .25s cubic-bezier(.33, 1, .33, 1);
 	}
+	button.admin-side-panel-close {
+		background-color: var(--subtheme);
+		border: 0;
+		outline: none;
+		cursor: pointer;
+		height: 100%;
+	}
+	div.admin-side-panel-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: stretch;
+	}
+	div.admin-side-panel-header > div.admin-side-panel-right {
+		display: flex;
+		justify-content: flex-end;
+		align-items: stretch;
+	}
+	div.admin-side-panel-header > div.admin-side-panel-right > div.admin-side-panel-view {
+		display: flex;
+		justify-content: flex-end;
+		align-items: stretch;
+	}
+	div.admin-side-panel-header > div.admin-side-panel-right > div.admin-side-panel-modify {
+		display: none;
+		justify-content: flex-end;
+		align-items: stretch;
+	}
+	div.admin-side-panel-right button.admin-side-panel-button {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: var(--subtheme);
+		color: var(--subtheme-font);
+		font-size: 14px;
+		font-weight: bold;
+		border: 0;
+		outline: none;
+		cursor: pointer;
+	}
+	div.admin-side-panel-right button.admin-side-panel-button > * {
+		pointer-events: none;
+	}
+	div.admin-side-panel-right button.admin-side-panel-button > span {
+		font-size: inherit;
+		font-weight: inherit;
+		color: inherit;
+		padding: 5px 10px;
+	}
+	button.admin-side-panel-close > svg {
+		width: 24px;
+		height: 24px;
+		stroke: var(--subtheme-font);
+		stroke-width: 2px;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		pointer-events: none;
+	}
 	div.admin-board-1 {
 		border: 2px solid var(--subtheme);
 		border-left: 0;
@@ -205,6 +284,17 @@
 		flex-direction: column;
 		justify-content: flex-start;
 		align-items: stretch;
+	}
+	div.admin-board-1-head {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	div.admin-board-1-head > span {
+		font-size: 14px;
+		font-weight: bolder;
+		padding: 2.5px 5px;
+		color: var(--subtheme);
 	}
 	div.admin-board-1 > div.admin-article-item {
 		display: flex;
@@ -371,15 +461,15 @@
 			</span>
 		</div>
 		<div id="admin-menu">
-			<button class="side-menu radio-button" data-group="menu" data-selected="true" data-value="notice">공지사항 관리</button>
-			<button class="side-menu radio-button" data-group="menu" data-selected="false" data-value="event">이벤트 관리</button>
-			<button class="side-menu radio-button" data-group="menu" data-selected="false" data-value="report">신고 관리</button>
-			<button class="side-menu radio-button" data-group="menu" data-selected="false" data-value="member">회원 관리</button>
-			<button class="side-menu radio-button" data-group="menu" data-selected="false" data-value="article">게시글 관리</button>
-			<button class="side-menu radio-button" data-group="menu" data-selected="false" data-value="suggest">건의글 관리</button>
+			<button class="side-menu radio-button adv-hover" data-group="menu" data-selected="true" data-value="notice">공지사항 관리</button>
+			<button class="side-menu radio-button adv-hover" data-group="menu" data-selected="false" data-value="event">이벤트 관리</button>
+			<button class="side-menu radio-button adv-hover" data-group="menu" data-selected="false" data-value="report">신고 관리</button>
+			<button class="side-menu radio-button adv-hover" data-group="menu" data-selected="false" data-value="member">회원 관리</button>
+			<button class="side-menu radio-button adv-hover" data-group="menu" data-selected="false" data-value="article">게시글 관리</button>
+			<button class="side-menu radio-button adv-hover" data-group="menu" data-selected="false" data-value="suggest">건의글 관리</button>
 		</div>
 		<div id="admin-action">
-			<button class="admin-action-button adv-hover" type="button" onclick="location.href = '${pageContext.request.contextPath}';">
+			<button class="admin-action-button adv-hover" type="button" onclick="location.href = '${pageContext.request.contextPath}/';">
 				<span>메인 페이지</span>
 			</button>
 			<button class="admin-action-button adv-hover" type="button">

@@ -1,7 +1,7 @@
 /**
  * 
  */
-function writeAction () {
+function updateAction () {
 	if ($('#art_title').val() == '' || $('#art_title').val() == null) {
 		return false;
 	}

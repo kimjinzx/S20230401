@@ -8,8 +8,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import com.java501.S20230401.handler.ShareGoLoginSuccessHandler;
+import com.java501.S20230401.handler.ShareGoLogoutHandler;
+import com.java501.S20230401.handler.ShareGoLogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -44,7 +47,9 @@ public class SecurityConfig {
 			.successHandler(successHandler())
 			.and()
 			.logout()
-			.logoutSuccessUrl("/")
+			////.logoutSuccessUrl("/")
+			//.addLogoutHandler(new ShareGoLogoutHandler())
+			.logoutSuccessHandler(new ShareGoLogoutSuccessHandler())
 			.invalidateHttpSession(true);
 		return http.build();
 	}

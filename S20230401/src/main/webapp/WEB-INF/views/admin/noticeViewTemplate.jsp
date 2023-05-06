@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/preset.jsp" %>
+<script type="text/javascript">
+	$(() => {
+		
+	});
+</script>
 <div class="admin-side-container">
 	<div id="art_title">
 		<span>${article.art_title }</span>

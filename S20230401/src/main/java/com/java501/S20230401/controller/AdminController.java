@@ -7,12 +7,14 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONObject;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.MemberDetails;
@@ -65,6 +67,8 @@ public class AdminController {
 				Article searcher = new Article();
 				searcher.setBrd_id(1510);
 				Paging paging = new Paging(as.allTotalArt(searcher), Integer.toString(page));
+				//paging.setPageRow(10);
+				//paging.setPageBlock(10);
 				searcher.setStart(paging.getStart());
 				searcher.setEnd(paging.getEnd());
 				List<Article> articles = as.allArticleList(searcher);
@@ -103,5 +107,53 @@ public class AdminController {
 		}
 		
 		return "admin/" + type + "ViewTemplate";
+	}
+	
+	@RequestMapping(value = "/admin/{type}/update")
+	public String adminUpdatePage(@AuthenticationPrincipal MemberDetails memberDetails,
+											@PathVariable String type, @RequestBody(required = false) Map<String, Object> data,
+											HttpServletRequest request, HttpServletResponse response,
+											Model model) {
+		if (memberDetails == null)
+			try { response.sendRedirect("/"); }
+			catch (Exception e) { e.printStackTrace(); }
+		else model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		
+		switch(type) {
+		case "notice":
+			Integer art_id = (int)data.get("art_id");
+			Article searcher = new Article();
+			searcher.setArt_id(art_id);
+			searcher.setBrd_id(1510);
+			Article article = as.getArticleById(searcher);
+			model.addAttribute("article", article);
+			break;
+		}
+		
+		return "admin/" + type + "UpdateTemplate";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/admin/{type}/updateProc")
+	public String adminUpdateProcessPage(@AuthenticationPrincipal MemberDetails memberDetails,
+												     @PathVariable String type, @RequestBody(required = false) Article article,
+												     HttpServletRequest request, HttpServletResponse response,
+												     Model model) {
+		if (memberDetails == null)
+			try { response.sendRedirect("/"); }
+		catch (Exception e) { e.printStackTrace(); }
+		else model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		
+		JSONObject jsonObj = new JSONObject();
+		switch(type) {
+		case "notice":
+			System.out.println(article);
+			int result = as.hgCompressedUpdateArticle(article);
+			jsonObj.append("result", result);
+			jsonObj.append("art_id", article.getArt_id());
+			break;
+		}
+		
+		return jsonObj.toString();
 	}
 }
