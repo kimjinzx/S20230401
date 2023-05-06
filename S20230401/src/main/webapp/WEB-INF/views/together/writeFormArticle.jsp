@@ -227,16 +227,15 @@
 				<td><input type="date" name="trd_enddate1" required="required"></td>
 			</tr>
 			<tr>
-				<th>모집인원</th>
-				<td><input type="number" name="trd_max" min="1" max="100"></td>
+				<th>모집인원 (본인 포함)</th>
+				<td><input type="number" name="trd_max" min="1" max="100"> 명</td>
 			</tr>
 			<tr>
-				<th>최소나이</th>
-				<td><input type="number" name="trd_minage" min="1" max="100"></td>
-			</tr>
-			<tr>
-				<th>최대나이</th>
-				<td><input type="number" name="trd_maxage" min="1" max="100"></td>
+				<th>나이제한</th>
+				<td>
+					<input type="number" name="trd_minage" min="1" max="100"> ~
+					<input type="number" name="trd_maxage" min="1" max="100">
+				</td>
 			</tr>
 			<tr>
 				<th>성별</th>

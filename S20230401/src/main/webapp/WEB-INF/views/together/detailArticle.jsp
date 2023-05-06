@@ -34,7 +34,7 @@
 					  success : data => {
 						  
 						  if (data.result == 1) {	// 성공
-							  	alert('수정 완료.')
+							  	alert('수정 완료')
 							  	$(e.target).closest('.reply_box').find('.rep_content1').text(data.content);
 							  	$(e.target).closest('.reply_box').find('.rep_content2').val(data.content);
 							  	
@@ -43,7 +43,7 @@
 								$(e.target).closest('.reply_box').find('.reply_cancel').toggle();		// 취소버튼 보이게
 								$(e.target).closest('.reply_box').find('.reply_delete').toggle();
 						  } else 
-							    alert('수정 실패.');
+							    alert('수정 실패');
 					  }
 				  }
 				);
@@ -119,6 +119,10 @@
 		
 	$(() => {
 			$('.joinAccept').click(e => {
+				
+				if(confirm('정말 수락하시겠습니까 ?') == true) {
+				
+				
 				let rawData = { mem_id : $(e.target).closest('.waitingList').find('input[name="mem_id"]').val(),
 								trd_id : ${detailArticle.trd_id} }
 			
@@ -142,6 +146,9 @@
 		  			
 		  			}
 				});
+				} else {
+					return;
+				}
 			});
 		});
 		
@@ -149,6 +156,9 @@
 	// 거래 대기자 거절 (ajax)
 	$(() => {
 		$('.joinRefuse').click(e => {
+			
+			if(confirm('정말 취소하시겠습니까 ?') == true) {
+			
 			let rawData = { mem_id : $(e.target).closest('.waitingList').find('input[name="mem_id"]').val(),
 							trd_id : ${detailArticle.trd_id} }
 		
@@ -163,15 +173,18 @@
 			  success : data => {
 					  console.log(data.result);
 				  if(data.result == 1) {
-					  alert('거절 완료');
+					  alert('취소 완료');
 					  window.close();
 					  
 				  } else {
-					  alert('거절 실패');
+					  alert('취소 실패');
 				  }
 	  			
 	  			}
 			});
+			} else {
+				return;
+			}
 		});
 	});
 		
@@ -213,9 +226,12 @@
 	
 	<p>
 	<input type="button" value="목록" 	onclick="${pageContext.request.contextPath }location.href='together?category=1000';">
-	<input type="button" value="수정하기" 	onclick="${pageContext.request.contextPath }location.href='/board/updateFormArticle?brd_id=${detailArticle.brd_id }&art_id=${detailArticle.art_id }';">
-	<input type="button" value="삭제하기"  onclick="${pageContext.request.contextPath }location.href='/board/deleteArticle?brd_id=${detailArticle.brd_id }&art_id=${detailArticle.art_id }';">
-	
+	<c:choose>
+		<c:when test="${memberInfo.mem_id == detailArticle.mem_id}">
+			<input type="button" value="수정하기" 	onclick="${pageContext.request.contextPath }location.href='/board/updateFormArticle?brd_id=${detailArticle.brd_id }&art_id=${detailArticle.art_id }';">
+			<input type="button" value="삭제하기"  onclick="${pageContext.request.contextPath }location.href='/board/deleteArticle?brd_id=${detailArticle.brd_id }&art_id=${detailArticle.art_id }';">
+		</c:when>
+	</c:choose>	
 	
 		<input type="hidden" name="art_id" id="art_id" value="${detailArticle.art_id }">
 		<input type="hidden" name="brd_id" id="brd_id" value="${detailArticle.brd_id }">
@@ -265,15 +281,11 @@
 		</tr>
 		<tr>
 			<th>모집인원</th>
-			<td>${detailArticle.trd_max }</td>
+			<td>${detailArticle.trd_max } (본인 포함)</td>
 		</tr>
 		<tr>
-			<th>최소나이</th>
-			<td>${detailArticle.trd_minage }</td>
-		</tr>
-		<tr>
-			<th>최대나이</th>
-			<td>${detailArticle.trd_maxage }</td>
+			<th>나이제한</th>
+			<td>${detailArticle.trd_minage }세 ~ ${detailArticle.trd_maxage }세</td>
 		</tr>
 		<tr>
 			<th>성별</th>
@@ -367,27 +379,51 @@
 			<br>
 			<br>
 			
-			
+	 <c:choose>
+		<c:when test="${memberInfo.mem_id == detailArticle.mem_id}">
 		<table class="waitingList" border="1">
-		<tr>
-			<th colspan="5" width="500px" >함께해요 참여 대기 목록</th>
-		</tr>
-		<tr>
-			<th colspan="2">대기자</th>
-			<th colspan="2">신청 대기 일자</th>
-		</tr>
-				<c:forEach var="waitingList" items="${waitingList }">
+			<tr>
+				<th colspan="5" width="500px" >함께해요 참여 대기 목록</th>
+			</tr>
+			<tr>
+				<th colspan="2">대기자</th>
+				<th colspan="2">신청 대기 일자</th>
+			</tr>
+			<c:forEach var="waitingList" items="${waitingList }">
 				<input type="hidden" name="mem_id" value="${waitingList.mem_id }">
-		<tr>		
-				<td><img src="${pageContext.request.contextPath}/image/picture/${waitingList.mem_image}" width ="30" height ="30" alt="-"></td>				
-				<td>${waitingList.mem_nickname }(${waitingList.mem_username })	</td>				
-				<td><fmt:formatDate value="${waitingList.wait_date}" pattern="yy년 MM월 dd일 : HH:mm:ss"/>
-					<button type="button" class="joinAccept">수락</button>
-					<button type="button" class="joinRefuse">취소</button>
-				</td>
-		</tr>		
-				</c:forEach>
-	</table>		
+				<tr>		
+					<td><img src="${pageContext.request.contextPath}/image/picture/${waitingList.mem_image}" width ="30" height ="30" alt="-"></td>				
+					<td>${waitingList.mem_nickname }(${waitingList.mem_username })	</td>				
+					<td><fmt:formatDate value="${waitingList.wait_date}" pattern="yy년 MM월 dd일 : HH:mm:ss"/>
+						<button type="button" class="joinAccept">수락</button>
+						<button type="button" class="joinRefuse">취소</button>
+					</td>
+				</tr>
+			</c:forEach>
+		</table>
+		</c:when>
+	</c:choose>		
+	<br>
+	
+	
+	<div class="waitingList">
+	<c:forEach var="waitingList" items="${waitingList }">
+		<input type="hidden" name="mem_id" value="${waitingList.mem_id }">
+		<c:choose>
+			<c:when test="${memberInfo.mem_id == waitingList.mem_id}">
+				<table>
+					<tr>
+						<td colspan="2">현재 요청 대기 중인 거래입니다.</td>
+					</tr>
+					<tr>	
+						<td>취소하시겠습니까?</td>
+						<td><button type="button" class="joinRefuse">취소하기</button></td>
+					</tr>	
+				</table>
+			</c:when>
+		</c:choose>
+	</c:forEach>
+	</div>
 	<br>
 
 

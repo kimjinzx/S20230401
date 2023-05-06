@@ -177,9 +177,11 @@
 		<h1>함께 해요 게시판</h1>
 		<p>
 		<p>
-				<input type="button" value="글쓰기"
-			onclick="${pageContext.request.contextPath}location.href='writeFormArticle'">
-
+			<c:choose>
+				<c:when test="${memberInfo.mem_id != null}">
+				<input type="button" value="글쓰기" onclick="${pageContext.request.contextPath}location.href='writeFormArticle'">
+				</c:when>
+			</c:choose>	
 		<p>
 			<input type="button" value="전체"
 				onclick="location.href='${pageContext.request.contextPath}/board/together?category=1000'">
