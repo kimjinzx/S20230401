@@ -24,7 +24,7 @@
 
 </head>
 <body>
-	<div class="view-content" style="padding: 10% 20%;">
+	<div class="view-content">
 			
 		<!-- 게시글 -->
 		<div class="view-article">
@@ -107,12 +107,12 @@
 				
 				<div class="share-trdHeader">
 					<span>${article.trade.trd_cost > 0 ? article.trade.trd_cost : '무료나눔'}</span>
-					<span>가입일 : <button class="btn" type="button"><fmt:formatDate value="${article.art_regdate}" pattern="yy-MM-dd :HH:mm:ss"/></button></span>
+					<span>가입일 : <button class="btn" type="button"><fmt:formatDate value="${article.art_regdate}" pattern="yy-MM-dd"/></button></span>
 					<span><button>마감일 : <fmt:formatDate value="${article.trade.trd_enddate}" pattern="yyyy-MM-dd"/></button></span>
 				</div>
 				<div class="share-trdContent">
-					<span>지역제한 :${article.trade.region.reg_name}</span>
-					<span>상세장소 :${article.trade.trd_loc}</span>
+					<span>지역제한 : ${article.trade.region.reg_name}</span>
+					<span>상세장소 : ${article.trade.trd_loc}</span>
 					<hr />
 					<span>최대 인원 : ${article.trade.trd_max}명</span>
 					<span>최소 나이 : ${article.trade.trd_minage>0? article.trade.trd_minage:'제한없음' }</span>
@@ -166,7 +166,7 @@
 			<div class="article-content">
 				<label for="content">내용</label>
 				<hr />
-				<textarea name="art_content">${article.art_content}</textarea>
+				<textarea name="art_content" disabled="disabled">${article.art_content}</textarea>
 			</div>
 
 			<!-- 추천 비추천 -->

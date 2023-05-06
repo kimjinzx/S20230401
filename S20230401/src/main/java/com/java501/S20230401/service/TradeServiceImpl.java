@@ -1,6 +1,7 @@
 package com.java501.S20230401.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.java501.S20230401.dao.ArticleDao;
@@ -18,7 +19,7 @@ public class TradeServiceImpl implements TradeService {
 	// 양동균
 	// 거래글 수정
 	@Override
-	@Transactional(rollbackFor = {Exception.class})
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public int updateShare(Article article) {
 		int result = 0;
 		try {

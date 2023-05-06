@@ -10,7 +10,7 @@
 	<!-- article -  모달 팝업 -->
 	<div class="myModal" id="myModal" style="display: none;">
 		<div class="myModal-window">
-			<div class="modal-head">
+			<div class="modal-header">
 				<div class="modal-title">무료나눔 신청</div>
 				<div class="modal-close" id="modal-close">&times;</div>
 			</div>
@@ -23,7 +23,6 @@
 						<li>다른 이용자의 정보를 무단으로 수집, 이용하거나 다른 사람들에게 제공하는 행위</li>
 						<li>서비스를 영리나 홍보 목적으로 이용하는 행위</li>
 						<li>음란 정보나 저작권 침해 정보 등 공서양속 및 법령에 위반되는 내용의 정보 등을 발송하거나 게시하는 행위</li>
-						<li>당근마켓의 동의 없이 당근마켓 서비스 또는 이에 포함된 소프트웨어의 일부를 복사, 수정, 배포, 판매, 양도, 대여, 담보제공하거나 타인에게 그 이용을 허락하는 행위</li>
 						<li>소프트웨어를 역설계하거나 소스 코드의 추출을 시도하는 등 당근마켓 서비스를 복제, 분해 또는 모방하거나 기타 변형하는 행위</li>
 						<li>관련 법령, 당근마켓의 모든 약관 또는 운영정책을 준수하지 않는 행위</li>
 					</ul>
@@ -37,6 +36,9 @@
 						<li>인원 : ${article.trade.trd_max}</li>
 					</ul>
 				</div>
+			</div>
+			<div class="modal-checkbox">
+				<label for="myCheckbox"><input type="checkbox" id="myCheckbox" class="myCheckbox" />동의</label>
 			</div>
 			<div class="modal-button">
 				<button class="btns-action" id="btns-modalApply">신청</button>
