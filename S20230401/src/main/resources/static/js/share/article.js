@@ -143,19 +143,38 @@ $(document).ready(() => {
 
 // 추천, 비추천 여부 확인
 function checkVote(){
-    let cookieGood = document.cookie.match(new RegExp('\\b'+artId+brdId+'good\\b'));
-    let cookieBad = document.cookie.match(new RegExp('\\b'+artId+brdId+'bad\\b'));
-    console.log(cookieGood);
-    console.log(cookieBad);
-    // 이미 추천 한 경우
-    if(cookieGood){
-        document.getElementById('btns-good').style.display = 'none';
-        document.getElementById('btns-goodcancel').style.display = '';
-    }
-    // 이미 비추천 한 경우
-    if(cookieBad){
-        document.getElementById('btns-bad').style.display = 'none';
-        document.getElementById('btns-badcancel').style.display = '';
+    let cookies = document.cookie.split(';');
+    for(let cookie of cookies){
+        cookie = cookie.trim();
+        // 쿠키 name에 유저가 있는지 확인
+        console.info('share|'+memId+'=', '굿', cookie.includes(artId+brdId+'good'), '베드', cookie.includes(artId+brdId+'bad'))
+        if(cookie.startsWith('share|'+memId+'=')){
+            // 쿠키 value에 추천 비추천 확인
+            if(cookie.includes(artId+brdId+'good')){
+                document.getElementById('btns-good').style.display = 'none';
+                document.getElementById('btns-goodcancel').style.display = '';
+            }
+            if(cookie.includes(artId+brdId+'bad')){
+                document.getElementById('btns-bad').style.display = 'none';
+                document.getElementById('btns-badcancel').style.display = '';
+            }
+        }
+
+        // let cookieGood = document.cookie.match(new RegExp('\\b'+artId+brdId+'good\\b'));
+        // let cookieBad = document.cookie.match(new RegExp('\\b'+artId+brdId+'bad\\b'));
+        // console.log(cookieGood);
+        // console.log(cookieBad);
+        
+        // // 이미 추천 한 경우
+        // if(cookieGood){
+        //     document.getElementById('btns-good').style.display = 'none';
+        //     document.getElementById('btns-goodcancel').style.display = '';
+        // }
+        // // 이미 비추천 한 경우
+        // if(cookieBad){
+        //     document.getElementById('btns-bad').style.display = 'none';
+        //     document.getElementById('btns-badcancel').style.display = '';
+        // }
     }
 }
 

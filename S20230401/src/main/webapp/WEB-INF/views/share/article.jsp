@@ -18,7 +18,7 @@
 	sessionStorage.setItem('category', '${category}');
 	sessionStorage.setItem('memId', '${memberInfo.mem_id}')
 	
-	</script>
+</script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/share/article.js"></script>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/share/article.css">
 
@@ -141,7 +141,6 @@
 
 				<!-- 거래 신청, 찜 -->
 				<div class="share-button">
-					<span>
 					<c:choose>
 						<c:when test="${userFavorite > 0}">
 							<button class="btns-action" id="btns-favoriteDel">찜 취소</button>
@@ -158,8 +157,6 @@
 							<button class="btns-action" id="btns-apply">신청</button>
 						</c:otherwise>
 					</c:choose>
-							<!-- <button id="btns-applySeleted">신청</button> -->
-					</span>
 				</div>
 			</div>
 		</div><hr />
@@ -167,9 +164,9 @@
 		<!-- 본문 내용 -->
 		<div class="article-body">
 			<div class="article-content">
-				<span>내용</span>
+				<label for="content">내용</label>
 				<hr />
-				<span>${article.art_content}</span>
+				<textarea name="art_content">${article.art_content}</textarea>
 			</div>
 
 			<!-- 추천 비추천 -->
@@ -185,11 +182,19 @@
 		<!-- 댓글 부분 -->		
 		<div class="reply-list">
 			<div class="list-toggle">
-				<button id="btns-show" style="display: none;">▶펼치기</button>
-				<button id="btns-hide">▼접기</button>
-				<span>댓글 수 : (${article.rep_cnt})</span>
+				<c:choose>
+					<c:when test="${article.rep_cnt > 0}">
+						<button id="btns-show" style="display: none;">▶ 펼치기</button>
+						<button id="btns-hide">▼ 접기</button>
+						<span>댓글 수 : (${article.rep_cnt})</span>
+						<hr />
+					</c:when>
+					<c:otherwise>
+						<p style="text-align: center;">이 글은 아직 댓글이 없어요<br> 댓글 남겨 주실꺼죠??</p>
+					</c:otherwise>
+				</c:choose>
 			</div>
-			<hr />
+			
 			<!-- 댓글 리스트 -->
 			<c:forEach var="reply" items="${replyList}" varStatus="status">
 				<div class="reply-detail">

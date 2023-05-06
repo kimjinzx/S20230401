@@ -242,7 +242,19 @@
 		WHERE   ART_ID = #{art_id}
 		AND     BRD_ID = #{brd_id}
 	</select>
-	
+	<update id="dgUpdateArticle" parameterType="Article">
+		UPDATE	ARTICLE
+		SET		ART_TITLE 	= #{art_title},
+				ART_CONTENT = #{art_content},
+				ART_TAG1	= #{art_tag1},
+				ART_TAG2	= #{art_tag2},
+				ART_TAG3	= #{art_tag3},
+				ART_TAG4	= #{art_tag4},
+				ART_TAG5	= #{art_tag5},
+				ART_ISNOTICE = #{art_isnotice}
+		WHERE	ART_ID = #{art_id}
+		AND		BRD_ID = #{brd_id}
+	</update>
 	
 	
 	

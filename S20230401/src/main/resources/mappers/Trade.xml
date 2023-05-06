@@ -21,7 +21,18 @@
 		<collection property="comm" 	resultMap="com.java501.S20230401.model.CommMapper.dgCommMap"/>
 		<collection property="region" 	resultMap="com.java501.S20230401.model.RegionMapper.dgRegionMap"/>
 	</resultMap>
-	
-	
+	<!-- 거래 수정 -->
+	<update id="dgUpdateTrade" parameterType="Trade">
+		UPDATE	TRADE
+		SET		TRD_MAX 	= #{trd_max, 	jdbcType=INTEGER},
+				TRD_ENDDATE = #{trd_enddate,jdbcType=DATE},
+				TRD_COST	= #{trd_cost,	jdbcType=INTEGER},
+				REG_ID		= #{reg_id,		jdbcType=INTEGER},
+				TRD_LOC		= #{trd_loc,	jdbcType=VARCHAR},
+				TRD_GENDER	= #{trd_gender,	jdbcType=INTEGER},
+				TRD_MINAGE	= #{trd_minage,	jdbcType=INTEGER},
+				TRD_MAXAGE 	= #{trd_maxage,	jdbcType=INTEGER}
+		WHERE	TRD_ID = #{trd_id}
+	</update>
 	
 </mapper>

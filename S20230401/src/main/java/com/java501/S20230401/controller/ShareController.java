@@ -33,8 +33,10 @@ import com.java501.S20230401.service.MemberService;
 import com.java501.S20230401.service.Paging;
 import com.java501.S20230401.service.RegionService;
 import com.java501.S20230401.service.ReplyService;
+import com.java501.S20230401.service.TradeService;
 import com.java501.S20230401.service.WaitingService;
 
+import kotlin.OverloadResolutionByLambdaReturnType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,6 +52,7 @@ public class ShareController {
 	private final RegionService regionService;
 	private final FavoriteService favoriteService;
 	private final WaitingService waitingService;
+	private final TradeService tradeService;
 	
 	
 	// 나눔해요 글 목록 + 검색
@@ -169,8 +172,7 @@ public class ShareController {
 	@RequestMapping(value = "board/share/write")
 	public String writeForm(@AuthenticationPrincipal MemberDetails memberDetails, Article article, Model model, Integer category) {
 		// 로그인 유저 정보
-		if(memberDetails != null)
-			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		if(memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		
 		// 지역 제한 조회
 		List<Region> regionList = regionService.dgRegionList();
@@ -186,23 +188,23 @@ public class ShareController {
 	@RequestMapping(value = "board/share/artUpdate")
 	public String updateForm(@AuthenticationPrincipal MemberDetails memberDetails, Article article, Model model, Integer category) {
 		// 로그인 유저 정보
-		if(memberDetails != null)
-			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		if(memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		
 		// 글 정보 저장
 		Article detailArticle = articleService.detailShareArticle(article);
 		// 지역 제한 조회
 		List<Region> regionList = regionService.dgRegionList();
 		
-		model.addAttribute("detailArticle", detailArticle);
+		model.addAttribute("article", detailArticle);
 		model.addAttribute("regionList", regionList);
 		model.addAttribute("category", category);
 		
 		return "share/updateForm";
 	}
 	
+
 	
-	// 글 작성
+	// 게시글 작성
 	@PostMapping(value = "board/share/writeArticleForm")
 	public String writeArticleForm(	@AuthenticationPrincipal
 									MemberDetails memberDetails,
@@ -235,9 +237,45 @@ public class ShareController {
 		System.out.println(result);
 		
 		redirectAttributes.addFlashAttribute("article", article);
-		return "redirect:/board/share?category="+category;
+		return getRedirectShare(category);
 	}
 	
+	
+	// 게시글 수정
+	@PostMapping(value = "board/share/updateArticleForm")
+	public String updateShare(@AuthenticationPrincipal MemberDetails memberDetails, @RequestParam("trd_endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date trd_endDate, Article article, Integer category) {
+		// trd_endDate 저장 (model 이슈 변수명 endDate로)
+		article.getTrade().setTrd_enddate(trd_endDate);
+		System.out.println(article.getArt_isnotice());
+		
+		int result = tradeService.updateShare(article);
+		System.out.println("최종 결과 : "+result);
+		
+		return getRedirectArticle(article, category);
+	}
+	
+	
+	
+	// 게시글 삭제
+	@RequestMapping(value = "board/share/artDelete/{art_id}")
+	public String deleteArticle(@PathVariable("art_id")
+								String art_id,
+								@AuthenticationPrincipal
+								MemberDetails memberDetails,
+								Article article,
+								Integer category,
+								RedirectAttributes redirectAttributes) {
+		article.setArt_id(Integer.parseInt(art_id));
+		log.info("글번호 : {} 게시판 번호 : {} 카테고리 번호 : {}", article.getArt_id(), article.getBrd_id(), category);
+		int result = articleService.dgDeleteArticle(article);
+		if(result != 0) {
+			System.out.println("삭제 성공");
+			return getRedirectShare(category);
+		}else{
+			System.out.println("삭제 실패");
+			return getRedirectArticle(article, category);
+		}
+	}
 	
 	
 	// 글 추천, 비추천
@@ -262,14 +300,6 @@ public class ShareController {
 			mem_id = Integer.toString(memberDetails.getMemberInfo().getMem_id());
 		}
 		
-		// 추천 취소
-//		if(vote.equals("goodcancel")) {
-//			vote = "good";
-//			toRemove = "|"+article.getArt_id()+article.getBrd_id()+vote;
-//		}else if(vote.equals("badcancel")) {
-//			vote = "bad";
-//			toRemove = "|"+article.getArt_id()+article.getBrd_id()+vote;
-//		}
 		
 		// 쿠키 추천, 비추천 (중복확인)
 		if(dgCheck(request, response, article.getArt_id(), article.getBrd_id(), mem_id, vote)) {
@@ -318,74 +348,36 @@ public class ShareController {
 			}
 		}
 		
-		
-		
 		System.err.println(result);
-		//System.out.println(result != 0? "추천 or 비추천 성공" : "추천 or 비추천 실패");
-		//return String.format("redirect:/board/share/%s?brd_id=%s&category=%s", article.getArt_id(), article.getBrd_id(), article.getBrd_id());
 		return result;
 	}
 	
-	
-	
+
 
 	
-	// 게시글 - 댓글, 대댓글 쓰기
+	// 댓글, 대댓글 쓰기
 	@PostMapping(value = "board/share/replyForm")
 	public String replyForm(@AuthenticationPrincipal MemberDetails memberDetails, Reply reply, Model model, Integer category, RedirectAttributes redirectAttributes) {
 		MemberInfo memberInfo = null;
 		redirectAttributes.addFlashAttribute("category", category);
 		
-		
+		// 유저 정보
 		if(memberDetails != null) {
 			memberInfo = memberDetails.getMemberInfo(); 					// 유저 정보 저장
 			redirectAttributes.addFlashAttribute("memberInfo", memberInfo);	// 유저 정보 리턴
 			reply.setMem_id(memberInfo.getMem_id());
-		}else {
-			// 로그인 안했을때 수정필요
-			return String.format("redirect:/board/share/%s?brd_id=%s&category=%s", reply.getArt_id(), reply.getBrd_id(), category);
 		}
 		
-		System.out.println("게시판 아이디 : "+reply.getBrd_id());
-		System.out.println("글번호 : "+reply.getArt_id());
-		System.out.println("댓글 번호(PK) : "+reply.getRep_id());
-		System.out.println("                              댓글 번호(PK)의 댓글 : "+reply.getRep_parent());
-		System.out.println("내용 : "+reply.getRep_content());
-		System.out.println("댓글 순서 : "+reply.getRep_step());
-		
-		System.out.println(reply);
 		// 댓글 작성
 		int result = replyService.writeReply(reply);
+		System.out.println(result > 0? "댓글 작성 성공":"댓글 작성 실패");
 		
-		if(result > 0)
-			System.out.println("성공");
-		else
-			System.out.println("실패");
-		return String.format("redirect:/board/share/%s?brd_id=%s&category=%s", reply.getArt_id(), reply.getBrd_id(), category);
+		return getRedirectArticle(reply, category);
 	}
 	
 
 	
-	// 게시글 삭제
-	@RequestMapping(value = "board/share/artDelete/{art_id}")
-	public String deleteArticle(@PathVariable("art_id")
-								String art_id,
-								@AuthenticationPrincipal
-								MemberDetails memberDetails,
-								Article article,
-								Integer category,
-								RedirectAttributes redirectAttributes) {
-		article.setArt_id(Integer.parseInt(art_id));
-		log.info("글번호 : {} 게시판 번호 : {} 카테고리 번호 : {}", article.getArt_id(), article.getBrd_id(), category);
-		int result = articleService.dgDeleteArticle(article);
-		if(result != 0) {
-			System.out.println("삭제 성공");
-			return String.format("redirect:/board/share?category=%s", category);
-		}else{
-			System.out.println("삭제 실패");
-			return String.format("redirect:/board/share/%s?brd_id=%s&category=%s", article.getArt_id(), article.getBrd_id(), category);
-		}
-	}
+
 	
 	
 	
@@ -395,24 +387,21 @@ public class ShareController {
 								MemberDetails memberDetails,
 								Reply reply,
 								RedirectAttributes redirectAttributes) {
+		Integer category = reply.getBrd_id();
 		MemberInfo memberInfo = null;
 		if(memberDetails != null) {
 			memberInfo = memberDetails.getMemberInfo(); 					// 유저 정보 저장
 			redirectAttributes.addFlashAttribute("memberInfo", memberInfo);	// 유저 정보 리턴
 			reply.setMem_id(memberInfo.getMem_id());
 		}else {
-			System.err.println("응 로그인 안했어");
-			return String.format("redirect:/board/share/%s?brd_id=%s&category=%s", reply.getArt_id(), reply.getBrd_id(), reply.getBrd_id());
+			System.err.println("로그인 안됨");
+			return getRedirectArticle(reply, category);
 		}
 		
 		int result = replyService.deleteReply(reply);
+		System.out.println(result > 0? "댓글 삭제 성공":"댓글 삭제 실패");
 		
-		if(result > 0)
-			System.out.println("성공");
-		else
-			System.out.println("실패");
-		
-		return String.format("redirect:/board/share/%s?brd_id=%s&category=%s", reply.getArt_id(), reply.getBrd_id(), reply.getBrd_id());
+		return getRedirectArticle(reply, category);
 	}
 	
 	
@@ -430,15 +419,16 @@ public class ShareController {
 		// 댓글 조회
 		List<Reply> replyList = null;
 		if(result != 0) {
-		Article article = new Article();
-		article.setArt_id(reply.getArt_id());
-		article.setBrd_id(reply.getBrd_id());
-		replyList = replyService.replyShareList(article);
-		
-		log.info("리스트 {}",replyList);
+			Article article = new Article();
+			article.setArt_id(reply.getArt_id());
+			article.setBrd_id(reply.getBrd_id());
+			replyList = replyService.replyShareList(article);
+			
+			log.info("리스트 {}",replyList);
 		}
 		return replyList;
 	}
+	
 	// 지역 선택 (Ajax)
 	@ResponseBody
 	@RequestMapping(value = "board/share/selectRegion")
@@ -464,7 +454,7 @@ public class ShareController {
 //		System.out.println(articleList);
 		//log.info("\n카테고리 : {} \n키워드 : {} \n검색 내용 : {} \n널임? {}", category, article.getKeyWord(), article.getSearch());
 		redirectAttributes.addFlashAttribute("article", article);
-		return "redirect:/board/share?category="+category;
+		return getRedirectShare(category);
 	}
 
 	 // 찜 기능
@@ -479,7 +469,7 @@ public class ShareController {
 			// 찜목록 삭제
 			else if(fav.equals("del")) result = favoriteService.shareFavoriteDel(article);
 		}
-		return String.format("redirect:/board/share/%s?brd_id=%s&category=%s",article.getArt_id(), article.getBrd_id(), category);
+		return getRedirectArticle(article, category);
 	}
 
 
@@ -494,7 +484,7 @@ public class ShareController {
 			// 거래 대기열 삭제
 			if(wait.equals("del")) result = waitingService.shareWaitingDel(article);
 		}
-		return String.format("redirect:/board/share/%s?brd_id=%s&category=%s",article.getArt_id(), article.getBrd_id(), category);
+		return getRedirectArticle(article, category);
 	}
 
 
@@ -502,6 +492,8 @@ public class ShareController {
 
 
 
+	
+	
 
 
 
@@ -574,7 +566,18 @@ public class ShareController {
 		}
 		return false;
 	}
-	
+	// 카테고리로 돌아가기
+	public String getRedirectShare(Integer category) {
+		return String.format("redirect:/board/share?category=%s", category);
+	}
+	// 게시글로 돌아가기
+	public String getRedirectArticle(Article article, Integer category) {
+		return String.format("redirect:/board/share/%s?brd_id=%s&category=%s", article.getArt_id(), article.getBrd_id(), category);
+	}
+	// Overloading
+	public String getRedirectArticle(Reply reply, Integer category) {
+		return String.format("redirect:/board/share/%s?brd_id=%s&category=%s", reply.getArt_id(), reply.getBrd_id(), category);
+	}
 }
 
 

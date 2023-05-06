@@ -36,6 +36,17 @@
 		$('#location-firstSelect').removeAttr('name');
 		$('#location-secondSelect').attr('name', 'trade.reg_id');
 	}
+	// checkbox 이벤트
+	$(document).ready(()=>{
+		$('#btns-checkbox').change(()=>{
+			if($('#btns-checkbox').is(':checked')){
+				$('#art_isnotice').val('1');
+			}else{
+				$('#art_isnotice').val('0');
+			}
+			console.info($('#art_isnotice').val());
+		});
+	});
 </script>
 </head>
 <body>
@@ -138,7 +149,8 @@
 				<c:if test="${memberInfo.mem_authority >= 108}">
 					<div class="form-group checkbox-group">
 						<label for="notice">공지 여부</label> 
-						<input type="checkbox" name="art_isnotice" value="1">
+						<input type="hidden" id="art_isnotice" name="art_isnotice" value="0">
+						<input type="checkbox" id="btns-checkbox">
 					</div>
 				</c:if>
 

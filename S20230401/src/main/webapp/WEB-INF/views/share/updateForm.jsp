@@ -36,6 +36,17 @@
 		$('#location-firstSelect').removeAttr('name');
 		$('#location-secondSelect').attr('name', 'trade.reg_id');
 	}
+	// checkbox 이벤트
+	$(document).ready(()=>{
+		$('#btns-checkbox').change(()=>{
+			if($('#btns-checkbox').is(':checked')){
+				$('#art_isnotice').val('1');
+			}else{
+				$('#art_isnotice').val('0');
+			}
+			console.info($('#art_isnotice').val());
+		});
+	});
 </script>
 </head>
 <body>
@@ -45,8 +56,10 @@
 
 		<div>
 			<form action="${pageContext.request.contextPath}/board/share/updateArticleForm" method="post">
+				<input type="hidden" 	name="art_id" 			value="${article.art_id}">
 				<input type="hidden" 	name="category" 		value="${category}">
-				<input type="hidden" 	name="brd_id" 			value="${category}">
+				<input type="hidden" 	name="brd_id" 			value="${article.brd_id}">
+				<input type="hidden" 	name="trade.trd_id" 	value="${article.trade.trd_id}">
 			<!-- 임시 기본값 저장 -->
 				<input type="hidden" 	name="trade.trd_status" value="401">
 				<input type="hidden" 	name="trade.trd_cost" 	value="0">
@@ -55,29 +68,29 @@
 				<div class="form-group">
 					<label for="category">카테고리</label>
 					<select name="brd_id" id="brd_id">
-						<option value="1210" ${category == 1210? 'selected':''}>식품</option>
-						<option value="1220" ${category == 1220? 'selected':''}>패션/잡화</option>
-						<option value="1230" ${category == 1230? 'selected':''}>가전/가구</option>
-						<option value="1240" ${category == 1240? 'selected':''}>기타</option>
+						<option value="1210" ${article.brd_id == 1210? 'selected':''}>식품</option>
+						<option value="1220" ${article.brd_id == 1220? 'selected':''}>패션/잡화</option>
+						<option value="1230" ${article.brd_id == 1230? 'selected':''}>가전/가구</option>
+						<option value="1240" ${article.brd_id == 1240? 'selected':''}>기타</option>
 					</select>
 				</div>
 
 				<div class="form-group">
 					<label for="title">제목</label>
-					<input type="text" id="art_title" name="art_title" placeholder="제목" required="required">
+					<input type="text" id="art_title" name="art_title" required="required" value="${article.art_title}">
 				</div>
 				<div class="form-group">
 					<label for="content">내용</label>
-					<textarea name="art_content" placeholder="내용을 입력하세요" required="required"></textarea>
+					<textarea name="art_content" required="required">${article.art_content}</textarea>
 				</div>
 
 				<div class="form-group">
 					<label for="tag">태그</label>
-					<input type="text" 	name="art_tag1" value="태그1" placeholder="입력">
-					<input type="text" 	name="art_tag2" value="태그2" placeholder="입력">
-					<input type="text" 	name="art_tag3" value="태그3" placeholder="입력">
-					<input type="text" 	name="art_tag4" value="태그4" placeholder="입력">
-					<input type="text" 	name="art_tag5" value="태그5" placeholder="입력">
+					<input type="text" 	name="art_tag1" value="${article.art_tag1}">
+					<input type="text" 	name="art_tag2" value="${article.art_tag2}">
+					<input type="text" 	name="art_tag3" value="${article.art_tag3}">
+					<input type="text" 	name="art_tag4" value="${article.art_tag4}">
+					<input type="text" 	name="art_tag5" value="${article.art_tag5}">
 				</div>
 				
 				<div class="form-group" style="display: flex;">
@@ -99,18 +112,20 @@
 					<!-- 상세 지역 -->
 					<div class="form-locationDetail">
 						<label for="deal-location">거래 지역</label>
-						<input type="text" name="trade.trd_loc" value="이대" required="required">
+						<input type="text" name="trade.trd_loc" value="${article.trade.trd_loc}" required="required" style="width: auto;">
 					</div>
 				</div>
 
 				<div class="form-group">
 					<label for="max-people">최대 인원</label>
-					<input type="number" name="trade.trd_max" min="1" max="9" value="2" required="required">
+					<input type="number" name="trade.trd_max" min="1" max="9" required="required" value="${article.trade.trd_max}">
 				</div>
 
 				<div class="form-group">
 					<label for="deadline">마감일</label>
-					<input type="date" name="trd_endDate" required="required">
+					<input type="date" name="trd_endDate" required="required" value="<fmt:formatDate value="${article.trade.trd_enddate}" pattern="yyyy-MM-dd"/>">
+					
+					
 				</div>
 
 				<div class="form-group" style="display: flex;">
@@ -125,8 +140,8 @@
 
 					<div class="form-age">
 						<label for="age-limit">나이</label> 
-						<input type="number" name="trade.trd_minage" min="1" max="100" value="10">
-						<input type="number" name="trade.trd_maxage" min="1" max="100" value="30">
+						최소 <input type="number" name="trade.trd_minage" min="1" max="100" value="${article.trade.trd_minage}">
+						최대 <input type="number" name="trade.trd_maxage" min="1" max="100" value="${article.trade.trd_maxage}">
 					</div>
 				</div>
 
@@ -134,7 +149,8 @@
 				<c:if test="${memberInfo.mem_authority >= 108}">
 					<div class="form-group checkbox-group">
 						<label for="notice">공지 여부</label> 
-						<input type="checkbox" name="art_isnotice" value="1">
+						<input type="hidden" id="art_isnotice" name="art_isnotice" value="0">
+						<input type="checkbox" id="btns-checkbox" ${article.art_isnotice > 0? 'checked="checked"':'' }>
 					</div>
 				</c:if>
 

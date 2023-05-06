@@ -7,18 +7,16 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.java501.S20230401.model.Article_Trade_Reply;
-import com.java501.S20230401.model.Comm;
-import com.java501.S20230401.model.Region;
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.ArticleMember;
+import com.java501.S20230401.model.Article_Trade_Reply;
+import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.MemberInfo;
+import com.java501.S20230401.model.Region;
 import com.java501.S20230401.util.SummaryType;
-import oracle.security.o3logon.a;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import oracle.security.o3logon.a;
 
 @Repository
 @RequiredArgsConstructor
@@ -77,18 +75,18 @@ public class ArticleDaoImpl implements ArticleDao {
 		int result = 0;
 		
 		try {
-			// Not Null
-			Class<?> clazz = article.getClass();
-			Field[] fields = clazz.getDeclaredFields();
-			for(Field field : fields) {
-				field.setAccessible(true); // private 필드 접근
-//				if(field.get(article) == null && !field.getName().equals("trd_id") && !field.getName().equals("art_id") && !field.getName().equals("report_id")) {
-				// Null값인 필드 중에 Not Null 요소
-				if(field.get(article) == null && Arrays.asList("art_good","art_bad","art_read","art_isnotice","isdelete").contains(field.getName())) {
-					field.set(article, 0);
-					log.info("Null 값인 필드 : {} 0으로 저장 후 값 확인 : {}",field.getName(), field.get(article));
-				}
-			}
+//			// Not Null
+//			Class<?> clazz = article.getClass();
+//			Field[] fields = clazz.getDeclaredFields();
+//			for(Field field : fields) {
+//				// private 필드 접근
+//				field.setAccessible(true);
+//				// Null값인 필드 중에 Not Null 요소
+//				if(field.get(article) == null && Arrays.asList("art_good","art_bad","art_read","art_isnotice","isdelete").contains(field.getName())) {
+//					field.set(article, 0);
+//					log.info("Null 값인 필드 : {} 0으로 저장 후 값 확인 : {}",field.getName(), field.get(article));
+//				}
+//			}
 			result = session.insert("dgWriteShareArticle",article);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -125,6 +123,17 @@ public class ArticleDaoImpl implements ArticleDao {
 		try {
 			result = session.update("dgVoteBad", article);
 			if(result != 0) result = session.selectOne("dgArtBad", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	// 게시글 수정
+	@Override
+	public int updateShare(Article article) {
+		int result = 0;
+		try {
+			result = session.update("dgUpdateArticle", article);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -688,6 +697,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return result;
 	}
+
 
 
 
