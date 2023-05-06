@@ -4,6 +4,30 @@
     width: 80%;
     margin: auto;
 }
+
+/* 거래 영역  */
+.article-trade{
+    width: auto;
+    height: auto;
+    border: 1px solid #0193F8;
+    border-radius: 10px;
+    margin: 30px 0px;
+    padding: 20px 20px;
+}
+div{
+    padding: 5px;
+}
+.share-button {
+	display: flex;
+	justify-content: center;
+}
+.share-button button{
+	margin: 10px;
+}
+/* 글의 유저 정보 첫번째 요소를 제외한 span태그전에 적용 */
+.article-memberInfo span:not(:first-child)::before{
+    content: ' | ';
+}
 .reply-detail{
     display: flex;
     flex-direction: column;
@@ -44,41 +68,28 @@ button{
     font-size: 16px;
 }
 /* 추천 비추천 버튼 */
-.article-vote button{
+#btns-vote button{
     width: 100px;
-    height: 100px;
+    height: 80px;
     font-size: 20px;
-    text-align: center;
     background-color: #eeeeee;
     color: black;
-    margin: 5px;
+    margin: 15px;
 }
 
 /* 1번째 부터 2번째 까지 */
-.article-vote button:nth-child(-n+2):hover {
+#btns-vote button:nth-child(-n+2):hover {
     background-color: #0193F8;
     color: white;
 }
 
 /* 3번째 부터 4번째 전까지 */
-.article-vote button:nth-child(n+3):hover {
+#btns-vote button:nth-child(n+3):hover {
     background-color: red;
     color: white;
 }
-/* DIV 태그 테두리 */
-.article-share{
-    width: auto;
-    height: auto;
-    border: 1px solid #0193F8;
-    border-radius: 10px;
-}
-div{
-    padding: 3px;
-}
-/* 글의 유저 정보 첫번째 요소를 제외한 span태그전에 적용 */
-.article-memberInfo span:not(:first-child)::before{
-    content: ' | ';
-}
+
+
 .btns-tag{
 padding: 0px 2px;
 background-color: transparent;
@@ -87,7 +98,9 @@ color: #0193F8;
 .btns-tag::before{
     content: '#';
 }
-/* modal */
+
+
+/* modal 부분 */
 #myModal{
     position: fixed;
     width: 100%;

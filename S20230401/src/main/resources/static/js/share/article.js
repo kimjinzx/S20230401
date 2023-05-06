@@ -104,91 +104,64 @@ function art_Update(){
     }
 }
 
-// // 게시글 기능 - 추천, 비추천 -----------------------------------------------------------ajax사용 추천 취소기능 추가 요망
-// $(document).ready(() => {
-//     // 추천
-//     $('#btns-good, #btns-goodcancel, #btns-bad, #btns-badcancel').click(e => {
-//         if(e.target.getAttribute('id')==='btns-good'){
-//             if(confirm('추천 하시겠습니까?')){
-//                 $(e.target).closest('.article-vote')
-//                 .find('#btns-good').toggle().end()
-//                 .find('#btns-goodcancel').toggle().end();
-//                 location.href=contextPath+'/board/share/vote/good?art_id='+artId+'&brd_id='+brdId+'&category='+category;
-//             }
-//         }else if(e.target.getAttribute('id')==='btns-goodcancel'){
-//             if(confirm('취소 하시겠습니까?')){
-//                 $(e.target).closest('.article-vote')
-//                 .find('#btns-good').toggle().end()
-//                 .find('#btns-goodcancel').toggle().end();
-//                 location.href=contextPath+'/board/share/vote/good?art_id='+artId+'&brd_id='+brdId+'&category='+category;
-//             }
-//         }
-//         // 비추천
-//         else if(e.target.getAttribute('id')==='btns-bad'){
-//             if(confirm('비추천 하시겠습니까?')){
-//                 $(e.target).closest('.article-vote')
-//                 .find('#btns-bad').toggle().end()
-//                 .find('#btns-badcancel').toggle().end();
-//                 location.href=contextPath+'/board/share/vote/bad?art_id='+artId+'&brd_id='+brdId+'&category='+category;
-//             }
-//         // 비추천 취소
-//         }else if(e.target.getAttribute('id')==='btns-badcancel'){
-//             if(confirm('취소 하시겠습니까?')){
-//                 $(e.target).closest('.article-vote')
-//                 .find('#btns-bad').toggle().end()
-//                 .find('#btns-badcancel').toggle().end();
-//                 location.href=contextPath+'/board/share/vote/badcancel?art_id='+artId+'&brd_id='+brdId+'&category='+category;
-//             }
-//         }
-
-//     });
-// });
 // 게시글 기능 - 추천, 비추천 ----------------------------------------------------------ajax사용 추천 취소기능 추가 요망
 $(document).ready(() => {
-    let btns;
-    let action;
-    let message;
+    // 추천 비추천 여부 확인
+    checkVote();
+    // 클릭 이벤트
     $('#btns-good, #btns-goodcancel, #btns-bad, #btns-badcancel').click(e => { 
         if(memId > 0){
-            if(e.target.getAttribute('id')==='btns-good'){
-                message = '추천 하시겠습니까?';
-                btns = 'good';
-                action = '.btns-good';
-            }else if(e.target.getAttribute('id')==='btns-goodcancel'){
-                message = '취소 하시겠습니까?';
-                btns = 'good';
-                action = '.btns-good';
-            }else if(e.target.getAttribute('id')==='btns-bad'){
-                message = '비추천 하시겠습니까?';
-                btns = 'bad';
-                action = '.btns-bad';
-            }else if(e.target.getAttribute('id')==='btns-badcancel'){
-                message = '취소 하시겠습니까?';
-                btns = 'bad';
-                action = '.btns-bad';
+            // 변수 선언
+            let btns;   let action;     let message;
+            let id = e.target.getAttribute('id');
+            let buttonTypes = {
+                'btns-good'      : {message:'추천 하시겠습니까?', btns:'good', action:'.btns-good'},
+                'btns-goodcancel': {message:'취소 하시겠습니까?', btns:'good', action:'.btns-good'},
+                'btns-bad'       : {message:'비추천 하시겠습니까?', btns:'bad', action:'.btns-bad'},
+                'btns-badcancel' : {message:'취소 하시겠습니까?', btns:'bad', action:'.btns-bad'},
+            };
+
+            // 클릭한 버튼의 id와 일치하는 조건에 할당
+            if(id in buttonTypes){
+                ({message, btns, action} = buttonTypes[id]);
             }
-            console.info(btns);
-            console.info(action);
-            console.info(message);
+            console.info(btns, action, message);
+
             if(confirm(message)){
                 $.ajax({
                     url:contextPath+'/board/share/vote/'+btns+'?art_id='+artId+'&brd_id='+brdId+'&category='+category,
                     success:function(data){
                         console.log(data)
-                        $(e.target).closest('.article-vote')
+                        $(e.target).closest('#btns-vote')
                         .find(action).toggle().find('span').text(data).end();
                     }
                 })
             }
         }else alert('로그인 하세요');
-        });
+    });
 });
 
+// 추천, 비추천 여부 확인
+function checkVote(){
+    let cookieGood = document.cookie.match(new RegExp('\\b'+artId+brdId+'good\\b'));
+    let cookieBad = document.cookie.match(new RegExp('\\b'+artId+brdId+'bad\\b'));
+    console.log(cookieGood);
+    console.log(cookieBad);
+    // 이미 추천 한 경우
+    if(cookieGood){
+        document.getElementById('btns-good').style.display = 'none';
+        document.getElementById('btns-goodcancel').style.display = '';
+    }
+    // 이미 비추천 한 경우
+    if(cookieBad){
+        document.getElementById('btns-bad').style.display = 'none';
+        document.getElementById('btns-badcancel').style.display = '';
+    }
+}
 
 
 
-
-// 거래 신청 ---------------------------------------------------------
+// 거래 신청 (modal.jsp)
 $(document).ready(()=>{ 
     $('#btns-applyDel').click(()=>{
         if(memId > 0){
