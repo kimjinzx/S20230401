@@ -147,13 +147,13 @@ public class AdminController {
 		JSONObject jsonObj = new JSONObject();
 		switch(type) {
 		case "notice":
-			System.out.println(article);
 			int result = as.hgCompressedUpdateArticle(article);
 			jsonObj.append("result", result);
 			jsonObj.append("art_id", article.getArt_id());
 			break;
 		}
 		
+		//response.setCharacterEncoding("UTF-8");
 		return jsonObj.toString();
 	}
 }

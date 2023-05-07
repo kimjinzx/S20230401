@@ -1,7 +1,6 @@
 @charset "UTF-8";
 input[type="text"] {
 	min-width: 0;
-	max-width: 100%;
 }
 div.form-group {
 	width: 100%;

@@ -97,9 +97,10 @@ public class ArticleController {
 	}
 	
 	@ResponseBody
-	@PostMapping(value = "/board/{boardName}/imageUpload")
+	@PostMapping(value = "/board/{boardName}/imageUpload", produces = "application/text; charset=UTF-8")
 	public void imageUploadInArticle(@PathVariable String boardName, HttpServletResponse response,
 									 MultipartHttpServletRequest request) throws Exception {
+		response.setCharacterEncoding("UTF-8");
 		JSONObject jsonObject = null;
 		PrintWriter printWriter = null;
 		//MultipartFile file = request.getFile("upload");

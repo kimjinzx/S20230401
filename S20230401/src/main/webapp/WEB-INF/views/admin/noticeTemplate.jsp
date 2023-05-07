@@ -38,7 +38,7 @@
 		$('.admin-side-panel-right').find('.admin-side-panel-view').css('display', 'flex');
 		$('.admin-side-panel-right').find('.admin-side-panel-modify').css('display', 'none');
 		let id = parseInt($('.admin-side-panel-view').find('.side-panel-button-modify').attr('data-id'));
-		viewNotice(id);
+		//viewNotice(id);
 	};
 	$(() => {
 		$('.admin-board-1 .admin-article-item').on('click', e => {

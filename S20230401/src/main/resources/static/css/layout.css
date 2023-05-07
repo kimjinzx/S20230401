@@ -2,7 +2,9 @@
 body {
 	width: 100%;
 	display: grid;
-	grid-template-columns: 200px 1fr 200px;
+	/* grid-template-columns: 200px 1fr 200px; */
+	/* grid-template-columns: 1fr 700px 1fr; */
+	grid-template-columns: 1fr minmax(700px, 1fr) 1fr;
 	grid-template-rows: 100px 1fr 200px;
 	grid-template-areas:
 		"header header header"

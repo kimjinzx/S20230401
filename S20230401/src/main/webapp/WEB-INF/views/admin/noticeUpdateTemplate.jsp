@@ -11,6 +11,7 @@
 <script type="text/javascript">
 	function updateNoticeAction() {
 		let tagIndex = 1;
+		for (let i = $('.tag-box-tag').length + 1; i <= 5; i++) $('#art_tag' + i).val(null); 
 		$('.tag-box-tag').each((index, value) => {
 			let tag = $(value).find('.tag-box-tag-value').html();
 			$('#art_tag' + tagIndex++).val(tag);
@@ -33,6 +34,17 @@
 			contentType: 'application/json',
 			success : data => {
 				//viewNotice(data.art_id);
+				$.ajax({
+					url: '${pageContext.request.contextPath}/admin/notice/view',
+					type: 'post',
+					data: JSON.stringify({ 'art_id' : data.art_id[0] }),
+					dataType: 'html',
+					contentType: 'application/json',
+					success: d => {
+						$('.admin-side-panel > .admin-side-panel-content').html(d);
+						$('.admin-side-panel-view').find('.side-panel-button-modify').attr('data-id', data.art_id[0]);
+					}
+				});
 			}
 		});
 	}
@@ -41,6 +53,9 @@
 			if (!$('#art_tag' + i).val()) continue;
 			let elem = '<div class="tag-box-tag"><span class="tag-box-tag-value">' + $('#art_tag' + i).val() + '</span><button class="tag-box-tag-remove adv-hover" type="button"><svg class="tag-box-tag-remove-svg" width="10" height="10" viewBox="0 0 12 12" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M 2 2 L 10 10 M 10 2 L 2 10"/></svg></button></div>';
 			$('#tag-box').append(elem);
+			$('#tag-box').find('div.tag-box-tag:last-child > button.tag-box-tag-remove').click(e => {
+				$(e.target).parent().remove();
+			});
 		}
 		
 		let delta = editor.clipboard.convert($('#art_content').val());
@@ -48,7 +63,7 @@
 	});
 </script>
 <div class="container" style="margin: 10px;">
-	<form id="update-form" name="update-form" method="post" enctype="multipart/form-data" onsubmit="return updateNoticeAction();">
+	<form id="update-form" name="update-form" method="post" enctype="multipart/form-data" accept-charset="UTF-8" onsubmit="return updateNoticeAction();">
 		<input type="hidden" id="art_id" name="art_id" value="${article.art_id }">
 		<input type="hidden" id="brd_id" name="brd_id" value="${article.brd_id }">
 		<div class="form-group">
