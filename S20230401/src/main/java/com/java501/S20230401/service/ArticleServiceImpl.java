@@ -317,6 +317,27 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
+	public List<Comm> payStatus1() {
+		List<Comm> payStatus = null;
+		payStatus = ad.payStatus2();
+		return payStatus;
+	}
+	
+
+	public Article payStatusPro1(Article article) {
+		Article payStatusPro = null;
+		payStatusPro = ad.payStatusPro2(article);
+		return payStatusPro;
+	}
+	
+//	@Override
+//	public Article replyInsert1(Article article) {
+//		Article replyInsert = null;
+//		replyInsert = ad.replyInsert2(article);
+//		return replyInsert;
+//	}
+
+	@Override
 	public List<Comm> category1() {
 		List<Comm> cm = null;
 		cm = ad.category2();
@@ -381,11 +402,19 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 
 	@Override
-	public int applyCancel1(int trd_id) {
-		int cancel = 0;
-		cancel = ad.applyCancel2(trd_id);
+	public Article applyCancel1(Article article) {
+		Article cancel = null;
+		cancel = ad.applyCancel2(article);
 		return cancel;
 	}
+	
+	@Override
+	public Article joinCancel1(Article article) {
+		Article joinCancel = null;
+		joinCancel = ad.joinCancel2(article);
+		return joinCancel;
+	}
+
 	@Override
 	public List<Article> joinList1(Article article) {
 		List<Article> joinList = null;
@@ -409,6 +438,12 @@ public class ArticleServiceImpl implements ArticleService {
 		Article joinAccept1 = null;
 		joinAccept1 = ad.joinAccept2(article);
 		return joinAccept1;
+	}
+	@Override
+	public int payCompleted1(int trd_id) {
+		int payCompleted = 0;
+		payCompleted = ad.payCompleted2(trd_id);
+		return payCompleted;
 	}
 
 	

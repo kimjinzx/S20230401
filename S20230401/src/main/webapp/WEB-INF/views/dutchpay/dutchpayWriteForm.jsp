@@ -11,7 +11,7 @@
 <h1>글작성</h1>
 <form action="${pageContext.request.contextPath }/dutchpay/dutchpayWritePro" method="post" >
 
-		<input type="hidden" name="trd_status" value="401">
+		
 <table border="1"> 
 		<tr><th>제목</th><td><input type="text" name="art_title" required="required">
 		

@@ -16,6 +16,7 @@ import com.java501.S20230401.model.MemberDetails;
 import com.java501.S20230401.model.Region;
 import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.Paging;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -87,12 +88,47 @@ public class DutchpayController {
 		
 		List<Article> repList = as.repList1(article); // 댓글리스트 조회
 		model.addAttribute("repList", repList);
-
+		
+		List<Comm> payStatus = as.payStatus1(); // 거래 상태 보기 및 수정 
+		model.addAttribute("payStatus",payStatus);
+		System.out.println("Detail payStatus.size()- >"+payStatus.size());
 		
 		return "/dutchpay/dutchpayDetail";
 	}
-
 	
+	@PostMapping(value = "/dutchpay/payStatusPro") // 거래상태 변경하기 (거래모집중 or 거래취소)
+	public String payStatusPro(Model model, Article article , @AuthenticationPrincipal MemberDetails memberDetails) {
+		
+		if (memberDetails != null)  
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo()); 
+
+		Article payStatusPro = as.payStatusPro1(article);
+		System.out.println("현재 거래상태 -> "+article.getComm_id()+":"+article.getStatus_name());
+		System.out.println("trd_id -> "+article.getTrd_id());
+		int brd_id = article.getBrd_id();
+		int art_id = article.getArt_id(); 
+		return "redirect:/dutchpay/dutchpayDetail?brd_id="+brd_id+"&art_id="+art_id;
+	}
+	
+	
+	    
+	    
+//	@PostMapping(value = "/dutchpay/replyInsert")
+//	public String replyInsert(Article article, RedirectAttributes ra, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
+//		
+//		if (memberDetails != null)  // 로그인한 mem_id를 가지고 글쓰기
+//			model.addAttribute("memberInfo", memberDetails.getMemberInfo()); 
+//		article.setMem_id(memberDetails.getMemberInfo().getMem_id());
+//		
+//		as.replyInsert1(article);// 댓글 입력
+//		ra.addFlashAttribute("article",article);
+////		model.addAttribute("replyInsert", replyInsert);
+//		
+//		int brd_id = article.getBrd_id();
+//		int art_id = article.getArt_id(); 
+//		return "redirect:/board/dutchpay?category="+brd_id+"&art_id="+art_id;
+//	
+//	}
 
 	@RequestMapping(value = "dutchpay/dutchpayWriteForm") //글쓰기 폼 
 	public String dutchpayWriteForm(Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
@@ -166,8 +202,10 @@ public class DutchpayController {
 		System.out.println(article);
 		System.out.println("controller update brd_id -> "+article.getBrd_id());
 		System.out.println("controller update art_id -> "+article.getArt_id());
+		
 		as.dutchpayUpdate1(article);
 		ra.addFlashAttribute("article", article);  
+		
 		int brd_id = article.getBrd_id();
 		return "redirect:/board/dutchpay?category="+brd_id;
 	}
@@ -188,7 +226,7 @@ public class DutchpayController {
 		return "redirect:/board/dutchpay?category="+brd_id;
 	}
 
-	@RequestMapping("/joinForm") // 상세게시글의 신청하기 버튼 (새창 띄우기)
+	@RequestMapping("/joinForm") // 상세게시글의 신청하기 버튼 (동의서 새창 띄우기)
 	public String joinForm(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
 		
 		if (memberDetails != null)
@@ -220,28 +258,42 @@ public class DutchpayController {
 		return "/dutchpay/ApplyInsert"; // 창이 닫히도록 설정
 	}
 	
-	@PostMapping(value = "dutchpay/applyCancel") // 신청서의 신청취소하기 버튼 (waiting테이블에 delete)
-	public String applyCancel(int trd_id, Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
+	@PostMapping(value = "dutchpay/applyCancel") // 신청취소하기 버튼 (참가대기열에 대기중인 개인의 참가취소버튼)
+	public String applyCancel(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
 		
 		if (memberDetails != null)
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		article.setMem_id(memberDetails.getMemberInfo().getMem_id());
+
 		
-		int cancel = as.applyCancel1(trd_id);
+		Article applyCancel = as.applyCancel1(article);
 		
 		int brd_id = article.getBrd_id();
 		int art_id = article.getArt_id(); 
 		return "redirect:/dutchpay/dutchpayDetail?brd_id="+brd_id+"&art_id="+art_id;
 	}
 	
-	@GetMapping(value = "/dutchpay/JoinDeny") // 거부 버튼 (mem_id)가 따라다니도록 Detail.jsp에서 function설정
+	@PostMapping(value = "dutchpay/joinCancel") // 참가취소 버튼 (참가자가 확정 된 개인의 참가취소버튼)
+	public String joinCancel(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
+		
+		if (memberDetails != null)
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		article.setMem_id(memberDetails.getMemberInfo().getMem_id());
+		
+		
+		Article joinCancel = as.joinCancel1(article);
+		
+		int brd_id = article.getBrd_id();
+		int art_id = article.getArt_id(); 
+		return "redirect:/dutchpay/dutchpayDetail?brd_id="+brd_id+"&art_id="+art_id;
+	}
+	
+	@GetMapping(value = "/dutchpay/JoinDeny") // 거절 버튼 (mem_id)가 따라다니도록 Detail.jsp에서 function설정
 	public String joinDeny(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
 		
 		if (memberDetails != null)
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
-//		 article.setMem_id(memberDetails.getMemberInfo().getMem_id());
 		System.out.println("Controller article -> "+article);
-		
 		
 		Article joinDeny = as.joinDeny1(article);
 		model.addAttribute("waitList",joinDeny);
@@ -251,17 +303,31 @@ public class DutchpayController {
 		return "redirect:/dutchpay/dutchpayDetail?brd_id="+brd_id+"&art_id="+art_id;
 	}
 	
-	@GetMapping(value = "/dutchpay/JoinAccept") // 수 버튼 (mem_id)가 따라다니도록 Detail.jsp에서 function설정
+	@GetMapping(value = "/dutchpay/JoinAccept") // 수락 버튼 (mem_id)가 따라다니도록 Detail.jsp에서 function설정
 	public String joinAccept(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
 		
 		if (memberDetails != null)
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
-//		 article.setMem_id(memberDetails.getMemberInfo().getMem_id());
-		System.out.println("Controller article -> "+article);
 		
+		System.out.println("Controller article -> "+article);
 		
 		Article joinAccept = as.joinAccept1(article);
 		model.addAttribute("waitList",joinAccept);
+		
+		int brd_id = article.getBrd_id();
+		int art_id = article.getArt_id(); 
+		return "redirect:/dutchpay/dutchpayDetail?brd_id="+brd_id+"&art_id="+art_id;
+	}
+	
+	@PostMapping(value = "/dutchpay/payCompleted") // 거래 완료 버튼
+	public String payStatusPro(Model model, Article article , int trd_id, @AuthenticationPrincipal MemberDetails memberDetails) {
+		
+		if (memberDetails != null)  
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo()); 
+
+		int payCompleted = as.payCompleted1(trd_id);
+		System.out.println("trd_id -> "+article.getTrd_id());
+
 		
 		int brd_id = article.getBrd_id();
 		int art_id = article.getArt_id(); 

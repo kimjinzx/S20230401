@@ -79,6 +79,9 @@ public interface ArticleDao {
 	List<Article> 			getDutchpayList(String boardName);
 	Article                 detail2(Article article);
 	public List<Article> 	repList2(Article article);
+	public List<Comm>       payStatus2();
+	public Article 			payStatusPro2(Article article);
+//	public Article          replyInsert2(Article article);
 	void 					dutchpayInsert2(Article article);
 	List<Comm>           	category2();
 	List<Region>    		loc2();
@@ -89,11 +92,12 @@ public interface ArticleDao {
 	public int 				DeatilRead2(Article article);
 	public int 				totalArticle2();
 	void                    applyInsert2(Article article);
-	public int              applyCancel2(int trd_id);
+	public Article 			applyCancel2(Article article);
+	public Article 			joinCancel2(Article article);
 	public List<Article>    joinList2(Article article);
 	public List<Article>    waitList2(Article article);
 	public Article 			joinDeny2(Article article);
 	public Article          joinAccept2(Article article);
-
+	public int              payCompleted2(int trd_id);
 	
 }

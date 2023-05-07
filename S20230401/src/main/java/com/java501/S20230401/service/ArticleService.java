@@ -72,6 +72,9 @@ public interface ArticleService {
 	List<Article> 			getDutchpayList(String boardName);//진현
 	Article                 detail1(Article article);
 	public List<Article> 	repList1(Article article);
+	public List<Comm>		payStatus1();
+	public Article 			payStatusPro1(Article article);
+//	public Article          replyInsert1(Article article);
 	List<Comm> 				category1();
 	List<Region>         	loc1();
 	void 					dutchpayInsert1(Article article);
@@ -82,11 +85,13 @@ public interface ArticleService {
 	public int 				DeatilRead1(Article article);
 	public int 				totalArticle1();
 	void 			        applyInsert1(Article article);
-	public int              applyCancel1(int trd_id);
+	public Article 			applyCancel1(Article article);
+	public Article			joinCancel1(Article article);
 	public List<Article>    joinList1(Article article);
 	public List<Article>    waitList1(Article article);
 	public Article 			joinDeny1(Article article);
 	public Article          joinAccept1(Article article);
+	public int              payCompleted1(int trd_id);
 
 	
 	

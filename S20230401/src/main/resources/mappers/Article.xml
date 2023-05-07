@@ -777,7 +777,7 @@
 	
 	<!-- 김진현 -->
 		<select id="JHDutchpayList" parameterType="Article" resultType="Article"><!-- 진현 -->
-		SELECT a.art_id, a.brd_id,
+		SELECT a.art_id, a.brd_id, a.mem_id,
 			   c.comm_value, a.art_title, a.art_regdate, m.mem_nickname,
       		   a.art_tag1, a.art_tag2, a.art_tag3, a.art_tag4, a.art_tag5,
        		   t.trd_cost, 
@@ -898,7 +898,7 @@
 	</select>
 	
 	<select id="JHDutchpayDetail" parameterType="Article" resultType="Article">
-		SELECT a.art_id, a.brd_id, t.trd_id, mem_id	,
+		SELECT a.art_id, a.brd_id, t.trd_id, mem_id	,comm_id ,
 			   m.mem_image, m.mem_username, m.mem_nickname,
        		   c.comm_value, a.art_title, a.art_regdate, 
        		   a.art_tag1, a.art_tag2, a.art_tag3, a.art_tag4, a.art_tag5,
@@ -925,6 +925,15 @@
 		WHERE brd_id=#{brd_id} and art_id=#{art_id}
 		ORDER BY rep_regdate desc, rep_parent asc, rep_step asc 
 	</select>
+	
+	<!-- <select id="JHReplyInsert" parameterType="Article" resultType="Article">
+		INSERT INTO reply
+		(art_id,     brd_id,    rep_id,                                                                             mem_id, 
+		rep_content,    rep_regdate, rep_good, rep_bad, rep_parent, rep_step, isdelete, report_id)
+		VALUES
+		(#{art_id}, #{brd_id}, (select max(rep_id) +1 from reply where brd_id = #{brd_id} and art_id = #{art_id}), #{mem_id},
+		 #{rep_content}, sysdate,     0,        0,        1,         1,         0,         null)
+	</select> -->
 	
 	<select id="JHInsert" parameterType="Article" statementType="CALLABLE">
 		{
@@ -1031,9 +1040,13 @@
 		}
 	</select>
 	
-	<delete id="JHJoinCancel" parameterType="int" >
-		DELETE FROM waiting WHERE trd_id = #{trd_id} and mem_id = 3
-	</delete>
+	<select id="JHapplyCancel" parameterType="Article" resultType="Article" >
+		DELETE FROM waiting WHERE trd_id = #{trd_id} and mem_id = #{mem_id}
+	</select>
+	
+	<select id="JHJoinCancel" parameterType="Article" resultType="Article" >
+		DELETE FROM join WHERE trd_id = #{trd_id} and mem_id = #{mem_id}
+	</select>
 	
 	<select id="JHJoinList" parameterType="Article" resultType="Article" >
 		SELECT m.mem_image, m.mem_username, m.mem_nickname
@@ -1065,5 +1078,17 @@
 			)
 		}
 	</select>
+	
+	<select id="JHPayStatusPro" parameterType="Article" resultType="Article">
+		UPDATE trade 
+		SET trd_status = #{comm_id} 
+		WHERE trd_id = #{trd_id}
+	</select>
+	
+	<update id="JHPayCompleted" parameterType="int">
+		UPDATE trade 
+		SET trd_status = 403
+		WHERE trd_id = #{trd_id}
+	</update>
 	
 </mapper>

@@ -579,6 +579,40 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 
 		@Override
+		public List<Comm> payStatus2() {
+			List<Comm> payStatus = null;
+			try {
+				payStatus = session.selectList("JHPayStatus");
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl payStatus2 Exception -> "+e.getMessage());
+			}
+			return payStatus;
+		}
+		
+		@Override
+		public Article payStatusPro2(Article article) {
+			Article payStatusPro = null;
+			try {
+				payStatusPro = session.selectOne("JHPayStatusPro",article);  
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl payStatusPro2 Exception -> "+e.getMessage());
+			}
+			return payStatusPro;
+		}
+		
+		
+//		@Override
+//		public Article replyInsert2(Article article) {
+//			Article replyInsert = null;
+//			try {
+//				replyInsert = session.selectOne("JHReplyInsert",article);
+//			} catch (Exception e) {
+//				System.out.println("ArticleDaoImpl replyInsert2 Exception -> "+e.getMessage());
+//			}
+//			return replyInsert;
+//		}
+		
+		@Override
 		public void dutchpayInsert2(Article article) {
 			try {
 				System.out.println(article);
@@ -587,6 +621,7 @@ public class ArticleDaoImpl implements ArticleDao {
 				System.out.println("ArticleDaoImpl dutchpayInsert2 Exception -> "+e.getMessage());
 			}
 		}
+		
 		@Override
 		public List<Comm> category2() {
 			List<Comm> cm = null;
@@ -684,16 +719,28 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		
 		@Override
-		public int applyCancel2(int trd_id) {
-			int cancel = 0;
+		public Article applyCancel2(Article article) {
+			Article cancle = null;
 			try {
-				cancel = session.delete("JHJoinCancel",trd_id);
+				cancle = session.selectOne("JHapplyCancel",article);
 			} catch (Exception e) {
 				System.out.println("ArticleDaoImpl applyCancel2 Exception -> "+e.getMessage());
 
 			}
-			return cancel;
+			return cancle;
 		}
+		
+		@Override
+		public Article joinCancel2(Article article) {
+			Article joinCancel = null;
+			try {
+				joinCancel = session.selectOne("JHJoinCancel",article);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl joinCancel2 Exception -> "+e.getMessage());
+			}
+			return joinCancel;
+		}
+
 		@Override
 		public List<Article> joinList2(Article article) {
 			List<Article> joinList2 = null;
@@ -735,6 +782,16 @@ public class ArticleDaoImpl implements ArticleDao {
 				System.out.println("ArticleDaoImpl joinAccept2 Exception -> "+e.getMessage());
 			}
 			return joinAccept2;
+		}
+		@Override
+		public int payCompleted2(int trd_id) {
+			int payCompleted = 0;
+			try {
+				payCompleted = session.update("JHPayCompleted",trd_id);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl payCompleted2 Exception -> "+e.getMessage());
+			}
+			return payCompleted;
 		}
 
 }

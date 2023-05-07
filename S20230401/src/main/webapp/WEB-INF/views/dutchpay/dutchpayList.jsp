@@ -14,9 +14,25 @@
 				width: 800px;
 				background-color: #FAEBFF;
 				}
-	
-
 </style>
+
+<script type="text/javascript">
+	/*  function goWriteForm(p_mem_id) {
+		 alert('p_mem_id -> '+p_mem_id);
+	 	 // Check if the user is logged in
+	 	 if (sessionStorage.getItem('p_mem_id') !== null) {
+	 	   // Redirect to dutchpayWriteForm.jsp
+	 	   window.location.href = 'dutchpayWriteForm.jsp';
+	 	 } else {
+	    // Redirect to loginForm.jsp
+	 	   window.location.href = 'loginForm.jsp';
+	 	 }
+		} */
+ 
+
+
+
+</script>
 </head>
 <body>
 
@@ -25,7 +41,10 @@
 <a href="${pageContext.request.contextPath }/board/dutchpay?category=1130">생활용품</a>
 <a href="${pageContext.request.contextPath }/board/dutchpay?category=1140">해외배송</a>
 <a href="${pageContext.request.contextPath }/board/dutchpay?category=1150">기타</a><p>
-<input type="button" value="글쓰기" onclick="location.href='/dutchpay/dutchpayWriteForm'"> 
+<%-- <input type="button" value="글쓰기" onclick="goWriteForm${ATR.mem_id }">    --%>
+<input type="button" value="글쓰기" onclick="location.href='/dutchpay/dutchpayWriteForm'">    
+
+
 	 <c:forEach var="ATR" items="${dutchpayList }">
 	 
 	<div class="container" >

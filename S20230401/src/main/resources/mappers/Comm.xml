@@ -58,12 +58,17 @@
 	
 	<!-- 김진현 -->
 	<select id="JHCategory" resultType="Comm"> 
-		SELECT * FROM comm where comm_id between 1110 and 1150
+		SELECT * FROM comm WHERE comm_id between 1110 and 1150
 	</select>
 	
 	<select id="JHCategoryUd" resultType="Comm">
-		SELECT * FROM comm where comm_id between 1110 and 1150
+		SELECT * FROM comm WHERE comm_id between 1110 and 1150
 	</select>
+	
+	<select id="JHPayStatus" resultType="Comm">
+		SELECT * FROM comm WHERE comm_id IN (401, 404)
+	</select>
+	
 	
 	
 	
