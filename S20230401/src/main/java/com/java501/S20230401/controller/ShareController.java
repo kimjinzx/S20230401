@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Favorite;
+import com.java501.S20230401.model.Join;
 import com.java501.S20230401.model.MemberDetails;
 import com.java501.S20230401.model.MemberInfo;
 import com.java501.S20230401.model.Region;
@@ -29,6 +30,7 @@ import com.java501.S20230401.model.Waiting;
 import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.CommService;
 import com.java501.S20230401.service.FavoriteService;
+import com.java501.S20230401.service.JoinService;
 import com.java501.S20230401.service.MemberService;
 import com.java501.S20230401.service.Paging;
 import com.java501.S20230401.service.RegionService;
@@ -46,7 +48,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ShareController {
 	private final ArticleService articleService;
-	private final MemberService memberService;
+	private final JoinService joinService;
 	private final CommService commService;
 	private final ReplyService replyService;
 	private final RegionService regionService;
@@ -133,6 +135,12 @@ public class ShareController {
 			int userFavorite = favoriteService.dgUserFavorite(shareUser);
 			// 대기열 확인
 			int userWaiting = waitingService.dgUserWaiting(shareUser);
+			// 거래 목록 확인
+			int userJoin = joinService.shareUserJoin(shareUser);
+			
+			System.out.println("쪼인!"+userJoin);
+			
+			model.addAttribute("userJoin", userJoin);
 			model.addAttribute("userFavorite", userFavorite);
 			model.addAttribute("userWaiting", userWaiting);
 		}
@@ -155,7 +163,10 @@ public class ShareController {
 		String categoryName = commService.categoryName(article.getBrd_id());
 		// 거래 대기열 목록 저장
 		List<Waiting> waitingList = waitingService.dgShareWaitingList(detailArticle.getTrade().getTrd_id());
+		// 거래 참가자 목록 저장
+		List<Join> joinList = joinService.shareJoinList(detailArticle.getTrade().getTrd_id());
 		
+		model.addAttribute("joinList", joinList);
 		model.addAttribute("waitingList", waitingList);
 		model.addAttribute("article", detailArticle);
 		model.addAttribute("replyList", replyList);
@@ -464,6 +475,7 @@ public class ShareController {
 		// 로그인 유저 정보
 		if(memberDetails != null) {
 			article.setMem_id(memberDetails.getMemberInfo().getMem_id());
+			
 			// 찜목록 추가
 			if(fav.equals("add")) result = favoriteService.shareFavoriteAdd(article);
 			// 찜목록 삭제
@@ -487,7 +499,21 @@ public class ShareController {
 		return getRedirectArticle(article, category);
 	}
 
-
+	// 거래 승인, 거절
+	@RequestMapping(value = "board/share/join/{join}")
+	public String shareJoin(@PathVariable("join")String join, Article article, Integer category) {
+		int result = 0;
+		
+		switch (join) {
+			case "accept":
+				result = joinService.shareJoinAdd(article);
+				if(result > 0) waitingService.shareWaitingDel(article); break;
+			case "refuse": 	waitingService.shareWaitingDel(article);	break;
+			case "drop":	joinService.shareJoinDel(article);			break;
+			default: break;
+		}
+		return getRedirectArticle(article, category);
+	}
 
 
 

@@ -17,6 +17,24 @@
 	sessionStorage.setItem('brdId', '${article.brd_id}');
 	sessionStorage.setItem('category', '${category}');
 	sessionStorage.setItem('memId', '${memberInfo.mem_id}')
+	sessionStorage.setItem('articleMemId', '${article.mem_id}');
+
+	
+		
+/* 	$(document).ready(()=>{
+		$('#btns-accept').click(e=>{
+			if(confirm('승인 하시겠습니까?')){
+				
+			}
+		});
+		$('#btns-refuse').click(e=>{
+			alert('경고');
+		});
+	}); */
+	// 거래 승인, 거절
+
+	
+
 	
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/share/article.js"></script>
@@ -120,27 +138,64 @@
 					<span>성별 제한 : ${article.trade.trd_gender==201? '남자만':article.trade.trd_gender==202? '여자만':'제한없음'}</span>
 				</div><hr />
 					
-				<!-- 거래 대기열 회원 목록 -->
-				<div class="share-waiting">
-					<c:forEach var="waiting" items="${waitingList}">
-						<div class="waiting-memberInfo" style="display: flex; align-items: flex-start;">
-							<img src="${pageContext.request.contextPath}/uploads/profile/${waiting.member.mem_image}" alt="profile" style="width: 60px; height: 60px; border-radius: 30px; margin-right: 20px;">
-							<div class="waiting-details">
-								<h3 style="margin: 0 0 8px;">${waiting.member.mem_username}</h3>
-								<span>${waiting.member.mem_nickname}</span>
-								<span>최근 접속일 : <fmt:formatDate value="${waiting.member.mem_latest}" pattern="yy-MM-dd"/></span>
+				<!-- 참가중인 회원 목록 -->
+				<div class="share-userList">
+					<h2>거래 참가자 명단</h2><hr />
+					<c:forEach var="join" items="${joinList}">
+						<span>참여일 : <fmt:formatDate value="${join.join_date}" pattern="yy-MM-dd HH:mm:ss"/></span>
+						<div class="userList-memberInfo">
+							<img src="${pageContext.request.contextPath}/uploads/profile/${join.member.mem_image}" alt="profile" style="width: 60px; height: 60px; border-radius: 30px; margin-right: 20px;">
+							<div class="userList-details">
+								<h3>${join.member.mem_username}</h3>
+								<span>${join.member.mem_nickname}</span>
+								<input type="hidden" id="mem_id" name="mem_id" value="${join.mem_id}">
 							</div>
-							<div style="margin-left: auto;">
-								<button>승인</button>
-								<button>거절</button>
+							<div class="userList-btns">
+								<c:choose>
+									<c:when test="${article.mem_id == memberInfo.mem_id}">
+										<button class="btns-action" id="btns-drop">추방</button>
+									</c:when>
+									<c:when test="${join.mem_id == memberInfo.mem_id}">
+										<button class="btns-action" id="btns-joinCancel">취소</button>
+									</c:when>
+								</c:choose>
 							</div>
 						</div><hr />
 					</c:forEach>
+					<c:if test="${empty joinList}"><p style="text-align: center;">아직 참가자가 없어요</p></c:if>
+				</div>
+				
+				<!-- 거래 대기열 회원 목록 -->
+				<div class="share-userList">
+					<h2>거래 신청자 명단</h2><hr />
+					<c:forEach var="waiting" items="${waitingList}" varStatus="status">
+						<span>신청일 : <fmt:formatDate value="${waiting.wait_date}" pattern="yy-MM-dd HH:mm:ss"/></span>
+						<div class="userList-memberInfo">
+							<img src="${pageContext.request.contextPath}/uploads/profile/${waiting.member.mem_image}" alt="profile" style="width: 60px; height: 60px; border-radius: 30px; margin-right: 20px;">
+							<div class="userList-details">
+								<h3>${waiting.member.mem_username}</h3>
+								<span>${waiting.member.mem_nickname}</span>
+								<input type="hidden" id="mem_id" name="mem_id" value="${waiting.mem_id}">
+							</div>
+							<div class="userList-btns">
+								<c:choose>
+									<c:when test="${article.mem_id == memberInfo.mem_id}">
+										<button class="btns-action" id="btns-accept">승인</button>
+										<button class="btns-action" id="btns-refuse">거절</button>
+									</c:when>
+									<c:when test="${waiting.mem_id == memberInfo.mem_id}">
+										<button class="btns-action" id="btns-waitCancel">취소</button>
+									</c:when>
+								</c:choose>
+							</div>
+						</div><hr />
+					</c:forEach>
+					<c:if test="${empty waitingList}"><p style="text-align: center;">아직 신청자가 없어요</p></c:if>
 				</div>
 					
 
 				<!-- 거래 신청, 찜 -->
-				<div class="share-button">
+				<div class="share-btns">
 					<c:choose>
 						<c:when test="${userFavorite > 0}">
 							<button class="btns-action" id="btns-favoriteDel">찜 취소</button>
@@ -149,14 +204,15 @@
 							<button class="btns-action" id="btns-favorite">찜</button>
 						</c:otherwise>
 					</c:choose>
-					<c:choose>
-						<c:when test="${userWaiting > 0}">
+					<c:if test="${userWaiting == 0 && userJoin == 0}"><button class="btns-action" id="btns-apply">신청</button></c:if>
+<%-- 					<c:choose>
+						<c:when test="${userWaiting > 0 || userJoin > 0}">
 							<button class="btns-action" id="btns-applyDel">신청 취소</button>
 						</c:when>
 						<c:otherwise>
 							<button class="btns-action" id="btns-apply">신청</button>
 						</c:otherwise>
-					</c:choose>
+					</c:choose> --%>
 				</div>
 			</div>
 		</div><hr />
@@ -173,7 +229,7 @@
 			<div class="share-button" id="btns-vote">
 				<button class="btns-good" id="btns-good">추천 <span>${article.art_good}</span></button>
 				<button class="btns-good" id="btns-goodcancel" style="display: none; background-color: #0193F8;">추천 <span>${article.art_good}</span></button>
-				<button class="btns-bad" id="btns-bad">비추천 <span>${article.art_bad}<span></button>
+				<button class="btns-bad" id="btns-bad">비추천 <span>${article.art_bad}</span></button>
 				<button class="btns-bad" id="btns-badcancel" style="display: none; background-color: red;">비추천 <span>${article.art_bad}</span></button>
 			</div>
 		</div><hr />

@@ -1,9 +1,13 @@
 @charset "UTF-8";
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
 
+div{
+    padding: 5px;
+}
 .view-content{
     padding: 10% 20%;
     margin: auto;
+    font-size: 13px;
 }
 
 /* 거래 영역  */
@@ -34,16 +38,27 @@ textarea:focus {
 	outline: 0;
 	box-shadow: 0 0 0 2px rgba(0, 123, 255, .25);
 }
-div{
-    padding: 5px;
+/* 참가자 명단 */
+.userList-memberInfo {
+	display: flex;
+	align-items: flex-start;
 }
-.share-button {
+.userList-memberInfo h3{
+	margin: 0 0 8px;
+}
+.userList-btns {
+	margin-left: auto;
+	
+}
+.share-btns {
 	display: flex;
 	justify-content: center;
 }
-.share-button button{
+.share-btns button{
 	margin: 10px;
 }
+
+
 /* 글의 유저 정보 첫번째 요소를 제외한 span태그전에 적용 */
 .article-memberInfo span:not(:first-child)::before{
     content: ' | ';
@@ -121,9 +136,9 @@ color: #0193F8;
 
 /* 기능 버튼 */
 .btns-action{
-    width: 80px;
+    width: 70px;
     height: 30px;
-    font-size: 14px;
+    font-size: 13px;
     border-radius: 10px;
 }
 .btns-action:hover{

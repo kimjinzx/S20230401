@@ -7,7 +7,8 @@ const artId = sessionStorage.getItem("artId");
 const brdId = sessionStorage.getItem("brdId");
 const category = sessionStorage.getItem("category");
 const memId = sessionStorage.getItem("memId");
-console.info(memId);
+const articleMemId = sessionStorage.getItem("articleMemId");
+console.info('로그인 유저 : '+memId);
 
 // 찜하기
 $(document).ready(()=>{
@@ -181,6 +182,7 @@ function checkVote(){
 
 
 // 거래 신청 (modal.jsp)
+// 동의, 인원제한
 $(document).ready(()=>{ 
     $('#btns-applyDel').click(()=>{
         if(memId > 0){
@@ -190,7 +192,11 @@ $(document).ready(()=>{
     });
     $('#btns-apply').click((e)=>{
         if(memId > 0){
-            $('.myModal').css('display', 'flex'); // flex로 변경
+        	if(memId != articleMemId){
+	            $('.myModal').css('display', 'flex'); // flex로 변경
+        	}else{
+        		alert('본인이 작성한 글 입니다.');
+        	}
         }else alert('로그인 하세요');
     });
     // 클릭시 닫기 이벤트
@@ -207,3 +213,48 @@ $(document).ready(()=>{
         e.stopPropagation();
     });
 });
+
+
+
+// 거래 버튼 이벤트 (승인, 거절, 추방, 취소)
+$(()=>{
+	$(document).on('click', '#btns-accept, #btns-refuse, #btns-drop, #btns-joinCancel, #btns-waitCancel', userListButtonClick);
+});
+function userListButtonClick(e){
+	if(memId > 0){
+		let mem_id = $(e.target).closest('.userList-memberInfo').find('#mem_id').val();
+		let message;
+		let action;
+		
+		switch(e.target.id) {
+			case 'btns-accept':
+				message = '승인 하시겠습니까?';
+				action = 'accept';
+				break;
+			case 'btns-refuse':
+				message = '거절 하시겠습니까?';
+				action = 'refuse';
+				break;
+			case 'btns-waitCancel':
+				message = '취소 하시겠습니까?';
+				action = 'refuse';
+				break;
+			case 'btns-drop':
+				message = '추방 하시겠습니까?';
+				action = 'drop';
+				break;
+			case 'btns-joinCancel':
+				message = '취소 하시겠습니까?';
+				action = 'drop';
+				break;
+		}
+		if(confirm(message)) {
+			let url = `${contextPath}/board/share/join/${action}?art_id=${artId}&brd_id=${brdId}&mem_id=${mem_id}&category=${category}`;
+			location.href = url;
+			console.info(url);
+		}
+	}else {
+		alert('로그인 하세요');
+	}
+}
+
