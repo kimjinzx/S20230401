@@ -279,6 +279,12 @@ public class ArticleServiceImpl implements ArticleService {
 		return TradeDeleteWaiting;
 	}
 	
+	@Override
+	public int dbJoinDelete(Article article) {
+		int JoinDelete = ad.dbJoinDelete(article);
+		return JoinDelete;
+	}
+	
 	
 	
 	

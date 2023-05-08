@@ -60,6 +60,7 @@ public interface ArticleService {
 	int 			dbTradeWaiting(Article article);
 	int 			dbTradeJoinAccept(Article article);
 	int 			dbTradeJoinRefuse(Article article);
+	int 			dbJoinDelete(Article article);
 	
 	
 	

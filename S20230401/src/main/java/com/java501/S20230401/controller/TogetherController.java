@@ -424,6 +424,21 @@ public class TogetherController {
 		 
 		 return jsonObj.toString();
 	 }
-
 	 
+	 // 거래 신청자 (Join) -> 취소 (삭제) (ajax)
+	 @RequestMapping(value="/board/joinDelete")
+	 @ResponseBody
+	 public String joinDelete(@AuthenticationPrincipal MemberDetails memberDetails,
+			 					   @RequestBody Article article, Model model) {
+		 JSONObject jsonObj = new JSONObject();
+		 
+		 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		 
+		  int joinDelete = as.dbJoinDelete(article);
+		 
+		  jsonObj.append("result", joinDelete);
+//		  jsonObj.append("content", article.getReport_content());
+		 
+		 return jsonObj.toString();
+	 }
 }

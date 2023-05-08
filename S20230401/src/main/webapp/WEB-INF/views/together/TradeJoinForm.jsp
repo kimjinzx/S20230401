@@ -11,7 +11,13 @@
 <script>
 	$(() => {
 		$('.trade_submit').click(e => {
-			let rawData = { mem_id:${memberInfo.mem_id},
+			
+		    if (!$('.tradeAgree').is(':checked')) {
+		        alert('동의하셔야 신청이 가능합니다.');
+		        return;
+		      }
+			
+			let rawData = { mem_id : ${memberInfo.mem_id},
 							trd_id : ${article.trd_id}};
 		
 			let sendData = JSON.stringify(rawData);

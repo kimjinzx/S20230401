@@ -62,6 +62,7 @@ public interface ArticleDao {
 	int 			dbTradeWaiting(Article article);
 	int 			dbTradeInsertJoin(Article article);
 	int 			dbTradeDeleteWaiting(Article article);
+	int 			dbJoinDelete(Article article);
 	
 	
 	
@@ -95,4 +96,5 @@ public interface ArticleDao {
 	Article 		detailCustomer(Article article);
 	List<Article> 	listCustomerMenu(Article article);
 	int 			insertCustomer(Article article);
+
 }

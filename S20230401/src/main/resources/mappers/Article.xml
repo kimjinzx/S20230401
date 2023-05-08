@@ -667,8 +667,11 @@
 	
 	</delete>
 	
-
-	
+	<delete id="dbJoinDelete" parameterType="Article">
+	DELETE From Join
+	WHERE trd_id 	= #{trd_id}
+	AND mem_id 		= #{mem_id}
+	</delete>
 	
 	
 	

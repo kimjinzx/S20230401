@@ -478,6 +478,17 @@ public class ArticleDaoImpl implements ArticleDao {
 		return TradeDeleteWaiting;
 	}
 	
+	@Override
+	public int dbJoinDelete(Article article) {
+		int JoinDelete = 0;
+		try {
+			JoinDelete = session.delete("dbJoinDelete", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return JoinDelete;
+	}
+	
 	
 	
 	

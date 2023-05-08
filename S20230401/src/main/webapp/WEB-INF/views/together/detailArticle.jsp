@@ -104,15 +104,67 @@
 	
 		    let art_id = $('#art_id').val();
 		    let brd_id = $('#brd_id').val();
+		    let mem_id = $('#login_mem_id').val();
 		    
-		      
+		    let existingIds = []; // 기존에 저장된 mem_id 배열
+		    $('.joinList input[name="mem_id"]').each(function() {
+		      existingIds.push($(this).val());
+		    });
+		    $('.waitingList input[name="mem_id"]').each(function() {
+			  existingIds.push($(this).val());
+			});
+		    
+		    // 새로운 mem_id가 배열에 이미 존재하는지 확인
+		    if(existingIds.includes(mem_id)) {
+		      alert('이미 신청한 회원입니다.');
+		    } else {
+		    
 		    let popUrl = "/board/TradeJoinForm?art_id=" + art_id + "&brd_id=" + brd_id
 		    let popOption = "width=650px,height=550px,top=300px,left=300px,scrollbars=yes";
 		      
-		    window.open(popUrl, "신고하기", popOption);
-		    
+		    window.open(popUrl, "신청하기", popOption);
+		   		}	
+		    	
 			});
 		});
+	
+	
+		// 거래 신청자 취소 (ajax)
+		$(() => {
+			$('.article_cancel').click(e => {
+				
+				if(confirm('정말 취소하시겠습니까 ?') == true) {
+				
+				let rawData = { mem_id : ${memberInfo.mem_id},
+								trd_id : ${detailArticle.trd_id} }
+			
+				let sendData = JSON.stringify(rawData);
+		
+				$.ajax({
+				  url : "/board/joinDelete",
+				  type : 'post',
+				  data : sendData,
+				  dataType :'json',
+				  contentType : 'application/json',
+				  success : data => {
+						  console.log(data.result);
+					  if(data.result == 1) {
+						  alert('취소 완료');
+						  window.close();
+						  
+					  } else {
+						  alert('취소 실패');
+					  }
+		  			
+		  			}
+				});
+				} else {
+					return;
+				}
+			});
+		});
+		
+		
 
 	
 	// 수락버튼 -> 대기명단 => 신청자명단으로(ajax)
@@ -236,6 +288,7 @@
 		<input type="hidden" name="art_id" id="art_id" value="${detailArticle.art_id }">
 		<input type="hidden" name="brd_id" id="brd_id" value="${detailArticle.brd_id }">
 		<input type="hidden" name="mem_id" id="mem_id" value="${detailArticle.mem_id }">
+		<input type="hidden" name="login_mem_id" id="login_mem_id" value="${memberInfo.mem_id }">
 		<input type="hidden" name="trd_id" id="trd_id" value="${detailArticle.trd_id }">
 	<table border="1" >
 		<tr>
@@ -348,36 +401,38 @@
 
 
 
-
-
-
-
-	<table class="joinList" border="1">
-		<tr>
-			<th colspan="3" width="500px" >함께해요 참여자 목록</th>
-		</tr>
-		<tr>
-			<th colspan="2">신청자</th>
-			<th>신청일자</th>
-		</tr>
-				<c:forEach var="joinList" items="${joinList }">
-				<input type="hidden" name="mem_id" value="${joinList.mem_id }">
-		<tr>		
+		<table class="joinList" border="1">
+			<tr>
+				<th colspan="3" width="500px" >함께해요 참여자 목록</th>
+			</tr>
+			<tr>
+				<th colspan="2">신청자</th>
+				<th>신청일자</th>
+			</tr>
+		<c:forEach var="joinList" items="${joinList }">
+		<input type="hidden" name="mem_id" value="${joinList.mem_id }">
+			<tr>		
 				<td><img src="${pageContext.request.contextPath}/image/picture/${joinList.mem_image}" width ="30" height ="30" alt="-"></td>				
 				<td>${joinList.mem_nickname }(${joinList.mem_username })	</td>				
 				<td><fmt:formatDate value="${joinList.join_date}" pattern="yy년 MM월 dd일 : HH:mm:ss"/></td>
-		</tr>		
-				</c:forEach>
-	</table>
-			<br>
+			</tr>		
+		</c:forEach>
+		</table>
+		
+		<div class="joinList">
+			<c:forEach var="joinList" items="${joinList }">
+				<input type="hidden" name="mem_id" value="${joinList.mem_id }">
+			</c:forEach>	
 			<c:choose>
 			<c:when test="${memberInfo.mem_id != null}">
 				<input type="button" class ="article_submit"   value="신청하기">
-				<input type="button" class ="article_submit"   value="취소하기">
+				<input type="button" class ="article_cancel"   value="취소하기">
 			</c:when>
-			</c:choose>	
-			<br>
-			<br>
+			</c:choose>
+		</div>
+		<br>	
+		<br>
+
 			
 	 <c:choose>
 		<c:when test="${memberInfo.mem_id == detailArticle.mem_id}">
