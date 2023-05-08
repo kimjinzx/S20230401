@@ -262,19 +262,21 @@
 	</c:if>
 	
 	<!-- 검색 -->
+<form action="listSearch">
  <div class="form-inline">
-	<select id="searchType" name="searchType">
+	<select id="search" name="search">
 		<option value="">검색조건</option>
-		<option value="t">제목</option> 
-		<option value="c">내용</option>
-		<option value="w">작성자</option>
-		<option value="tc">제목+내용</option>
+		<option value="art_title">제목</option> 
+		<option value="art_content">내용</option>
+		<option value="mem_nickname">작성자</option>
+		<!-- <option value="tc">제목+내용</option> -->
 		<option value="all">전체조건</option>
 	</select>
-	<input class="Aticle" type="text" id="keyword" name="keyword" 
+	<input class="Aticle" type="text" id="keyWord" name="keyWord" 
 		value="${art_content}" placeholder="검색어를 입력하세요"/>
 	<button id="search">Search</button>
 </div>
+</form>
 	
 	
 	

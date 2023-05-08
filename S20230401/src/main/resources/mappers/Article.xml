@@ -648,6 +648,18 @@
 	 select count(brd_id) from article
 	</select>
 	
+	<!-- 검색 -->
+<!-- 	<select id ="cyArticleKeyword" parameterType="Article" resultType="Article">
+	select brd_id, art_title, art_content, mem_id, art_regdate, art_tag1, art_tag2, art_tag3, art_tag4, art_tag5 from(
+
+                select rownum as rn, brd_id, art_title, art_content, mem_id, art_regdate, art_tag1, art_tag2, art_tag3, art_tag4, art_tag5 
+
+                from article where rownum <= 10 and art_title like '%keyword%')
+
+        where rn > 0;
+	</select> -->
+	
+	
 	<!-- 상세페이지 불러오기 -->
 	<select id="cyArticlereadDetail" parameterType="Article" resultType="Article">
 			select *
@@ -661,20 +673,20 @@
 		<!-- 게시글 작성 -->
  	<insert id="cyArticleinsert" parameterType="Article">
 		insert into 
-			article(art_id, brd_id, art_title, art_regdate, art_tag1, art_tag2, art_tag3, art_tag4, art_tag5, 
+			article(art_id, brd_id, art_title, mem_id, art_regdate, art_tag1, art_tag2, art_tag3, art_tag4, art_tag5, 
 			art_content, trd_id, art_good, art_bad, art_read, isdelete, report_id)
 			values((Select max(art_id) + 1 from article
-			where brd_id = #{brd_id}), #{brd_id}, #{art_title}, SYSDATE, #{art_tag1, jdbcType=VARCHAR}, #{art_tag2, jdbcType=VARCHAR},
+			where brd_id = #{brd_id}), #{brd_id}, #{art_title}, #{mem_id}, SYSDATE, #{art_tag1, jdbcType=VARCHAR}, #{art_tag2, jdbcType=VARCHAR},
 			#{art_tag3, jdbcType=VARCHAR}, #{art_tag4, jdbcType=VARCHAR}, #{art_tag5, jdbcType=VARCHAR},  #{art_content}, NULL, 0, 0, 0, 0, NULL)
 	</insert> 
 	
 		<!-- 게시글 작성 -->
    	<insert id="cyArticlewrite" parameterType="Article">
 		insert into 
-			article(art_id, brd_id, art_title, art_regdate, art_tag1, art_tag2, art_tag3, art_tag4, art_tag5, 
+			article(art_id, brd_id, art_title, mem_id, art_regdate, art_tag1, art_tag2, art_tag3, art_tag4, art_tag5, 
 			art_content, trd_id, art_good, art_bad, art_read, isdelete, report_id)
 			values((Select max(art_id) + 1 from article
-			where brd_id = #{brd_id}), #{brd_id}, #{art_title}, SYSDATE, #{art_tag1, jdbcType=VARCHAR}, #{art_tag2, jdbcType=VARCHAR},
+			where brd_id = #{brd_id}), #{brd_id}, #{mem_id}, #{art_title}, SYSDATE, #{art_tag1, jdbcType=VARCHAR}, #{art_tag2, jdbcType=VARCHAR},
 			#{art_tag3, jdbcType=VARCHAR}, #{art_tag4, jdbcType=VARCHAR}, #{art_tag5, jdbcType=VARCHAR},  #{art_content}, NULL, 0, 0, 0, 0, NULL)
 	</insert>  
 	

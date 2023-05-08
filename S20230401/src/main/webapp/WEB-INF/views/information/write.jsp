@@ -208,6 +208,9 @@
 	</aside>
 	<main>
 <form action = "${pageContext.request.contextPath }/board/information/insert" method = "post" id = "write">
+<div>
+<input type="hidden" name="mem_id" value="${memberInfo.mem_id}">
+</div>
 <table>
   <tr>
    <td>
@@ -315,7 +318,7 @@
 		</button>
 	</main>
 	
-	
+	<!-- 여기까지 -->
 	
 	<aside id="rightside">
 		

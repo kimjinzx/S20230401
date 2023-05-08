@@ -102,13 +102,14 @@
 
 
 	<!-- 김찬영  -->
-	<select id="cyReply" parameterType="Reply">
-	select r.rep_id, m.mem_nickname, r.rep_content, r.rep_regdate, r.rep_parent, r.rep_step
-	from reply
+	<!-- 댓글조회 -->
+	<select id="cyReply" parameterType="Reply" resultType="Reply">
+	select r.rep_id, m.mem_nickname, r.rep_content, r.rep_regdate, r.rep_parent, r.rep_step, m.mem_image, r.rep_good, r.rep_bad
+	from reply r
 	left join member m 
 	on r.mem_id = m.mem_id
-	where brd_id = #{brd_id} and art_id = #{art_id}
-	order by rep_regdate desc, rep_parent asc, rep_step asc, rep_id asc
+	where brd_id = #{brd_id} and art_id = #{art_id} and r.isdelete = 0
+	order by rep_regdate desc, rep_parent asc, rep_step asc 
 	</select>		
 			
 	<!-- 댓글작성 -->
@@ -118,6 +119,38 @@
 	from reply
 	where art_id = #{art_id} and brd_id=#{brd_id}), #{mem_id}, #{rep_content}, SYSDATE, #{rep_good}, #{rep_bad}, #{rep_parent}, #{rep_step},0)
 	</insert>
+	
+	<!-- 댓글 삭제 -->
+	<update id="cydeleteReply" parameterType="Reply">
+		update reply
+		set isdelete = 1
+		where brd_id = #{brd_id}
+		and art_id = #{art_id}
+		and rep_id = #{rep_id}
+	</update>
+
+
+	<!-- 댓글 수정 -->
+	<update id="cyupdateReply" parameterType="Reply">
+			update reply 
+		set 
+			rep_content = #{rep_content, jdbcType=CLOB}
+		where art_id = #{art_id} and brd_id = #{brd_id} and rep_id = #{rep_id}
+	</update>
+
+
+	<!-- 댓글 좋아요 -->
+	<update id="cyUpdateBadReply" parameterType="Reply">
+		update reply set rep_bad = rep_bad + 1 
+		where art_id = #{art_id} and brd_id = #{brd_id} and rep_id = #{rep_id}
+	</update>
+
+
+	<!-- 댓글 좋아요 -->
+	<update id="cyUpdateGoodReply" parameterType="Reply">
+		update reply set rep_good = rep_good + 1 
+		where art_id = #{art_id} and brd_id = #{brd_id} and rep_id = #{rep_id}
+	</update>
 
 
 

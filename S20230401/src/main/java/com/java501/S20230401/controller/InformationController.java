@@ -58,8 +58,8 @@ public class InformationController {
 
 		return "information/" + viewName;
 		
-	} 
-	
+	}
+
 	
 	// 상세페이지 확인
 	@RequestMapping(value="/board/information/detail")
@@ -69,18 +69,19 @@ public class InformationController {
 		
 		//조회수
 		int view = as.updateView(article);
-		System.out.println("art_read Start...");
+		System.out.println("조회수 Start...");
 		Article result = as.cyArticlereadDetail(article);	//DB에서 불러오기
 		
-		List<Reply> listReply = rs.listReply(reply);
-		System.out.println("ArticleController list listReply.size()=>" + listReply.size());
+		//댓글 리스트
+		List<Reply> replyAll = rs.replyAll(reply);
+		System.out.println("ArticleController 댓글 리스트 replyAll.size()=>" + replyAll.size());
 
-	
-		model.addAttribute("listReply", listReply);
+		model.addAttribute("replyAll", replyAll);
+		model.addAttribute("reply", reply);
 		model.addAttribute("category", category);
 		model.addAttribute("article", result);
 		
-		System.out.println("controller detai; Article result"+result);		
+		System.out.println("controller detail; Article result"+result);		
 		System.out.println("detail Start...");
 		return "/information/detail";
 	}
@@ -94,11 +95,80 @@ public class InformationController {
 		System.out.println("reply write Start...");
 		
 		int result = rs.cywriteReply(reply);
-		System.out.println("댓글달기");
+		System.out.println("댓글작성 시작");
 //		log.info("값 확인 {}", reply);
 		return "redirect:/board/information/detail?art_id=" +reply.getArt_id()+ "&brd_id=" +reply.getBrd_id()+ "&category=" + category;
 	}
 	
+	
+	//댓글 삭제
+	@RequestMapping(value="/board/information/replydelete")
+	public String delete(@AuthenticationPrincipal MemberDetails memberDetails, Reply reply, Model model, Integer category) throws Exception {
+		// 유저 정보를 다시 리턴  //memberDetails.getMemberInfo() DB의 유저와 대조 & 권한 확인
+		if(memberDetails != null)
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		System.out.println("reply delete Start...");
+		
+		System.out.println(reply);
+		log.info("\n글번호 {} \n게시판번호 {} \n댓글번호 {} ",reply.getArt_id(), reply.getBrd_id(), reply.getRep_id());
+		
+		
+		int result = rs.cydeleteReply(reply);
+		System.out.println("댓글삭제 시작");
+		return "redirect:/board/information/detail?art_id=" +reply.getArt_id()+ "&brd_id=" +reply.getBrd_id()+ "&category=" + category;
+	}
+	
+	
+	//댓글 수정
+	@RequestMapping(value="/board/information/updateReply", method = RequestMethod.POST)
+	public String update(@AuthenticationPrincipal MemberDetails memberDetails, Reply reply, Model model, Integer category) throws Exception {
+		// 유저 정보를 다시 리턴  //memberDetails.getMemberInfo() DB의 유저와 대조 & 권한 확인
+		if(memberDetails != null)
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		System.out.println("reply update Start...");
+		model.addAttribute("category", category);
+		model.addAttribute("Reply", reply);
+		System.out.println(reply);
+		log.info("\n글번호 {} \n게시판번호 {} \n댓글번호 {}  \n댓글내용 {} ",reply.getArt_id(), reply.getBrd_id(), reply.getRep_id(), reply.getRep_content());
+		
+		
+		int result = rs.cyupdateReply(reply);
+		System.err.println(result);
+		System.out.println("댓글수정 시작");
+		return "redirect:/board/information/detail?art_id=" +reply.getArt_id()+ "&brd_id=" +reply.getBrd_id()+ "&category=" + category;
+	}
+	
+	
+	//댓글 추천(좋아요)
+	@RequestMapping(value="/board/information/replyupdategood")
+	public String replyupdategood(@AuthenticationPrincipal MemberDetails memberDetails, Reply reply, int category, Model model) {
+		// 유저 정보를 다시 리턴  //memberDetails.getMemberInfo() DB의 유저와 대조 & 권한 확인
+		if(memberDetails != null)
+		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+
+		int result = rs.replyupdategood(reply);
+		model.addAttribute("category", category);
+		model.addAttribute("reply", reply);
+		System.out.println("rep_good Start...");
+		int brd_id = reply.getBrd_id();
+		int art_id = reply.getArt_id();
+		return "redirect:/board/information/detail?art_id=" + art_id + "&brd_id=" + brd_id + "&category=" + category;
+	}
+	// 댓글 비추천(싫어요)
+	@RequestMapping(value="/board/information/replyupdatebad")
+	public String replyupdatebad(@AuthenticationPrincipal MemberDetails memberDetails, Reply reply, int category, Model model) {
+		// 유저 정보를 다시 리턴  //memberDetails.getMemberInfo() DB의 유저와 대조 & 권한 확인
+		if(memberDetails != null)
+		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		
+		int result = rs.replyupdatebad(reply);
+		model.addAttribute("category", category);
+		model.addAttribute("article", result);
+		System.out.println("art_bad Start...");
+		int brd_id = reply.getBrd_id();
+		int art_id = reply.getArt_id();
+		return "redirect:/board/information/detail?art_id=" + art_id + "&brd_id=" + brd_id + "&category=" + category;
+	}
 	
 	
 	// 추천
@@ -138,7 +208,7 @@ public class InformationController {
 	
 	// 상세페이지에서 지우기	
 	@RequestMapping(value="/board/information/delete")
-	public String delete(MemberDetails memberDetails, Article article, int category, Model model) {
+	public String delete(@AuthenticationPrincipal MemberDetails memberDetails, Article article, int category, Model model) {
 		// 유저 정보를 다시 리턴  //memberDetails.getMemberInfo() DB의 유저와 대조 & 권한 확인
 		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
@@ -151,7 +221,7 @@ public class InformationController {
 	
 	// 수정 상세페이지 update로 이동 
 	@RequestMapping(value="/board/information/update", method = RequestMethod.GET)
-	public String update(MemberDetails memberDetails, Article article, int category, Model model) {
+	public String update(@AuthenticationPrincipal MemberDetails memberDetails, Article article, int category, Model model) {
 		// 유저 정보를 다시 리턴  //memberDetails.getMemberInfo() DB의 유저와 대조 & 권한 확인
 		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
@@ -174,7 +244,7 @@ public class InformationController {
 	
 	//게시물 수정 	
 	@RequestMapping(value="/board/information/modify", method = RequestMethod.POST)
-	public String updateForm(MemberDetails memberDetails, Article article, int category, Model model)throws Exception{
+	public String updateForm(@AuthenticationPrincipal MemberDetails memberDetails, Article article, int category, Model model)throws Exception{
 		// 유저 정보를 다시 리턴  //memberDetails.getMemberInfo() DB의 유저와 대조 & 권한 확인
 		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
@@ -190,7 +260,7 @@ public class InformationController {
 	
 	//게시물 작성 GET
 	@RequestMapping(value = "/board/information/write", method = RequestMethod.GET)
-	public String getwrite(MemberDetails memberDetails, Model model) throws Exception {
+	public String getwrite(@AuthenticationPrincipal MemberDetails memberDetails, Model model) throws Exception {
 		// 유저 정보를 다시 리턴  //memberDetails.getMemberInfo() DB의 유저와 대조 & 권한 확인
 		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
@@ -200,7 +270,7 @@ public class InformationController {
 	
 	//게시물 작성POST
 	@RequestMapping(value = "/board/information/insert", method = RequestMethod.POST)
-	public String insert(MemberDetails memberDetails, Article article, Model model) throws Exception {
+	public String insert(@AuthenticationPrincipal MemberDetails memberDetails, Article article, Model model) throws Exception {
 		// 유저 정보를 다시 리턴  //memberDetails.getMemberInfo() DB의 유저와 대조 & 권한 확인
 		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
