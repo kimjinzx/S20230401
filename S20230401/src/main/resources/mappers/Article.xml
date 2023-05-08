@@ -700,11 +700,9 @@
 	
 	<!-- 최승환 -->
 	<select id="shCustomerCount" resultType="int" parameterType="int">
-	<![CDATA[
 		SELECT Count(*)
 		FROM article
 		WHERE brd_id BETWEEN #{brd_id} AND #{brd_id}+99
- 	 ]]>	
 	</select>
 	
 	<select id="shListCustomer" parameterType="Article" resultType="Article">
@@ -729,7 +727,6 @@
 	</select>
 	
 	<select id="shListCustomerMenu" parameterType="Article" resultType="Article">
-	 <![CDATA[
 		SELECT *
   		FROM 
   			(
@@ -747,11 +744,9 @@
     		ORDER BY A.ART_ID DESC
   			)
   		WHERE RN BETWEEN #{start} AND #{end} AND isdelete=0
- 	 ]]>	
 	</select>
 		
 	<select id="shCustomerDetail" parameterType="Article" resultType="Article">
-	  <![CDATA[
         	 SELECT A.*, M.MEM_NICKNAME, M.MEM_IMAGE, NVL(R.REP_COUNT, 0) REP_COUNT
 			 FROM ARTICLE A
 			 LEFT JOIN MEMBER M ON A.MEM_ID = M.MEM_ID
@@ -760,7 +755,6 @@
 			 	 		GROUP BY ART_ID, BRD_ID) R
 			 	 		ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID)
 			 	 		WHERE A.ART_ID = #{art_id} AND A.BRD_ID = #{brd_id} and A.isdelete=0
-	  ]]>
 	</select>
 	
 	<insert id="shInsertCustomer" parameterType="Article">

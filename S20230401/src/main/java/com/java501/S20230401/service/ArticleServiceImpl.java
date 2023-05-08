@@ -364,11 +364,4 @@ public class ArticleServiceImpl implements ArticleService {
 		dresult = ad.deleteCustomer(article);
 		return dresult;
 	}
-	@Override
-	public int customerWriteReply(Reply reply) {
-		int cReplyWrite = 0;
-		System.out.println("ArticleServiceImpl customerWriteReply Start");
-		cReplyWrite = ad.customerWriteReply(reply);
-		return cReplyWrite;
-	}
 }

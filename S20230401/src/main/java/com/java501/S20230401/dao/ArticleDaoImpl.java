@@ -662,15 +662,5 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return dresult;
 	}
-	@Override
-	public int customerWriteReply(Reply reply) {
-		int cReplyWrite = 0;
-		System.out.println("ArticleDaoImpl customerWriteReply start");
-		try {
-			cReplyWrite = session.delete("shWriteReply", reply);
-		} catch (Exception e) {
-			System.out.println("ArticleDaoImpl customerWriteReply Exception->"+e.getMessage());
-		}
-		return cReplyWrite ;
-	}
+	
 }

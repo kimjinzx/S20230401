@@ -85,5 +85,4 @@ public interface ArticleDao {
 	int 			insertCustomer(Article article);
 	int 			updateCustomer(Article article);
 	int 			deleteCustomer(Article article);
-	int 			customerWriteReply(Reply reply);
 }

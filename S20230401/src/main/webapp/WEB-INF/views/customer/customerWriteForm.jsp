@@ -171,17 +171,18 @@
 			<h2>고객센터 글쓰기</h2>
 			<form action="writeCustomer" method="post" name="frm">
 				<table>
-					<tr><th>작성자 :</th>
-					<td>${memberInfo.mem_nickname }<td>
+					<tr><th>작성자 </th>
+					<td><img src="${pageContext.request.contextPath}/${memberInfo.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">${memberInfo.mem_nickname }<td>
 					<input type="hidden" name="mem_id" value="${memberInfo.mem_id}">
+					<input type="hidden" name="brd_id" value="${category}">
 					
-					<tr><th>분류:</th><
+					<tr><th>분류:</th><td>
 					<select name="brd_id">
-						<option value="1510" selected>공지</option>
-						<option value="1520">Q&A</option>
+						<option value="1510">공지</option>
+						<option value="1520">Q&amp;A</option>
 						<option value="1530">이벤트</option>
 						<option value="1540">문의/건의</option>
-					</select>
+					</select><td>
 					
 					<tr><th>제목</th><td>
 					<input type="text" name="art_title" placeholder="제목을 입력해 주세요" required="required">

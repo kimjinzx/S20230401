@@ -22,9 +22,10 @@ public interface ReplyDao {
 	
 	
 	// 최승환
-	int 	shReplyCount(Reply reply);
-	List<Reply> replyList(Reply reply);
-	
+	int 			shReplyCount(Reply reply);
+	List<Reply> 	replyList(Reply reply);
+	int 			customerWriteReply(Reply reply);
+	int 			customerDeleteReply(Reply reply);
 	
 	// 유현규
 	public List<ReplyMember> getReplyByArticle(Article article);
