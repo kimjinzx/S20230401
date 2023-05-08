@@ -1,7 +1,7 @@
 /**
  * 
  */
-// 세션 스토리지에서 contextPath 호출하여 저장
+// 세션 스토리지에서 contextPath 호출하여 저장 경로, 글번호, 게시판 번호, 카테고리 번호, 로그인 유저, 작성자
 const contextPath = sessionStorage.getItem("contextPath");
 const artId = sessionStorage.getItem("artId");
 const brdId = sessionStorage.getItem("brdId");
@@ -10,25 +10,27 @@ const memId = sessionStorage.getItem("memId");
 const articleMemId = sessionStorage.getItem("articleMemId");
 console.info('로그인 유저 : '+memId);
 
-// 찜하기
+// 클릭 이벤트
 $(document).ready(()=>{
-    // 찜
-    $('#btns-favorite').click(()=>{
+    // 찜 찜 취소
+    $('#btns-favorite, #btns-favoriteDel').click((e)=>{
         if(memId > 0){
-            if(confirm('즐겨찾기 하시겠습니까?')){
-                location.href = contextPath+'/board/share/favorite/add?art_id='+artId+'&brd_id='+brdId+'&category='+category;
+            if(e.target.id == 'btns-favorite'){
+                message = '즐겨찾기 하시겠습니까?';
+                action = 'add';
+            }
+            if(e.target.id == 'btns-favoriteDel'){
+                message = '즐겨찾기 목록에서 삭제 하시겠습니까?';
+                action = 'del';
+            }
+            if(confirm(message)){
+                location.href = `${contextPath}/board/share/favorite/${action}?art_id=${artId}&brd_id=${brdId}&category=${category}`;
             }
         }else alert('로그인 하세요');
     });
-    // 취소
-    $('#btns-favoriteDel').click(()=>{
-        if(memId > 0){
-            if(confirm('즐겨찾기 삭제 하시겠습니까?')){
-                location.href = contextPath+'/board/share/favorite/del?art_id='+artId+'&brd_id='+brdId+'&category='+category;
-            }
-        }else alert('로그인 하세요')
-    });
 });
+
+// 이동
 
 // 댓글 펼치기
 $(document).ready(()=>{
@@ -160,22 +162,6 @@ function checkVote(){
                 document.getElementById('btns-badcancel').style.display = '';
             }
         }
-
-        // let cookieGood = document.cookie.match(new RegExp('\\b'+artId+brdId+'good\\b'));
-        // let cookieBad = document.cookie.match(new RegExp('\\b'+artId+brdId+'bad\\b'));
-        // console.log(cookieGood);
-        // console.log(cookieBad);
-        
-        // // 이미 추천 한 경우
-        // if(cookieGood){
-        //     document.getElementById('btns-good').style.display = 'none';
-        //     document.getElementById('btns-goodcancel').style.display = '';
-        // }
-        // // 이미 비추천 한 경우
-        // if(cookieBad){
-        //     document.getElementById('btns-bad').style.display = 'none';
-        //     document.getElementById('btns-badcancel').style.display = '';
-        // }
     }
 }
 
@@ -193,23 +179,27 @@ $(document).ready(()=>{
     $('#btns-apply').click((e)=>{
         if(memId > 0){
         	if(memId != articleMemId){
-	            $('.myModal').css('display', 'flex'); // flex로 변경
+	            $('#myModal').css('display', 'flex'); // flex로 변경
         	}else{
         		alert('본인이 작성한 글 입니다.');
         	}
         }else alert('로그인 하세요');
     });
     // 클릭시 닫기 이벤트
-    $('.myModal').click(e=>{
+    $('#myModal').click(e=>{
         console.info(e.target.getAttribute('id'));
         console.info(e.target.getAttribute('class'));
         // 바깥 영역, 취소 버튼, X 버튼
         if(!$(e.target).closest('.myModal-window').length || e.target.getAttribute('id')==='btns-modalCancel' || e.target.getAttribute('id')==='modal-close'){
             $('#myModal').css('display', 'none');
-        }else if(e.target.getAttribute('id')==='btns-modalApply')
-            if(confirm('거래 신청 하시겠습니까?')){
-                location.href=contextPath+'/board/share/waiting/add?art_id='+artId+'&brd_id='+brdId+'&category='+category;
-            }
+        }
+        if(e.target.getAttribute('id')==='btns-modalApply'){
+            if($('#myCheckbox').is(':checked')){
+                if(confirm('거래 신청 하시겠습니까?')){
+                    location.href=contextPath+'/board/share/waiting/add?art_id='+artId+'&brd_id='+brdId+'&category='+category;
+                }
+            }else alert('동의하지 않으면 신청하실 수 없습니다.')
+        }
         e.stopPropagation();
     });
 });
@@ -258,3 +248,11 @@ function userListButtonClick(e){
 	}
 }
 
+
+$(()=>{
+    $('#article-report').click(e=>{
+        if(confirm('신고 하시겠습니까?')){
+            $('#report').css('display', 'flex');
+        }
+    })
+});
