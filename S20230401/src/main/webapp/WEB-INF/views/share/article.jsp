@@ -29,9 +29,9 @@
 			
 		<!-- 게시글 -->
 		<div class="view-article">
-
 			<!-- 임시 로그인 -->
 			<c:if test="${memberInfo == null}"><div class="login" style="text-align: right;"><a href="${pageContext.request.contextPath}/login"><h1>로그인좀 해보시겠소..?</h1></a></div></c:if>
+			<c:if test="${memberInfo != null}"><div class="logout" style="text-align: right;"><a href="${pageContext.request.contextPath}/logout"><h1>로그아웃</h1></a></div></c:if>
 
 			<!-- 카테고리 정보 -->
 			<div class="article-header">
@@ -45,7 +45,7 @@
 				<!-- 카테고리 표시 -->
 				<div class="article-category" style="display: flex;">
 					<span class="category-name">
-						<button style="border-radius: 5px; font-size: x-large; height: auto; background-color: #6c757d;">${article.brd_name}</button>
+						<a style="border-radius: 5px; color: white; font-size: xx-large; padding: 5px; background-color: #6c757d; text-decoration: none;" href="${pageContext.request.contextPath}/board/share?category=${article.brd_id}">${article.brd_name}</a>
 					</span>
 					<span style="display: flex; flex-grow: 1; justify-content: flex-end;">
 						<!-- 글 수정 삭제 -->
@@ -61,10 +61,17 @@
 			
 			<!-- 글 제목 및 상태 -->
 			<div class="article-title">
-				<span>
+				<div class="title-status">
 					<c:if test="${article.status_name != null}"><button class="btn">${article.status_name}</button></c:if>
+				</div>
+				<div class="title-subject">
 					${article.art_title}
-				</span>
+				</div>
+				<div id="article-report">
+					<c:if test="${not empty memberInfo}">
+						<svg viewBox="0 0 512 512" weith="30" height="30"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z"/></svg>
+					</c:if>
+				</div>
 			</div>
 			<hr />
 			
@@ -163,7 +170,9 @@
 							<div class="userList-btns">
 								<c:choose>
 									<c:when test="${article.mem_id == memberInfo.mem_id}">
-										<button class="btns-action" id="btns-accept">승인</button>
+										<c:if test="${article.trade.trd_max ne joinList.size()}">
+											<button class="btns-action" id="btns-accept">승인</button>
+										</c:if>
 										<button class="btns-action" id="btns-refuse">거절</button>
 									</c:when>
 									<c:when test="${waiting.mem_id == memberInfo.mem_id}">
@@ -179,23 +188,29 @@
 
 				<!-- 거래 신청, 찜 -->
 				<div class="share-btns">
-					<c:choose>
-						<c:when test="${userFavorite > 0}">
-							<button class="btns-action" id="btns-favoriteDel">찜 취소</button>
-						</c:when>
-						<c:otherwise>
-							<button class="btns-action" id="btns-favorite">찜</button>
-						</c:otherwise>
-					</c:choose>
-					<c:if test="${userWaiting == 0 && userJoin == 0}"><button class="btns-action" id="btns-apply">신청</button></c:if>
-<%-- 					<c:choose>
-						<c:when test="${userWaiting > 0 || userJoin > 0}">
-							<button class="btns-action" id="btns-applyDel">신청 취소</button>
-						</c:when>
-						<c:otherwise>
-							<button class="btns-action" id="btns-apply">신청</button>
-						</c:otherwise>
-					</c:choose> --%>
+					<c:if test="${memberInfo != null}">
+						<div class="btns-favorite">
+							<c:choose>
+								<c:when test="${userFavorite > 0}">
+									<button class="btns-action" id="btns-favoriteDel">찜 취소</button>
+								</c:when>
+								<c:when test="${userFavorite == 0}">
+									<button class="btns-action" id="btns-favorite">찜</button>
+								</c:when>
+							</c:choose>
+						</div>
+						<div class="btns-trade">
+							<c:choose>
+								<c:when test="${userWaiting == 0 && userJoin == 0 && joinList.size() < article.trade.trd_max}">
+									<button class="btns-action" id="btns-apply">신청</button>
+								</c:when>
+								<c:when test="${joinList.size() == article.trade.trd_max}">
+									<button class="btns-action" id="btns-end">모집 완료</button>
+								</c:when>
+							</c:choose>
+						</div>
+					</c:if>
+					<c:if test="${memberInfo == null}"><div class="login" style="text-align: right;"><a href="${pageContext.request.contextPath}/login"><h1>로그인좀 해보시겠소..?</h1></a></div></c:if>
 				</div>
 			</div>
 		</div><hr />
@@ -209,7 +224,7 @@
 			</div>
 
 			<!-- 추천 비추천 -->
-			<div class="share-button" id="btns-vote">
+			<div class="share-btns" id="btns-vote">
 				<button class="btns-good" id="btns-good">추천 <span>${article.art_good}</span></button>
 				<button class="btns-good" id="btns-goodcancel" style="display: none; background-color: #0193F8;">추천 <span>${article.art_good}</span></button>
 				<button class="btns-bad" id="btns-bad">비추천 <span>${article.art_bad}</span></button>

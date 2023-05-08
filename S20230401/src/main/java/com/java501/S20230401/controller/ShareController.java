@@ -135,8 +135,6 @@ public class ShareController {
 			// 거래 목록 확인
 			int userJoin = joinService.shareUserJoin(shareUser);
 			
-			System.out.println("쪼인!"+userJoin);
-			
 			model.addAttribute("userJoin", userJoin);
 			model.addAttribute("userFavorite", userFavorite);
 			model.addAttribute("userWaiting", userWaiting);
@@ -162,6 +160,7 @@ public class ShareController {
 		List<Waiting> waitingList = waitingService.dgShareWaitingList(detailArticle.getTrade().getTrd_id());
 		// 거래 참가자 목록 저장
 		List<Join> joinList = joinService.shareJoinList(detailArticle.getTrade().getTrd_id());
+
 		
 		model.addAttribute("joinList", joinList);
 		model.addAttribute("waitingList", waitingList);
@@ -500,11 +499,15 @@ public class ShareController {
 	@RequestMapping(value = "board/share/join/{join}")
 	public String shareJoin(@PathVariable("join")String join, Article article, Integer category) {
 		int result = 0;
-		
 		switch (join) {
 			case "accept":
 				result = joinService.shareJoinAdd(article);
-				if(result > 0) waitingService.shareWaitingDel(article); break;
+				if(result > 0) {
+					waitingService.shareWaitingDel(article);
+					// 승인시 마다 거래 인원확인, 가득 찼을 경우 거래상태 변경
+					tradeService.shareTradeStatus(article);
+				}
+				break;
 			case "refuse": 	waitingService.shareWaitingDel(article);	break;
 			case "drop":	joinService.shareJoinDel(article);			break;
 			default: break;

@@ -42,7 +42,11 @@ body {
 	display: block;
 	margin-bottom: 5px;
 }
-
+#trade-change {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
 
 
 .form-group input[type="text"],[type="number"],[type="date"],select, textarea{

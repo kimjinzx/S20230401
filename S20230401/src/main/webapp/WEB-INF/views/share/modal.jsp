@@ -38,11 +38,40 @@
 				</div>
 			</div>
 			<div class="modal-checkbox">
-				<label for="myCheckbox"><input type="checkbox" id="myCheckbox" class="myCheckbox" />동의</label>
+				<input type="checkbox" id="myCheckbox" class="myCheckbox"/>
+				<label for="myCheckbox">동의</label>
 			</div>
 			<div class="modal-button">
 				<button class="btns-action" id="btns-modalApply">신청</button>
 				<button class="btns-action" id="btns-modalCancel">취소</button>
+			</div>
+		</div>
+	</div>
+	<!-- 신고 -->
+	<div class="myModal" id="report" style="display: none;">
+		<div class="myModal-window">
+			<div class="modal-header">
+				<div class="modal-title">유저 신고</div>
+				<div class="modal-close" id="modal-close">&times;</div>
+			</div>
+			<div class="modal-body">
+				<div class="body-warning">
+				<div class="body-info">
+					<h2>유저 신고</h2>
+					<p>유저 : ${article.member.mem_nickname}</p>
+					<textarea name="report_id"></textarea>
+				</div>
+					<h2>주의 사항</h2>
+					<p>ShareGo은 사용자가 허위적인 신고 혹은 잘못된 방법이나 행위로 신고 서비스를 악용 경우 사용에 대한 제재(이용정지, 강제탈퇴 등)를 가할 수 있습니다.</p>
+				</div>
+			</div>
+			<div class="modal-checkbox">
+				<input type="checkbox" id="myCheckbox" class="myCheckbox"/>
+				<label for="myCheckbox">동의</label>
+			</div>
+			<div class="modal-button">
+				<button class="btns-action" id="btns-reportApply">신고</button>
+				<button class="btns-action" id="btns-reportCancel">취소</button>
 			</div>
 		</div>
 	</div>

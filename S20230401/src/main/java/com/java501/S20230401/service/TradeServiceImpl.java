@@ -24,9 +24,7 @@ public class TradeServiceImpl implements TradeService {
 		int result = 0;
 		try {
 			result = td.updateShare(article);
-			System.out.println("거래"+result);
 			result = ad.updateShare(article);
-			System.out.println("아띠끌"+result);
 		} catch (Exception e) {
 			// 예외 발생시 롤백
 			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -35,5 +33,8 @@ public class TradeServiceImpl implements TradeService {
 		}
 		return result;
 	}
+	// 거래 상태 변경
+	@Override
+	public void shareTradeStatus(Article article) { td.shareTradeStatus(article); }
 
 }

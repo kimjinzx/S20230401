@@ -20,12 +20,12 @@
 			success: function(data){
 				console.log(data);
 				
-				let options = '';
+				let options = '<option value="">선택</option>';
 				for(let i=0; i<data.length; i++){
 					options += '<option value="'+data[i].reg_id+'">'+data[i].reg_name+'</option>';
 				}
 				// 지역 소분류의 옵션을 추가하고, name 속성 부여
-				$('#location-secondSelect').append(options);
+				$('#location-secondSelect').html(options);
 			}
 		});
 	}
@@ -47,6 +47,25 @@
 			console.info($('#art_isnotice').val());
 		});
 	});
+	
+	// 페이지 로딩 후 지역 표시 
+	// 페이지 로딩 후 지역 표시 
+	// 페이지 로딩 후 지역 표시 
+	// 페이지 로딩 후 지역 표시 
+	// 페이지 로딩 후 지역 표시 
+	// 페이지 로딩 후 지역 표시 
+	// 페이지 로딩 후 지역 표시 
+	// 페이지 로딩 후 지역 표시 
+	// 페이지 로딩 후 지역 표시 
+	// 페이지 로딩 후 지역 표시 
+	// 페이지 로딩 후 지역 표시 
+	// 페이지 로딩 후 지역 표시
+	// 수정 요망
+	$(()=>{
+		firstSelect();
+		let locSelect = $('#location-secondSelect').attr('selected', 'selected');
+		console.log($('#location-secondSelect').val());
+	});
 </script>
 </head>
 <body>
@@ -65,14 +84,25 @@
 				<input type="hidden" 	name="trade.trd_cost" 	value="0">
 				
 				
-				<div class="form-group">
-					<label for="category">카테고리</label>
-					<select name="brd_id" id="brd_id">
-						<option value="1210" ${article.brd_id == 1210? 'selected':''}>식품</option>
-						<option value="1220" ${article.brd_id == 1220? 'selected':''}>패션/잡화</option>
-						<option value="1230" ${article.brd_id == 1230? 'selected':''}>가전/가구</option>
-						<option value="1240" ${article.brd_id == 1240? 'selected':''}>기타</option>
-					</select>
+				<div class="form-group" id="trade-change">
+					<section class="category">
+						<label for="category">카테고리</label>
+						<select name="brd_id" id="brd_id">
+							<option value="1210" ${article.brd_id == 1210? 'selected':''}>식품</option>
+							<option value="1220" ${article.brd_id == 1220? 'selected':''}>패션/잡화</option>
+							<option value="1230" ${article.brd_id == 1230? 'selected':''}>가전/가구</option>
+							<option value="1240" ${article.brd_id == 1240? 'selected':''}>기타</option>
+						</select>
+					</section>
+					<section class="status">
+						<label for="status">거래 상태</label>
+						<select name="trd_status" id="trd_status">
+							<option value="1210" ${article.brd_id == 1210? 'selected':''}>식품</option>
+							<option value="1220" ${article.brd_id == 1220? 'selected':''}>패션/잡화</option>
+							<option value="1230" ${article.brd_id == 1230? 'selected':''}>가전/가구</option>
+							<option value="1240" ${article.brd_id == 1240? 'selected':''}>기타</option>
+						</select>
+					</section>
 				</div>
 
 				<div class="form-group">
@@ -94,13 +124,16 @@
 				</div>
 				
 				<div class="form-group" style="display: flex;">
+					<input type="number" name="trade.reg_id">
 					<!-- 대분류 -->
 					<div class="form-location">
 						<label for="location-limit">지역제한</label>
 						<select id="location-firstSelect" name="trade.reg_id" onchange="firstSelect()">
 							<option value="">지역 선택</option>
 							<c:forEach var="region" items="${regionList}">
-								<option id="region-parent" value="${region.reg_id}">${region.reg_name}</option>
+								<c:if test="${region.reg_parent eq null}">
+									<option id="region-parent" value="${region.reg_id}" ${(Math.floor(article.trade.reg_id / 100)) eq (Math.floor(region.reg_id / 100)) ? 'selected="selected"':''}>${region.reg_name}</option>
+								</c:if>
 							</c:forEach>
 						</select>
 						
@@ -133,8 +166,8 @@
 						<label for="gender-limit">성별</label>
 						<select name="trade.trd_gender">
 							<option value="">제한 없음</option>
-							<option value="201">남자</option>
-							<option value="202">여자</option>
+							<option value="201"	${article.trade.trd_gender == '201'? 'selected="selected"':''}>남자</option>
+							<option value="202" ${article.trade.trd_gender == '202'? 'selected="selected"':''}>여자</option>
 						</select>
 					</div>
 

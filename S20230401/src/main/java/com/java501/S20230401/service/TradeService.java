@@ -6,5 +6,6 @@ public interface TradeService {
 
 	// 양동균
 	int updateShare(Article article); // 거래글 수정
+	void shareTradeStatus(Article article); // 거래 상태 변경
 
 }

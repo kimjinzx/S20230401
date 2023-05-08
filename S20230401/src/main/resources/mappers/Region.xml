@@ -23,9 +23,8 @@
 	</resultMap>
 	<!-- 지역 대분류 -->	
 	<select id="dgRegionList" resultType="Region">
-		SELECT  REG_ID, REG_NAME
+		SELECT  REG_ID, REG_NAME, REG_PARENT
 		FROM    REGION
-		WHERE   REG_PARENT IS NULL
 		ORDER BY REG_ID ASC
 	</select>
 	<!-- 지역 소분류 -->
