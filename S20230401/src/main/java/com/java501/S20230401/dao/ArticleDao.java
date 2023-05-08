@@ -25,6 +25,10 @@ public interface ArticleDao {
 	public int hgIncreaseReadCount(Article searcher);
 	public int hgRecommendArticle(Article searcher);
 	public int hgCompressedUpdateArticle(Article article);
+	public int hgDeleteArticle(Article article);
+	public int hgRestoreArticle(Article article);
+	public int hgInsertAdminArticle(Article article);
+	public List<Article> hgAdminArticleList(Article searcher);
 	
 	
 	// 양동균

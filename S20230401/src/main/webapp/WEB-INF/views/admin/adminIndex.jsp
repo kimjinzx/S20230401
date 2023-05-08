@@ -310,6 +310,17 @@
 		pointer-events: none;
 	}
 	
+	span.isDelete-tag {
+		background-color: var(--subtheme);
+		color: var(--subtheme-font);
+		border: 0;
+		border-radius: 2.5px;
+		padding: 2.5px 5px;
+		font-size: 12px;
+		font-weight: bold;
+		margin-right: 5px;
+	}
+	
 	div.admin-article-category {
 		width: 75px;
 		border-radius: 2.5px;
@@ -443,6 +454,10 @@
 	}
 	div#art_content {
 		padding: 5px 10px;
+	}
+	
+	img {
+		max-width: 100%;
 	}
 </style>
 </head>

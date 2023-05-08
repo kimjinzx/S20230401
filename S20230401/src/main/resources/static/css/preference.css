@@ -6,8 +6,10 @@
 	--theme-rgb: 255, 255, 255;
 	--theme-font: #333333;
 	--theme-font-rgb: 51, 51, 51;
-	--subtheme: #2368e8;
-	--subtheme-rgb: 35, 104, 232;
+	/* --subtheme: #2368e8;
+	--subtheme-rgb: 35, 104, 232; */
+	--subtheme: #0193F8;
+	--subtheme-rgb: 1, 147, 248;
 	--subtheme-font: #FFFFFF;
 	--subtheme-font-rgb: 255, 255, 255;
 	--warning: #FF0000;
@@ -22,8 +24,10 @@
 	--theme-rgb: 0, 0, 0;
 	--theme-font: #CCCCCC;
 	--theme-font-rgb: 204, 204, 204;
-	--subtheme: #333333;
-	--subtheme-rgb: 51, 51, 51;
+	/* --subtheme: #333333;
+	--subtheme-rgb: 51, 51, 51; */
+	--subtheme: #2368e8;
+	--subtheme-rgb: 35, 104, 232;
 	--subtheme-font: #FFFFFF;
 	--subtheme-font-rgb: 255, 255, 255;
 	--warning: #FF0000;

@@ -14,15 +14,74 @@
 				#{art_tag4, jdbcType=VARCHAR}, #{art_tag5, jdbcType=VARCHAR}, NULL,
 				0, 0, 0, 0, 0, NULL)
 	</insert>
+	<insert id="hgInsertAdminArticle" parameterType="Article">
+		INSERT INTO ARTICLE (ART_ID, BRD_ID, ART_TITLE, MEM_ID, ART_REGDATE, ART_CONTENT,
+							 ART_TAG1, ART_TAG2, ART_TAG3, ART_TAG4, ART_TAG5, TRD_ID, ART_GOOD,
+							 ART_BAD, ART_READ, ART_ISNOTICE, ISDELETE, REPORT_ID)
+		VALUES ((SELECT MAX(ART_ID) + 1 FROM ARTICLE WHERE BRD_ID = #{brd_id}), #{brd_id},
+				#{art_title, jdbcType=VARCHAR}, #{mem_id}, SYSDATE, #{art_content, jdbcType=VARCHAR},
+				#{art_tag1, jdbcType=VARCHAR}, #{art_tag2, jdbcType=VARCHAR}, #{art_tag3, jdbcType=VARCHAR},
+				#{art_tag4, jdbcType=VARCHAR}, #{art_tag5, jdbcType=VARCHAR}, NULL,
+				0, 0, 0, 0, 0, NULL)
+		<selectKey keyProperty="art_id" resultType="int" order="AFTER">
+			SELECT MAX(ART_ID) ART_ID FROM ARTICLE WHERE BRD_ID = #{brd_id}
+		</selectKey>
+	</insert>
 	<update id="hgCompressedUpdateArticle" parameterType="Article">
 		UPDATE ARTICLE SET ART_TITLE = #{art_title}, ART_CONTENT = #{art_content}, ART_TAG1 = #{art_tag1, jdbcType=VARCHAR},
 								   ART_TAG2 = #{art_tag2, jdbcType=VARCHAR}, ART_TAG3 = #{art_tag3, jdbcType=VARCHAR},
 								   ART_TAG4 = #{art_tag4, jdbcType=VARCHAR}, ART_TAG5 = #{art_tag5, jdbcType=VARCHAR}
 		WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
 	</update>
+	<update id="hgDeleteArticle" parameterType="Article">
+		UPDATE ARTICLE SET ISDELETE = 1 WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
+	</update>
+	<update id="hgRestoreArticle" parameterType="Article">
+		UPDATE ARTICLE SET ISDELETE = 0 WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
+	</update>
 	<select id="hgGetArticleById" parameterType="Article" resultType="Article">
 		SELECT * FROM ARTICLE
 		WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
+	</select>
+	<select id="hgAdminArticleList" parameterType="Article" resultType="Article">
+		SELECT  *
+		FROM    (SELECT ROWNUM AS RN, J.*
+		         FROM   (SELECT *
+		                 FROM ( SELECT  *
+		                        FROM    ARTICLE A
+		                        JOIN    (   SELECT  C1.COMM_VALUE AS BRD_NAME, B.*
+		                                    FROM    BOARD B JOIN COMM C1
+		                                    ON      BRD_ID IN COMM_ID
+		                                 )USING(BRD_ID)
+		                        JOIN	(   SELECT  C2.COMM_VALUE AS GEN_NAME, M.*
+		                                    FROM    MEMBER M JOIN COMM C2
+		                                    ON      MEM_GENDER IN COMM_ID
+		                                 )USING(MEM_ID)
+				                LEFT OUTER JOIN 	(   SELECT  C3.COMM_VALUE AS STATUS_NAME, T.*, R.REG_NAME
+				                                        FROM    TRADE T LEFT OUTER JOIN COMM C3
+				                                        ON      T.TRD_STATUS = C3.COMM_ID
+				                                        LEFT OUTER JOIN REGION R
+				                                        ON      T.REG_ID = R.REG_ID
+				                         )USING(TRD_ID)
+		                        LEFT OUTER JOIN    (    SELECT 	COUNT(*) AS REP_CNT, ART_ID, BRD_ID
+		                                                FROM 	REPLY
+		                                                WHERE 	ISDELETE = 0
+		                                                GROUP BY(ART_ID, BRD_ID)
+		                                            )USING(BRD_ID, ART_ID)
+		                       )
+		                 WHERE      BRD_ID <choose>
+		                 						<when test="brd_id == 999">
+													BETWEEN #{brd_id} and #{brd_id}+600
+												</when>
+												<when test="brd_id % 100 != 0">
+													= #{brd_id}
+												</when>
+												<otherwise>
+													BETWEEN #{brd_id} and #{brd_id}+99
+												</otherwise>
+											</choose>
+		                 ORDER BY   ART_REGDATE DESC) J)
+		WHERE 	RN BETWEEN #{start} and #{end}
 	</select>
 	<update id="hgIncreaseReadCount" parameterType="Article">
 		UPDATE ARTICLE SET ART_READ = ART_READ + 1

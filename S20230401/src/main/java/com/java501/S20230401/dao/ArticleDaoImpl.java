@@ -153,6 +153,26 @@ public class ArticleDaoImpl implements ArticleDao {
 		return session.update("hgCompressedUpdateArticle", article);
 	}
 	
+	@Override
+	public int hgDeleteArticle(Article article) {
+		return session.update("hgDeleteArticle", article);
+	}
+	
+	@Override
+	public int hgRestoreArticle(Article article) {
+		return session.update("hgRestoreArticle", article);
+	}
+	
+	@Override
+	public int hgInsertAdminArticle(Article article) {
+		return session.insert("hgInsertAdminArticle", article);
+	}
+	
+	@Override
+	public List<Article> hgAdminArticleList(Article searcher) {
+		return session.selectList("hgAdminArticleList", searcher);
+	}
+	
 	
 	
 	// 백준

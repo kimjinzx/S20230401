@@ -27,15 +27,22 @@
 		}
 		let sendData = JSON.stringify(dataObj);
 		$.ajax({
-			url : '${pageContext.request.contextPath}/admin/notice/updateProc',
+			url : '${pageContext.request.contextPath}/admin/${type}/updateProc',
 			type : 'post',
 			data : sendData,
 			dataType: 'json',
 			contentType: 'application/json',
 			success : data => {
-				//viewNotice(data.art_id);
+				let isDeleted = $('.admin-article-item[data-id="' + data.art_id[0] + '"]').attr('data-deleted') == 'true';
+				if (isDeleted) {
+					$('.admin-side-panel-view').find('.side-panel-button-delete').hide();
+					$('.admin-side-panel-view').find('.side-panel-button-restore').show();
+				} else {
+					$('.admin-side-panel-view').find('.side-panel-button-delete').show();
+					$('.admin-side-panel-view').find('.side-panel-button-restore').hide();
+				}
 				$.ajax({
-					url: '${pageContext.request.contextPath}/admin/notice/view',
+					url: '${pageContext.request.contextPath}/admin/${type}/view',
 					type: 'post',
 					data: JSON.stringify({ 'art_id' : data.art_id[0] }),
 					dataType: 'html',
@@ -65,7 +72,6 @@
 <div class="container" style="margin: 10px;">
 	<form id="update-form" name="update-form" method="post" enctype="multipart/form-data" accept-charset="UTF-8" onsubmit="return updateNoticeAction();">
 		<input type="hidden" id="art_id" name="art_id" value="${article.art_id }">
-		<input type="hidden" id="brd_id" name="brd_id" value="${article.brd_id }">
 		<div class="form-group">
 			<div class="input-box">
 				<label for="art_title">제목</label>
@@ -87,7 +93,7 @@
 					</div>
 				</div>
 			</div>
-			<input type="hidden" id="art_content" name="art_content" value="${article.art_content }" required>
+			<input type="hidden" id="art_content" name="art_content" value="<c:out value="${article.art_content }" escapeXml="true"/>" required>
 			<div id="articleEditor">
 				
 			</div>

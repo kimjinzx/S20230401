@@ -71,8 +71,24 @@ public class ArticleServiceImpl implements ArticleService {
 	public int hgCompressedUpdateArticle(Article article) {
 		return ad.hgCompressedUpdateArticle(article);
 	}
+	@Override
+	public int hgDeleteArticle(Article article) {
+		return ad.hgDeleteArticle(article);
+	}
+	@Override
+	public int hgRestoreArticle(Article article) {
+		return ad.hgRestoreArticle(article);
+	}
+	@Override
+	public int hgInsertAdminArticle(Article article) {
+		return ad.hgInsertAdminArticle(article);
+	}
+	@Override
+	public List<Article> hgAdminArticleList(Article searcher) {
+		return ad.hgAdminArticleList(searcher);
+	}
 	
-
+	
 	// 양동균
 	@Override
 	public int allTotalArt(Article article) { return ad.allTotalArt(article); }
