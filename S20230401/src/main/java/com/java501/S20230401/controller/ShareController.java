@@ -20,7 +20,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Comm;
-import com.java501.S20230401.model.Favorite;
 import com.java501.S20230401.model.Join;
 import com.java501.S20230401.model.MemberDetails;
 import com.java501.S20230401.model.MemberInfo;
@@ -31,14 +30,12 @@ import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.CommService;
 import com.java501.S20230401.service.FavoriteService;
 import com.java501.S20230401.service.JoinService;
-import com.java501.S20230401.service.MemberService;
 import com.java501.S20230401.service.Paging;
 import com.java501.S20230401.service.RegionService;
 import com.java501.S20230401.service.ReplyService;
 import com.java501.S20230401.service.TradeService;
 import com.java501.S20230401.service.WaitingService;
 
-import kotlin.OverloadResolutionByLambdaReturnType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -47,14 +44,14 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class ShareController {
-	private final ArticleService articleService;
-	private final JoinService joinService;
-	private final CommService commService;
-	private final ReplyService replyService;
-	private final RegionService regionService;
-	private final FavoriteService favoriteService;
-	private final WaitingService waitingService;
-	private final TradeService tradeService;
+	private final ArticleService 	articleService;
+	private final JoinService 		joinService;
+	private final CommService 		commService;
+	private final ReplyService 		replyService;
+	private final RegionService 	regionService;
+	private final FavoriteService 	favoriteService;
+	private final WaitingService 	waitingService;
+	private final TradeService 		tradeService;
 	
 	
 	// 나눔해요 글 목록 + 검색

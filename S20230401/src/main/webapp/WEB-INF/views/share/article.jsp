@@ -19,23 +19,6 @@
 	sessionStorage.setItem('memId', '${memberInfo.mem_id}')
 	sessionStorage.setItem('articleMemId', '${article.mem_id}');
 
-	
-		
-/* 	$(document).ready(()=>{
-		$('#btns-accept').click(e=>{
-			if(confirm('승인 하시겠습니까?')){
-				
-			}
-		});
-		$('#btns-refuse').click(e=>{
-			alert('경고');
-		});
-	}); */
-	// 거래 승인, 거절
-
-	
-
-	
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/share/article.js"></script>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/share/article.css">
