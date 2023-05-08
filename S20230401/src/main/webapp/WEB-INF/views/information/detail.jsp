@@ -63,19 +63,29 @@ function report() {
 
   if (confirm("정말로 신고 하시겠습니까??")) {
 
-    location.href = "/board/information/report";
+	  var reportWindow = window.open("", "reportWindow", "width=600,height=500");
+	    reportWindow.location.href = "/board/information/report";
 
   }
 
 }
+function favorite(art_id, brd_id) {
+	  $.ajax({
+	    url: "/board/information/favorite",
+	    type: "POST",
+	    data: JSON.stringify({ 'favorite': true, 'art_id': art_id, 'brd_id': brd_id }),
+	    dataType: 'json',
+	    contentType: 'application/json',
+	    success: function(data) {
+	      if (data.result == 1) alert("관심 등록 되었습니다");
+	      else alert("관심 등록 실패");
+	    },
+	    error: function(e) {
+	      alert("요청 실패");
+	    }
+	  });
+	}
 
-function functionAlert(){
-	alert("신청완료 되었습니다");
-}
-
-function functionAlert2(){
-	alert("관심 등록 되었습니다");
-}
  </script>
 <body>
 <body>
@@ -233,6 +243,7 @@ function functionAlert2(){
 		<input type="button" value="삭제하기" onclick="location.href='${pageContext.request.contextPath }/board/information/delete?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category }';">
 		<input type="hidden" name="art_id" value="${article.art_id }">
 		<input type="hidden" name="brd_id" value="${article.brd_id }">
+		<input type="hidden" name="mem_id" value="${memberInfo.mem_id}">
 		<input type="hidden" name="category" value="${category}">
 	        <h1>게시글 목록</h1>
 			<div>제목:  ${article.art_title }</div>
@@ -248,8 +259,7 @@ function functionAlert2(){
 			<div>내용:  ${article.art_content }</div>
 
        <input type=button onclick="report()" value="신고하기">
-       <input type=button onclick="functionAlert2()" value="관심">
-       <input type=button onclick="functionAlert()" value="신청">
+       <input type=button onclick="favorite(${article.art_id}, ${article.brd_id})" value="관심">
        <input type=button value="추천" onclick="location.href='${pageContext.request.contextPath }/board/information/updategood?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category }';">
        <input type=button value="비추천" onclick="location.href='${pageContext.request.contextPath }/board/information/updatebad?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category }';">
 </form>
@@ -260,13 +270,9 @@ function functionAlert2(){
 	<input type="hidden" name="brd_id" value="${article.brd_id}">
 	<input type="hidden" name="mem_id" value="${memberInfo.mem_id}">
 	<span><input type="hidden" name="category" value="${category}"></span>
-	<table>
-	<tr>
-		<th>댓글 내용</th>
-		<td><textarea rows="4" cols="130" name="rep_content" required="required">${reply.rep_content}</textarea></td>
-	</tr>
-	</table>
-	<span><input type="submit" value="댓글 작성"></span>
+		<span>댓글 내용</span>
+		<textarea rows="3" cols="120" name="rep_content" required="required">${reply.rep_content}</textarea>
+		<span><input type="submit" value="댓글 작성"></span>
 	</form>
 	<!-- 	조회 -->
 	<div class="list-Reply">
@@ -316,32 +322,6 @@ function functionAlert2(){
 	</div>
 
 
-	
-	
-	
-	
-<%-- 	<table>
-	
-	<tr>
-		<th>댓글 번호</th>
-		<th>닉네임</th>
-		<th>댓글 내용</th>
-		<th>작성 일자</th>
-		<th>댓글 추천수</th>
-		<th>댓글 비추천수</th>
-	</tr>
-		<c:forEach var="reply" items="${listReply }">
-	<tr>
-		<td>${reply.rep_id}</td>
-		<td>${reply.mem_nickname }<img alt="회원 프사" src="${pageContext.request.contextPath}/image/share/${reply.mem_image}" style="width: 35px; height: 35px;"></td>
-		<td><a href="${pageContext.request.contextPath }/board/information/detail?art_id=${article.art_id }&brd_id=${article.brd_id}&category=${category}">${reply.rep_content }</a></td>
-		<td><fmt:formatDate value="${reply.rep_regdate}" pattern="YYYY-MM-dd"/></td>
-		<td>${reply.rep_good}</td>
-		<td>${reply.rep_bad}</td>
-	</tr>
-	</c:forEach>
-	</table> --%>
-	
 	
 		
 	<button id="scrollToTop" class="adv-hover">
