@@ -460,6 +460,38 @@
 		max-width: 100%;
 	}
 </style>
+<style type="text/css">
+	div.admin-board-2-tabgroup {
+		display: flex;
+		justify-content: flex-start;
+		align-items: stretch;
+		height: 32px;
+	}
+	div.admin-board-2-tabgroup > button.report-tab {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: var(--theme);
+		border: 0;
+		outline: none;
+		min-width: 100px;
+		cursor: pointer;
+	}
+	div.admin-board-2-tabgroup > button.report-tab * {
+		pointer-events: none;
+	}
+	div.admin-board-2-tabgroup > button.report-tab > span {
+		font-size: 16px;
+		font-weight: bold;
+		color: var(--theme-font);
+		opacity: 0.5;
+	}
+	div.admin-board-2-tabgroup > button.report-tab:disabled > span {
+		font-weight: bolder;
+		color: var(--subtheme);
+		opacity: 1.0;
+	}
+</style>
 </head>
 <body>
 	<aside>
