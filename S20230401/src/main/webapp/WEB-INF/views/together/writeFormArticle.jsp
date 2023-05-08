@@ -250,7 +250,8 @@
 						<c:when test="${gender == 201}">남성</c:when>
 						<c:when test="${gender == 202}">여성</c:when>
 					</c:choose>	
-					</select></td></tr> --%> <select id="trd_gender" name="trd_gender">
+					</select></td></tr> --%> 
+				<select id="trd_gender" name="trd_gender">
 						<option value="">제한없음</option>
 						<option value="201">남성</option>
 						<option value="202">여성</option>

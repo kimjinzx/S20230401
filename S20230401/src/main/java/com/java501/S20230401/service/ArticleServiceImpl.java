@@ -158,8 +158,6 @@ public class ArticleServiceImpl implements ArticleService {
 	public List<Region> regionName() {
 		List<Region> regionName = null;
 		regionName = rd.regionName();
-
-		
 		return regionName;
 	}
 
@@ -285,7 +283,23 @@ public class ArticleServiceImpl implements ArticleService {
 		return JoinDelete;
 	}
 	
+	@Override
+	public int dbfavoriteArticle(Article article) {
+		int favoriteArticle = ad.dbFavoriteArticle(article);
+		return favoriteArticle;
+	}
 	
+	@Override
+	public int dbChangeStatus(Article article) {
+		int changeStatus = ad.dbChangeStatus(article);
+		return changeStatus;
+	}
+	
+	@Override
+	public int dbChangeEndStatus(Article article) {
+		int changeEndStatus = ad.dbChangeEndStatus(article);
+		return changeEndStatus;
+	}
 	
 	
 	

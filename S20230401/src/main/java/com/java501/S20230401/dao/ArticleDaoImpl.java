@@ -489,6 +489,41 @@ public class ArticleDaoImpl implements ArticleDao {
 		return JoinDelete;
 	}
 	
+	@Override
+	public int dbFavoriteArticle(Article article) {
+		int favoriteArticle = 0;
+		try {
+			favoriteArticle = session.insert("dbFavoriteArticle", article);
+		} catch (Exception e) {
+			favoriteArticle = -1;
+			e.printStackTrace();
+			
+		}
+		return favoriteArticle;
+	}
+	
+	@Override
+	public int dbChangeStatus(Article article) {
+		int changeStatus = 0;
+		try {
+			changeStatus = session.update("dbChangeStatus", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return changeStatus;
+	}
+	
+	@Override
+	public int dbChangeEndStatus(Article article) {
+		int changeEndStatus = 0;
+		try {
+			changeEndStatus = session.update("dbChangeEndStatus", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return changeEndStatus;
+	}
+	
 	
 	
 	
@@ -752,6 +787,5 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return result;
 	}
-
 
 }

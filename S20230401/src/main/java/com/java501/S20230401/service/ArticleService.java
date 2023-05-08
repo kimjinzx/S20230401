@@ -61,6 +61,9 @@ public interface ArticleService {
 	int 			dbTradeJoinAccept(Article article);
 	int 			dbTradeJoinRefuse(Article article);
 	int 			dbJoinDelete(Article article);
+	int 			dbfavoriteArticle(Article article);
+	int				dbChangeStatus(Article article);
+	int 			dbChangeEndStatus(Article article);
 	
 	
 	

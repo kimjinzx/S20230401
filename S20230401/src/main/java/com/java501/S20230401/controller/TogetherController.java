@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.JSONObject;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -76,16 +77,22 @@ public class TogetherController {
 
 		// 게시글 조회수 증가
 		as.dbReadArticleCnt(article);
-
+		
 		// 상세게시글 요소 구현
 		Article detailArticle = as.dbdetailArticle(article);
 		model.addAttribute("detailArticle", detailArticle);
 
+		article.setTrd_max(detailArticle.getTrd_max());
+		article.setTrd_id(detailArticle.getTrd_id());
+		// 인원 다 차면 게시글 상태 변경 (진행중)
+		int changeStatus = as.dbChangeStatus(article);
+		// 날짜 다 지나면 게시글 상태 변경 (거래 완료)
+		int changeEndStatus = as.dbChangeEndStatus(article);
+		
 		// 게시글 별 댓글 리스트
 		List<Article> replyList = as.dbreplyList(article);
 		model.addAttribute("replyList", replyList);
 		
-		article.setTrd_id(detailArticle.getTrd_id());
 		
 		// 게시글 별 신청자 리스트
 		List<Article> joinList =  as.dbTradeJoinMember(article);
@@ -94,6 +101,10 @@ public class TogetherController {
 		// 게시글 별 신청 대기자 리스트
 		List<Article> waitingList =  as.dbTradeWaitingMember(article);
 		model.addAttribute("waitingList", waitingList);
+	
+		
+		
+		
 		 
 		return "together/detailArticle";
 	}
@@ -135,7 +146,7 @@ public class TogetherController {
 		as.dbWriteArticle(article);
 		int insertResult = article.getInsert_result();
 		int brd_id = article.getBrd_id();
-
+		
 		model.addAttribute("insertResult", insertResult);
 		model.addAttribute("article", article);
 
@@ -194,15 +205,18 @@ public class TogetherController {
 
 	@RequestMapping(value = "/board/updateArticle")
 	public String updateArticle(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
-			Article article, Model model,
-			@RequestParam("trd_enddate1") @DateTimeFormat(pattern = "yyyy-MM-dd") Date trd_enddate) {
+								Article article, Model model,
+								@RequestParam("trd_enddate1") @DateTimeFormat(pattern = "yyyy-MM-dd") Date trd_enddate) {
 
 		if (memberDetails != null)
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 
 		article.setTrd_enddate(trd_enddate);
+		
 		// 게시글 수정 (프로시저 사용 => Update_Article)
 		as.dbUpdateArticle(article);
+		System.out.println(article.getTrd_max());
+		
 		int updateArticle = article.getInsert_result();
 		int brd_id = article.getBrd_id();
 
@@ -216,6 +230,7 @@ public class TogetherController {
 		}
 	}
 
+	// 댓글 입력
 	@RequestMapping(value = "/board/insertReply")
 	public String insertReply(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
 			Reply reply, Model model) {
@@ -234,7 +249,9 @@ public class TogetherController {
 
 		return "redirect:/board/detailArticle?art_id=" + art_id + "&brd_id=" + brd_id;
 	}
-
+	
+	
+	// 댓글 삭제
 	@RequestMapping(value = "/board/deleteReply")
 	public String deleteReply(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
 			Reply reply, Model model) {
@@ -250,6 +267,7 @@ public class TogetherController {
 		return "redirect:/board/detailArticle?art_id=" + art_id + "&brd_id=" + brd_id;
 	}
 
+	// 댓글 수정
 	@RequestMapping(value = "/board/updateReply")
 	@ResponseBody
 	public String updateReply(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
@@ -385,7 +403,6 @@ public class TogetherController {
 		  int TradeWaiting = as.dbTradeWaiting(article);
 		 
 		  jsonObj.append("result", TradeWaiting);
-//		  jsonObj.append("content", article.getReport_content());
 		 
 		 return jsonObj.toString() ;
 	 }
@@ -402,7 +419,6 @@ public class TogetherController {
 		  int TradeJoinAccept = as.dbTradeJoinAccept(article);
 		 
 		  jsonObj.append("result", TradeJoinAccept);
-//		  jsonObj.append("content", article.getReport_content());
 		 
 		 return jsonObj.toString();
 	 }
@@ -420,7 +436,6 @@ public class TogetherController {
 		  int TradeJoinRefuse = as.dbTradeJoinRefuse(article);
 		 
 		  jsonObj.append("result", TradeJoinRefuse);
-//		  jsonObj.append("content", article.getReport_content());
 		 
 		 return jsonObj.toString();
 	 }
@@ -437,8 +452,24 @@ public class TogetherController {
 		  int joinDelete = as.dbJoinDelete(article);
 		 
 		  jsonObj.append("result", joinDelete);
-//		  jsonObj.append("content", article.getReport_content());
 		 
 		 return jsonObj.toString();
 	 }
+	 
+	 // 관심목록 등록
+	 @RequestMapping(value="/board/favoriteArticle")
+	 @ResponseBody
+	 public String favoriteArticle(@AuthenticationPrincipal MemberDetails memberDetails,
+	                                @RequestBody Article article, Model model) {
+	    
+		 String resultStr = "";
+	         if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+
+	         int favoriteArticle = as.dbfavoriteArticle(article);
+	         
+	         resultStr =  Integer.toString(favoriteArticle);
+	        
+	     return resultStr;
+	 }
+	
 }

@@ -63,6 +63,9 @@ public interface ArticleDao {
 	int 			dbTradeInsertJoin(Article article);
 	int 			dbTradeDeleteWaiting(Article article);
 	int 			dbJoinDelete(Article article);
+	int 			dbFavoriteArticle(Article article);
+	int 			dbChangeStatus(Article article);
+	int 			dbChangeEndStatus(Article article);
 	
 	
 	

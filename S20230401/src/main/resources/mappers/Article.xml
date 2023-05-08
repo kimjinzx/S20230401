@@ -609,33 +609,34 @@
 		INSERT
 		INTO        report(report_id, mem_id, report_content, report_date, report_status, report_reason)
 		VALUES     (<choose>
-		        	<when test="report_id != null">
-		        		#{report_id}, 
+		        	<when test="report_id == null">
+		        		report_id_seq.nextval
 		        	</when>
 		        	<otherwise>
-		        		report_id_seq.nextval
-		        	</otherwise></choose>, 
-		        	  #{mem_id}
+		        		report_id_seq.currval 
+		        	</otherwise>
+		        	</choose> 
+		        	, #{mem_id}
 		        	, #{report_content}
 		        	, sysdate
 		        	, 0
 		        	, null)
 	</insert>
 	
-	<insert id="dbUpdateArticleReport" parameterType="Article">
+	<update id="dbUpdateArticleReport" parameterType="Article">
 		UPDATE      ARTICLE
         SET         REPORT_ID = REPORT_ID_SEQ.CURRVAL
         WHERE       brd_id = #{brd_id}
         AND         ART_ID = #{art_id}
-	</insert>
+	</update>
 	
-	<insert id="dbUpdateReplyReport" parameterType="Article">
+	<update id="dbUpdateReplyReport" parameterType="Article">
 		UPDATE      Reply
         SET         REPORT_ID = REPORT_ID_SEQ.CURRVAL
         WHERE       brd_id = #{brd_id}
         AND         ART_ID = #{art_id}
         AND			REP_ID = #{rep_id}
-	</insert>
+	</update>
 	
 	<select id="dbTradeJoinMember" parameterType="Article" resultType="Article">
 		select 	j.*, m.*
@@ -672,6 +673,34 @@
 	WHERE trd_id 	= #{trd_id}
 	AND mem_id 		= #{mem_id}
 	</delete>
+	
+	
+	<insert id="dbFavoriteArticle" parameterType="Article">
+		Insert into Favorite (art_id, brd_id, mem_id)
+		values				(#{art_id}, #{brd_id}, #{mem_id})
+	</insert>
+	
+	<update id="dbChangeStatus" parameterType="Article">
+		UPDATE trade t
+		SET t.trd_status = 402
+		WHERE t.trd_id = #{trd_id} 
+		AND (SELECT COUNT(*) FROM join j WHERE j.trd_id = t.trd_id) = #{trd_max}
+	</update>
+	
+	<update id="dbChangeEndStatus" parameterType="Article">
+		UPDATE trade
+		SET trd_status = 403
+		WHERE trd_id = #{trd_id}
+		AND sysdate > trd_enddate
+	</update>	
+	
+
+	
+	
+	
+	
+	
+	
 	
 	
 	
