@@ -336,6 +336,15 @@
 		});
 	});
 		
+	
+	function deleteReply(brd_id, art_id, rep_id, mem_id) {
+	  if (confirm("댓글을 삭제하시겠습니까?")== true) {
+	    location.href = '/board/deleteReply?brd_id=' + brd_id + '&art_id=' + art_id + '&rep_id=' + rep_id + '&mem_id=' + mem_id;
+	  } else {
+		  return false;
+	  }
+	}
+	
 		
 </script>
 
@@ -503,12 +512,6 @@
 	<br>
 
 
-
-
-
-
-
-
 	<table class="joinList" border="1">
 		<tr>
 			<th colspan="3" width="500px">함께해요 참여자 목록</th>
@@ -596,7 +599,7 @@
 
 	<div class="waitingList">
 		<c:forEach var="waitingList" items="${waitingList }">
-		 	<input type="hidden" name="mem_id" value="${waitingList.mem_id }">
+			<input type="hidden" name="mem_id" value="${waitingList.mem_id }">
 			<c:choose>
 				<c:when test="${memberInfo.mem_id == waitingList.mem_id}">
 					<table>
@@ -613,6 +616,11 @@
 		</c:forEach>
 	</div>
 	<br>
+
+
+
+
+
 
 
 
@@ -701,7 +709,7 @@
 								<input class="reply_modify" type="button" value="수정">
 								<input class="reply_cancel" type="button" value="취소" style="display: none;">
 								<input class="reply_delete" type="button" value="삭제" style="display: inline;"
-									onclick="${pageContext.request.contextPath }location.href='/board/deleteReply?brd_id=${reply.brd_id}&art_id=${reply.art_id}&rep_id=${reply.rep_id}&mem_id=${reply.mem_id}';">
+									onclick="deleteReply(${reply.brd_id}, ${reply.art_id}, ${reply.rep_id}, '${reply.mem_id}');">
 							</c:when>
 						</c:choose>
 		
