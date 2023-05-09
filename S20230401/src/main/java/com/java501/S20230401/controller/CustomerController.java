@@ -93,6 +93,8 @@ public class CustomerController {
 	    Cookie[] cookies = request.getCookies();
 	    if (cookies != null) {
 	        for (Cookie cookie : cookies) {
+	        	log.info("cookie.getName " + cookie.getName());
+                log.info("cookie.getValue " + cookie.getValue());
 	            if (cookie.getName().equals("readcookie")) {
 	                oldCookie = cookie;
 	                log.info("\n쿠키 이름 {} 쿠키 값 {}",cookie.getName(), cookie.getValue());
