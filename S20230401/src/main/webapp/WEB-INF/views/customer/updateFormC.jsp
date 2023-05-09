@@ -174,6 +174,7 @@
 		<form action="updateCustomer" method="post" name="update">
 				<input type="hidden" name="mem_id" value="${memberInfo.mem_id}">
 				<input type="hidden" name="art_id" value="${article.art_id}">
+				<input type="hidden" name="category" value="${category}">
 			<table>
 				<tr><th>작성자</th><td><img src="${pageContext.request.contextPath}/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">${article.mem_nickname}</td></tr>
 				<tr><th>분류</th><td>
@@ -202,8 +203,9 @@
 				<tr><th>태그5</th><td>
 				<input type="text" name="art_tag5" value="${article.art_tag5}"><br>
 				<tr><td colspan="2">
-					<input type="submit" value="확인">
+					<input type="submit" value="확인" >
 					<input type="button" value="취소" onclick="location.href='${pageContext.request.contextPath}/board/customer?category=${category}'"></td>
+			
 			</table>
 			<%-- 분류 변경
 			<input type="number" name="brd_id" value="${article.brd_id}"> --%>

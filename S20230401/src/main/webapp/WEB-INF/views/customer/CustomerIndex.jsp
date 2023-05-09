@@ -200,7 +200,7 @@
 			<td>${article.art_id }</td>
 			<td><a href="${pageContext.request.contextPath}/board/customer/detailCustomer?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category}">${article.art_title}</a></td>
 			<td>${article.mem_nickname }</td>
-			<td><img src="${pageContext.request.contextPath}/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
+			<td><img src="${pageContext.request.contextPath}/uploads/profile/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
 			<td>
 			${article.art_tag1 != '' ? article.art_tag1 : ''}
   			${article.art_tag2 != '' ? article.art_tag2 : ''}
@@ -237,7 +237,15 @@
 		</c:when>
 	</c:choose>
 	<!--  글쓰기버튼끝 -->
+	
+	<form action="shsearch" method="post" name="shsearch">
+	<input type="text" >	
+	<input type="submit" value="검색">
+	</form>
+	
 	</div>
+	
+	
 	
 		
 		<button id="scrollToTop" class="adv-hover">

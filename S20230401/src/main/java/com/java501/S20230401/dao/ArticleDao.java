@@ -85,4 +85,5 @@ public interface ArticleDao {
 	int 			insertCustomer(Article article);
 	int 			updateCustomer(Article article);
 	int 			deleteCustomer(Article article);
+	Integer 		customerViewCount(Article article);
 }

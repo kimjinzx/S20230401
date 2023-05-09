@@ -364,4 +364,8 @@ public class ArticleServiceImpl implements ArticleService {
 		dresult = ad.deleteCustomer(article);
 		return dresult;
 	}
+	@Override
+	public Integer customerViewCount(Article article) {
+		return ad.customerViewCount(article);
+	}
 }

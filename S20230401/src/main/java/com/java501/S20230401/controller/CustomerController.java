@@ -34,10 +34,11 @@ public class CustomerController {
 	@Autowired
 	private final ReplyService rs;
 	
+	
 	// 고객센터 목록
 	@RequestMapping(value = "/board/customer")
 	public String customerList(@AuthenticationPrincipal MemberDetails mD, 
-								Article article, Integer category, String currentPage, Model model) {
+								Article article, Integer category, String currentPage, Model model ) {
 		System.out.println("CustomerController Start customerList..." );
 		// 유저 권한 확인
 		if (mD != null) {
@@ -87,42 +88,49 @@ public class CustomerController {
 		if (mD != null) {
 			model.addAttribute("memberInfo", mD.getMemberInfo());
 		}
-		////////
-		// 쿠키
-		Cookie oldCookie = null;
-	    Cookie[] cookies = request.getCookies();
-	    if (cookies != null) {
-	        for (Cookie cookie : cookies) {
-	        	log.info("cookie.getName " + cookie.getName());
-                log.info("cookie.getValue " + cookie.getValue());
-	            if (cookie.getName().equals("readcookie")) {
-	                oldCookie = cookie;
-	                log.info("\n쿠키 이름 {} 쿠키 값 {}",cookie.getName(), cookie.getValue());
-	            }
-	        }
-	    }
-
-	    if (oldCookie == null) {
-	        as.upreadCount(article); // 조회수 업데이트
-	        Cookie newCookie = new Cookie("readcookie", "[" + article.getArt_id() + "_" + article.getBrd_id() + "]");
-	        newCookie.setPath("/");
-	        newCookie.setMaxAge(60 * 60 * 24);  // 60초  60분  24시간
-	        response.addCookie(newCookie); 		// 쿠키 저장
-	    }else if (!oldCookie.getValue().contains("[" + article.getArt_id() + "_" + article.getBrd_id() + "]")) {
-	    	as.upreadCount(article); 			// 조회수 업데이트
-	    	oldCookie.setValue(oldCookie.getValue()+("[" + article.getArt_id() + "_" + article.getBrd_id() + "]"));
-	    	oldCookie.setPath("/");
-	    	oldCookie.setMaxAge(60 * 60 * 24);	// 60초  60분  24시간
-	    	response.addCookie(oldCookie); 		// 쿠키 저장
-	    }
+	
 		
-		///////
+		
+		
+		
+//		////////
+//		// 쿠키
+//		Cookie oldCookie = null;
+//	    Cookie[] cookies = request.getCookies();
+//	    if (cookies != null) {
+//	        for (Cookie cookie : cookies) {
+//	        	log.info("cookie.getName " + cookie.getName());
+//                log.info("cookie.getValue " + cookie.getValue());
+//	            if (cookie.getName().equals("readcookie")) {
+//	                oldCookie = cookie;
+//	                log.info("\n쿠키 이름 {} 쿠키 값 {}",cookie.getName(), cookie.getValue());
+//	            }
+//	        }
+//	    }
+//
+//	    if (oldCookie == null) {
+//	        as.customerViewCount(article); // 조회수 업데이트
+//	        Cookie newCookie = new Cookie("readcookie", "[" + article.getArt_id() + "_" + article.getBrd_id() + "]");
+//	        newCookie.setPath("/");
+//	        newCookie.setMaxAge(60 * 60 * 24);  // 60초  60분  24시간
+//	        response.addCookie(newCookie); 		// 쿠키 저장
+//	    }else if (!oldCookie.getValue().contains("[" + article.getArt_id() + "_" + article.getBrd_id() + "]")) {
+//	    	as.customerViewCount(article); 			// 조회수 업데이트
+//	    	oldCookie.setValue(oldCookie.getValue()+("[" + article.getArt_id() + "_" + article.getBrd_id() + "]"));
+//	    	oldCookie.setPath("/");
+//	    	oldCookie.setMaxAge(60 * 60 * 24);	// 60초  60분  24시간
+//	    	response.addCookie(oldCookie); 		// 쿠키 저장
+//	    }
+//		
+//		///////
 		
 		
 //		1. ArticleService안에 detailCustomer method 선언
 //		   1) parameter : brd_id
 //		   2) Return      Article
 //
+		as.customerViewCount(article);
+		
 		Article customerDetail = as.detailCustomer(article);
 		
 //		2. ArticleDao   detailCustomer method 선언 
@@ -135,6 +143,7 @@ public class CustomerController {
 		reply.setArt_id(article.getArt_id());
 		reply.setBrd_id(article.getBrd_id());
 		
+		category = article.getBrd_id();
 		int replyCount = rs.shReplyCount(reply);
 		// 댓글 목록
 		List<Reply> replyList = rs.replyList(reply);
@@ -202,9 +211,22 @@ public class CustomerController {
 		int deleteResult = rs.customerDeleteReply(reply);
 		model.addAttribute("deleteResult", deleteResult);
 		
-		return "redirect:/board/community/detailCustomer?art_id="+reply.getArt_id()+"&brd_id="+reply.getBrd_id()+"&category="+reply.getBrd_id();
+		return "redirect:/board/customer/detailCustomer?art_id="+reply.getArt_id()+"&brd_id="+reply.getBrd_id()+"&category="+reply.getBrd_id();
 	}
 	
+	@RequestMapping(value = "board/customer/customerUpdateReply")
+	public String customerUpdateReply(@AuthenticationPrincipal MemberDetails mD,
+									  Integer category, Article article, Reply reply, Model model) {
+		if (mD != null) {
+			model.addAttribute("memberInfo", mD.getMemberInfo());
+		}
+		
+		System.out.println("CustomerController customerUpdateReply start");
+		int upRResult = rs.customerUpdateReply(reply);
+		model.addAttribute("upRResult", upRResult);
+		
+		return "redirect:/board/customer/detailCustomer?art_id="+article.getArt_id()+"&brd_id="+article.getBrd_id()+"&category="+category;
+	}
 	
 	
 	@GetMapping(value = "/board/customer/updateFormC")
@@ -238,7 +260,7 @@ public class CustomerController {
 		model.addAttribute("upCnt", update);
 		
 		
-		return "redirect:/board/community/detailCustomer?art_id="+article.getArt_id()+"&brd_id="+article.getBrd_id()+"&category="+category;
+		return "redirect:/board/customer/detailCustomer?art_id="+article.getArt_id()+"&brd_id="+article.getBrd_id()+"&category="+category;
 	}
 	
 	@RequestMapping(value = "/board/customer/deleteCustomer")

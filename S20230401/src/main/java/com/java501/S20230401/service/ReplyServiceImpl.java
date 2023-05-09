@@ -71,6 +71,13 @@ public class ReplyServiceImpl implements ReplyService {
 		deleteResult = rd.customerDeleteReply(reply);
 		return deleteResult;
 	}
+	@Override
+	public int customerUpdateReply(Reply reply) {
+		int upRResult = 0;
+		System.out.println("ArticleServiceImpl customerUpdateReply Start");
+		upRResult = rd.customerUpdateReply(reply);
+		return upRResult;
+	}
 	
 	
 	// 유현규

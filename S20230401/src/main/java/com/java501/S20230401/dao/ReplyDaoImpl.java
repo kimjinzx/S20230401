@@ -123,7 +123,7 @@ public class ReplyDaoImpl implements ReplyDao {
 	}
 	@Override
 	public int customerDeleteReply(Reply reply) {
-		int deleteResult= 0;
+		int deleteResult = 0;
 		System.out.println("ArticleDaoImpl customerDeleteReply start");
 		try {
 			deleteResult = session.delete("shDeleteReply", reply);
@@ -132,6 +132,19 @@ public class ReplyDaoImpl implements ReplyDao {
 		}
 		return deleteResult;
 	}
+	@Override
+	public int customerUpdateReply(Reply reply) {
+		int upRResult = 0;
+		System.out.println("ArticleDaoImpl customerUpdateReply start");
+		try {
+			upRResult = session.update("shUpdateReply", reply);
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl customerUpdateReply Exception->"+e.getMessage());
+		}
+		return upRResult;
+	}	
+	
+	
 	
 	
 	// 유현규
@@ -143,5 +156,5 @@ public class ReplyDaoImpl implements ReplyDao {
 	@Override
 	public int hgInsertReply(Reply reply) {
 		return session.insert("hgInsertReply", reply);
-	}	
+	}
 }

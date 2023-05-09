@@ -781,4 +781,12 @@
 		WHERE art_id = #{art_id} AND brd_id = #{brd_id}
 	</update>
 	
+	<update id="shViewCount" parameterType="Article">
+		UPDATE article
+		SET art_read = art_read + 1
+		WHERE art_id = #{art_id} AND brd_id = #{brd_id} AND isdelete = 0
+	</update>
+	
+	
+	
 </mapper>

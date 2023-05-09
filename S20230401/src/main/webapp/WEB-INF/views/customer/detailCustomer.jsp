@@ -179,33 +179,33 @@
 		<tbody>
 			<tr>
 				<th>작성자</th>
-				<td colspan="4"><img src="${pageContext.request.contextPath}/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">${article.mem_nickname}</td>
+				<td colspan="3"><img src="${pageContext.request.contextPath}/uploads/profile/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">${article.mem_nickname}</td>
 			</tr>
 			<tr>
 				<th>작성일</th>
-				<td colspan="4"><fmt:formatDate value="${article.art_regdate }" pattern="yy-MM-dd HH:mm:ss"/></td>
+				<td colspan="3"><fmt:formatDate value="${article.art_regdate }" pattern="yy-MM-dd HH:mm:ss"/></td>
 			</tr>
 			<tr>
 				<th>조회수</th>
-				<td colspan="4">${article.art_read}</td>
+				<td colspan="3">${article.art_read}</td>
 			</tr>
 			<tr>
 				<th>제목</th>
-				<td colspan="4">${article.art_title }</td>
+				<td colspan="3">${article.art_title }</td>
 			</tr>
 			<tr>
 				<th height="300">내용</th>
-				<td colspan="4" valign="top">${article.art_content }</td>
+				<td colspan="3" valign="top">${article.art_content }</td>
 			</tr>
 			<tr>
 				<th>태그</th>
-				<td colspan="4">
+				<td colspan="3">
 				${article.art_tag1 != '' ? article.art_tag1 : ''}
 	  			${article.art_tag2 != '' ? article.art_tag2 : ''}
 	  			${article.art_tag3 != '' ? article.art_tag3 : ''}
 	  			${article.art_tag4 != '' ? article.art_tag4 : ''}
 	  			${article.art_tag5 != '' ? article.art_tag5 : ''}
-  				<td>
+  				</td>
   			</tr>
  			<tr>
 	 			<td colspan="2">${article.art_good }<br><button>추천</button></td>
@@ -215,14 +215,16 @@
 			</table>
   			
 <%-- 			<tr><th>추천</th><td>${article.art_good}</td></tr>
-			<tr><th>비추천수</th><td>${article.art_bad}</td></tr> --%>  			
+			<tr><th>비추천수</th><td>${article.art_bad}</td></tr> --%>
+		<p align= "right">  			
   		<c:choose>
 			<c:when test="${memberInfo.mem_id != null && memberInfo.mem_id == article.mem_id }">
-				<input type="button" value="수정" onclick="location.href='${pageContext.request.contextPath}/board/customer/updateFormC?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category}'">
-				<input type="button" value="삭제" onclick="location.href='${pageContext.request.contextPath}/board/customer/deleteCustomer?art_id=${article.art_id }&brd_id=${article.brd_id }&category=${category}'">
+				<input type="button" value="글 수정" onclick="location.href='${pageContext.request.contextPath}/board/customer/updateFormC?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category}'">
+				<input type="button" value="글 삭제" onclick="location.href='${pageContext.request.contextPath}/board/customer/deleteCustomer?art_id=${article.art_id }&brd_id=${article.brd_id }&category=${category}'">
 			</c:when>
 		</c:choose>
   				<input type="button" value="목록" onclick="location.href='${pageContext.request.contextPath}/board/customer?category=${category}'">
+		</p>
 		<br>
 		<!-- 댓글 -->
 		<div>
@@ -241,11 +243,12 @@
 							<textarea name="rep_content" placeholder="내용을 입력해 주세요" required="required" style="width:100%; border: 0; resize: none;"></textarea>
 						</td>
 						<td>
-							<p><input type="submit" value="댓글작성"></p>
+							<p align="right"><input type="submit" value="댓글작성"></p>
 						</td>
 					</tr>
 					</table>
-						<input type="hidden" name="mem_id" value="${memberInfo.mem_id}">									
+						<input type="hidden" name="mem_id" value="${memberInfo.mem_id}">								
+						<input type="hidden" name="rep_id" value="${reply.rep_id}">					
 						<input type="hidden" name="art_id" value="${article.art_id}">									
 						<input type="hidden" name="brd_id" value="${article.brd_id}">
 		</div>									
@@ -266,7 +269,10 @@
 
 			<c:choose>
 				<c:when test="${memberInfo.mem_id == reply.mem_id }">
+				<p align="right">
+				<input type="button" value="댓글수정" onclick="location.href='${pageContext.request.contextPath}/board/customer/customerUpdateReply?art_id=${article.art_id }&rep_id=${reply.rep_id }&brd_id=${article.brd_id }&category=${category}'">
 				<input type="button" value="댓글삭제" onclick="location.href='${pageContext.request.contextPath}/board/customer/customerDeleteReply?art_id=${article.art_id }&rep_id=${reply.rep_id }&brd_id=${article.brd_id }&category=${category}'">
+				</p>
 				</c:when>
 			</c:choose>
 			</c:forEach>

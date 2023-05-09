@@ -26,6 +26,7 @@ public interface ReplyDao {
 	List<Reply> 	replyList(Reply reply);
 	int 			customerWriteReply(Reply reply);
 	int 			customerDeleteReply(Reply reply);
+	int 			customerUpdateReply(Reply reply);
 	
 	// 유현규
 	public List<ReplyMember> getReplyByArticle(Article article);
