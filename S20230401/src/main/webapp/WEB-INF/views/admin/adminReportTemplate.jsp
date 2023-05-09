@@ -18,6 +18,7 @@
 				'disabled' : true
 			});
 		});
+		
 		$('.admin-report-container').on('click', e => {
 			let target = $(e.target).closest('.admin-report-container');
 			let isToggled = target.attr('data-toggle') == 'true';
