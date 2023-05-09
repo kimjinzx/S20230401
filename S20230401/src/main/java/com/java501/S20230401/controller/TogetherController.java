@@ -4,6 +4,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.json.JSONObject;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -71,13 +75,43 @@ public class TogetherController {
 
 	@RequestMapping(value = "/board/detailArticle")
 	public String detailArticle(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
-			Article article, Join join, Model model) {
+								 Article article, Join join, 
+								 HttpServletRequest request,
+								 HttpServletResponse response,
+								 Model model) {
 
 		if (memberDetails != null)
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		
+		int art_id = article.getArt_id();
+		int brd_id = article.getBrd_id();
 
-		// 게시글 조회수 증가
-		as.dbReadArticleCnt(article);
+		// 내가 만든 쿠키 (조회수)
+		Cookie oldCookie = null;	// oldCookie 객체 생성
+	    Cookie[] cookies = request.getCookies();	// cookies 배열에 모든 쿠키를 담는다.
+	    if (cookies != null) {			// 쿠키가 있으면?
+	         for (Cookie cookie : cookies) {	// 쿠키들로 반복문을 돌려서
+	            if (cookie.getName().equals("viewArticle")) {	// 이름이 viewArticle인 쿠키가 있으면?
+	               oldCookie = cookie;	// 쿠키를 내 oldCookie에 담는다.
+	            }
+	         }
+	      }
+	    
+	      if (oldCookie != null) {	// oldCookie가 있으면 그걸 가져와서 값을 설정해준다.
+	          if (!oldCookie.getValue().contains(String.format("[%s_%s]", art_id, brd_id))) {
+	        	 as.dbReadArticleCnt(article); // 조회수 올리는 메서드
+	             oldCookie.setValue(oldCookie.getValue() + String.format("&[%s_%s]", art_id, brd_id));
+	             oldCookie.setPath("/");
+	             oldCookie.setMaxAge(60 * 60); // 1시간 (초 * 분 * 시간)
+	             response.addCookie(oldCookie);
+	          } 
+	      } else {		// oldCookie가 없으면 newCookie를 새로 만든다.
+	        	  as.dbReadArticleCnt(article); // 조회수 올리는 메서드
+	              Cookie newCookie = new Cookie("viewArticle", String.format("[%s_%s]", art_id, brd_id));
+	              newCookie.setPath("/");
+	              newCookie.setMaxAge(60 * 60); // 1시간 (초 * 분 * 시간)
+	              response.addCookie(newCookie);
+	      }
 		
 		// 상세게시글 요소 구현
 		Article detailArticle = as.dbdetailArticle(article);
@@ -88,9 +122,9 @@ public class TogetherController {
 		
 		if (detailArticle.getTrd_status() != 404) {
 			// 인원 다 차면 게시글 상태 변경 (진행중)
-			int changeStatus = as.dbChangeStatus(article);
+			as.dbChangeStatus(article);
 			// 날짜 다 지나면 게시글 상태 변경 (거래 완료)
-			int changeEndStatus = as.dbChangeEndStatus(article);
+			as.dbChangeEndStatus(article);
 		}
 		
 		// 게시글 별 댓글 리스트

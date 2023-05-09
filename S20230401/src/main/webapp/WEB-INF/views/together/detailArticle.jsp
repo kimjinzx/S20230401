@@ -461,6 +461,10 @@
 			<td>${detailArticle.art_good }</td>
 		</tr>
 		<tr>
+			<th>비추천수</th>
+			<td>${detailArticle.art_bad }</td>
+		</tr>
+		<tr>
 			<th>작성 시간</th>
 			<td>${detailArticle.rest_regdate }일전</td>
 		</tr>
@@ -592,7 +596,7 @@
 
 	<div class="waitingList">
 		<c:forEach var="waitingList" items="${waitingList }">
-			<input type="hidden" name="mem_id" value="${waitingList.mem_id }">
+		 	<input type="hidden" name="mem_id" value="${waitingList.mem_id }">
 			<c:choose>
 				<c:when test="${memberInfo.mem_id == waitingList.mem_id}">
 					<table>
@@ -609,11 +613,6 @@
 		</c:forEach>
 	</div>
 	<br>
-
-
-
-
-
 
 
 
