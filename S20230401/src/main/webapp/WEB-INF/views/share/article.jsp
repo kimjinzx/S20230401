@@ -15,9 +15,9 @@
 	sessionStorage.setItem('contextPath', '${pageContext.request.contextPath}');
 	sessionStorage.setItem('artId', '${article.art_id}');
 	sessionStorage.setItem('brdId', '${article.brd_id}');
+	sessionStorage.setItem('memId', '${article.mem_id}');
 	sessionStorage.setItem('category', '${category}');
-	sessionStorage.setItem('memId', '${memberInfo.mem_id}')
-	sessionStorage.setItem('articleMemId', '${article.mem_id}');
+	sessionStorage.setItem('loginUser', '${memberInfo.mem_id}')
 
 </script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/share/article.js"></script>
@@ -33,12 +33,14 @@
 			<c:if test="${memberInfo == null}"><div class="login" style="text-align: right;"><a href="${pageContext.request.contextPath}/login"><h1>로그인좀 해보시겠소..?</h1></a></div></c:if>
 			<c:if test="${memberInfo != null}"><div class="logout" style="text-align: right;"><a href="${pageContext.request.contextPath}/logout"><h1>로그아웃</h1></a></div></c:if>
 
-			<!-- 카테고리 정보 -->
+			<!-- 게시글의 정보 -->
 			<div class="article-header">
 				<input type="hidden" id="art_id" 	name="art_id" 	value="${article.art_id}">
 				<input type="hidden" id="brd_id" 	name="brd_id" 	value="${article.brd_id}">
 				<input type="hidden" id="category" 	name="category" value="${category}">
 				<input type="hidden" id="mem_id" 	name="mem_id" 	value="${article.mem_id}">
+				<input type="hidden" id="article_nickname" value="${article.member.mem_nickname}">
+				<input type="hidden" id="report_id" name="report_id"value="${article.report_id}">
 				<input type="hidden" id="login_member" 		name="login_member" 	value="${memberInfo.mem_id}">
 				<input type="hidden" id="login_authority" 	name="login_authority" 	value="${memberInfo.mem_authority}">
 				
@@ -67,6 +69,7 @@
 				<div class="title-subject">
 					${article.art_title}
 				</div>
+				<!-- 게시글 신고 -->
 				<div id="article-report">
 					<c:if test="${not empty memberInfo}">
 						<svg viewBox="0 0 512 512" weith="30" height="30"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z"/></svg>
@@ -252,6 +255,10 @@
 			<!-- 댓글 리스트 -->
 			<c:forEach var="reply" items="${replyList}" varStatus="status">
 				<div class="reply-detail">
+					<input type="hidden" id="reply_id" name="rep_id" value="${reply.rep_id}">
+					<input type="hidden" id="reply_nickname" value="${reply.member.mem_nickname}">
+					<c:if test="${reply.report_id != null }"><input type="hidden" id="reply_report_id" name="report_id" value="${reply.report_id}"></c:if>
+					
 					<div class="reply-view" style="display: flex; ${(reply.rep_id != reply.rep_parent) ? 'margin-left: 20px;' : ''}">
 						
 						<div class="reply-image">
@@ -274,8 +281,8 @@
 						
 						
 						<!-- 댓글 버튼 -->
-						<c:if test="${reply.mem_id == memberInfo.mem_id || memberInfo.mem_authority > 108}">
-							<div class="reply-button">
+						<div class="reply-button">
+							<c:if test="${reply.mem_id == memberInfo.mem_id || memberInfo.mem_authority > 108}">
 								<span>
 									<button class="btns-repWrite">작성</button>
 								</span>
@@ -287,8 +294,14 @@
 									<button class="btns-delete" onclick="rep_delete(${article.brd_id},${article.art_id},${reply.rep_id})">삭제</button>
 									<button class="btns-cancel" style="display: none;">취소</button>
 								</span>
+							</c:if>
+							<!-- 댓글 신고 -->
+							<div id="reply-report">
+								<c:if test="${not empty memberInfo}">
+									<svg viewBox="0 0 512 512" weith="30" height="30"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z"/></svg>
+								</c:if>
 							</div>
-						</c:if>
+						</div>
 					</div>
 					
 				<!-- 댓글의 댓글 작성 -->

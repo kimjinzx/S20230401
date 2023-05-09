@@ -50,29 +50,40 @@
 	<!-- 신고 -->
 	<div class="myModal" id="report" style="display: none;">
 		<div class="myModal-window">
-			<div class="modal-header">
-				<div class="modal-title">유저 신고</div>
-				<div class="modal-close" id="modal-close">&times;</div>
-			</div>
-			<div class="modal-body">
-				<div class="body-warning">
-				<div class="body-info">
-					<h2>유저 신고</h2>
-					<p>유저 : ${article.member.mem_nickname}</p>
-					<textarea name="report_id"></textarea>
+			
+				<div class="modal-header">
+					<div class="modal-title">유저 신고</div>
+					<div class="modal-close" id="modal-close">&times;</div>
 				</div>
-					<h2>주의 사항</h2>
-					<p>ShareGo은 사용자가 허위적인 신고 혹은 잘못된 방법이나 행위로 신고 서비스를 악용 경우 사용에 대한 제재(이용정지, 강제탈퇴 등)를 가할 수 있습니다.</p>
+				<div class="modal-body">
+					<div class="body-warning">
+					<div class="body-info">
+						<form action="${pageContext.request.contextPath}/board/share/reportForm" method="post" id="form-report">
+							<input type="hidden" id="art_id" 	name="art_id" 	value="${article.art_id}">
+							<input type="hidden" id="brd_id" 	name="brd_id" 	value="${article.brd_id}">
+							<input type="hidden" id="mem_id" 	name="mem_id" 	value="${article.mem_id}">
+							<input type="hidden" id="report_id" name="report_id"value="${article.report_id}">
+							<input type="hidden" id="rep_id" 	name="rep_id" 	value="${category}">
+							<input type="hidden" id="category" 	name="category" value="${category}">
+							<input type="hidden" name="report_status" value="0">
+							<h2 id="report-title">게시글 신고</h2>
+							<p>유저 : <span id="report-user">${article.member.mem_nickname}</span></p>
+							<textarea name="report_content" required="required"></textarea>
+							<button id="report-submit" style="display: none;"></button>
+						</form>
+					</div>
+						<h2>주의 사항</h2>
+						<p>ShareGo은 사용자가 허위적인 신고 혹은 잘못된 방법이나 행위로 신고 서비스를 악용 경우 사용에 대한 제재(이용정지, 강제탈퇴 등)를 가할 수 있습니다.</p>
+					</div>
 				</div>
-			</div>
-			<div class="modal-checkbox">
-				<input type="checkbox" id="myCheckbox" class="myCheckbox"/>
-				<label for="myCheckbox">동의</label>
-			</div>
-			<div class="modal-button">
-				<button class="btns-action" id="btns-reportApply">신고</button>
-				<button class="btns-action" id="btns-reportCancel">취소</button>
-			</div>
+				<div class="modal-checkbox">
+					<input type="checkbox" id="report-Checkbox" class="myCheckbox"/>
+					<label for="report-Checkbox">동의</label>
+				</div>
+				<div class="modal-button">
+					<button type="button" class="btns-action" id="btns-reportApply">신고</button>
+					<button type="reset" class="btns-action" id="btns-reportCancel">취소</button>
+				</div>
 		</div>
 	</div>
 </body>

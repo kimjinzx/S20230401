@@ -5,16 +5,16 @@
 const contextPath = sessionStorage.getItem("contextPath");
 const artId = sessionStorage.getItem("artId");
 const brdId = sessionStorage.getItem("brdId");
-const category = sessionStorage.getItem("category");
 const memId = sessionStorage.getItem("memId");
-const articleMemId = sessionStorage.getItem("articleMemId");
-console.info('로그인 유저 : '+memId);
+const category = sessionStorage.getItem("category");
+const loginUser = sessionStorage.getItem("loginUser");
+console.info('로그인 유저 : '+loginUser);
 
 // 클릭 이벤트
 $(document).ready(()=>{
     // 찜 찜 취소
     $('#btns-favorite, #btns-favoriteDel').click((e)=>{
-        if(memId > 0){
+        if(loginUser > 0){
             if(e.target.id == 'btns-favorite'){
                 message = '즐겨찾기 하시겠습니까?';
                 action = 'add';
@@ -113,7 +113,7 @@ $(document).ready(() => {
     checkVote();
     // 클릭 이벤트
     $('#btns-good, #btns-goodcancel, #btns-bad, #btns-badcancel').click(e => { 
-        if(memId > 0){
+        if(loginUser > 0){
             // 변수 선언
             let btns;   let action;     let message;
             let id = e.target.getAttribute('id');
@@ -150,8 +150,8 @@ function checkVote(){
     for(let cookie of cookies){
         cookie = cookie.trim();
         // 쿠키 name에 유저가 있는지 확인
-        console.info('share|'+memId+'=', '굿', cookie.includes(artId+brdId+'good'), '베드', cookie.includes(artId+brdId+'bad'))
-        if(cookie.startsWith('share|'+memId+'=')){
+        console.info('share|'+loginUser+'=', '굿', cookie.includes(artId+brdId+'good'), '베드', cookie.includes(artId+brdId+'bad'))
+        if(cookie.startsWith('share|'+loginUser+'=')){
             // 쿠키 value에 추천 비추천 확인
             if(cookie.includes(artId+brdId+'good')){
                 document.getElementById('btns-good').style.display = 'none';
@@ -168,39 +168,31 @@ function checkVote(){
 
 
 // 거래 신청 (modal.jsp)
-// 동의, 인원제한
 $(document).ready(()=>{ 
-    $('#btns-applyDel').click(()=>{
-        if(memId > 0){
-            if(confirm('취소 하시겠습니까?'))
-            location.href=contextPath+'/board/share/waiting/del?art_id='+artId+'&brd_id='+brdId+'&category='+category;
-        }else alert('로그인 하세요');
-    });
+    // 신청 버튼
     $('#btns-apply').click((e)=>{
-        if(memId > 0){
-        	if(memId != articleMemId){
+        if(loginUser > 0){
+        	if(loginUser != memId){
 	            $('#myModal').css('display', 'flex'); // flex로 변경
         	}else{
         		alert('본인이 작성한 글 입니다.');
         	}
         }else alert('로그인 하세요');
     });
-    // 클릭시 닫기 이벤트
+
+    $('#btns-modalApply').click(()=>{
+        if($('#myCheckbox').is(':checked')){
+            if(confirm('거래 신청 하시겠습니까?')){
+                location.href=contextPath+'/board/share/waiting/add?art_id='+artId+'&brd_id='+brdId+'&category='+category;
+            }
+        }else alert('동의하지 않으면 신청하실 수 없습니다.')
+    });
+
+    // 바깥 영역, 취소 버튼, X 버튼
     $('#myModal').click(e=>{
-        console.info(e.target.getAttribute('id'));
-        console.info(e.target.getAttribute('class'));
-        // 바깥 영역, 취소 버튼, X 버튼
-        if(!$(e.target).closest('.myModal-window').length || e.target.getAttribute('id')==='btns-modalCancel' || e.target.getAttribute('id')==='modal-close'){
+        if(!$(e.target).closest('.myModal-window').length || $(e.target).is('#btns-modalCancel, #modal-close')){
             $('#myModal').css('display', 'none');
         }
-        if(e.target.getAttribute('id')==='btns-modalApply'){
-            if($('#myCheckbox').is(':checked')){
-                if(confirm('거래 신청 하시겠습니까?')){
-                    location.href=contextPath+'/board/share/waiting/add?art_id='+artId+'&brd_id='+brdId+'&category='+category;
-                }
-            }else alert('동의하지 않으면 신청하실 수 없습니다.')
-        }
-        e.stopPropagation();
     });
 });
 
@@ -211,7 +203,7 @@ $(()=>{
 	$(document).on('click', '#btns-accept, #btns-refuse, #btns-drop, #btns-joinCancel, #btns-waitCancel', userListButtonClick);
 });
 function userListButtonClick(e){
-	if(memId > 0){
+	if(loginUser > 0){
 		let mem_id = $(e.target).closest('.userList-memberInfo').find('#mem_id').val();
 		let message;
 		let action;
@@ -248,11 +240,42 @@ function userListButtonClick(e){
 	}
 }
 
-
+// 신고 기능
 $(()=>{
-    $('#article-report').click(e=>{
-        if(confirm('신고 하시겠습니까?')){
+    // 신고 아이콘 클릭
+    $('#article-report, #reply-report').click((e)=>{
+        if(loginUser > 0){
             $('#report').css('display', 'flex');
+        }else alert('로그인 하세요');
+
+        // 댓글 번호, 신고 번호
+        let reply_id = $(e.target).closest('.reply-detail').find('#reply_id').val();
+        let reply_report_id = $(e.target).closest('.reply-detail').find('#reply_report_id').val();
+        let reply_nickname = $(e.target).closest('.reply-detail').find('#reply_nickname').val();
+
+        // 신고 버튼
+        $('#btns-reportApply').click(()=>{
+            if($('#report-Checkbox').is(':checked')){
+                if(confirm('신고 하시겠습니까?')){
+                    if(reply_id != null){
+                        console.info('댓글신고');
+                        //$('#report-submit').click();
+                    }else if(mem_id != null){
+                        console.info('유저 신고');
+                    }else{
+                        console.info('게시글 신고');
+                    }
+                    
+                    //location.href = `${contextPath}/board/share/report?art_id=${artId}&brd_id=${brdId}&mem_id=${loginUser}&category=${category}`;
+                }
+            }else alert('동의하지 않으면 신청하실 수 없습니다.')
+        });
+    });
+    // 취소
+    $('#report').click(e=>{
+        if(!$(e.target).closest('.myModal-window').length || $(e.target).is('#modal-close, #btns-reportCancel')){
+            $('#report').css('display', 'none');
         }
-    })
+    });
+
 });

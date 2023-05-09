@@ -25,6 +25,7 @@ import com.java501.S20230401.model.MemberDetails;
 import com.java501.S20230401.model.MemberInfo;
 import com.java501.S20230401.model.Region;
 import com.java501.S20230401.model.Reply;
+import com.java501.S20230401.model.Report;
 import com.java501.S20230401.model.Waiting;
 import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.CommService;
@@ -33,6 +34,7 @@ import com.java501.S20230401.service.JoinService;
 import com.java501.S20230401.service.Paging;
 import com.java501.S20230401.service.RegionService;
 import com.java501.S20230401.service.ReplyService;
+import com.java501.S20230401.service.ReportService;
 import com.java501.S20230401.service.TradeService;
 import com.java501.S20230401.service.WaitingService;
 
@@ -52,6 +54,7 @@ public class ShareController {
 	private final FavoriteService 	favoriteService;
 	private final WaitingService 	waitingService;
 	private final TradeService 		tradeService;
+	private final ReportService		reportService;
 	
 	
 	// 나눔해요 글 목록 + 검색
@@ -115,8 +118,8 @@ public class ShareController {
 		// url의 글번호 저장
 		article.setArt_id(Integer.parseInt(art_id));
 		
-		String mem_id = "";
 		// 로그인 후 유저 정보
+		String mem_id = "";
 		MemberInfo memberInfo = null;
 		if(memberDetails != null) {
 			memberInfo = memberDetails.getMemberInfo();
@@ -201,7 +204,13 @@ public class ShareController {
 		Article detailArticle = articleService.detailShareArticle(article);
 		// 지역 제한 조회
 		List<Region> regionList = regionService.dgRegionList();
+		// 거래 상태
+		List<Comm> statusList = commService.commList(400);
+		// 카테고리 변경
+		List<Comm> categoryList = commService.commList((category / 100 * 100));
 		
+		model.addAttribute("categoryList", categoryList);
+		model.addAttribute("statusList", statusList);
 		model.addAttribute("article", detailArticle);
 		model.addAttribute("regionList", regionList);
 		model.addAttribute("category", category);
@@ -220,7 +229,7 @@ public class ShareController {
 									Date trd_endDate,
 									Article article, 
 									RedirectAttributes redirectAttributes, 
-									Integer category) {
+			Integer category) {
 		int result = 0;
 		MemberInfo memberInfo = null;
 		redirectAttributes.addFlashAttribute("category", category);
@@ -516,7 +525,35 @@ public class ShareController {
 	}
 
 
-
+	// 신고
+	@PostMapping(value = "board/share/reportForm")
+	public String shareReport(@AuthenticationPrincipal MemberDetails memberDetails, Article article, Report report, Integer category){
+		MemberInfo shareUser = null;
+		int result = 0;
+		if(memberDetails != null) {
+			shareUser = memberDetails.getMemberInfo();
+			report.setMem_id(shareUser.getMem_id());
+			if(article.getReport_id() == null) {
+				// 신규 신고
+				System.out.println("새로운 신고건");
+				result = reportService.shareReport(report);
+				if(result > 0) {
+					System.out.println("이제 글 업뎃하자");
+				}
+			}else {
+				// 기존 신고
+				System.out.println("기존 신고건");
+				report.setReport_id(article.getReport_id());
+				result = reportService.shareReport(report);
+				
+			}
+			if(result > 0) System.out.println("성공 개꿀딱지");
+			
+			
+		}
+		log.info("\n아띠끌 : {} \n리폿 : {}", article, report);
+		return getRedirectArticle(article, category);
+	}
 
 	
 	
