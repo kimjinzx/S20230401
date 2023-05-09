@@ -484,14 +484,15 @@
 
 	<select id="dbReplyList" parameterType="Article" resultType="Article">
 		SELECT        r.*
-					, a.*
-					, m.*
-		FROM        reply r LEFT JOIN article a ON(a.art_id = r.art_id  and a.brd_id = r.brd_id)
-                    		LEFT JOIN member  m ON(r.mem_id = m.mem_id)
-		WHERE 		a.brd_id = #{brd_id}
-		AND   		a.art_id = #{art_id}
-		AND			r.isdelete = 0
-		ORDER BY    R.rep_parent, R.rep_step
+		             , a.*
+		             , m.*
+		FROM          reply r 
+		LEFT JOIN     article a ON (a.art_id = r.art_id AND a.brd_id = r.brd_id)
+		LEFT JOIN     member m ON (r.mem_id = m.mem_id)
+		WHERE         a.brd_id = #{brd_id}
+		AND           a.art_id = #{art_id}
+		AND           (r.isdelete = 0 OR (r.isdelete = 1 AND r.rep_parent = r.rep_id))
+		ORDER BY      r.rep_parent, r.rep_step
 	</select>
 	
 	<select id = "dbInsertArticle" statementType="CALLABLE" parameterType="Article">
@@ -605,30 +606,37 @@
         AND         ART_ID = #{art_id}
 	</update>
 	
-	<insert id="dbInsertReport" parameterType="Article">
-		INSERT
-		INTO        report(report_id, mem_id, report_content, report_date, report_status, report_reason)
-		VALUES     (<choose>
-		        	<when test="report_id == null">
-		        		report_id_seq.nextval
-		        	</when>
-		        	<otherwise>
-		        		report_id_seq.currval 
-		        	</otherwise>
-		        	</choose> 
-		        	, #{mem_id}
-		        	, #{report_content}
-		        	, sysdate
-		        	, 0
-		        	, null)
-	</insert>
+	<select id="dbInsertReportArticle" parameterType="Article" statementType="CALLABLE">
+	{
+		call Insert_Article_Report(
+			 #{report_id,		mode=IN,   jdbcType=NUMERIC}
+		   , #{mem_id,			mode=IN,   jdbcType=NUMERIC}
+		   , #{report_content,  mode=IN,   jdbcType=VARCHAR}
+		   , #{art_id,			mode=IN,   jdbcType=NUMERIC}
+		   , #{brd_id,	        mode=IN,   jdbcType=NUMERIC}
+		   , #{insert_result,   mode=OUT,  jdbcType=NUMERIC})
+	}	
+	</select>
 	
-	<update id="dbUpdateArticleReport" parameterType="Article">
+	<select id="dbInsertReportReply" parameterType="Article" statementType="CALLABLE">
+	{
+		call Insert_Reply_Report(
+			 #{report_id,		mode=IN,   jdbcType=NUMERIC}
+		   , #{mem_id,			mode=IN,   jdbcType=NUMERIC}
+		   , #{report_content,  mode=IN,   jdbcType=VARCHAR}
+		   , #{art_id,			mode=IN,   jdbcType=NUMERIC}
+		   , #{brd_id,	        mode=IN,   jdbcType=NUMERIC}
+		   , #{rep_id, 			mode=IN,   jdbcType=NUMERIC}
+		   , #{insert_result,   mode=OUT,  jdbcType=NUMERIC})
+	}	
+	</select>
+	
+<!-- 	<update id="dbUpdateArticleReport" parameterType="Article">
 		UPDATE      ARTICLE
         SET         REPORT_ID = REPORT_ID_SEQ.CURRVAL
         WHERE       brd_id = #{brd_id}
         AND         ART_ID = #{art_id}
-	</update>
+	</update> -->
 	
 	<update id="dbUpdateReplyReport" parameterType="Article">
 		UPDATE      Reply
@@ -694,8 +702,11 @@
 		AND sysdate > trd_enddate
 	</update>	
 	
-
-	
+	<update id="dbChangeCancelStatus" parameterType="Article">
+		UPDATE trade
+		SET trd_status = 404
+		WHERE trd_id = #{trd_id}
+	</update>	
 	
 	
 	

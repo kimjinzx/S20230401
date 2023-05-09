@@ -221,22 +221,16 @@ public class ArticleServiceImpl implements ArticleService {
 	// 신고하기
 	@Override
 	@Transactional
-	public int dbReportArticle(Article article) {
-		int dbInsertReport = ad.dbInsertReport(article);
-		int dbUpdateArticleReport = ad.dbUpdateArticleReport(article);
-		if ((dbInsertReport + dbUpdateArticleReport) == 0)
-			return 0;
-		else return 1;
+	public Article dbReportArticle(Article article) {
+		Article dbInsertReport = ad.dbInsertReportArticle(article);
+		return dbInsertReport;
 	}
 	
 	// 댓글신고하기
 	@Override
-	public int dbReportReply(Article article) {
-		int dbInsertReport = ad.dbInsertReport(article);
-		int dbUpdateReplyReport = ad.dbUpdateReplyReport(article);
-		if ((dbInsertReport + dbUpdateReplyReport) == 0)
-			return 0;
-		else return 1;
+	public Article dbReportReply(Article article) {
+		Article dbInsertReport = ad.dbInsertReportReply(article);
+		return dbInsertReport;
 	}
 	
 	// 거래 신청자 목록
@@ -299,6 +293,12 @@ public class ArticleServiceImpl implements ArticleService {
 	public int dbChangeEndStatus(Article article) {
 		int changeEndStatus = ad.dbChangeEndStatus(article);
 		return changeEndStatus;
+	}
+	
+	@Override
+	public int dbChangeCancelStatus(Article article) {
+		int changeCancelStatus = ad.dbChangeCancelStatus(article);
+		return changeCancelStatus;
 	}
 	
 	

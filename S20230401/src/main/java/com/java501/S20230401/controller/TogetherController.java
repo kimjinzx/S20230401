@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -84,10 +85,13 @@ public class TogetherController {
 
 		article.setTrd_max(detailArticle.getTrd_max());
 		article.setTrd_id(detailArticle.getTrd_id());
-		// 인원 다 차면 게시글 상태 변경 (진행중)
-		int changeStatus = as.dbChangeStatus(article);
-		// 날짜 다 지나면 게시글 상태 변경 (거래 완료)
-		int changeEndStatus = as.dbChangeEndStatus(article);
+		
+		if (detailArticle.getTrd_status() != 404) {
+			// 인원 다 차면 게시글 상태 변경 (진행중)
+			int changeStatus = as.dbChangeStatus(article);
+			// 날짜 다 지나면 게시글 상태 변경 (거래 완료)
+			int changeEndStatus = as.dbChangeEndStatus(article);
+		}
 		
 		// 게시글 별 댓글 리스트
 		List<Article> replyList = as.dbreplyList(article);
@@ -297,6 +301,7 @@ public class TogetherController {
 	 public String reportFormArticle(@AuthenticationPrincipal MemberDetails memberDetails
 			 						, @RequestParam int art_id
 			 						, @RequestParam int brd_id
+			 						, @RequestParam(required = false, value="report_id") Integer report_id
 			 						, Model model) {
 	 
 	 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
@@ -304,7 +309,7 @@ public class TogetherController {
 	 Article article = new Article();
 	 article.setArt_id(art_id);
 	 article.setBrd_id(brd_id);
-	 // article.setMem_id(memberDetails.getMemberInfo().getMem_id());
+	 article.setReport_id(report_id);
 	 
 	 model.addAttribute("article", article);
 	 
@@ -321,12 +326,15 @@ public class TogetherController {
 		 
 		 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		 
-		 int reportArticle = as.dbReportArticle(article);
 		 
-		 jsonObj.append("result", reportArticle);
+		 as.dbReportArticle(article);
+		 int result = article.getInsert_result();
+		 System.out.println(result);
+		 
+		 jsonObj.append("result", result);
 		 jsonObj.append("content", article.getReport_content());
 		 
-		 return jsonObj.toString() ;
+		 return jsonObj.toString();
 	 }
 	 
 	// 댓글 신고폼
@@ -335,6 +343,7 @@ public class TogetherController {
 			 						, @RequestParam int art_id
 			 						, @RequestParam int brd_id
 			 						, @RequestParam int rep_id
+			 						, @RequestParam(required = false, value="report_id") Integer report_id
 			 						, Model model) {
 	 
 	 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
@@ -343,9 +352,8 @@ public class TogetherController {
 	 article.setArt_id(art_id);
 	 article.setBrd_id(brd_id);
 	 article.setRep_id(rep_id);
-	 // article.setMem_id(memberDetails.getMemberInfo().getMem_id());
-	 
-	 
+	 article.setReport_id(report_id);
+
 	 model.addAttribute("article", article);
 	 
 	 return "together/ReplyReportForm";
@@ -361,9 +369,10 @@ public class TogetherController {
 		 
 		 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		 
-		 int reportReply = as.dbReportReply(article);
+		 as.dbReportReply(article);
+		 int result = article.getInsert_result();
 		 
-		 jsonObj.append("result", reportReply);
+		 jsonObj.append("result", result);
 		 jsonObj.append("content", article.getReport_content());
 		 
 		 return jsonObj.toString() ;
@@ -471,5 +480,21 @@ public class TogetherController {
 	        
 	     return resultStr;
 	 }
-	
+	 
+	 
+	// 작성자가 거래를 취소 (거래 취소)
+	 @RequestMapping(value="/board/tradeCancel")
+	 @ResponseBody
+	 public String tradeCancel(@AuthenticationPrincipal MemberDetails memberDetails, @RequestBody Article article, Model model) {	
+		 
+		String resultStr = "";
+
+		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+
+		int changeCancelStatus = as.dbChangeCancelStatus(article);
+		
+		resultStr = Integer.toString(changeCancelStatus);
+		
+		return resultStr;
+	 }
 }

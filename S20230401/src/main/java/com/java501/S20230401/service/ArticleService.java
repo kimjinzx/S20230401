@@ -53,8 +53,8 @@ public interface ArticleService {
 	void			dbUpdateArticle(Article article);
 	int 			dbdeleteArticle(Article article);
 	int				dbReadArticleCnt(Article article);
-	int 			dbReportArticle(Article article);
-	int 			dbReportReply(Article article);
+	Article 		dbReportArticle(Article article);
+	Article 		dbReportReply(Article article);
 	List<Article>   dbTradeJoinMember(Article article);
 	List<Article> 	dbTradeWaitingMember(Article article);
 	int 			dbTradeWaiting(Article article);
@@ -64,6 +64,7 @@ public interface ArticleService {
 	int 			dbfavoriteArticle(Article article);
 	int				dbChangeStatus(Article article);
 	int 			dbChangeEndStatus(Article article);
+	int 			dbChangeCancelStatus(Article article);
 	
 	
 	
@@ -95,4 +96,5 @@ public interface ArticleService {
 	Article 			detailCustomer(Article article);
 	List<Article> 		listCustomerMenu(Article article);
 	public int 			insertCustomer(Article article);
+
 }

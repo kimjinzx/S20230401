@@ -13,9 +13,11 @@
 	
 	$(() => {
 		$('.rep_submit').click(e => {
-			let rawData = { art_id : ${article.art_id}, brd_id : ${article.brd_id}, mem_id:${memberInfo.mem_id},
+			let rawData = { art_id : ${article.art_id}, brd_id : ${article.brd_id}, mem_id : ${memberInfo.mem_id},
+							report_id : ${article.report_id == null ? 'null' : article.report_id},
 							report_content : $(e.target).closest('.report_table').find('.report_content').val()};
-		
+			
+			//if (!(!${article.report_id})) rawData['report_id']  = ${article.report_id};
 			let sendData = JSON.stringify(rawData);
 	
 			$.ajax({

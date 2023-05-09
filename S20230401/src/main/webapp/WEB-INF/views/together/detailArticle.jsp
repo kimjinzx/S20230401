@@ -6,8 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script type="text/javascript"
-	src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
 
 <script>
 	
@@ -70,9 +69,10 @@
 	
 		    let art_id = $('#art_id').val();
 		    let brd_id = $('#brd_id').val();
+		    let report_id = $('#report_id').val();
 		    
 		      
-		    let popUrl = "/board/ArticleReportForm?art_id=" + art_id + "&brd_id=" + brd_id
+		    let popUrl = "/board/ArticleReportForm?art_id=" + art_id + "&brd_id=" + brd_id + (!report_id ? "" : "&report_id=" + report_id);
 		    let popOption = "width=650px,height=550px,top=300px,left=300px,scrollbars=yes";
 		      
 		    window.open(popUrl, "신고하기", popOption);
@@ -88,9 +88,10 @@
 		    let art_id = $('#art_id').val();
 		    let brd_id = $('#brd_id').val();
 		    let rep_id = $(e.target).closest('.reply_box').find('input[name="rep_id"]').val();
+		    let report_id = $('#report_id').val();
 		    
 		      
-		    let popUrl = "/board/ReplyReportForm?art_id=" + art_id + "&brd_id=" + brd_id + "&rep_id=" + rep_id
+		    let popUrl = "/board/ReplyReportForm?art_id=" + art_id + "&brd_id=" + brd_id + "&rep_id=" + rep_id + (!report_id ? "" : "&report_id=" + report_id)
 		    let popOption = "width=650px,height=550px,top=300px,left=300px,scrollbars=yes";
 		      
 		    window.open(popUrl, "신고하기", popOption);
@@ -115,6 +116,7 @@
 		    $('.waitingList input[name="mem_id"]').each(function() {
 			  existingIds.push($(this).val());
 			});
+		    console.log(existingIds);
 		    
 		    // 새로운 mem_id가 배열에 이미 존재하는지 확인
 		    if(existingIds.includes(mem_id)) {
@@ -298,6 +300,41 @@
 		      }
 		    });
 		  });
+ 	
+ 	
+ 	
+	// 거래 게시자가 거래 취소 (404) (ajax)
+	$(() => {
+		$('.trade_cancel').click(e => {
+			
+			if(confirm('정말 취소하시겠습니까 ?') == true) {
+			
+			let rawData = { mem_id : ${memberInfo.mem_id},
+							trd_id : ${detailArticle.trd_id} }
+		
+			let sendData = JSON.stringify(rawData);
+	
+			$.ajax({
+			  url : "/board/tradeCancel",
+			  type : 'post',
+			  data : sendData,
+			  dataType :'json',
+			  contentType : 'application/json',
+			  success : data => {
+					  console.log(data);
+				  if(data == 1) {
+					  alert('취소 완료'); 
+				  } else {
+					  alert('취소 실패');
+				  }
+	  			
+	  			}
+			});
+			} else {
+				return;
+			}
+		});
+	});
 		
 		
 </script>
@@ -355,9 +392,11 @@
 		<input type="hidden" name="art_id" 		 id="art_id" 		value="${detailArticle.art_id }">
 		<input type="hidden" name="brd_id" 		 id="brd_id" 		value="${detailArticle.brd_id }">
 		<input type="hidden" name="mem_id" 		 id="mem_id" 		value="${detailArticle.mem_id }">
+		<input type="hidden" name="report_id"	 id="report_id"     value="${detailArticle.report_id }">
 		<input type="hidden" name="login_mem_id" id="login_mem_id"  value="${memberInfo.mem_id }">
 		<input type="hidden" name="trd_id" 		 id="trd_id" 		value="${detailArticle.trd_id }">
 		<input type="hidden" name="trd_max" 	 id="trd_max" 		value="${detailArticle.trd_max }">
+		
 	<table border="1">
 		<tr>
 			<th>거래상태</th>
@@ -481,8 +520,7 @@
 					src="${pageContext.request.contextPath}/image/picture/${joinList.mem_image}"
 					width="30" height="30" alt="-"></td>
 				<td>${joinList.mem_nickname }(${joinList.mem_username })</td>
-				<td><fmt:formatDate value="${joinList.join_date}"
-						pattern="yy년 MM월 dd일 : HH:mm:ss" /></td>
+				<td><fmt:formatDate value="${joinList.join_date}" pattern="yy년 MM월 dd일 : HH:mm:ss" /></td>
 			</tr>
 		</c:forEach>
 	</table>
@@ -492,11 +530,24 @@
 			<input type="hidden" name="mem_id" value="${joinList.mem_id }">
 		</c:forEach>
 		<c:choose>
+			<c:when test="${memberInfo.mem_id == detailArticle.mem_id }">
+				<c:choose>
+					<c:when test="${detailArticle.trd_status == '401' }">
+						<input type="button" class="trade_cancel" value="거래 취소">
+					</c:when>	
+					<c:when test="${detailArticle.trd_status == '404' }">
+						<span> 거래를 취소하셨습니다. </span>
+					</c:when>
+				</c:choose>	
+			</c:when>	
 			<c:when test="${memberInfo.mem_id != null}">
 				<c:choose>
 					<c:when test="${detailArticle.trd_status == '401' }">
 						<input type="button" class="article_submit" value="신청하기">
 						<input type="button" class="article_cancel" value="취소하기">
+					</c:when>
+					<c:when test="${detailArticle.trd_status == '404' }">
+						<span> 거래가 취소된 게시글입니다. </span>
 					</c:when>
 					<c:otherwise>	
 						<span> 거래 신청이 마감된 게시글입니다. </span>
@@ -608,70 +659,89 @@
 	<br>
 
 	<!-- 댓글리스트 -->
-
 	<c:forEach var="reply" items="${replyList }">
-		<div class="reply_box"
-			style=" ${reply.rep_step > 1 ? 'margin-left: 50px' : ''}">
-			<input type="hidden" name="art_id" value="${reply.art_id }">
-			<input type="hidden" name="brd_id" value="${reply.brd_id }">
-			<input type="hidden" name="mem_id" value="${reply.mem_id }">
-			<input type="hidden" name="rep_id" value="${reply.rep_id }">
-			<span><img src="${pageContext.request.contextPath}/image/picture/${reply.mem_image}"
-				width="30" height="30" alt="-"></span>
-			<span>${reply.mem_nickname }</span>
-			<span>(${reply.mem_username })</span>
-			<fmt:formatDate value="${reply.rep_regdate}" pattern="yy년 MM월 dd일 : HH:mm:ss" />
-			<p>
-			<span class="rep_content1"> ${reply.rep_content}</span> 
-			<input	type="text" class="rep_content2" style="display: none; margin: 10px; 
-			width: 1225px; height: 20px; font-size: 12px;'" value="${reply.rep_content }">
-			<span style="float: right;">비추천수 : ${reply.rep_bad } </span> 
-			<span style="float: right;">추천수 : ${reply.rep_good }&nbsp;</span>
-			</p>
-			<p>
-				<c:choose>
-					<c:when test="${memberInfo.mem_id == reply.mem_id}">
-						<input class="reply_modify" type="button" value="수정">
-						<input class="reply_cancel" type="button" value="취소" style="display: none;">
-						<input class="reply_delete" type="button" value="삭제" style="display: inline;"
-							onclick="${pageContext.request.contextPath }location.href='/board/deleteReply?brd_id=${reply.brd_id}&art_id=${reply.art_id}&rep_id=${reply.rep_id}&mem_id=${reply.mem_id}';">
-					</c:when>
-				</c:choose>
-
-				<c:choose>
-					<c:when test="${memberInfo.mem_id != null}">
-						<input class="reply_bad"    style="float: right;" type="button" value="비추천">
-						<input class="reply_good"   style="float: right;" type="button" value="추천">
-						<input class="reply_report" style="float: right;" type="button" value="신고">
-					</c:when>
-				</c:choose>
-			</p>
-		</div>
-
-		<div class="insertRe_Reply"
-			style="display: block; ${reply.rep_step > 1 ? 'margin-left: 50px' : ''}">
-			<form action="/board/insertReply" id="insertRe-Reply" method="post">
-				<input type="hidden" name="art_id" value="${detailArticle.art_id }">
-				<input type="hidden" name="brd_id" value="${detailArticle.brd_id }">
-				<input type="hidden" name="mem_id" value="${detailArticle.mem_id }">
-				<input type="hidden" name="rep_id" value="${reply.rep_id }">
-				<input type="hidden" name="rep_parent" value="${reply.rep_parent }">
-				<c:choose>
-					<c:when test="${memberInfo.mem_id != null}">
-						<input type="text" name="rep_content" placeholder="댓글을 입력하세요"
-							style="margin: 10px; width: 1225px; height: 20px; font-size: 12px;"></input>
-						<div style="display: block;" id="replyButton">
-							<input type="submit" class="re_replySubmit" value="댓글"> 
-							<input type="reset"  class="re_replyReset" value="취소">
-						</div>
-					</c:when>
-					<c:otherwise>
-						<span> 로그인이 필요합니다 </span>
-					</c:otherwise>
-				</c:choose>
-			</form>
-		</div>
-		<br>
+		<c:choose>
+			<c:when test="${reply.isdelete == 1 }">
+				<div> 					
+					<input type="hidden" name="art_id" value="${reply.art_id }">
+					<input type="hidden" name="brd_id" value="${reply.brd_id }">
+					<input type="hidden" name="mem_id" value="${reply.mem_id }">
+					<input type="hidden" name="rep_id" value="${reply.rep_id }">
+					<span><img src="${pageContext.request.contextPath}/image/picture/${reply.mem_image}"
+						width="30" height="30" alt="-"></span>
+					<span>${reply.mem_nickname }</span>
+					<span>(${reply.mem_username })</span>
+					<fmt:formatDate value="${reply.rep_regdate}" pattern="yy년 MM월 dd일 : HH:mm:ss" /><p>
+					<span> 삭제된 댓글입니다. </span>
+					<span style="float: right;">비추천수 : ${reply.rep_bad } </span> 
+					<span style="float: right;">추천수 : ${reply.rep_good }&nbsp;</span>
+				</div>
+			</c:when>
+			<c:otherwise>
+				<div class="reply_box"
+					style=" ${reply.rep_step > 1 ? 'margin-left: 50px' : ''}">
+					<input type="hidden" name="art_id" value="${reply.art_id }">
+					<input type="hidden" name="brd_id" value="${reply.brd_id }">
+					<input type="hidden" name="mem_id" value="${reply.mem_id }">
+					<input type="hidden" name="rep_id" value="${reply.rep_id }">
+					<span><img src="${pageContext.request.contextPath}/image/picture/${reply.mem_image}"
+						width="30" height="30" alt="-"></span>
+					<span>${reply.mem_nickname }</span>
+					<span>(${reply.mem_username })</span>
+					<fmt:formatDate value="${reply.rep_regdate}" pattern="yy년 MM월 dd일 : HH:mm:ss" />
+					<p>
+					<span class="rep_content1"> ${reply.rep_content}</span> 
+					<input	type="text" class="rep_content2" style="display: none; margin: 10px; 
+					width: 1225px; height: 20px; font-size: 12px;'" value="${reply.rep_content }">
+					<span style="float: right;">비추천수 : ${reply.rep_bad } </span> 
+					<span style="float: right;">추천수 : ${reply.rep_good }&nbsp;</span>
+					</p>
+					<p>
+						<c:choose>
+							<c:when test="${memberInfo.mem_id == reply.mem_id}">
+								<input class="reply_modify" type="button" value="수정">
+								<input class="reply_cancel" type="button" value="취소" style="display: none;">
+								<input class="reply_delete" type="button" value="삭제" style="display: inline;"
+									onclick="${pageContext.request.contextPath }location.href='/board/deleteReply?brd_id=${reply.brd_id}&art_id=${reply.art_id}&rep_id=${reply.rep_id}&mem_id=${reply.mem_id}';">
+							</c:when>
+						</c:choose>
+		
+						<c:choose>
+							<c:when test="${memberInfo.mem_id != null}">
+								<input class="reply_bad"    style="float: right;" type="button" value="비추천">
+								<input class="reply_good"   style="float: right;" type="button" value="추천">
+								<input class="reply_report" style="float: right;" type="button" value="신고">
+							</c:when>
+						</c:choose>
+					</p>
+				</div>
+		
+				<div class="insertRe_Reply"
+					style="display: block; ${reply.rep_step > 1 ? 'margin-left: 50px' : ''}">
+					<form action="/board/insertReply" id="insertRe-Reply" method="post">
+						<input type="hidden" name="art_id" value="${detailArticle.art_id }">
+						<input type="hidden" name="brd_id" value="${detailArticle.brd_id }">
+						<input type="hidden" name="mem_id" value="${detailArticle.mem_id }">
+						<input type="hidden" name="rep_id" value="${reply.rep_id }">
+						<input type="hidden" name="rep_parent" value="${reply.rep_parent }">
+						<c:choose>
+							<c:when test="${memberInfo.mem_id != null}">
+								<input type="text" name="rep_content" placeholder="댓글을 입력하세요"
+									style="margin: 10px; width: 1225px; height: 20px; font-size: 12px;"></input>
+								<div style="display: block;" id="replyButton">
+									<input type="submit" class="re_replySubmit" value="댓글"> 
+									<input type="reset"  class="re_replyReset" value="취소">
+								</div>
+							</c:when>
+							<c:otherwise>
+								<span> 로그인이 필요합니다 </span>
+							</c:otherwise>
+						</c:choose>
+					</form>
+				</div>
+				<br>
+			</c:otherwise>
+		</c:choose>		
 	</c:forEach>
 
 

@@ -9,6 +9,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/initializer.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/layout.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/index.js"></script>
+
 <link href="https://unpkg.com/sanitize.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/preference.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/presets.css">
@@ -200,16 +201,18 @@
 				<th>태그5</th>
 				<td><input type="text" name="art_tag5"></td>
 			</tr>
-			<tr>
+	 		<tr>
 				<th>지역제한</th>
-				<td><select id="reg_parent" name="reg_id1">
-						<option value="">제한없음</option>
-						<c:forEach var="parentRegion" items="${parentRegions }">
-							<option value="${parentRegion.reg_id }">${parentRegion.reg_name }</option>
-						</c:forEach>
-				</select></td>
+				<td>
+				<select id="reg_parent" name="reg_id1">
+					<option value="">제한없음</option>
+					<c:forEach var="parentRegion" items="${parentRegions }">
+						<option value="${parentRegion.reg_id }">${parentRegion.reg_name }</option>
+					</c:forEach>
+				</select>
+				</td>
 			</tr>
-			<tr>
+			 <tr>
 				<th></th>
 				<td><select id="reg_id" name="reg_id2">
 						<option value="">제한없음</option>

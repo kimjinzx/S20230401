@@ -54,9 +54,8 @@ public interface ArticleDao {
 	void 			dbUpdateArticle(Article article);
 	int 			dbdeleteArticle(Article article);
 	int 			dbReadArticleCnt(Article article);
-	int				dbInsertReport(Article article);
-	int				dbUpdateArticleReport(Article article);
-	int 			dbUpdateReplyReport(Article article);
+	Article		    dbInsertReportArticle(Article article);
+	Article			dbInsertReportReply(Article article);
 	List<Article> 	dbTradeJoinMember(Article article);
 	List<Article>	dbTradeWaitingMember(Article article);
 	int 			dbTradeWaiting(Article article);
@@ -66,6 +65,7 @@ public interface ArticleDao {
 	int 			dbFavoriteArticle(Article article);
 	int 			dbChangeStatus(Article article);
 	int 			dbChangeEndStatus(Article article);
+	int 			dbChangeCancelStatus(Article article);
 	
 	
 	

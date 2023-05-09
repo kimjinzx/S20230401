@@ -385,36 +385,25 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 	
 	@Override
-	public int dbInsertReport(Article article) {
-		int dbInsertReport = 0;
+	public Article dbInsertReportArticle(Article article) {
+		Article dbInsertReportArticle = null;
 		try {
-			dbInsertReport = session.insert("dbInsertReport", article);
+			dbInsertReportArticle = session.selectOne("dbInsertReportArticle", article);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return dbInsertReport;
+		return dbInsertReportArticle;
 	}
 	
 	@Override
-	public int dbUpdateArticleReport(Article article) {
-		int dbUpdateArticleReport = 0;
+	public Article dbInsertReportReply(Article article) {
+		Article dbInsertReportReply = null;
 		try {
-			dbUpdateArticleReport = session.update("dbUpdateArticleReport", article);
+			dbInsertReportReply = session.selectOne("dbInsertReportReply", article);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return dbUpdateArticleReport;
-	}
-	
-	@Override
-	public int dbUpdateReplyReport(Article article) {
-		int dbUpdateReplyReport = 0;
-		try {
-			dbUpdateReplyReport = session.update("dbUpdateReplyReport", article);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return dbUpdateReplyReport;
+		return dbInsertReportReply;
 	}
 
 	@Override
@@ -522,6 +511,17 @@ public class ArticleDaoImpl implements ArticleDao {
 			e.printStackTrace();
 		}
 		return changeEndStatus;
+	}
+	
+	@Override
+	public int dbChangeCancelStatus(Article article) {
+		int dbChangeCancelStatus = 0;
+		try {
+			dbChangeCancelStatus = session.update("dbChangeCancelStatus", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dbChangeCancelStatus;
 	}
 	
 	
