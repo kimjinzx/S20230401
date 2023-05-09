@@ -15,4 +15,5 @@ public interface MemberService {
 	public int registMember(Member member);
 	public Member getMemberById(int mem_id);
 	public void setAuthority(Integer mem_id, int authority);
+
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java501.S20230401.model.ReportMapper">
+	<!-- 유현규 -->
+	<select id="hgGetCountAllUnprocessedReports" resultType="int">
+		SELECT NVL(COUNT(*), 0) FROM REPORT WHERE REPORT_STATUS = 0
+	</select>
+	<select id="hgGetAllUnprocessedReports" parameterType="Report" resultType="Report">
+		SELECT *
+		FROM (SELECT ROWNUM RN, R.*, M.MEM_NICKNAME, T.TYPE
+			  FROM (SELECT *
+			  		FROM REPORT
+			  		WHERE REPORT_STATUS = 0
+			  		ORDER BY REPORT_DATE DESC)
+			  	   R LEFT OUTER JOIN MEMBER M ON (R.MEM_ID = M.MEM_ID)
+			  		 LEFT OUTER JOIN (SELECT REPORT_ID, 'ARTICLE' TYPE FROM ARTICLE WHERE REPORT_ID IS NOT NULL
+			  		 				  UNION
+			  		 				  SELECT REPORT_ID, 'MEMBER' TYPE FROM MEMBER WHERE REPORT_ID IS NOT NULL
+			  						  UNION
+			  						  SELECT REPORT_ID, 'REPLY' TYPE FROM REPLY WHERE REPORT_ID IS NOT NULL)
+			  						 T ON (R.REPORT_ID = T.REPORT_ID))
+		WHERE RN BETWEEN #{start} AND #{end}
+	</select>
+</mapper>

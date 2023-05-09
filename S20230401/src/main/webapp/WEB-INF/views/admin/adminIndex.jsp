@@ -461,35 +461,60 @@
 	}
 </style>
 <style type="text/css">
-	div.admin-board-2-tabgroup {
+	div.admin-board-2-head {
+		
+	}
+	div.admin-board-2-head > span {
+		color: var(--subtheme);
+		font-weight: bolder;
+		white-space: nowrap;
+		padding: 0 2.5px;
+		display: block;
+	}
+	div.admin-board-2 {
+		border: 2.5px solid var(--subtheme);
+		border-width: 2.5px 0;
+	}
+	div.admin-report-container {
 		display: flex;
+		flex-direction: column;
 		justify-content: flex-start;
 		align-items: stretch;
-		height: 32px;
-	}
-	div.admin-board-2-tabgroup > button.report-tab {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		background-color: var(--theme);
-		border: 0;
-		outline: none;
-		min-width: 100px;
 		cursor: pointer;
 	}
-	div.admin-board-2-tabgroup > button.report-tab * {
+	div.admin-report-container:not(:last-child) {
+		border-bottom: 1px solid var(--subtheme);
+	}
+	div.admin-report-container > div.admin-report-item {
+		display: flex;
+		justify-content: flex-start;
+		align-items: center;
+	}
+	div.admin-report-item {
 		pointer-events: none;
+		user-select: none;
 	}
-	div.admin-board-2-tabgroup > button.report-tab > span {
-		font-size: 16px;
-		font-weight: bold;
-		color: var(--theme-font);
-		opacity: 0.5;
+	div.admin-report-item > span {
+		white-space: nowrap;
+		padding: 0 2.5px;
 	}
-	div.admin-board-2-tabgroup > button.report-tab:disabled > span {
-		font-weight: bolder;
-		color: var(--subtheme);
-		opacity: 1.0;
+	div.admin-report-item > svg {
+		width: 16px;
+		height: 8px;
+		margin: 0 4px;
+		fill: none;
+		stroke: var(--subtheme);
+		stroke-width: 64px;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+	div.admin-report-info {
+		background-color: rgba(var(--subtheme-rgb), 0.25);
+		border-radius: 2.5px;
+		margin: 5px 0;
+		height: 0;
+		overflow: hidden;
+		cursor: default;
 	}
 </style>
 </head>
@@ -529,7 +554,7 @@
 			</button>
 		</div>
 	</aside>
-	<main>
+	<main class="overflow-y-auto">
 		
 	</main>
 </body>

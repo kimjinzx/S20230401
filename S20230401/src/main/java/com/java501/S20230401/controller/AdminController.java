@@ -18,12 +18,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartRequest;
 
 import com.java501.S20230401.model.Article;
+import com.java501.S20230401.model.Member;
 import com.java501.S20230401.model.MemberDetails;
+import com.java501.S20230401.model.Report;
 import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.CommService;
 import com.java501.S20230401.service.MemberService;
 import com.java501.S20230401.service.Paging;
 import com.java501.S20230401.service.ReplyService;
+import com.java501.S20230401.service.ReportService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,6 +38,7 @@ public class AdminController {
 	private final MemberService ms;
 	private final ReplyService rs;
 	private final CommService cs;
+	private final ReportService repos;
 	
 	@RequestMapping(value = "/admin")
 	public String adminHome(@AuthenticationPrincipal MemberDetails memberDetails,
@@ -97,7 +101,12 @@ public class AdminController {
 				model.addAttribute("articles", articles);
 				return "admin/adminTemplate";
 			case "report":
-				
+				Report report = new Report();
+				paging = new Paging(repos.hgGetCountAllUnprocessedReports(), Integer.toString(page));
+				report.setStart(paging.getStart());
+				report.setEnd(paging.getEnd());
+				List<Report> reports = repos.hgGetAllUnprocessedReports(report);
+				model.addAttribute("reports", reports);
 				return "admin/adminReportTemplate";
 			default: return "";
 		}
@@ -115,20 +124,23 @@ public class AdminController {
 		model.addAttribute("type", type);
 
 		Article searcher = new Article();
-		Integer art_id = (int)data.get("art_id");
-		searcher.setArt_id(art_id);
 		Article article = null;
 		switch(type) {
 			case "notice":
+				searcher.setArt_id((int)data.get("art_id"));
 				searcher.setBrd_id(1510);
 				article = as.getArticleById(searcher);
 				model.addAttribute("article", article);
-				break;
+				return "admin/adminViewTemplate";
 			case "event":
+				searcher.setArt_id((int)data.get("art_id"));
 				searcher.setBrd_id(1530);
 				article = as.getArticleById(searcher);
 				model.addAttribute("article", article);
-				break;
+				return "admin/adminViewTemplate";
+			case "report":
+				
+				return "";
 		}
 		
 		return "admin/adminViewTemplate";
@@ -145,17 +157,17 @@ public class AdminController {
 		else model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		model.addAttribute("type", type);
 
-		Integer art_id = (int)data.get("art_id");
 		Article searcher = new Article();
-		searcher.setArt_id(art_id);
 		Article article = null;
 		switch(type) {
 			case "notice":
+				searcher.setArt_id((int)data.get("art_id"));
 				searcher.setBrd_id(1510);
 				article = as.getArticleById(searcher);
 				model.addAttribute("article", article);
 				break;
 			case "event":
+				searcher.setArt_id((int)data.get("art_id"));
 				searcher.setBrd_id(1530);
 				article = as.getArticleById(searcher);
 				model.addAttribute("article", article);

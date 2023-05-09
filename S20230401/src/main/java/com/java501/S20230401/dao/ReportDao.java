@@ -1,7 +1,13 @@
 package com.java501.S20230401.dao;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
-public interface ReportDao {
+import com.java501.S20230401.model.Report;
 
+public interface ReportDao {
+	// 유현규
+	public int hgGetCountAllUnprocessedReports();
+	public List<Report> hgGetAllUnprocessedReports(Report report);
 }

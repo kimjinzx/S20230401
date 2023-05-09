@@ -216,26 +216,6 @@ div#userInfo-popup > div {
 }
 
 /* Buttons */
-button.theme-button {
-	background-color: var(--theme);
-	color: var(--theme-font);
-	font-weight: bold;
-	padding: 0;
-	border-radius: 5px;
-	outline: none;
-	border: 2px solid var(--subtheme);
-	cursor: pointer;
-}
-button.subtheme-button {
-	background-color: var(--subtheme);
-	color: var(--subtheme-font);
-	font-weight: bold;
-	padding: 0;
-	border-radius: 5px;
-	outline: none;
-	border: 0;
-	cursor: pointer;
-}
 button#login-button {
 	width: 100px;
 	height: 32px;
