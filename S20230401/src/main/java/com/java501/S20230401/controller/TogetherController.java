@@ -106,10 +106,7 @@ public class TogetherController {
 		List<Article> waitingList =  as.dbTradeWaitingMember(article);
 		model.addAttribute("waitingList", waitingList);
 	
-		
-		
-		
-		 
+
 		return "together/detailArticle";
 	}
 

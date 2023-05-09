@@ -6,6 +6,29 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script>
+
+$(document).ready(function(){
+    // reg_parent가 선택되면
+    $('#reg_parent').change(function(){
+        var reg_parent = $(this).val();
+        
+        // reg_id 드롭다운 메뉴 초기화
+        $('#reg_id').empty();
+        
+        // 제한없음 옵션 추가
+        $('#reg_id').append('<option value="">제한없음</option>');
+        
+        // 선택된 reg_parent를 가진 region들을 동적으로 추가
+        <c:forEach var="region" items="${regions}">
+            if (${region.reg_parent} == reg_parent) {
+                $('#reg_id').append('<option value="' + ${region.reg_id} + '">' + '${region.reg_name}' + '</option>');
+            }
+        </c:forEach>
+    });
+});
+</script>
 </head>
 <body>
 	<h2>게시글 수정</h2>
