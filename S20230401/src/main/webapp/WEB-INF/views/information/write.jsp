@@ -226,7 +226,7 @@
     		<option value="1410">동네정보</option>
     		<option value="1420">구매정보</option>
     		<option value="1430">신규점포</option>
-    		<option value="1440">지역정보</option>
+    		<option value="1440">지역활동</option>
     	</select>
    <table>
      <tr>

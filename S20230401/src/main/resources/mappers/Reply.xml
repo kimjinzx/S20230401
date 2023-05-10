@@ -109,7 +109,7 @@
 	left join member m 
 	on r.mem_id = m.mem_id
 	where brd_id = #{brd_id} and art_id = #{art_id} and r.isdelete = 0
-	order by rep_regdate desc, rep_parent asc, rep_step asc 
+	order by rep_parent asc, rep_step asc 
 	</select>		
 			
 	<!-- 댓글작성 -->

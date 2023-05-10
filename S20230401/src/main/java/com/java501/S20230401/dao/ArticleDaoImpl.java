@@ -417,11 +417,25 @@ public class ArticleDaoImpl implements ArticleDao {
 		
 		return totArticleCount;
 	}
+	//검색
+//	@Override
+//	public int totalArticleSearch(Article article) {
+//		int searchArticleCount = 0;
+//		System.out.println("아티클다오임플 검색..");
+//		try {
+//			searchArticleCount = session.selectOne("cyArticleKeyword", article);
+//			System.out.println("아티클임플 서치아티클 카운트 ->" + searchArticleCount);
+//		} catch (Exception e) {
+//			System.out.println("아티클 임플 서치아티클 Exception->"+ e.getMessage());
+//		}
+//		return searchArticleCount;
+//	}
+	
 	// 리스트조회
 	@Override
 	public List<Article> listArticle(Article article) {
 		List<Article> articleList = null;
-		System.out.println("ArticleDaoImpl listArticle Start...");
+		System.out.println("ArticleDaoImpl 리스트아티클 Start...");
 		try {
 			articleList = session.selectList("cyArticleListAll", article);
 		} catch (Exception e) {
@@ -430,7 +444,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		return articleList;
 	}
 	
-	
+
 	//상세페이지
 	@Override
 	public Article cyArticlereadDetail(Article article) {
@@ -652,6 +666,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
 
 
 

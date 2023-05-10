@@ -649,19 +649,18 @@
 	</select>
 	
 	<!-- 검색 -->
-<!--  	<select id ="cyArticleKeyword" parameterType="Article" resultType="Article">
+<!--  	<select id="cyArticleKeyword" parameterType="Article" resultType="Article">
+	<![CDATA[
 	select brd_id, art_title, art_content, mem_id, art_regdate, art_tag1, art_tag2, art_tag3, art_tag4, art_tag5 from(
-
                 select rownum as rn, brd_id, art_title, art_content, mem_id, art_regdate, art_tag1, art_tag2, art_tag3, art_tag4, art_tag5 
-
                 from article where rownum <= 10 and art_title like '%keyword%')
-
         where rn > 0;
-	</select> 
-	 -->
+        ]]>	
+	</select>  -->
+	
 	
 	<!-- 상세페이지 불러오기 -->
-	<select id="cyArticlereadDetail" parameterType="Article" resultType="Article">
+ 	<select id="cyArticlereadDetail" parameterType="Article" resultType="Article">
 			select *
 			from article a
 			left join member m 

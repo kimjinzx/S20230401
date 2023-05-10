@@ -88,6 +88,7 @@ public class ReplyServiceImpl implements ReplyService {
 	//댓글 수정
 	@Override
 	public int cyupdateReply(Reply reply) {
+		System.out.println("댓글서비스 임플");
 		int result = rd.updateReply(reply);
 		return result;
 	}

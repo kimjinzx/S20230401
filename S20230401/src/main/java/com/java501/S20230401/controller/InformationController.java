@@ -2,6 +2,10 @@ package com.java501.S20230401.controller;
 
 import java.util.List;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.json.JSONObject;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -39,7 +43,7 @@ public class InformationController {
 	
 	// 리스트 조회 
 	@RequestMapping(value="/board/information")
-	public String articleList(@AuthenticationPrincipal MemberDetails memberDetails, Article article, int category, String currentPage, Model model) {
+	public String articleList(@AuthenticationPrincipal MemberDetails memberDetails, Article article, Integer category, String currentPage, Model model) {
 		// 유저 정보를 다시 리턴  //memberDetails.getMemberInfo() DB의 유저와 대조 & 권한 확인
 		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
@@ -58,10 +62,6 @@ public class InformationController {
 		List<Article> listArticle = as.listArticle(article);
 		System.out.println("ArticleController list listArticle.size()=>" + listArticle.size());
 		
-		//검색 
-//		List<Article> searchArticle = as.searchArticle(article);
-//		System.out.println("검색 컨트롤러");
-		
 		model.addAttribute("article", article);
 		model.addAttribute("totalArticle", totalArticle);
 		model.addAttribute("listArticle", listArticle);
@@ -75,29 +75,45 @@ public class InformationController {
 	}
 
 	
-	// 상세페이지 확인
+//	// 상세페이지 확인 (원본)
 	@RequestMapping(value="/board/information/detail")
-	public String detail(@AuthenticationPrincipal MemberDetails memberDetails,Article article, Reply reply, int category, Model model) {
-		if(memberDetails != null)
-		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
-		
-		//조회수
-		int view = as.updateView(article);
-		System.out.println("조회수 Start...");
-		Article result = as.cyArticlereadDetail(article);	//DB에서 불러오기
-		
-		//댓글 리스트
-		List<Reply> replyAll = rs.replyAll(reply);
-		System.out.println("ArticleController 댓글 리스트 replyAll.size()=>" + replyAll.size());
+	public String detail(@AuthenticationPrincipal MemberDetails memberDetails, Article article, Reply reply, Integer category, Model model, HttpServletRequest request, HttpServletResponse response) {
+	    if (memberDetails != null) {
+	        model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+	    }
 
-		model.addAttribute("replyAll", replyAll);
-		model.addAttribute("reply", reply);
-		model.addAttribute("category", category);
-		model.addAttribute("article", result);
-		
-		System.out.println("controller detail; Article result"+result);		
-		System.out.println("detail Start...");
-		return "/information/detail";
+	    Article result = as.cyArticlereadDetail(article); // DB에서 불러오기
+	    System.out.println("controller detail; Article result" + result);
+	    System.out.println("detail Start...");
+
+	    // 쿠키를 이용한 조회수 중복 방지
+	    int view = 0;
+	    Cookie[] cookies = request.getCookies();
+	    if (cookies != null) {
+	        for (Cookie cookie : cookies) {
+	            if (cookie.getName().equals("article" + article.getArt_id())) {
+	                view = 1;
+	                break;
+	            }
+	        }
+	    }
+	    if (view == 0) {
+	        Cookie cookie = new Cookie("article" + article.getArt_id(), "1");
+	        cookie.setMaxAge(60 * 60 * 24);
+	        response.addCookie(cookie);
+	        as.updateView(article);
+	        result.setArt_read(result.getArt_read() + 1); // 조회수 증가
+	    }
+
+	    // 댓글 리스트
+	    List<Reply> replyAll = rs.replyAll(reply);
+	    System.out.println("ArticleController 댓글 리스트 replyAll.size()=>" + replyAll.size());
+
+	    model.addAttribute("replyAll", replyAll);
+	    model.addAttribute("reply", reply);
+	    model.addAttribute("category", category);
+	    model.addAttribute("article", result);
+	    return "/information/detail";
 	}
 	
 	//댓글 작성
@@ -139,13 +155,12 @@ public class InformationController {
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		System.out.println("reply update Start...");
 		model.addAttribute("category", category);
-		model.addAttribute("Reply", reply);
+		model.addAttribute("reply", reply);
 		System.out.println(reply);
 		log.info("\n글번호 {} \n게시판번호 {} \n댓글번호 {}  \n댓글내용 {} ",reply.getArt_id(), reply.getBrd_id(), reply.getRep_id(), reply.getRep_content());
 		
 		
 		int result = rs.cyupdateReply(reply);
-		System.err.println(result);
 		System.out.println("댓글수정 시작");
 		return "redirect:/board/information/detail?art_id=" +reply.getArt_id()+ "&brd_id=" +reply.getBrd_id()+ "&category=" + category;
 	}
@@ -153,7 +168,7 @@ public class InformationController {
 	
 	//댓글 추천(좋아요)
 	@RequestMapping(value="/board/information/replyupdategood")
-	public String replyupdategood(@AuthenticationPrincipal MemberDetails memberDetails, Reply reply, int category, Model model) {
+	public String replyupdategood(@AuthenticationPrincipal MemberDetails memberDetails, Reply reply, Integer category, Model model) {
 		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 
@@ -165,9 +180,10 @@ public class InformationController {
 		int art_id = reply.getArt_id();
 		return "redirect:/board/information/detail?art_id=" + art_id + "&brd_id=" + brd_id + "&category=" + category;
 	}
+	
 	// 댓글 비추천(싫어요)
 	@RequestMapping(value="/board/information/replyupdatebad")
-	public String replyupdatebad(@AuthenticationPrincipal MemberDetails memberDetails, Reply reply, int category, Model model) {
+	public String replyupdatebad(@AuthenticationPrincipal MemberDetails memberDetails, Reply reply, Integer category, Model model) {
 		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		
@@ -183,7 +199,7 @@ public class InformationController {
 	
 	// 추천
 	@RequestMapping(value="/board/information/updategood")
-	public String updategood(@AuthenticationPrincipal MemberDetails memberDetails, Article article, int category, Model model) {
+	public String updategood(@AuthenticationPrincipal MemberDetails memberDetails, Article article, Integer category, Model model) {
 		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 
@@ -197,7 +213,7 @@ public class InformationController {
 	}
 	// 비추천
 	@RequestMapping(value="/board/information/updatebad")
-	public String updatebad(@AuthenticationPrincipal MemberDetails memberDetails, Article article, int category, Model model) {
+	public String updatebad(@AuthenticationPrincipal MemberDetails memberDetails, Article article, Integer category, Model model) {
 		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		
@@ -216,7 +232,7 @@ public class InformationController {
 	
 	// 상세페이지에서 지우기	
 	@RequestMapping(value="/board/information/delete")
-	public String delete(@AuthenticationPrincipal MemberDetails memberDetails, Article article, int category, Model model) {
+	public String delete(@AuthenticationPrincipal MemberDetails memberDetails, Article article, Integer category, Model model) {
 		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		
@@ -228,7 +244,7 @@ public class InformationController {
 	
 	// 수정 상세페이지 update로 이동 
 	@RequestMapping(value="/board/information/update", method = RequestMethod.GET)
-	public String update(@AuthenticationPrincipal MemberDetails memberDetails, Article article, int category, Model model) {
+	public String update(@AuthenticationPrincipal MemberDetails memberDetails, Article article, Integer category, Model model) {
 		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		
@@ -250,7 +266,7 @@ public class InformationController {
 	
 	//게시물 수정 	
 	@RequestMapping(value="/board/information/modify", method = RequestMethod.POST)
-	public String updateForm(@AuthenticationPrincipal MemberDetails memberDetails, Article article, int category, Model model)throws Exception{
+	public String updateForm(@AuthenticationPrincipal MemberDetails memberDetails, Article article, Integer category, Model model)throws Exception{
 		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		
@@ -265,7 +281,7 @@ public class InformationController {
 	
 	//게시물 작성 GET
 	@RequestMapping(value = "/board/information/write", method = RequestMethod.GET)
-	public String getwrite(@AuthenticationPrincipal MemberDetails memberDetails, Model model) throws Exception {
+	public String getwrite(@AuthenticationPrincipal MemberDetails memberDetails, Integer category, Model model) throws Exception {
 		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		System.out.println("write Start...");
@@ -274,7 +290,7 @@ public class InformationController {
 	
 	//게시물 작성POST
 	@RequestMapping(value = "/board/information/insert", method = RequestMethod.POST)
-	public String insert(@AuthenticationPrincipal MemberDetails memberDetails, Article article, Model model) throws Exception {
+	public String insert(@AuthenticationPrincipal MemberDetails memberDetails, Article article, Integer category, Model model) throws Exception {
 		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		
@@ -285,7 +301,7 @@ public class InformationController {
 	
 	//신고하기 
 	@RequestMapping(value = "/board/information/report", method = RequestMethod.GET)
-	public String report(@AuthenticationPrincipal MemberDetails memberDetails, Model model) throws Exception {
+	public String report(@AuthenticationPrincipal MemberDetails memberDetails, Integer category, Model model) throws Exception {
 		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		System.out.println("신고하기...");
@@ -294,13 +310,15 @@ public class InformationController {
 	
 	//신고작성 
 	@RequestMapping(value = "/board/information/reportinsert", method = RequestMethod.POST)
-	public String reportinsert(@AuthenticationPrincipal MemberDetails memberDetails, Report report,  Model model) throws Exception {
+	public String reportinsert(@AuthenticationPrincipal MemberDetails memberDetails, Report report, Integer category,  Model model) throws Exception {
+		System.out.println("11");
 		boolean isReported = true;
 		model.addAttribute("isReported", isReported);
 		if(memberDetails != null)
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		System.out.println("신고하기 작성...");
 		int result = ps.cyReportinsert(report); 
+		// member의 report_id에 생성된 report_id를 넣어주어야 함(update)
 		return "information/report";
 	}
 	
@@ -308,7 +326,7 @@ public class InformationController {
 	//관심 버튼 
 	@ResponseBody
 	@RequestMapping(value = "/board/information/favorite", method = RequestMethod.POST)
-	public String favorite(@AuthenticationPrincipal MemberDetails memberDetails, @RequestBody Favorite favorite, Model model) throws Exception {
+	public String favorite(@AuthenticationPrincipal MemberDetails memberDetails, @RequestBody Favorite favorite, Integer category, Model model) throws Exception {
 		if(memberDetails != null) {
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 			favorite.setMem_id(memberDetails.getMemberInfo().getMem_id());
@@ -320,7 +338,6 @@ public class InformationController {
 		jsonObj.append("result", result);
 		return jsonObj.toString();
 	}
-
 
 
 

@@ -262,7 +262,7 @@
 	</c:if>
 	
 	<!-- 검색 -->
-<form action="listSearch">
+<form action="/search" method="GET">
  <div class="form-inline">
 	<select id="search" name="search">
 		<option value="">검색조건</option>
@@ -274,7 +274,7 @@
 	</select>
 	<input class="Aticle" type="text" id="keyWord" name="keyWord" 
 		value="${art_content}" placeholder="검색어를 입력하세요"/>
-	<button id="search">Search</button>
+	<button type="submit">Search</button>
 </div>
 </form>
 	

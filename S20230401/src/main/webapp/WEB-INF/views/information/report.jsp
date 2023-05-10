@@ -17,8 +17,10 @@ function write(){
 </script>
 </head>
 <body>
-<form action="${pageContext.request.contextPath }/board/information/reportinsert" method = "post" id = "write">
+<form action="${pageContext.request.contextPath }/board/information/reportinsert" method = "post">
 <div>
+<input type="hidden" name="report_id" value="${report.report_id }">
+<input type="hidden" name="category" value="${category}">
 <input type="hidden" name="mem_id" value="${memberInfo.mem_id}">
 </div>
 <table>
@@ -32,14 +34,14 @@ function write(){
      </tr>
     </table>
     <table>
-     <tr>
+<%--      <tr>
       <td>&nbsp;</td>
       <td align="center">신고닉네임</td>
       <td><input name="mem_id" size="50" maxlength="100"  value="${member.mem_id }"></td>
       <td>&nbsp;</td>
      </tr>
      	<tr height="1" bgcolor="#dddddd"><td colspan="4"></td>
-     </tr>
+     </tr> --%>
     <tr>
       <td>&nbsp;</td>
       <td align="center">내용</td>
@@ -56,7 +58,7 @@ function write(){
    </td>
   </tr>
  </table>
- <input type=button form="write" onclick="write();" value="등록하기">
+ <input type=submit value="등록하기">
  <input type=button onclick="window.close();" value="취소">
  </form>
 </body>

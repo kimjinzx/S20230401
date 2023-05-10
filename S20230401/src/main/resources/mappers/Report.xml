@@ -5,10 +5,10 @@
 
 
  	<insert id="cyReportinsert" parameterType="Report">
-		insert into 
-			report(art_id, mem_id, report_content, report_date, report_status, report_reason)
-			values((Select max(report_id) + 1 from report
-			where art_id = #{art_id}), #{art_id}, #{mem_id}, #{report_content}, SYSDATE, 1, null)
+		insert into report
+        	(report_id, mem_id, report_content, report_date, report_status, report_reason)
+		values
+			((select max(report_id) + 1 from report), #{mem_id}, #{report_content}, sysdate, 1, null)
 	</insert> 
 
 

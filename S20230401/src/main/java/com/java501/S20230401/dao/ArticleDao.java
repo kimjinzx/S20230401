@@ -78,6 +78,7 @@ public interface ArticleDao {
 	int				updateView(Article article);
 	int				updateGood(Article article);
 	int				updateBad(Article article);
+//	public int 		totalArticleSearch(Article article);
 	
 	// 최승환
 	int				totalCustomer();
