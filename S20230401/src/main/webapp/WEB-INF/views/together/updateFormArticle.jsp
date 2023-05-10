@@ -30,23 +30,25 @@ $(document).ready(function(){
 });
 
 
-document.addEventListener("DOMContentLoaded", function() {
-	let dateElement = document.getElementById('dateTimeLocal');
-	if (dateElement) {
-		let date = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -5);
-		dateElement.value = date;
-		dateElement.setAttribute("min", date);
-
-		function setMinValue() {
-			if (dateElement.value < date) {
-				alert('현재 시간보다 이전의 날짜는 설정할 수 없습니다.');
-				dateElement.value = date;
-			}
+	function setMinValue() {
+		  // 현재 시간을 가져옵니다.
+		  var now = new Date();
+		  // 선택한 날짜를 가져옵니다.
+		  var selectedDate = new Date(document.getElementById("dateTimeLocal").value);
+		  // 선택한 날짜가 현재 시간 이전이라면 경고 메시지를 출력하고 오늘 날짜를 선택합니다.
+		  if (selectedDate < now) {
+		    alert("현재 시간 이전의 날짜는 선택할 수 없습니다.");
+		    var today = new Date();
+		    var month = today.getMonth() + 1;
+		    var day = today.getDate();
+		    var year = today.getFullYear();
+		    if (month < 10) month = "0" + month;
+		    if (day < 10) day = "0" + day;
+		    var minDate = year + "-" + month + "-" + day;
+		    document.getElementById("dateTimeLocal").value = minDate;
+		  }
 		}
-
-		dateElement.onchange = setMinValue;
-	}
-});
+	
 </script>
 </head>
 <body>
@@ -125,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function() {
  				<c:set var="enddate">
 					<fmt:formatDate value="${article.trd_enddate }" pattern="yyyy-MM-dd"/>
 				</c:set> 
-				<td><input type="datetime-local" name="trd_enddate1" id="dateTimeLocal" 
+				<td><input type="date" name="trd_enddate1" id="dateTimeLocal" 
 				onchange="setMinValue()" required="required"></td>
 			</tr>
 			<tr>
