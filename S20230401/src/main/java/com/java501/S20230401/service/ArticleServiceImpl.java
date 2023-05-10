@@ -73,6 +73,8 @@ public class ArticleServiceImpl implements ArticleService {
 	// 글 비추천
 	@Override
 	public int dgVoteBad(Article article) {	return ad.dgVoteBad(article);}
+	@Override
+	public int dgReportArticle(Article article) { return ad.dgReportArticle(article); }
 
 	
 	// 백준
@@ -355,6 +357,7 @@ public class ArticleServiceImpl implements ArticleService {
 		result = ad.insertCustomer(article);
 		return result;
 	}
+
 
 
 

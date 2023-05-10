@@ -52,7 +52,7 @@
 		<div class="myModal-window">
 			
 				<div class="modal-header">
-					<div class="modal-title">유저 신고</div>
+					<div class="modal-title">신고</div>
 					<div class="modal-close" id="modal-close">&times;</div>
 				</div>
 				<div class="modal-body">
@@ -63,11 +63,12 @@
 							<input type="hidden" id="brd_id" 	name="brd_id" 	value="${article.brd_id}">
 							<input type="hidden" id="mem_id" 	name="mem_id" 	value="${article.mem_id}">
 							<input type="hidden" id="report_id" name="report_id"value="${article.report_id}">
-							<input type="hidden" id="rep_id" 	name="rep_id" 	value="${category}">
+							<input type="hidden" id="rep_id" 	name="rep_id">
 							<input type="hidden" id="category" 	name="category" value="${category}">
-							<input type="hidden" name="report_status" value="0">
-							<h2 id="report-title">게시글 신고</h2>
-							<p>유저 : <span id="report-user">${article.member.mem_nickname}</span></p>
+							<input type="hidden" id="type"		name="type">
+							
+							<h2 id="report-title">신고</h2>
+							<p>유저 닉네임 : <span id="report-user">${article.member.mem_nickname}</span></p>
 							<textarea name="report_content" required="required"></textarea>
 							<button id="report-submit" style="display: none;"></button>
 						</form>

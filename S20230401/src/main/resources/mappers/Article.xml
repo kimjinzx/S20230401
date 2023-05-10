@@ -156,7 +156,7 @@
                             FROM    BOARD B JOIN COMM C1
                             ON      BRD_ID IN COMM_ID
                         )USING(BRD_ID)
-                JOIN	(   SELECT  C2.COMM_VALUE AS GEN_NAME, M.*
+                JOIN	(   SELECT  C2.COMM_VALUE AS GEN_NAME, M.MEM_ID, M.MEM_USERNAME, M.MEM_NICKNAME, M.MEM_EMAIL, M.MEM_TEL, M.MEM_REGION1, M.MEM_REGION2, M.MEM_REGDATE, M.MEM_AUTHORITY, M.MEM_IMAGE, M.MEM_LATEST, M.REPORT_ID AS memReport_id
                             FROM    MEMBER M JOIN COMM C2
                             ON      MEM_GENDER IN COMM_ID
                         )USING(MEM_ID)
@@ -253,6 +253,13 @@
 				ART_TAG5	= #{art_tag5},
 				ART_ISNOTICE = #{art_isnotice}
 		WHERE	ART_ID = #{art_id}
+		AND		BRD_ID = #{brd_id}
+	</update>
+	<!-- 신고 -->
+	<update id="dgReportArticle" parameterType="Article">
+		UPDATE 	ARTICLE
+		SET		REPORT_ID = #{report_id}
+		WHERE 	ART_ID = #{art_id}
 		AND		BRD_ID = #{brd_id}
 	</update>
 	

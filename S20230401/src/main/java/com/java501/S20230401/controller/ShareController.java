@@ -2,6 +2,7 @@ package com.java501.S20230401.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -18,9 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Join;
+import com.java501.S20230401.model.Member;
 import com.java501.S20230401.model.MemberDetails;
 import com.java501.S20230401.model.MemberInfo;
 import com.java501.S20230401.model.Region;
@@ -31,6 +35,7 @@ import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.CommService;
 import com.java501.S20230401.service.FavoriteService;
 import com.java501.S20230401.service.JoinService;
+import com.java501.S20230401.service.MemberService;
 import com.java501.S20230401.service.Paging;
 import com.java501.S20230401.service.RegionService;
 import com.java501.S20230401.service.ReplyService;
@@ -55,6 +60,7 @@ public class ShareController {
 	private final WaitingService 	waitingService;
 	private final TradeService 		tradeService;
 	private final ReportService		reportService;
+	private final MemberService 	memberService;
 	
 	
 	// 나눔해요 글 목록 + 검색
@@ -524,34 +530,56 @@ public class ShareController {
 		return getRedirectArticle(article, category);
 	}
 
-
-	// 신고
+	// ***************
+	// 신고 Map으로 가져오기 (@RequestParam(required = false) 필요함)
 	@PostMapping(value = "board/share/reportForm")
-	public String shareReport(@AuthenticationPrincipal MemberDetails memberDetails, Article article, Report report, Integer category){
-		MemberInfo shareUser = null;
+	public String shareReport(@AuthenticationPrincipal MemberDetails memberDetails, @RequestParam(required = false) Map<String, Object> data, Integer category){
+		
+		Article article = null;
+		Reply reply = null;
+		Report report = null;
+		Member member = null;
 		int result = 0;
+		ObjectMapper objectMapper = new ObjectMapper();
+		MemberInfo shareUser = null;
+		
+		// 필드가 있는데 값이 없거나, 필드가 없는데 값이 있거나 (에러 발생시 무시)
+		objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+		
+		article = objectMapper.convertValue(data, Article.class);
+		
+		// 로그인이 되어 있을 경우에만 신고 실행
 		if(memberDetails != null) {
 			shareUser = memberDetails.getMemberInfo();
+			report = objectMapper.convertValue(data, Report.class);
 			report.setMem_id(shareUser.getMem_id());
-			if(article.getReport_id() == null) {
-				// 신규 신고
-				System.out.println("새로운 신고건");
-				result = reportService.shareReport(report);
-				if(result > 0) {
-					System.out.println("이제 글 업뎃하자");
+			report.setReport_id(article.getReport_id());
+			
+			result = reportService.shareReport(report);
+			if(result > 0) {
+				switch (report.getType()) {
+				case "article":
+					System.out.println(" 게시글 신고  게시글 신고  게시글 신고  게시글 신고  게시글 신고  게시글 신고  게시글 신고 ");
+					article.setReport_id(result);
+					result = articleService.dgReportArticle(article);
+					break;
+				case "reply":
+					System.out.println(" 댓글 신고  댓글 신고  댓글 신고  댓글 신고  댓글 신고  댓글 신고  댓글 신고  댓글 신고  ");
+					reply = objectMapper.convertValue(data, Reply.class);
+					reply.setReport_id(result);
+					result = replyService.dgReportReply(reply);
+					break;
+				case "member":
+					System.out.println(" 유저 신고  유저 신고  유저 신고  유저 신고  유저 신고  유저 신고  유저 신고  유저 신고 ");
+					member = objectMapper.convertValue(data, Member.class);
+					member.setReport_id(result);
+					result = memberService.dgReportMember(member);
+					break;
 				}
-			}else {
-				// 기존 신고
-				System.out.println("기존 신고건");
-				report.setReport_id(article.getReport_id());
-				result = reportService.shareReport(report);
-				
 			}
 			if(result > 0) System.out.println("성공 개꿀딱지");
-			
-			
 		}
-		log.info("\n아띠끌 : {} \n리폿 : {}", article, report);
 		return getRedirectArticle(article, category);
 	}
 

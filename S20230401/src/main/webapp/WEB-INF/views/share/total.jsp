@@ -236,9 +236,9 @@
 			<!-- 왼쪽 오른쪽(글쓰기) 버튼 -->
 			<div class="board-btns" style="display: flex; flex-grow:1; margin: 15px 0px;">
 				<div class="btns-left">
-					<span><button>거래 모집 중</button></span>
-					<span><button>거래 완료</button></span>
-					<span><button>거래 취소</button></span>
+					<button>거래 모집 중</button>
+					<button>거래 완료</button>
+					<button>거래 취소</button>
 				</div>
 				<div class="btns-right" style="display: flex; justify-content: flex-end; flex-grow: 1;">
 					<span>

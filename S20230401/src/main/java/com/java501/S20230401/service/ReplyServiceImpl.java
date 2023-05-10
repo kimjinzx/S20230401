@@ -25,6 +25,8 @@ public class ReplyServiceImpl implements ReplyService {
 	public int deleteReply(Reply reply) {return rd.deleteReply(reply);	}
 	@Override
 	public int dgUpdateReply(Reply reply) {return rd.dgUpdateReply(reply);	}
+	@Override
+	public int dgReportReply(Reply reply) {	return rd.dgReportReply(reply); }
 	
 	
 	// 백준
@@ -64,6 +66,7 @@ public class ReplyServiceImpl implements ReplyService {
 	public int hgInsertReply(Reply reply) {
 		return rd.hgInsertReply(reply);
 	}
+
 
 	
 }

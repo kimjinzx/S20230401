@@ -24,7 +24,7 @@
 	<select id="gdReplyShareList" parameterType="Article" resultMap="dgReplyMap">
 		SELECT  *
 		FROM   (SELECT  ROWNUM RN, J.*
-		        FROM   (SELECT  R.*, M.MEM_USERNAME, M.MEM_NICKNAME, M.MEM_EMAIL, M.MEM_AUTHORITY, M.MEM_IMAGE, M.MEM_LATEST
+		        FROM   (SELECT  R.*, M.MEM_USERNAME, M.MEM_NICKNAME, M.MEM_EMAIL, M.MEM_AUTHORITY, M.MEM_IMAGE, M.MEM_LATEST, M.REPORT_ID AS memReport_id
 		                FROM    REPLY R, MEMBER M
 		                WHERE   R.MEM_ID = M.MEM_ID(+))J
 				WHERE 	ART_ID = #{art_id}
@@ -87,6 +87,11 @@
 		WHERE	REP_ID = #{rep_id}
 		AND		ART_ID = #{art_id}
 		AND		BRD_ID = #{brd_id}
+	</update>
+	<update id="dgReportReply" parameterType="Reply">
+		UPDATE	REPLY
+		SET		REPORT_ID = #{report_id}
+		WHERE 	REP_ID = #{rep_id}
 	</update>
 
 

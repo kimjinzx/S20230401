@@ -33,8 +33,8 @@
 	<!-- 거래 명단의 유저 조회 -->
 	<select id="dgShareJoinList" parameterType="int" resultMap="dgJoinMap">
 		SELECT	*
-		FROM 	JOIN LEFT OUTER JOIN (   SELECT MEM_ID, MEM_USERNAME, MEM_NICKNAME, MEM_REGION1, MEM_REGION2, MEM_REGDATE, MEM_IMAGE, MEM_GENDER, MEM_LATEST
-		                                    FROM MEMBER)USING(MEM_ID)
+		FROM 	JOIN LEFT OUTER JOIN (   SELECT MEM_ID, MEM_USERNAME, MEM_NICKNAME, MEM_REGION1, MEM_REGION2, MEM_REGDATE, MEM_IMAGE, MEM_GENDER, MEM_LATEST, REPORT_ID AS memReport_id
+		                                 FROM 	MEMBER)USING(MEM_ID)
 		WHERE	TRD_ID = #{trd_id}
 	</select>
 	<!-- 신청 여부 -->

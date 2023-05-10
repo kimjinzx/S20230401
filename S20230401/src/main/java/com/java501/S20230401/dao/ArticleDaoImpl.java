@@ -139,6 +139,17 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return result;
 	}
+	// 글 신고
+	@Override
+	public int dgReportArticle(Article article) {
+		int result = 0;
+		try {
+			result = session.update("dgReportArticle", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 	
 	
@@ -697,6 +708,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return result;
 	}
+
 
 
 

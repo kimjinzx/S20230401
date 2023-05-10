@@ -1,11 +1,8 @@
 package com.java501.S20230401.dao;
 
-import java.util.List;
-
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Member;
 import com.java501.S20230401.model.MemberInfo;
 
@@ -19,14 +16,14 @@ public class MemberDaoImpl implements MemberDao {
 	
 	// 양동균
 	@Override
-	public List<Member> allMemberList(Article article) {
-		List<Member> allMemberList = null;
+	public int dgReportMember(Member member) {
+		int result = 0;
 		try {
-			allMemberList = session.selectList("dgAllMemberList", article);
+			result = session.update("dgReportMember", member);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return allMemberList;
+		return result;
 	}
 
 	
@@ -63,4 +60,7 @@ public class MemberDaoImpl implements MemberDao {
 		member.setMem_authority(authority);
 		session.update("hgSetAuthority", member);
 	}
+
+
+
 }

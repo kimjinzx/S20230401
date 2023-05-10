@@ -33,6 +33,7 @@ public interface ArticleDao {
 	int dgVoteGood(Article article);				// 글 추천
 	int dgVoteBad(Article article);					// 글 비추천
 	int updateShare(Article article);				// 글 수정
+	int dgReportArticle(Article article);
 
 	
 	// 백준

@@ -35,15 +35,14 @@
 
 			<!-- 게시글의 정보 -->
 			<div class="article-header">
-				<input type="hidden" id="art_id" 	name="art_id" 	value="${article.art_id}">
+				<input type="hidden" id="article_id"name="art_id" 	value="${article.art_id}">
 				<input type="hidden" id="brd_id" 	name="brd_id" 	value="${article.brd_id}">
 				<input type="hidden" id="category" 	name="category" value="${category}">
 				<input type="hidden" id="mem_id" 	name="mem_id" 	value="${article.mem_id}">
-				<input type="hidden" id="article_nickname" value="${article.member.mem_nickname}">
-				<input type="hidden" id="report_id" name="report_id"value="${article.report_id}">
+				<input type="hidden" id="article_nickname" 			value="${article.member.mem_nickname}">
+				<input type="hidden" id="artReport_id" 				value="${article.report_id}">
 				<input type="hidden" id="login_member" 		name="login_member" 	value="${memberInfo.mem_id}">
 				<input type="hidden" id="login_authority" 	name="login_authority" 	value="${memberInfo.mem_authority}">
-				
 				<!-- 카테고리 표시 -->
 				<div class="article-category" style="display: flex;">
 					<span class="category-name">
@@ -70,9 +69,9 @@
 					${article.art_title}
 				</div>
 				<!-- 게시글 신고 -->
-				<div id="article-report">
+				<div class="modal-report">
 					<c:if test="${not empty memberInfo}">
-						<svg viewBox="0 0 512 512" weith="30" height="30"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z"/></svg>
+						<svg id="article-report" viewBox="0 0 512 512" weith="30" height="30"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z"/></svg>
 					</c:if>
 				</div>
 			</div>
@@ -82,7 +81,14 @@
 			<div class="article-memberRow" style="display: flex; align-items: center;">
 				<span><img alt="profile" src="${pageContext.request.contextPath}/uploads/profile/${article.member.mem_image}" style="width: 60px; height: 60px; border-radius: 30px; margin-right: 20px;"></span>
 				<div class="article-member" style="display: flex; align-items: center;">
-					<span>${article.member.mem_nickname}</span>
+					<div class="modal-report">
+						<span id="member_nickname">${article.member.mem_nickname}</span>
+						<c:if test="${not empty memberInfo}">
+							<svg id="member-report" viewBox="0 0 512 512" weith="30" height="30"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z"/></svg>
+							<input type="hidden" id="member_id" value="${article.member.mem_id}">
+							<input type="hidden" id="memReport_id" value="${article.member.report_id}">
+						</c:if>
+					</div>
 				</div>
 				<div class="article-memberInfo" style="font-size: 14px; flex-grow: 1; text-align: right;">
 					<span>추천 ${article.art_good}</span>
@@ -140,8 +146,14 @@
 							<img src="${pageContext.request.contextPath}/uploads/profile/${join.member.mem_image}" alt="profile" style="width: 60px; height: 60px; border-radius: 30px; margin-right: 20px;">
 							<div class="userList-details">
 								<h3>${join.member.mem_username}</h3>
-								<span>${join.member.mem_nickname}</span>
-								<input type="hidden" id="mem_id" name="mem_id" value="${join.mem_id}">
+								<div class="modal-report">
+									<span id="member_nickname">${join.member.mem_nickname}</span>
+									<c:if test="${not empty memberInfo}">
+										<svg id="member-report" viewBox="0 0 512 512" weith="30" height="30"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z"/></svg>
+									</c:if>
+									<input type="hidden" id="member_id" name="mem_id" value="${join.mem_id}">
+									<input type="hidden" id="memReport_id" value="${join.member.report_id}">
+								</div>
 							</div>
 							<div class="userList-btns">
 								<c:choose>
@@ -167,8 +179,14 @@
 							<img src="${pageContext.request.contextPath}/uploads/profile/${waiting.member.mem_image}" alt="profile" style="width: 60px; height: 60px; border-radius: 30px; margin-right: 20px;">
 							<div class="userList-details">
 								<h3>${waiting.member.mem_username}</h3>
-								<span>${waiting.member.mem_nickname}</span>
-								<input type="hidden" id="mem_id" name="mem_id" value="${waiting.mem_id}">
+								<div class="modal-report">
+									<span id="member_nickname">${waiting.member.mem_nickname}</span>
+									<c:if test="${not empty memberInfo}">
+										<svg id="member-report" viewBox="0 0 512 512" weith="30" height="30"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z"/></svg>
+									</c:if>
+									<input type="hidden" id="member_id" name="mem_id" value="${waiting.mem_id}">
+									<input type="hidden" id="memReport_id" value="${waiting.member.report_id}">
+								</div>
 							</div>
 							<div class="userList-btns">
 								<c:choose>
@@ -257,18 +275,25 @@
 				<div class="reply-detail">
 					<input type="hidden" id="reply_id" name="rep_id" value="${reply.rep_id}">
 					<input type="hidden" id="reply_nickname" value="${reply.member.mem_nickname}">
-					<c:if test="${reply.report_id != null }"><input type="hidden" id="reply_report_id" name="report_id" value="${reply.report_id}"></c:if>
-					
+					<input type="hidden" id="repReport_id" 	value="${reply.report_id}">
 					<div class="reply-view" style="display: flex; ${(reply.rep_id != reply.rep_parent) ? 'margin-left: 20px;' : ''}">
 						
 						<div class="reply-image">
 							<span><img alt="profile" src="${pageContext.request.contextPath}/uploads/profile/${reply.member.mem_image}" style="width: 80px; height: 80px;"></span>
 						</div> 
 						
-						<!-- 댓글 내용 -->
+						<!-- 댓글 본문 -->
 						<div class="reply-inner" style="flex-grow: 1">
+							<!-- 유저 신고 -->
 							<div class="reply-member" style="display: flex;">
-								<span>${reply.member.mem_nickname}</span>
+								<div class="modal-report">
+									<span id="member_nickname">${reply.member.mem_nickname}</span>
+									<c:if test="${not empty memberInfo}">
+										<svg id="member-report" viewBox="0 0 512 512" weith="30" height="30"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z"/></svg>
+										<input type="hidden" id="member_id" value="${reply.member.mem_id}">
+										<input type="hidden" id="memReport_id" value="${reply.member.report_id}">
+									</c:if>
+								</div>
 								<span>작성일 : <fmt:formatDate value="${reply.rep_regdate}" pattern="yy-MM-dd :HH:mm:ss"/></span>
 								<span>최종 접속일 : <fmt:formatDate value="${reply.member.mem_latest}" pattern="yy-MM-dd :HH:mm:ss"/></span>
 							</div>
@@ -296,9 +321,9 @@
 								</span>
 							</c:if>
 							<!-- 댓글 신고 -->
-							<div id="reply-report">
+							<div class="modal-report">
 								<c:if test="${not empty memberInfo}">
-									<svg viewBox="0 0 512 512" weith="30" height="30"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z"/></svg>
+									<svg id="reply-report" viewBox="0 0 512 512" weith="30" height="30"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z"/></svg>
 								</c:if>
 							</div>
 						</div>

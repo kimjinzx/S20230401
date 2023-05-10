@@ -233,7 +233,7 @@ function userListButtonClick(e){
 		if(confirm(message)) {
 			let url = `${contextPath}/board/share/join/${action}?art_id=${artId}&brd_id=${brdId}&mem_id=${mem_id}&category=${category}`;
 			location.href = url;
-			console.info(url);
+			console.log(url);
 		}
 	}else {
 		alert('로그인 하세요');
@@ -242,34 +242,58 @@ function userListButtonClick(e){
 
 // 신고 기능
 $(()=>{
+    let reply_id, member_id, member_nickname, report_id, nickname, action;
     // 신고 아이콘 클릭
-    $('#article-report, #reply-report').click((e)=>{
+    $('#article-report, #reply-report, #member-report').click((e)=>{
         if(loginUser > 0){
             $('#report').css('display', 'flex');
         }else alert('로그인 하세요');
+        // 게시글 신고
+        if($(e.target).is('#article-report')){
+            nickname = $(e.target).closest('.view-article').find('#member_nickname').text();
+            $('#report-user').text(member_nickname);
+            $('#report-title').text('게시글 신고');
+            action = 'article';
+        }
+        // 댓글 신고
+        if($(e.target).is('#reply-report')){
+            reply_id = $(e.target).closest('.reply-detail').find('#reply_id').val();
+            nickname = $(e.target).closest('.reply-detail').find('#member_nickname').text();
+            report_id = $(e.target).closest('.reply-detail').find('#repReport_id').val();
+            $('#report-user').text(member_nickname);
+            $('#report-title').text('댓글 신고');
+            $('#rep_id').val(reply_id);
+            action = 'reply';
+        }
+        // 유저 신고
+        if($(e.target).is('#member-report')){
+            member_id = $(e.target).closest('.modal-report').find('#member_id').val();
+            nickname = $(e.target).closest('.modal-report').find('#member_nickname').text();
+            report_id = $(e.target).closest('.modal-report').find('#memReport_id').val();
+            $('#report-user').text(member_nickname);
+            $('#report-title').text('유저 신고');
+            action = 'member';
+        }
 
-        // 댓글 번호, 신고 번호
-        let reply_id = $(e.target).closest('.reply-detail').find('#reply_id').val();
-        let reply_report_id = $(e.target).closest('.reply-detail').find('#reply_report_id').val();
-        let reply_nickname = $(e.target).closest('.reply-detail').find('#reply_nickname').val();
-
-        // 신고 버튼
-        $('#btns-reportApply').click(()=>{
-            if($('#report-Checkbox').is(':checked')){
-                if(confirm('신고 하시겠습니까?')){
-                    if(reply_id != null){
-                        console.info('댓글신고');
-                        //$('#report-submit').click();
-                    }else if(mem_id != null){
-                        console.info('유저 신고');
-                    }else{
-                        console.info('게시글 신고');
-                    }
-                    
-                    //location.href = `${contextPath}/board/share/report?art_id=${artId}&brd_id=${brdId}&mem_id=${loginUser}&category=${category}`;
+    });
+    $('#btns-reportApply').click(()=>{
+        if($('#report-Checkbox').is(':checked')){
+            if(confirm('신고 하시겠습니까?')){
+                if(action === 'article'){
+                    console.info('게시글 신고');
+                    $('#type').val('article');
+                    $('#report-submit').click();
+                }else if(action === 'reply'){
+                    console.info('댓글 신고');
+                    $('#type').val('reply');
+                    $('#report-submit').click();
+                }else if(action === 'member'){
+                    console.info('유저 신고');
+                    $('#type').val('member');
+                    $('#report-submit').click();
                 }
-            }else alert('동의하지 않으면 신청하실 수 없습니다.')
-        });
+            }
+        }else alert('동의하지 않으면 신청하실 수 없습니다.')
     });
     // 취소
     $('#report').click(e=>{
@@ -277,5 +301,4 @@ $(()=>{
             $('#report').css('display', 'none');
         }
     });
-
 });

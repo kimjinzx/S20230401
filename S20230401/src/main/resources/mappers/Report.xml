@@ -19,8 +19,12 @@
 				#{mem_id},
 				#{report_content},
 				SYSDATE,
-				#{report_status})
-		
+				0)
+		<selectKey keyProperty="report_id" resultType="int" order="AFTER">
+			SELECT 	MAX(REPORT_ID)
+			FROM 	REPORT
+			WHERE	mem_id = #{mem_id}
+		</selectKey>
 	</insert>
 	
 </mapper>

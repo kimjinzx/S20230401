@@ -61,7 +61,17 @@ public class ReplyDaoImpl implements ReplyDao {
 		}
 		return result;
 	}
-	
+	// 댓글 신고
+	@Override
+	public int dgReportReply(Reply reply) {
+		int result = 0;
+		try {
+			result = session.update("dgReportReply", reply);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 	
 	
@@ -129,5 +139,6 @@ public class ReplyDaoImpl implements ReplyDao {
 	public int hgInsertReply(Reply reply) {
 		return session.insert("hgInsertReply", reply);
 	}
+
 
 }
