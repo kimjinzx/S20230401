@@ -46,7 +46,14 @@ public class Article {
 	// 백준
 	private String 		mem_nickname;	
 	private String 		mem_image;
-
+	
+	private String		bjSearchOption;	
+	private String		bjKeyword;	
+//	private String		bjStitle;	
+//	private String		bjScontent;	
+//	private String		bjStiCon;	
+//	private String		bjSnick;	
+	
 	// 임동빈
 	// COMM
 	private Integer 	comm_id;

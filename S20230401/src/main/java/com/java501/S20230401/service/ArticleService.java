@@ -5,6 +5,7 @@ import java.util.List;
 import com.java501.S20230401.model.Article_Trade_Reply;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Region;
+import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.ArticleMember;
 import com.java501.S20230401.model.MemberInfo;
@@ -33,9 +34,13 @@ public interface ArticleService {
 	Integer 			upreadCount(Article article);
 	List<Article> 		listMagnager();
 	int 				bjWriteArticle(Article article);
-	public int 			bjUpdateArticle(Article article);
-	public int 			delete(Article article);
-	
+	int 				bjUpdateArticle(Article article);
+	int 				delete(Article article);
+	int 				replyWrite(Reply reply);
+	int					replyDelete(Reply reply);
+	List<Article>		bjArtSearch(Article article);
+	Integer				bjGood(Article article);
+	Integer				bjBad(Article article);
 	
 	
 	

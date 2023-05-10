@@ -305,40 +305,40 @@
 				</a>
 			</div>
 			<div id="topmenu">
-				<a class="adv-hover menuitem" href="">함께해요</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/together?category=1000">함께해요</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="">같이사요</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/dutchpay?category=1100">같이사요</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="">나눔해요</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/share?category=1200">나눔해요</a>
 				<div class="menu-separator"></div>
 				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/community?category=1300">커뮤니티</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="">정보공유</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/information?category=1400">정보공유</a>
 				<div class="menu-separator"></div>
-				<a class="adv-hover menuitem" href="">고객센터</a>
+				<a class="adv-hover menuitem" href="${pageContext.request.contextPath}/board/customer?category=1500">고객센터</a>
 				<div id="dropdown">
 					<div style="width: 200px;"></div>
 					<div class="submenu-items">
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">밥 / 카페</a>
-							<a class="submenuitem adv-hover" href="">스포츠 / 운동</a>
-							<a class="submenuitem adv-hover" href="">쇼핑</a>
-							<a class="submenuitem adv-hover" href="">문화생활</a>
-							<a class="submenuitem adv-hover" href="">취미생활</a>
-							<a class="submenuitem adv-hover" href="">기타</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1010">밥 / 카페</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1020">스포츠 / 운동</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1030">쇼핑</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1040">문화생활</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1050">취미생활</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/together?category=1060">기타</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">식료품</a>
-							<a class="submenuitem adv-hover" href="">의류 / 잡화</a>
-							<a class="submenuitem adv-hover" href="">생활용품</a>
-							<a class="submenuitem adv-hover" href="">해외배송</a>
-							<a class="submenuitem adv-hover" href="">기타</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/dutchpay?category=1110">식료품</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/dutchpay?category=1120">의류 / 잡화</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/dutchpay?category=1130">생활용품</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/dutchpay?category=1140">해외배송</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/dutchpay?category=1150">기타</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">식품</a>
-							<a class="submenuitem adv-hover" href="">패션 / 잡화</a>
-							<a class="submenuitem adv-hover" href="">가전 / 가구</a>
-							<a class="submenuitem adv-hover" href="">기타</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/share?category=1210">식품</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/share?category=1220">패션 / 잡화</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/share?category=1230">가전 / 가구</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/share?category=1240">기타</a>
 						</div>
 						<div class="submenu">
 							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/community?category=1310">일상수다</a>
@@ -347,16 +347,16 @@
 							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/community?category=1340">질문 / 요청</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">동네정보</a>
-							<a class="submenuitem adv-hover" href="">구매정보</a>
-							<a class="submenuitem adv-hover" href="">신규점포</a>
-							<a class="submenuitem adv-hover" href="">지역활동</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/information?category=1410">동네정보</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/information?category=1420">구매정보</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/information?category=1430">신규점포</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/information?category=1440">지역활동</a>
 						</div>
 						<div class="submenu">
-							<a class="submenuitem adv-hover" href="">공지</a>
-							<a class="submenuitem adv-hover" href="">Q&A</a>
-							<a class="submenuitem adv-hover" href="">이벤트</a>
-							<a class="submenuitem adv-hover" href="">문의 / 건의</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/customer?category=1510">공지</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/customer?category=1520">Q&A</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/customer?category=1530">이벤트</a>
+							<a class="submenuitem adv-hover" href="${pageContext.request.contextPath}/board/customer?category=1540">문의 / 건의</a>
 						</div>
 					</div>
 					<div style="width: 200px;"></div>
@@ -448,19 +448,75 @@
 		<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1330'">홍보하기</button>
 		<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1340'">질문/요청</button>
 		<c:choose>
-		<c:when test="${memberInfo != null }">
-		<button onclick="location.href='${pageContext.request.contextPath}/board/community/communityWrite'">글쓰기</button>
+		<c:when test="${memberInfo != null || memberInfo.mem_authority == '109'}">
+		<button onclick="location.href='${pageContext.request.contextPath}/board/community/communityWrite?category=${category }'">글쓰기</button>
 		</c:when>
 		</c:choose>
-		<table border="1">
-			<tr><th>글번호</th><th>카테고리</th><th>프로필</th><th>제목</th><th>태그</th><th>댓글수</th>
-			<th>조회수</th><th>추천</th><th>비추</th><th>작성일</th></tr>
+		<table border="1" >
+			<tr>
+			<th style="width: 50px;">글번호</th>
+			<th style="width: 80px;">카테고리</th>
+			<th style="width: 200px;">프로필</th>
+			<th style="width: 400px;">제목</th>
+			<th style="width: 400px;">태그</th>
+			<th style="width: 50px;">댓글수</th>
+			<th style="width: 50px;">조회수</th>
+			<th style="width: 50px;">추천</th>
+			<th style="width: 50px;">비추</th>
+			<th style="width: 50px;">작성일</th>
+			</tr>
+			<c:forEach var="article" items="${listArticle }">
+				<c:choose>
+					<c:when test="${article.art_isnotice == '1' }">
+					<td>${article.art_id }</td>
+					<td>${boardMap[article.brd_id]}</td>
+					<td><img src="${pageContext.request.contextPath}/uploads/profile/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
+						${article.mem_nickname }</td>
+					<td><a href="${pageContext.request.contextPath}/board/community/detailContent?art_id=${article.art_id }&brd_id=${article.brd_id }&category=${category }">${article.art_title}</a></td>
+					<td>
+				    <c:if test="${not empty article.art_tag1}">
+				        #${article.art_tag1}
+				    </c:if>
+				    <c:if test="${not empty article.art_tag2}">
+				        #${article.art_tag2}
+				    </c:if>
+				    <c:if test="${not empty article.art_tag3}">
+				        #${article.art_tag3}
+				    </c:if>
+				    <c:if test="${not empty article.art_tag4}">
+				        #${article.art_tag4}
+				    </c:if>
+				    <c:if test="${not empty article.art_tag5}">
+				        #${article.art_tag5}
+				    </c:if>
+				</td>	
+					<td>${article.rep_cnt }</td>
+					<td>${article.art_read }</td>
+					<td>${article.art_good }</td>
+					<td>${article.art_bad }</td>
+					<fmt:formatDate value="${article.art_regdate}" pattern="MM.dd" var="regdate" />
+					<fmt:formatDate value="${article.art_regdate}" pattern="hh:mm" var="regtime" />
+					<td style="font-size : 10px">${regdate }<br>${regtime}</td>
+					</c:when>
+				</c:choose>
+				</c:forEach>
+				</table>
+		<table border="1" style="width: 1400px;">
+			<tr><th style="width: 50px;">글번호</th>
+			<th style="width: 80px;">카테고리</th>
+			<th style="width: 200px;">프로필</th>
+			<th style="width: 400px;">제목</th>
+			<th style="width: 400px;">태그</th>
+			<th style="width: 50px;">댓글수</th>
+			<th style="width: 50px;">조회수</th>
+			<th style="width: 50px;">추천</th>
+			<th style="width: 50px;">비추</th>
+			<th style="width: 50px;">작성일</th></tr>
 			<c:forEach var="article" items="${listArticle }">
 				<tr>
 				<td>${article.art_id }</td>
-				<%-- <td>${boardMap[article.brd_id]}</td> --%>
 				<td>${boardMap[article.brd_id]}</td>
-				<td><img src="${pageContext.request.contextPath}/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
+				<td><img src="${pageContext.request.contextPath}/uploads/profile/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
 						${article.mem_nickname }</td>
 				<td><a href="${pageContext.request.contextPath}/board/community/detailContent?art_id=${article.art_id }&brd_id=${article.brd_id }&category=${category }">${article.art_title}</a></td>
 				<td>
@@ -491,16 +547,28 @@
 				</tr>
 			</c:forEach>
 		</table>
-		
+		<div style="margin: 10px;">
 		<c:if test ="${page.startPage > page.pageBlock }">
 			<a href="${pageContext.request.contextPath}/board/community?currentpage=${page.startPage-page.pageBlock }&category=${category}">[이전]</a>
 		</c:if>
 		<c:forEach var="i" begin="${page.startPage }" end="${page.endPage }">
-			<a href="${pageContext.request.contextPath}/board/community?currentPage=${i }&category=${brd_id}"	>[${i }]</a>
+			<a href="${pageContext.request.contextPath}/board/community?currentPage=${i }&category=${category}"	>[${i }]</a>
 		</c:forEach>
 		<c:if test="${page.endPage < page.totalPage }">
-			<a href="${pageContext.request.contextPath}/board/community?currentPage=${page.startPage+page.pageBlock }&category=${brd_id}">[다음]</a>
+			<a href="${pageContext.request.contextPath}/board/community?currentPage=${page.startPage+page.pageBlock }&category=${category}">[다음]</a>
 		</c:if>
+		</div>
+		
+		<form action="${pageContext.request.contextPath}/board/community/bjSearch?brd_id=${category }&category=${category }" method="post" name="bjSearch">
+		<select name="bjSearchOption">
+			<option value="bjStitle">제목</option>
+			<option value="bjScontent">내용</option>
+			<option value="bjStiCon">제목+내용</option>
+			<option value="bjSnick">작성자</option>
+		</select>
+		<input type="text" name="bjKeyword" placeholder="검색어를 입력하세요." >
+		<input type="submit" value="검색">
+		</form>
 	</div>
 	
 	

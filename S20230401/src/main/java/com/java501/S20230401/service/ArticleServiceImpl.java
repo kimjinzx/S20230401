@@ -100,6 +100,7 @@ public class ArticleServiceImpl implements ArticleService {
 	public Integer upreadCount(Article article) {
 		return ad.upreadCount(article);
 	}
+	
 	@Override
 	public List<Article> listMagnager() {
 		List<Article> bjwrite = null;
@@ -124,6 +125,39 @@ public class ArticleServiceImpl implements ArticleService {
 		delResult = ad.delete(article);
 		return delResult;
 	}
+	@Override
+	public int replyWrite(Reply reply) {
+		int reWrite = 0;
+		reWrite = ad.replyWrite(reply);
+		return reWrite;
+	}
+
+	@Override
+	public int replyDelete(Reply reply) {
+		int reDelete = 0;
+		reDelete = ad.replyDelete(reply);
+		return reDelete;
+	}
+	
+	@Override
+	public List<Article> bjArtSearch(Article article) {
+		List<Article> bjSearch = null;
+		bjSearch = ad.bjArtSearch(article);
+		
+		return bjSearch;
+	}
+	
+	@Override
+	public Integer bjGood(Article article) {
+		return ad.bjGood(article);
+	}
+	@Override
+	public Integer bjBad(Article article) {
+		// TODO Auto-generated method stub
+		return ad.bjBad(article);
+	}
+	
+	
 	
 	
 	
@@ -525,5 +559,4 @@ public class ArticleServiceImpl implements ArticleService {
 		result = ad.insertCustomer(article);
 		return result;
 	}
-
 }

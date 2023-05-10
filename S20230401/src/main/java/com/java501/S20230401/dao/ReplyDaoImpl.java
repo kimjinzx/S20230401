@@ -64,6 +64,7 @@ public class ReplyDaoImpl implements ReplyDao {
 		}
 		return countReply;
 	}
+	
 	@Override
 	public List<Reply> replyMain(Reply reply) {
 		List<Reply> mainReply = null;
@@ -75,9 +76,38 @@ public class ReplyDaoImpl implements ReplyDao {
 		return mainReply;
 	}
 	
+	@Override
+	public int bjreReply(Reply reply) {
+		int reReply = 0;
+		try {
+			reReply = session.update("bjreReply",reply);
+		} catch (Exception e) {
+			System.out.println("대댓글에러"+e.getMessage());
+		}
+		System.out.println("대댓글 다오임플 ->"+ reply);
+		return reReply;
+	}	
 	
-	
-	
+	@Override
+	public int bjReGood(Reply reply) {
+		int reGood = 0;
+		try {
+			reGood = session.update("bjReGood",reply);
+		} catch (Exception e) {
+			System.out.println("댓글추천에러"+e.getMessage());
+		}
+		return reGood;
+	}
+	@Override
+	public int bjReBad(Reply reply) {
+		int reBad = 0;
+		try {
+			reBad = session.update("bjReBad",reply);
+		} catch (Exception e) {
+			System.out.println("댓글추천에러"+e.getMessage());
+		}
+		return reBad;
+	}
 	
 	// 최승환
 	@Override

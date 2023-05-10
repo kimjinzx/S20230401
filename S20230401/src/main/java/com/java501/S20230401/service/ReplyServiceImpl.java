@@ -41,6 +41,21 @@ public class ReplyServiceImpl implements ReplyService {
 		
 	}
 	
+	@Override
+	public int bjreReply(Reply reply) {
+		return rd.bjreReply(reply);
+	}
+	
+	@Override
+	public int bjReGood(Reply reply) {
+		return rd.bjReGood(reply);
+	}
+	@Override
+	public int bjReBad(Reply reply) {
+		return rd.bjReBad(reply);
+	}
+	
+	
 	// 최승환
 	@Override
 	public int shReplyCount(Reply reply) {

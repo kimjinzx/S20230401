@@ -9,6 +9,7 @@ import com.java501.S20230401.model.Article_Trade_Reply;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Join;
 import com.java501.S20230401.model.Region;
+import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.ArticleMember;
 import com.java501.S20230401.model.MemberInfo;
@@ -138,7 +139,7 @@ public class ArticleDaoImpl implements ArticleDao {
 	
 	
 	
-	
+	//=================================================================================================
 	
 	
 	// 백준
@@ -268,11 +269,67 @@ public class ArticleDaoImpl implements ArticleDao {
 		return delResult;
 	}
 	
+	@Override
+	public int replyWrite(Reply reply) {
+		int reWrite = 0;
+		try {
+			reWrite = session.insert("bjReplyWrite",reply);
+		} catch (Exception e) {
+			System.out.println("댓글쓰기에러"+e.getMessage());
+		}
+		return reWrite;
+	}
+
+	@Override
+	public int replyDelete(Reply reply) {
+		int reDelete= 0;
+		try {
+			reDelete = session.insert("bjReplyDelete",reply);
+		} catch (Exception e) {
+			System.out.println("댓글쓰기에러"+e.getMessage());
+		}
+		return reDelete;
+	}
 	
+	@Override
+	public List<Article> bjArtSearch(Article article) {
+		List<Article> bjSearch = null;
+		try {
+			bjSearch = session.selectList("bjSearch", article);
+		} catch (Exception e) {
+			System.out.println("검색 다오임플 에러" + e.getMessage());
+		}
+		System.out.println("아티클 다오 검색 값" + bjSearch);
+		for (Article art : bjSearch) System.out.println(art);
+		System.out.println("아티클 다오 아티클 값" + article);
+		
+		return bjSearch;
+	}
 	
+	@Override
+	public Integer bjGood(Article article) {
+		Integer good = 0;
+		
+		try {
+			good = session.insert("bjGood" , article);
+		} catch (Exception e) {
+			System.out.println("아티클다오임플 추천 에러"+e.getMessage());
+		}
+		return good;
+	}
+	@Override
+	public Integer bjBad(Article article) {
+		Integer bad = 0;
+		
+		try {
+			bad = session.insert("bjBad" , article);
+		} catch (Exception e) {
+			System.out.println("아티클다오임플 비추천 에러"+e.getMessage());
+		}
+		return bad;
+	}
 	
-	
-	
+	//=================================================================================================
 	
 	
 	
@@ -895,4 +952,6 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return result;
 	}
+	
+	
 }

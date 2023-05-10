@@ -43,7 +43,11 @@ public interface ArticleDao {
 	int 							bjWriteArticle(Article article);
 	int 							bjUpdateArticle(Article article);
 	int								delete(Article article);
-	
+	int 							replyWrite(Reply reply);
+	int 							replyDelete(Reply reply);
+	List<Article>					bjArtSearch(Article article);
+	Integer 						bjGood(Article article);
+	Integer							bjBad(Article article);
 	
 	// 임동빈
 	int 			dbtotalArticle(Article article);
