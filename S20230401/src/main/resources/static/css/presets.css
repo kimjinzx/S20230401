@@ -1,66 +1,5 @@
 @charset "UTF-8";
 
-.full-width { width: 100%; }
-.width-25px { width: 25px; }
-.width-50px { width: 50px; }
-.width-75px { width: 75px; }
-.width-100px { width: 100px; }
-.full-height { height: 100%; }
-.height-25px { height: 25px; }
-.height-50px { height: 50px; }
-.height-75px { height: 75px; }
-.height-100px { height: 100px; }
-
-.display-flex { display: flex; }
-.flex-direction-column { flex-direction: column; }
-.justify-content-flex-start { justify-content: flex-start; }
-.justify-content-flex-end { justify-content: flex-end; }
-.justify-content-flex-center { justify-content: center; }
-.align-items-center { align-items: center; }
-.align-items-stretch { align-items: stretch; }
-.flex-grow-0 { flex-grow: 0; }
-.flex-grow-1 { flex-grow: 1; }
-
-.padding-0 { padding: 0; }
-.margin-0 { margin: 0; }
-
-.overflow-y-hidden { overflow-y: hidden; }
-.overflow-y-auto { overflow-y: auto; }
-
-.color-theme { color: var(--theme); }
-.color-theme-font { color: var(--theme-font); }
-.color-subtheme { color: var(--subtheme); }
-.color-subtheme-font { color: var(--subtheme-font); }
-.color-warning { color: var(--warning); }
-.color-confirm { color: var(--confirm); }
-
-.font-size-10px { font-size: 10px; }
-.font-size-11px { font-size: 11px; }
-.font-size-12px { font-size: 12px; }
-.font-size-13px { font-size: 13px; }
-.font-size-14px { font-size: 14px; }
-.font-size-15px { font-size: 15px; }
-.font-size-16px { font-size: 16px; }
-
-.font-weight-lighter { font-weight: lighter; }
-.font-weight-normal { font-weight: normal; }
-.font-weight-bold { font-weight: bold; }
-.font-weight-bolder { font-weight: bolder; }
-.font-weight-100 { font-weight: 100; }
-.font-weight-200 { font-weight: 200; }
-.font-weight-300 { font-weight: 300; }
-.font-weight-400 { font-weight: 400; }
-.font-weight-500 { font-weight: 500; }
-.font-weight-600 { font-weight: 600; }
-.font-weight-700 { font-weight: 700; }
-.font-weight-800 { font-weight: 800; }
-.font-weight-900 { font-weight: 900; }
-
-.text-align-left { text-align: left; }
-.text-align-center { text-align: center; }
-.text-align-right { text-align: right; }
-.text-align-justify { text-align: justify; }
-
 /* Misc presets */
 button.ignore-child > * { pointer-events: none; }
 button.theme-button {
@@ -112,9 +51,85 @@ button.warning-button * {
 	pointer-events: none;
 }
 
-.padding-custom1 {
-	padding: 2.5px 5px;
-}
-.padding-custom2 {
-	padding: 5px 10px;
-}
+/* Presets */
+.full-width { width: 100%; }
+.width-25px { width: 25px; }
+.width-50px { width: 50px; }
+.width-75px { width: 75px; }
+.width-100px { width: 100px; }
+
+.full-height { height: 100%; }
+.height-25px { height: 25px; }
+.height-50px { height: 50px; }
+.height-75px { height: 75px; }
+.height-100px { height: 100px; }
+
+.display-flex { display: flex; }
+
+.flex-direction-column { flex-direction: column; }
+.flex-direction-column-reverse { flex-direction: column-reverse; }
+.flex-direction-row { flex-direction: row; }
+.flex-direction-row-reverse { flex-direction: row-reverse; }
+
+.justify-content-flex-start { justify-content: flex-start; }
+.justify-content-flex-end { justify-content: flex-end; }
+.justify-content-center { justify-content: center; }
+.justify-content-space-between { justify-content: space-between; }
+.justify-content-space-around { justify-content: space-around; }
+.justify-content-space-evenly { justify-content: space-evenly; }
+
+.align-items-flex-start { align-items: flex-start; }
+.align-items-flex-end { align-items: flex-end; }
+.align-items-center { align-items: center; }
+.align-items-baseline { align-items: baseline; }
+.align-items-stretch { align-items: stretch; }
+
+.flex-grow-0 { flex-grow: 0; }
+.flex-grow-1 { flex-grow: 1; }
+
+.padding-0 { padding: 0; }
+.padding-2_5px { padding: 2.5px; }
+.padding-5px { padding: 5px; }
+.padding-custom1 { padding: 2.5px 5px; }
+.padding-custom2 { padding: 5px 10px; }
+
+.margin-0 { margin: 0; }
+.margin-2_5px { margin: 2.5px; }
+.margin-5px { margin: 5px; }
+
+.overflow-y-hidden { overflow-y: hidden; }
+.overflow-y-auto { overflow-y: auto; }
+
+.color-theme { color: var(--theme); }
+.color-theme-font { color: var(--theme-font); }
+.color-subtheme { color: var(--subtheme); }
+.color-subtheme-font { color: var(--subtheme-font); }
+.color-warning { color: var(--warning); }
+.color-confirm { color: var(--confirm); }
+
+.font-size-10px { font-size: 10px; }
+.font-size-11px { font-size: 11px; }
+.font-size-12px { font-size: 12px; }
+.font-size-13px { font-size: 13px; }
+.font-size-14px { font-size: 14px; }
+.font-size-15px { font-size: 15px; }
+.font-size-16px { font-size: 16px; }
+
+.font-weight-lighter { font-weight: lighter; }
+.font-weight-normal { font-weight: normal; }
+.font-weight-bold { font-weight: bold; }
+.font-weight-bolder { font-weight: bolder; }
+.font-weight-100 { font-weight: 100; }
+.font-weight-200 { font-weight: 200; }
+.font-weight-300 { font-weight: 300; }
+.font-weight-400 { font-weight: 400; }
+.font-weight-500 { font-weight: 500; }
+.font-weight-600 { font-weight: 600; }
+.font-weight-700 { font-weight: 700; }
+.font-weight-800 { font-weight: 800; }
+.font-weight-900 { font-weight: 900; }
+
+.text-align-left { text-align: left; }
+.text-align-center { text-align: center; }
+.text-align-right { text-align: right; }
+.text-align-justify { text-align: justify; }

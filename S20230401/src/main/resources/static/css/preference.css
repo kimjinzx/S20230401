@@ -49,3 +49,4 @@ a, a:link, a:visited, a:hover, a:active {
 svg {
 	stroke: var(--theme-font);
 }
+textarea { resize: none; }

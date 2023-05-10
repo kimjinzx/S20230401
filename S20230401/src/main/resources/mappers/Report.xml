@@ -22,4 +22,13 @@
 			  						 T ON (R.REPORT_ID = T.REPORT_ID))
 		WHERE RN BETWEEN #{start} AND #{end}
 	</select>
+	<select id="hgGetMemberByReportId" parameterType="int" resultType="Member">
+		SELECT * FROM MEMBER WHERE REPORT_ID = #{report_id}
+	</select>
+	<select id="hgGetArticleByReportId" parameterType="int" resultType="Article">
+		SELECT * FROM ARTICLE WHERE REPORT_ID = #{report_id}
+	</select>
+	<select id="hgGetReplyByReportId" parameterType="int" resultType="Reply">
+		SELECT * FROM REPLY WHERE REPORT_ID = #{report_id}
+	</select>
 </mapper>

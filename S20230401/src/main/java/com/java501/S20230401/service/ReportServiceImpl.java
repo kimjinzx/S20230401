@@ -23,4 +23,8 @@ public class ReportServiceImpl implements ReportService {
 	public List<Report> hgGetAllUnprocessedReports(Report report) {
 		return repod.hgGetAllUnprocessedReports(report);
 	}
+	@Override
+	public Object hgGetInstanceByReportId(int report_id, String pascalClassName) {
+		return repod.hgGetInstanceByReportId(report_id, pascalClassName);
+	}
 }

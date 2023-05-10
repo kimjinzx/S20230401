@@ -23,4 +23,8 @@ public class ReportDaoImpl implements ReportDao {
 	public List<Report> hgGetAllUnprocessedReports(Report report) {
 		return session.selectList("hgGetAllUnprocessedReports", report);
 	}
+	@Override
+	public Object hgGetInstanceByReportId(int report_id, String pascalClassName) {
+		return session.selectOne("hgGet" + pascalClassName + "ByReportId", report_id);
+	}
 }

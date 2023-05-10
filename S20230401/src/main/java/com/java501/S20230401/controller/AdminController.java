@@ -1,6 +1,7 @@
 package com.java501.S20230401.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,9 +18,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartRequest;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.java501.S20230401.model.Article;
+import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Member;
 import com.java501.S20230401.model.MemberDetails;
+import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.model.Report;
 import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.CommService;
@@ -106,6 +111,22 @@ public class AdminController {
 				report.setStart(paging.getStart());
 				report.setEnd(paging.getEnd());
 				List<Report> reports = repos.hgGetAllUnprocessedReports(report);
+				Map<Integer, Object> reportItems = new HashMap<Integer, Object>();
+				for (Report rpt : reports) {
+					Integer rpt_id = rpt.getReport_id();
+					if (reportItems.containsKey(rpt_id));
+					String rawType = rpt.getType();
+					String pascal = rawType.substring(0, 1).toUpperCase() + rawType.toLowerCase().substring(1);
+//					Object resultInstance = repos.hgGetInstanceByReportId(rpt_id, pascal);
+					try { reportItems.put(rpt_id, Class.forName("com.java501.S20230401.model." + pascal).cast(repos.hgGetInstanceByReportId(rpt_id, pascal))); }
+					catch (Exception e) { e.printStackTrace(); }
+//					switch(rawType.toUpperCase()) {
+//						case "MEMBER": reportItems.put(rpt_id, (Member)resultInstance); break;
+//						case "ARTICLE": reportItems.put(rpt_id, (Article)resultInstance); break;
+//						default: reportItems.put(rpt_id, (Reply)resultInstance); break;
+//					}
+				}
+				model.addAttribute("reportItems", reportItems);
 				model.addAttribute("reports", reports);
 				return "admin/adminReportTemplate";
 			default: return "";
@@ -206,7 +227,8 @@ public class AdminController {
 	@ResponseBody
 	@RequestMapping(value = "/admin/{type}/updateProc")
 	public String adminUpdateProcess(@AuthenticationPrincipal MemberDetails memberDetails,
-									 @PathVariable String type, @RequestBody(required = false) Article article,
+									 //@PathVariable String type, @RequestBody(required = false) Article article,
+									 @PathVariable String type, @RequestBody(required = false) Map<String, Object> data,
 									 HttpServletRequest request, HttpServletResponse response,
 									 Model model) {
 		if (memberDetails == null)
@@ -216,20 +238,33 @@ public class AdminController {
 		model.addAttribute("type", type);
 		
 		JSONObject jsonObj = new JSONObject();
-		int result;
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        Article article = new Article();
+		int result = 0;
 		switch(type) {
 			case "notice":
+				article = mapper.convertValue(data, Article.class);
 				article.setBrd_id(1510);
 				result = as.hgCompressedUpdateArticle(article);
 				jsonObj.append("result", result);
 				jsonObj.append("art_id", article.getArt_id());
 				break;
 			case "event":
+				article = mapper.convertValue(data, Article.class);
 				article.setBrd_id(1530);
 				result = as.hgCompressedUpdateArticle(article);
 				jsonObj.append("result", result);
 				jsonObj.append("art_id", article.getArt_id());
 				break;
+			case "report":
+				Report report = mapper.convertValue(data, Report.class);
+				// Report 업데이트 구문...
+				// result = repos.hgUpdateReport(report);
+				// 여기엔 같은 신고번호에 대한 일괄 처리 관련 구문 넣으면 됨
+				result = 1; // for Test
+				jsonObj.append("result", result);
 		}
 		
 		//response.setCharacterEncoding("UTF-8");
@@ -239,7 +274,7 @@ public class AdminController {
 	@ResponseBody
 	@RequestMapping(value = "/admin/{type}/writeProc")
 	public String adminWriteProcess(@AuthenticationPrincipal MemberDetails memberDetails,
-									@PathVariable String type, @RequestBody(required = false) Article article,
+									@PathVariable String type, @RequestBody(required = false) Map<String, Object> data,
 									HttpServletRequest request, HttpServletResponse response,
 									Model model) {
 		if (memberDetails == null)
@@ -249,17 +284,23 @@ public class AdminController {
 		model.addAttribute("type", type);
 		
 		JSONObject jsonObj = new JSONObject();
-		
-		article.setMem_id(memberDetails.getMemberInfo().getMem_id());
+		ObjectMapper mapper = new ObjectMapper();
+		mapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        Article article;
 		int result;
 		switch(type) {
 			case "notice":
+				article = mapper.convertValue(data, Article.class);
+				article.setMem_id(memberDetails.getMemberInfo().getMem_id());
 				article.setBrd_id(1510);
 				result = as.hgInsertAdminArticle(article);
 				jsonObj.append("result", result);
 				jsonObj.append("art_id", article.getArt_id());
 				break;
 			case "event":
+				article = mapper.convertValue(data, Article.class);
+				article.setMem_id(memberDetails.getMemberInfo().getMem_id());
 				article.setBrd_id(1530);
 				result = as.hgInsertAdminArticle(article);
 				jsonObj.append("result", result);

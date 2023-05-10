@@ -515,6 +515,10 @@
 		height: 0;
 		overflow: hidden;
 		cursor: default;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: stretch;
 	}
 </style>
 </head>
