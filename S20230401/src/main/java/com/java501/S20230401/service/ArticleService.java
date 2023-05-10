@@ -41,7 +41,8 @@ public interface ArticleService {
 	int 				replyWrite(Reply reply);
 	int					replyDelete(Reply reply);
 	List<Article>		bjArtSearch(Article article);
-	
+	Integer				bjGood(Article article);
+	Integer				bjBad(Article article);
 	// 임동빈
 	int 			totalArticle(Article article);
 	List<Article> 	dbListArticle(Article article);
@@ -80,5 +81,6 @@ public interface ArticleService {
 	Article 			detailCustomer(Article article);
 	List<Article> 		listCustomerMenu(Article article);
 	public int 			insertCustomer(Article article);
+	
 	
 }

@@ -191,6 +191,7 @@
 		<![CDATA[
 			brd_id >= #{brd_id} AND brd_id < #{brd_id} + 100
 		]]>
+		AND isdelete = 0 AND art_isnotice = 0
 	</select>
 	<select id="bjarticlePart" parameterType="int" resultType="int">
 		SELECT COUNT(*) FROM ARTICLE
@@ -212,7 +213,7 @@
 		        ) R ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID) 
 		        WHERE A.BRD_ID BETWEEN 1300 AND 1399
 		        AND A.isdelete = 0 
-		        ORDER BY A.ART_ID DESC
+		        ORDER BY A.ART_REGDATE DESC
 		    ) TEMP
 		    INNER JOIN member M ON TEMP.mem_id = M.mem_id
 		)
@@ -252,7 +253,7 @@
 	            AND (A.art_title LIKE '%' || #{bjKeyword} || '%' OR A.art_content LIKE '%' || #{bjKeyword} || '%')
 	          </when>
 	        </choose>
-	      ORDER BY A.ART_ID DESC
+	      ORDER BY A.ART_REGDATE DESC
 	    ) TEMP
 	    INNER JOIN member M ON TEMP.mem_id = M.mem_id
 	    <choose>
@@ -280,7 +281,7 @@
 		        ) R ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID) 
 		        WHERE A.BRD_ID = #{brd_id}
 		        AND A.isdelete = 0 
-		        ORDER BY A.ART_ID DESC
+		        ORDER BY A.ART_REGDATE DESC
 		    ) TEMP
 		    INNER JOIN member M ON TEMP.mem_id = M.mem_id
 		)
@@ -301,14 +302,49 @@
 	</update>
 	
 	<insert id="bjWriteArticle" parameterType="Article">
-    INSERT INTO ARTICLE (ART_ID, BRD_ID, ART_TITLE, MEM_ID, ART_REGDATE, ART_CONTENT,
-							 ART_TAG1, ART_TAG2, ART_TAG3, ART_TAG4, ART_TAG5, TRD_ID, ART_GOOD,
-							 ART_BAD, ART_READ, ART_ISNOTICE, ISDELETE, REPORT_ID)
-		VALUES ((SELECT MAX(ART_ID) + 1 FROM ARTICLE WHERE BRD_ID = #{brd_id}), #{brd_id},
-				#{art_title, jdbcType=VARCHAR}, #{mem_id}, SYSDATE, #{art_content, jdbcType=VARCHAR},
-				#{art_tag1, jdbcType=VARCHAR}, #{art_tag2, jdbcType=VARCHAR}, #{art_tag3, jdbcType=VARCHAR},
-				#{art_tag4, jdbcType=VARCHAR}, #{art_tag5, jdbcType=VARCHAR}, NULL,
-				0, 0, 0, 0, 0, NULL)
+    INSERT INTO ARTICLE (
+    			ART_ID, 
+    			BRD_ID, 
+    			ART_TITLE, 
+    			MEM_ID, 
+    			ART_REGDATE, 
+    			ART_CONTENT,
+				ART_TAG1, 
+				ART_TAG2, 
+				ART_TAG3, 
+				ART_TAG4, 
+				ART_TAG5, 
+				TRD_ID, 
+				ART_GOOD,
+				ART_BAD, 
+				ART_READ, 
+				ART_ISNOTICE, 
+				ISDELETE, 
+				REPORT_ID
+							)
+		VALUES 
+				((SELECT MAX(ART_ID) + 1 FROM ARTICLE WHERE BRD_ID = #{brd_id}), 
+				#{brd_id},
+				#{art_title, jdbcType=VARCHAR}, 
+				#{mem_id}, 
+				SYSDATE, 
+				#{art_content, jdbcType=VARCHAR},
+				#{art_tag1, jdbcType=VARCHAR}, 
+				#{art_tag2, jdbcType=VARCHAR}, 
+				#{art_tag3, jdbcType=VARCHAR},
+				#{art_tag4, jdbcType=VARCHAR}, 
+				#{art_tag5, jdbcType=VARCHAR}, 
+				NULL,
+				0, 0, 0, 
+				<choose>
+		            <when test="art_isnotice != null">
+		                #{art_isnotice, jdbcType=INTEGER},
+		            </when>
+	            <otherwise>
+	                	0,
+	            </otherwise>
+	        	</choose>
+        		 0, NULL)
 	</insert>
 	
 	<update id="bjUpdate" parameterType="Article">
@@ -330,7 +366,19 @@
 		WHERE art_id=#{art_id} AND brd_id = #{brd_id}
 	</update>
 	
-	
+	<update id="bjGood" parameterType="Article">
+		UPDATE article
+			SET
+				art_good = art_good+1
+		WHERE art_id = #{art_id} AND brd_id = #{brd_id}		
+	</update>
+
+	<update id="bjBad" parameterType="Article">
+		UPDATE article
+			SET
+				art_bad = art_bad+1
+		WHERE art_id = #{art_id} AND brd_id = #{brd_id}		
+	</update>
 	
 	
 	

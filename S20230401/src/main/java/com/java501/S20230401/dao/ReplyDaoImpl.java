@@ -92,8 +92,26 @@ public class ReplyDaoImpl implements ReplyDao {
 		return reReply;
 	}	
 	
-	
-	
+	@Override
+	public int bjReGood(Reply reply) {
+		int reGood = 0;
+		try {
+			reGood = session.update("bjReGood",reply);
+		} catch (Exception e) {
+			System.out.println("댓글추천에러"+e.getMessage());
+		}
+		return reGood;
+	}
+	@Override
+	public int bjReBad(Reply reply) {
+		int reBad = 0;
+		try {
+			reBad = session.update("bjReBad",reply);
+		} catch (Exception e) {
+			System.out.println("댓글추천에러"+e.getMessage());
+		}
+		return reBad;
+	}
 	
 	// 최승환
 	@Override
@@ -131,5 +149,6 @@ public class ReplyDaoImpl implements ReplyDao {
 	public int hgInsertReply(Reply reply) {
 		return session.insert("hgInsertReply", reply);
 	}
+	
 	
 }

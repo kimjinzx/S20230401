@@ -28,42 +28,156 @@
 	
 	
 </script>
-<!-- 	function rereplyWrite(rep_id) {
-	    const rereplyDiv = document.getElementById("rereply_"+rep_id);
-	    if (rereplyDiv.style.display == "none") {
-	        rereplyDiv.style.display = "block";
-	    } else {
-	        rereplyDiv.style.display = "none";
-	    }
-	}
-	
-	function hideRereply(rep_id) {
-	    const rereplyDiv = document.getElementById("rereply_$"+rep_id);
-	    rereplyDiv.style.display = "none";
-	} -->
 
 <script type="text/javascript">
-	let rereplyOpen = false; // 대댓글 창이 열려있는지 여부
-	
-	function rereplyWrite(rep_id) {
-	    if (!rereplyOpen) {
-	        const rereplyDiv = document.getElementById("rereply_"+rep_id);
-	        rereplyDiv.style.display = "block";
-	        rereplyOpen = true;
-	    } else {
-	        hideRereply();
-	    }
-	}
-	
-	function hideRereply() {
-	    const rereplyDiv = document.querySelector("div[id^='rereply_']:not([style='display: none;'])");
-	    if (rereplyDiv) {
-	        rereplyDiv.style.display = "none";
-	        rereplyOpen = false;
-	    }
-	}
+$(function() {
+  // 추천 버튼 클릭 이벤트
+  $("#bjGoodBtn").click(function(event) {
+    event.preventDefault();
+    // 게시글 정보 가져오기
+    var art_id = ${article.art_id};
+    var brd_id = ${article.brd_id};
+    // 추천 여부 확인
+    if (confirm("이 게시물을 추천하시겠습니까?")) {
+      var isBjGood = true; // 추천 버튼 누름
+    } else {
+      var isBjGood = false; // 추천 취소 버튼 누름
+    }
+    // AJAX 호출
+    $.ajax({
+      type: "POST",
+      url: "${pageContext.request.contextPath}/board/community/bjGood",
+      contentType: "application/json",
+      data: JSON.stringify({art_id: art_id, brd_id: brd_id, isBjGood: isBjGood}),
+      success: function(response) {
+        if (response.bjGsuccess) {
+          // 추천 성공 처리
+          alert("추천되었습니다.");
+          // 추천수 업데이트
+          $("#bjGood").text(response.bjGoodCnt);
+        } else {
+          // 추천 취소 처리
+          alert("이미 추천하셨습니다.");
+          // 추천수 업데이트
+          $("#bjGood").text(response.bjGoodCnt);
+        }
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        alert("에러 발생: " + textStatus + " " + errorThrown);
+      }
+    });
+  });
+});
 </script>
 
+<script type="text/javascript">
+$(function() {
+  $("#bjBadBtn").click(function(event) {
+    event.preventDefault();
+    var art_id = ${article.art_id};
+    var brd_id = ${article.brd_id};
+    if (confirm("이 게시물을 비추천하시겠습니까?")) {
+      var isBjBad = true; 
+    } else {
+      var isBjBad = false; 
+    }
+    $.ajax({
+      type: "POST",
+      url: "${pageContext.request.contextPath}/board/community/bjBad",
+      contentType: "application/json",
+      data: JSON.stringify({art_id: art_id, brd_id: brd_id, isBjBad: isBjBad}),
+      success: function(response) {
+        if (response.bjBsuccess) {
+          alert("비추천되었습니다.");
+          $("#bjBad").text(response.bjBadCnt);
+        } else {
+          alert("이미 비추천하셨습니다.");
+          $("#bjBad").text(response.bjBadCnt);
+        }
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        alert("에러 발생: " + textStatus + " " + errorThrown);
+      }
+    });
+  });
+});
+</script>
+	
+<script type="text/javascript">	
+$(function() {
+  $("#bjReGoodBtn").click(function(event) {
+    event.preventDefault();
+    var art_id = $(event.target).closest('.container').find('#bjReGoodBtn').attr('data-art_id');
+    var brd_id = $(event.target).closest('.container').find('#bjReGoodBtn').attr('data-brd_id');
+    var rep_id = $(event.target).closest('.container').find('#bjReGoodBtn').attr('data-rep_id');
+    console.info(art_id, brd_id, rep_id);
+    
+    if (confirm("이 댓글을 추천하시겠습니까?")) {
+      var isBjReGood = true; 
+    } else {
+      var isBjReGood = false; 
+    }
+    $.ajax({
+      type: "POST",
+      url: "${pageContext.request.contextPath}/board/community/bjReGood",
+      contentType: "application/json",
+      data: JSON.stringify({art_id: art_id, brd_id: brd_id,rep_id: rep_id, isBjReGood: isBjReGood}),
+      success: function(response) {
+        if (response.bjReGsuccess) {
+          alert("추천되었습니다.");
+          $("#bjReGood").text(response.bjReGoodCnt);
+        } else {
+          alert("이미 추천하셨습니다.");
+          $("#bjReGood").text(response.bjReGoodCnt);
+        }
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        alert("에러 발생: " + textStatus + " " + errorThrown);
+      }
+    });
+  });
+});
+</script>	
+
+<script type="text/javascript">
+$(function() {
+  $("#bjReBadBtn").click(function(event) {
+    event.preventDefault();
+    var art_id = $(event.target).closest('.container').find('#bjReBadBtn').attr('data-art_id');
+    var brd_id = $(event.target).closest('.container').find('#bjReBadBtn').attr('data-brd_id');
+    var rep_id = $(event.target).closest('.container').find('#bjReBadBtn').attr('data-rep_id');
+    console.info(art_id, brd_id, rep_id);
+
+    
+    if (confirm("이 댓글을 비추천하시겠습니까?")) {
+      var isBjReBad = true; 
+    } else {
+      var isBjReBad = false; 
+    }
+    $.ajax({
+      type: "POST",
+      url: "${pageContext.request.contextPath}/board/community/bjReBad",
+      contentType: "application/json",
+      data: JSON.stringify({art_id: art_id, brd_id: brd_id,rep_id: rep_id, isBjReBad: isBjReBad}),
+      success: function(response) {
+        if (response.bjReBsuccess) {
+          alert("비추천되었습니다.");
+          $("#bjReBad").text(response.bjReBadCnt);
+        } else {
+          alert("이미 비추천하셨습니다.");
+          $("#bjReBad").text(response.bjReBadCnt);
+        }
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        alert("에러 발생: " + textStatus + " " + errorThrown);
+      }
+    });
+  });
+});
+</script>
+<script type="text/javascript">
+
+</script>
 <link href="https://unpkg.com/sanitize.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/preference.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/presets.css">
@@ -492,8 +606,21 @@
 				${article.mem_nickname}</td></tr>
 				<tr><th>제목</th><td style="width: 200px;">${article.art_title }</td></tr>
 				<tr><th>조회수</th><td>${article.art_read}</td>
-				<th>추천</th><th>${article.art_good }<br><button>추천</button></th>
-				<th>비추천</th><th>${article.art_bad }<br><button>비추천</button></th>
+				
+				<th>추천</th>
+				
+				<th>${article.art_good }<br>
+						<button id="bjGoodBtn" data-art_id="${article.art_id}" data-brd_id="${article.brd_id}" >추천</button>
+				<%-- <c:choose>
+					<c:when test="${memberInfo.mem_id != null && memberInfo.mem_id == article.mem_id }">
+					</c:when>
+				</c:choose>	 --%>
+				</th>
+								
+				<th>비추천</th><th>${article.art_bad }<br>
+						<button id="bjBadBtn" data-art_id="${article.art_id}" data-brd_id="${article.brd_id}" >비추천</button>
+				</th>
+				
 				<tr><th>작성일</th>
 				<fmt:formatDate value="${article.art_regdate}" pattern="MM.dd" var="regdate" />
 				<fmt:formatDate value="${article.art_regdate}" pattern="hh:mm" var="regtime" />
@@ -505,11 +632,15 @@
 					<input type="button" value="목록" 
 						onclick="location.href='${pageContext.request.contextPath}/board/community?category=${category }'">
 				<c:choose>
-					<c:when test="${memberInfo.mem_id != null && memberInfo.mem_id == article.mem_id }">
+					<c:when test="${memberInfo.mem_id != null && memberInfo.mem_id == article.mem_id || memberInfo.mem_authority == '109'}">
 					<input type="button" value="수정" 
 						onclick="location.href='${pageContext.request.contextPath}/board/community/updateForm?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category}'">
 					<input type="button" value="삭제" 
 						onclick="location.href='${pageContext.request.contextPath}/board/community/bjDelte?art_id=${article.art_id }&brd_id=${article.brd_id }&category=${category}'">
+						
+					<input type="button" value="신고" 
+						onclick="location.href='${pageContext.request.contextPath}/board/community/bjReport?art_id=${article.art_id }&brd_id=${article.brd_id }&category=${category}'">
+						
 					</c:when>
 				</c:choose>
 					</td>
@@ -536,7 +667,7 @@
 				
 			<!-- 댓글메인 and 대댓글까지 보기 -->
 			<div>
-				<c:forEach var="reply" items="${replyMain }">
+				<c:forEach var="reply" items="${replyMain }" >
 					<div style="width: 600px; height: 150px; display : block; border-style: solid; border-width :1px; margin-bottom: 10px;">
 					<div >
 						<span>프사</span> <span>작성자</span> <span>댓글내용</span> <span>작성시간</span>	<span>추천</span> <span>비추천</span> <span>최상위댓글번호</span> <span>댓글순서</span>
@@ -548,15 +679,22 @@
 						<fmt:formatDate value="${reply.rep_regdate}" pattern="MM.dd" var="regdate" />
 						<fmt:formatDate value="${reply.rep_regdate}" pattern="hh:mm" var="regtime" />
 						<span style="font-size : 10px">${regdate }${regtime}</span>
-						<span>${reply.rep_good }<button>추천</button> </span>
-						<span>${reply.rep_bad }<button>비추천</button> </span>
+						
+						<span>${reply.rep_good }
+								<button id="bjReGoodBtn" data-art_id="${reply.art_id}" data-brd_id="${reply.brd_id}" data-rep_id="${reply.rep_id}">추천</button>
+						</span>
+						
+						<span>${reply.rep_bad }
+								<button id="bjReBadBtn" data-art_id="${reply.art_id}" data-brd_id="${reply.brd_id}" data-rep_id="${reply.rep_id}">비추천</button>
+						</span>
+						
 						<span>${reply.rep_parent}</span>
 						<span>${reply.rep_step }</span>
 						
 						
 						<span>
 						<c:choose>
-							<c:when test="${memberInfo.mem_id == reply.mem_id }">
+							<c:when test="${memberInfo.mem_id == reply.mem_id || memberInfo.mem_authority == '109'}">
 								<input type="button" value="댓글삭제" 
 								onclick="location.href='${pageContext.request.contextPath}/board/community/bjReplyDelete?art_id=${article.art_id }&rep_id=${reply.rep_id }&brd_id=${article.brd_id }&category=${category}'">
 							</c:when>

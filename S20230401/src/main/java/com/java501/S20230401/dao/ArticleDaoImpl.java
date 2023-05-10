@@ -138,7 +138,7 @@ public class ArticleDaoImpl implements ArticleDao {
 	
 	
 	
-	
+	//=================================================================================================
 	
 	
 	// 백준
@@ -305,8 +305,30 @@ public class ArticleDaoImpl implements ArticleDao {
 		return bjSearch;
 	}
 	
+	@Override
+	public Integer bjGood(Article article) {
+		Integer good = 0;
+		
+		try {
+			good = session.insert("bjGood" , article);
+		} catch (Exception e) {
+			System.out.println("아티클다오임플 추천 에러"+e.getMessage());
+		}
+		return good;
+	}
+	@Override
+	public Integer bjBad(Article article) {
+		Integer bad = 0;
+		
+		try {
+			bad = session.insert("bjBad" , article);
+		} catch (Exception e) {
+			System.out.println("아티클다오임플 비추천 에러"+e.getMessage());
+		}
+		return bad;
+	}
 	
-	
+	//=================================================================================================
 	
 	
 	// 임동빈
@@ -672,5 +694,6 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return result;
 	}
+	
 	
 }

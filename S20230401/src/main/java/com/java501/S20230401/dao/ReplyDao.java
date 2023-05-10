@@ -21,6 +21,8 @@ public interface ReplyDao {
 	Reply 					replyCount(Reply reply);
 	List<Reply> 			replyMain(Reply reply);
 	int 					bjreReply(Reply reply);
+	int 					bjReGood(Reply reply);
+	int 					bjReBad(Reply reply);
 	
 	// 최승환
 	int 	shReplyCount(Reply reply);
@@ -31,6 +33,7 @@ public interface ReplyDao {
 	public List<ReplyMember> getReplyByArticle(Article article);
 
 	public int hgInsertReply(Reply reply);
+	
 	
 
 }

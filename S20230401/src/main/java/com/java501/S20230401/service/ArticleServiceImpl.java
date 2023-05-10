@@ -98,6 +98,7 @@ public class ArticleServiceImpl implements ArticleService {
 	public Integer upreadCount(Article article) {
 		return ad.upreadCount(article);
 	}
+	
 	@Override
 	public List<Article> listMagnager() {
 		List<Article> bjwrite = null;
@@ -143,6 +144,18 @@ public class ArticleServiceImpl implements ArticleService {
 		
 		return bjSearch;
 	}
+	
+	@Override
+	public Integer bjGood(Article article) {
+		return ad.bjGood(article);
+	}
+	@Override
+	public Integer bjBad(Article article) {
+		// TODO Auto-generated method stub
+		return ad.bjBad(article);
+	}
+	
+	
 	
 	// 임동빈
 		@Override
@@ -371,5 +384,6 @@ public class ArticleServiceImpl implements ArticleService {
 		result = ad.insertCustomer(article);
 		return result;
 	}
+	
 	
 }

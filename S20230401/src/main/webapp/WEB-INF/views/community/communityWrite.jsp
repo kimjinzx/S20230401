@@ -460,9 +460,18 @@
 							<option value="1330">홍보하기</option>
 							<option value="1340">질문/요청</option>
 							</select>
-			</div>						
+			</div>		
+			<div>
+			<c:choose>
+				<c:when test="${memberInfo.mem_authority == '109' }">
+					<input type="checkbox" name="art_isnotice" value="${art_isnotice +1}">
+					공지사항
+				</c:when>
+			</c:choose>
+			</div>				
 			<div>내용</div>
 			<div><textarea rows="20" cols="100" name="art_content"></textarea></div>
+			
 			<div><input type="submit" value="완료"/></div>
 		</form>
 		

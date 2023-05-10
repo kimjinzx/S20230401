@@ -94,6 +94,7 @@
 		FROM reply
 		INNER JOIN member ON reply.mem_id = member.mem_id
 		WHERE reply.art_id = #{art_id} AND reply.brd_id = #{brd_id} AND reply.isdelete = 0
+		ORDER BY reply.rep_regdate DESC
 	</select>
 
 	<insert id="bjReplyWrite" parameterType="Reply">
@@ -155,7 +156,19 @@
    						(SELECT NVL(MAX(rep_step), 0 ) +1 FROM reply WHERE rep_step=#{rep_step}), 
 						0, null )
 	</insert>
+	<insert id="bjReGood">
+		UPDATE reply
+			SET
+				rep_good = rep_good+1
+		WHERE art_id = #{art_id} AND brd_id = #{brd_id} AND rep_id = #{rep_id}
+	</insert>
 
+	<insert id="bjReBad">
+		UPDATE reply
+			SET
+				rep_bad = rep_bad+1
+		WHERE art_id = #{art_id} AND brd_id = #{brd_id} AND rep_id = #{rep_id}
+	</insert>
 
 
 
