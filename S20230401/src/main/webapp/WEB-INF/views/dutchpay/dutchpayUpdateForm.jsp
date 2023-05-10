@@ -25,12 +25,12 @@
 	<input type="hidden" name="trd_id" value="${updateForm.trd_id }" ><p>
 	
 	작성자 : <input type="hidden"    name="member_image" >${updateForm.mem_image }
-		   <input type="hidden"    name="member_image" >${updateForm.mem_nickname }
+		   <input type="hidden"    name="member_nickname" >${updateForm.mem_nickname }
 		   <input type="hidden"    name="member_username" >(${updateForm.mem_username })<p>
 	작성날짜 :	 <fmt:formatDate value="${updateForm.art_regdate}" pattern="yyyy년M월d일  hh시mm분"/><p>
 	<table>
 		<tr><th>제목</th><td>
-			<input type="text"     name="art_title"value="${updateForm.art_title }" required="required" ></td></tr>
+			<input type="text"     name="art_title"value="${updateForm.art_title }" required="required" >@${updateForm.art_title }</td></tr>
 		<tr><th>태그</th><td>
 			<input type="text"     name="art_tag1" value="${updateForm.art_tag1}">
 			<input type="text"     name="art_tag2" value="${updateForm.art_tag2}">
@@ -39,11 +39,11 @@
 			<input type="text"     name="art_tag5" value="${updateForm.art_tag5}">
 		</td></tr>
 		<tr><th>가격</th><td>
-			<input type="number"   name="trd_cost" value="${updateForm.trd_cost}"   required="required"> 원</td></tr>
+			<input type="number"   name="trd_cost" 		  value="${updateForm.trd_cost}"   		  required="required"> 원</td></tr>
 		<tr><th>모집인원</th><td>
-			<input type="number"   name="trd_max"  value="${updateForm.trd_max}"	  required="required"> 명 (작성자 제외)</td></tr>
-		<%-- <tr><th>마감일자</th><td>
-			<input type="date" name="trd_enddate" value="${updateForm.trd_enddate}"	  required="required"></td></tr> --%>
+			<input type="number"   name="trd_max"  		  value="${updateForm.trd_max}"	  		  required="required"> 명 (작성자 제외)</td></tr>
+		<tr><th>마감일자</th><td>
+			<input type="date" 	   name="trd_saveEnddate" value="${updateForm.trd_enddate}" 	  required="required"><%-- ${updateForm.trd_enddate } --%></td></tr> 
 		<tr><th>지역</th><td>
 			<select name="reg_id">
 			<c:forEach var="L_ud" items="${loc_ud }">

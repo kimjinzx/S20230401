@@ -600,22 +600,10 @@ public class ArticleDaoImpl implements ArticleDao {
 			return payStatusPro;
 		}
 		
-		
-//		@Override
-//		public Article replyInsert2(Article article) {
-//			Article replyInsert = null;
-//			try {
-//				replyInsert = session.selectOne("JHReplyInsert",article);
-//			} catch (Exception e) {
-//				System.out.println("ArticleDaoImpl replyInsert2 Exception -> "+e.getMessage());
-//			}
-//			return replyInsert;
-//		}
-		
 		@Override
 		public void dutchpayInsert2(Article article) {
 			try {
-				System.out.println(article);
+				System.out.println("article Dao -> "+article);
 				session.selectOne("JHInsert",article);
 			} catch (Exception e) {
 				System.out.println("ArticleDaoImpl dutchpayInsert2 Exception -> "+e.getMessage());

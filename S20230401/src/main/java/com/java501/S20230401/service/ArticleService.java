@@ -74,7 +74,8 @@ public interface ArticleService {
 	public List<Article> 	repList1(Article article);
 	public List<Comm>		payStatus1();
 	public Article 			payStatusPro1(Article article);
-//	public Article          replyInsert1(Article article);
+	public void	            replyInsert1(Article article);
+	public void             replyDelete1(Article article);
 	List<Comm> 				category1();
 	List<Region>         	loc1();
 	void 					dutchpayInsert1(Article article);
@@ -92,6 +93,8 @@ public interface ArticleService {
 	public Article 			joinDeny1(Article article);
 	public Article          joinAccept1(Article article);
 	public int              payCompleted1(int trd_id);
+	public int              jhJoinListYN(Article article);
+	public int              jhWaitListYN(Article article);
 
 	
 	

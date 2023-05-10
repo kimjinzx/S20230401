@@ -81,10 +81,9 @@ public interface ArticleDao {
 	public List<Article> 	repList2(Article article);
 	public List<Comm>       payStatus2();
 	public Article 			payStatusPro2(Article article);
-//	public Article          replyInsert2(Article article);
-	void 					dutchpayInsert2(Article article);
 	List<Comm>           	category2();
 	List<Region>    		loc2();
+	public void 			dutchpayInsert2(Article article);
 	Article 				updateForm2(Article article);
 	List<Region> 			loc_ud2();
 	void 					dutchpayUpdate2(Article article);

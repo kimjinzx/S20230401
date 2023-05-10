@@ -898,7 +898,7 @@
 	</select>
 	
 	<select id="JHDutchpayDetail" parameterType="Article" resultType="Article">
-		SELECT a.art_id, a.brd_id, t.trd_id, mem_id	,comm_id ,
+		SELECT a.art_id, a.brd_id, t.trd_id, mem_id	,comm_id ,a.report_id,
 			   m.mem_image, m.mem_username, m.mem_nickname,
        		   c.comm_value, a.art_title, a.art_regdate, 
        		   a.art_tag1, a.art_tag2, a.art_tag3, a.art_tag4, a.art_tag5,
@@ -922,18 +922,62 @@
 		FROM reply r
 		LEFT JOIN member m
 		ON r.mem_id = m.mem_id
-		WHERE brd_id=#{brd_id} and art_id=#{art_id}
-		ORDER BY rep_regdate desc, rep_parent asc, rep_step asc 
+		WHERE brd_id=#{brd_id} and art_id=#{art_id} and r.isdelete = 0
+		ORDER BY rep_regdate asc, rep_parent desc, rep_step desc 
 	</select>
 	
-	<!-- <select id="JHReplyInsert" parameterType="Article" resultType="Article">
-		INSERT INTO reply
-		(art_id,     brd_id,    rep_id,                                                                             mem_id, 
-		rep_content,    rep_regdate, rep_good, rep_bad, rep_parent, rep_step, isdelete, report_id)
-		VALUES
-		(#{art_id}, #{brd_id}, (select max(rep_id) +1 from reply where brd_id = #{brd_id} and art_id = #{art_id}), #{mem_id},
-		 #{rep_content}, sysdate,     0,        0,        1,         1,         0,         null)
-	</select> -->
+	<insert id="JHReplyInsert" parameterType="Article">
+      INSERT 
+      INTO REPLY (  ART_ID
+               , BRD_ID
+               , REP_ID
+               , MEM_ID
+               , REP_CONTENT
+               , REP_REGDATE
+               , REP_GOOD
+               , REP_BAD
+               , REP_PARENT
+               , REP_STEP
+               , ISDELETE)
+      VALUES       (  #{art_id}
+               , #{brd_id}
+               , (SELECT NVL(MAX(REP_ID), 0) + 1 FROM REPLY
+                  WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id})
+               , #{mem_id}
+               , #{rep_content, jdbcType=VARCHAR}
+               , SYSDATE
+               , 0
+               , 0
+               , <choose>
+                  <when test="rep_parent == null">
+                     (SELECT NVL(MAX(REP_ID), 0) + 1 FROM REPLY
+                      WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}),
+                  </when>
+                  <otherwise>
+                     #{rep_parent},
+                  </otherwise>
+                 </choose>
+                    
+                 <choose>
+                  <when test="rep_parent == null">
+                     1,
+                  </when>
+                  <otherwise>
+                  (SELECT NVL(MAX(REP_STEP), 0) + 1 FROM REPLY
+                   WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
+                         AND REP_PARENT = #{rep_parent}),
+                  </otherwise>
+                 </choose>
+                 0)
+   </insert>
+	
+	<update id="JHReplyUpdate" parameterType="Article">
+		UPDATE reply 
+		SET  isdelete = 1
+		WHERE brd_id = #{brd_id}
+		AND art_id = #{art_id}
+		AND rep_id = #{rep_id}
+	</update>
 	
 	<select id="JHInsert" parameterType="Article" statementType="CALLABLE">
 		{
@@ -950,7 +994,7 @@
 				#{isdelete, 		mode=IN,  jdbcType=NUMERIC},
 				#{mem_id, 			mode=IN,  jdbcType=NUMERIC},
 				#{trd_status, 		mode=IN,  jdbcType=NUMERIC},
-				#{trd_enddate, 		mode=IN,  jdbcType=DATE},
+				#{trd_saveEnddate, 	mode=IN,  jdbcType=VARCHAR},
 				#{trd_max, 			mode=IN,  jdbcType=NUMERIC},
 				#{trd_cost, 		mode=IN,  jdbcType=NUMERIC},
 				#{trd_loc, 			mode=IN,  jdbcType=VARCHAR},
@@ -968,6 +1012,7 @@
       		   t.trd_cost,
       		   t.trd_max,
       		   t.trd_loc,
+      		   t.trd_enddate,
       		   r.reg_id,
        		   a.art_content
 		FROM Article a
@@ -990,7 +1035,7 @@
 				#{art_tag4, 		mode=IN,  jdbcType=VARCHAR},
 				#{art_tag5, 		mode=IN,  jdbcType=VARCHAR},
 				#{art_content, 		mode=IN,  jdbcType=CLOB},
-				#{trd_enddate, 		mode=IN,  jdbcType=DATE},
+				#{trd_saveEnddate, 	mode=IN,  jdbcType=DATE},
 				#{trd_cost, 		mode=IN,  jdbcType=NUMERIC},
 				#{trd_max, 			mode=IN,  jdbcType=NUMERIC},
 				#{reg_id, 			mode=IN,  jdbcType=NUMERIC},
@@ -1049,7 +1094,7 @@
 	</select>
 	
 	<select id="JHJoinList" parameterType="Article" resultType="Article" >
-		SELECT m.mem_image, m.mem_username, m.mem_nickname
+		SELECT m.mem_image, m.mem_username, m.mem_nickname, m.mem_id
 		FROM member m
 		LEFT JOIN join j
 		ON j.mem_id = m.mem_id
@@ -1064,6 +1109,20 @@
 		ON w.mem_id = m.mem_id
 		WHERE w.trd_id = #{trd_id}
 		ORDER BY wait_date asc
+	</select>
+	
+	<select id="JHJoinListYN" parameterType="Article" resultType="int" >
+		SELECT count(*)
+		FROM join j
+		WHERE j.trd_id = #{trd_id}
+		AND j.mem_id = #{mem_id}
+	</select>
+	
+	<select id="JHWaitListYN" parameterType="Article" resultType="int" >
+		SELECT count(*)
+		FROM waiting w
+		WHERE w.trd_id = #{trd_id}
+		AND w.mem_id = #{mem_id}
 	</select>
 	
 	<delete id="JHJoinDeny" parameterType="Article" >
@@ -1091,4 +1150,15 @@
 		WHERE trd_id = #{trd_id}
 	</update>
 	
+	<select id="JHReportInsert" parameterType="Article" statementType="CALLABLE">
+		 {
+			CALL REPORT_INSERT (
+				#{art_id, 			mode=IN,  jdbcType=NUMERIC},
+				#{brd_id, 			mode=IN,  jdbcType=NUMERIC},
+				#{report_id, 		mode=IN,  jdbcType=NUMERIC},
+				#{mem_id,	 		mode=IN,  jdbcType=NUMERIC},
+				#{report_content, 	mode=IN,  jdbcType=VARCHAR}
+			)
+		}
+	</select>
 </mapper>

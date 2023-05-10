@@ -6,11 +6,14 @@ import org.springframework.stereotype.Service;
 
 import com.java501.S20230401.dao.ArticleDao;
 import com.java501.S20230401.dao.CommDao;
+import com.java501.S20230401.dao.JoinDao;
 import com.java501.S20230401.dao.RegionDao;
 import com.java501.S20230401.dao.ReplyDao;
+import com.java501.S20230401.dao.WaitingDao;
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.ArticleMember;
 import com.java501.S20230401.model.Comm;
+import com.java501.S20230401.model.Join;
 import com.java501.S20230401.model.Region;
 import com.java501.S20230401.util.SummaryType;
 import com.java501.S20230401.model.MemberInfo;
@@ -23,6 +26,8 @@ public class ArticleServiceImpl implements ArticleService {
 	private final RegionDao 	rd;
 	private final CommDao 		cd;
 	private final ReplyDao 		rpd;
+	private final JoinDao       jd;
+	private final WaitingDao       wd;
 
 
 	// 유현규 로그인 기능 추가
@@ -330,12 +335,15 @@ public class ArticleServiceImpl implements ArticleService {
 		return payStatusPro;
 	}
 	
-//	@Override
-//	public Article replyInsert1(Article article) {
-//		Article replyInsert = null;
-//		replyInsert = ad.replyInsert2(article);
-//		return replyInsert;
-//	}
+	@Override
+	public void replyInsert1(Article article) {
+		 rpd.replyInsert2(article);
+	}
+	
+	@Override
+	public void replyDelete1(Article article) {
+		rpd.replyDelete2(article);
+	}
 
 	@Override
 	public List<Comm> category1() {
@@ -444,6 +452,15 @@ public class ArticleServiceImpl implements ArticleService {
 		int payCompleted = 0;
 		payCompleted = ad.payCompleted2(trd_id);
 		return payCompleted;
+	}
+	@Override
+	public int jhJoinListYN(Article article) {
+		return jd.jhJoinListYN(article);
+	}
+	
+	@Override
+	public int jhWaitListYN(Article article) {
+		return wd.jhWaitListYN(article);
 	}
 
 	

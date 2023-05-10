@@ -2,12 +2,17 @@ package com.java501.S20230401.controller;
 
 import java.util.List;
 
+import org.json.JSONObject;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.java501.S20230401.model.Article;
@@ -15,6 +20,7 @@ import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.MemberDetails;
 import com.java501.S20230401.model.Region;
 import com.java501.S20230401.service.ArticleService;
+import com.java501.S20230401.service.JoinService;
 import com.java501.S20230401.service.Paging;
 
 import lombok.RequiredArgsConstructor;
@@ -60,7 +66,11 @@ public class DutchpayController {
 	
 	@RequestMapping(value ="/dutchpay/dutchpayDetail") //상세 게시글    
 	public String dutchpayDetail(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
-		
+		 
+		System.out.println("controller article para brd_id -> "+article.getBrd_id());
+		System.out.println("controller article para art_id -> "+article.getArt_id());
+		System.out.println("controller article para trd_id -> "+article.getTrd_id());
+
 		if (memberDetails != null)
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		
@@ -73,7 +83,7 @@ public class DutchpayController {
 		System.out.println("controller detail art_id -> "+detail.getArt_id());
 		System.out.println("controller detail trd_id -> "+detail.getTrd_id());
 		
-		
+		 
 		article.setTrd_id(detail.getTrd_id()); // 공구 참가자(수락 확정된) 명단 보여주기
 		List<Article> joinList  = as.joinList1(article); 
 		model.addAttribute("joinList", joinList);
@@ -96,6 +106,40 @@ public class DutchpayController {
 		return "/dutchpay/dutchpayDetail";
 	}
 	
+	@ResponseBody
+	@RequestMapping(value ="/dutchpay/dutchpayDetailYN") // 신청하기 버튼을 눌렀을 때 유저의 신청유무 확인
+	public String dutchpayDetailYN(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
+		 
+		// 일단 없다는 가정하에 진행	
+		String resultStr = "0";
+		
+		System.out.println("controller article para brd_id -> "+article.getBrd_id());
+		System.out.println("controller article para art_id -> "+article.getArt_id());
+		System.out.println("controller article para trd_id -> "+article.getTrd_id());
+
+		
+		 
+		// 조건은 article에 mem_id와 trd_id끼리 매칭되는 
+//		// join테이블에 올라간 사람들의	count 가져오기
+		int joinListCount = as.jhJoinListYN(article); 
+		System.out.println("joinListCount-> "+joinListCount);
+		
+		// 조건은 article에 mem_id와 trd_id끼리 매칭되는 
+//		// waiting테이블에 올라간 사람들의	count 가져오기
+		int waitListCount = as.jhWaitListYN(article); 
+		System.out.println("waitListCount-> "+waitListCount);
+
+		
+//		 직접 검증을 해서 1,0을 리턴
+		 if(joinListCount > 0 ||  waitListCount > 0 ) {
+			 resultStr = "1";
+		 } else {
+			 resultStr = "0"; 
+		 }
+		
+		return resultStr;
+	}
+	
 	@PostMapping(value = "/dutchpay/payStatusPro") // 거래상태 변경하기 (거래모집중 or 거래취소)
 	public String payStatusPro(Model model, Article article , @AuthenticationPrincipal MemberDetails memberDetails) {
 		
@@ -110,25 +154,37 @@ public class DutchpayController {
 		return "redirect:/dutchpay/dutchpayDetail?brd_id="+brd_id+"&art_id="+art_id;
 	}
 	
+	@PostMapping(value = "/dutchpay/replyInsert") // 댓글 입력
+	public String replyInsert(Article article, RedirectAttributes ra, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
+		
+		if (memberDetails != null)  // 로그인한 mem_id를 가지고 글쓰기
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo()); 
+		article.setMem_id(memberDetails.getMemberInfo().getMem_id());
+		
+		as.replyInsert1(article);
+		ra.addFlashAttribute("article",article);
+		
+		int brd_id = article.getBrd_id();
+		int art_id = article.getArt_id(); 
+		return "redirect:/dutchpay/dutchpayDetail?brd_id="+brd_id+"&art_id="+art_id;
+	}
 	
-	    
-	    
-//	@PostMapping(value = "/dutchpay/replyInsert")
-//	public String replyInsert(Article article, RedirectAttributes ra, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
-//		
-//		if (memberDetails != null)  // 로그인한 mem_id를 가지고 글쓰기
-//			model.addAttribute("memberInfo", memberDetails.getMemberInfo()); 
-//		article.setMem_id(memberDetails.getMemberInfo().getMem_id());
-//		
-//		as.replyInsert1(article);// 댓글 입력
-//		ra.addFlashAttribute("article",article);
-////		model.addAttribute("replyInsert", replyInsert);
-//		
-//		int brd_id = article.getBrd_id();
-//		int art_id = article.getArt_id(); 
-//		return "redirect:/board/dutchpay?category="+brd_id+"&art_id="+art_id;
-//	
-//	}
+	@GetMapping(value = "/dutchpay/replyDelete") // 댓글 삭제
+	public String replyDelete(Article article, RedirectAttributes ra, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
+		
+		if (memberDetails != null)  // 로그인한 mem_id를 가지고 글쓰기
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo()); 
+		article.setMem_id(memberDetails.getMemberInfo().getMem_id());
+		
+		as.replyDelete1(article);
+		ra.addFlashAttribute("article",article);
+		
+		int brd_id = article.getBrd_id();
+		int art_id = article.getArt_id(); 
+		System.out.println("다시 돌아와 brd_id -> "+article.getBrd_id());
+		System.out.println("다시 돌아와 art_id -> "+article.getArt_id());
+		return "redirect:/dutchpay/dutchpayDetail?brd_id="+brd_id+"&art_id="+art_id;
+	}
 
 	@RequestMapping(value = "dutchpay/dutchpayWriteForm") //글쓰기 폼 
 	public String dutchpayWriteForm(Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
@@ -182,10 +238,17 @@ public class DutchpayController {
 		article.setMem_id(memberDetails.getMemberInfo().getMem_id());
 		
 		System.out.println("start insert button");
-		System.out.println(article);
+		System.out.println("writePro controller article -> "+article);
 		System.out.println("controller insert brd_id  -> "+article.getBrd_id());
 		as.dutchpayInsert1(article);
 		ra.addFlashAttribute("article", article);  //model.addAttribute와 다른점은 컨트롤러 내에서 매핑할 시 이렇게 사용하는게 좋음
+		
+		String saveEnddate = "";
+		if( article.getTrd_saveEnddate() != null ) {
+			saveEnddate = article.getTrd_saveEnddate().substring(0,10);
+			article.setTrd_saveEnddate(saveEnddate);
+		}
+		
 		int brd_id = article.getBrd_id(); //확인 버튼 누르면 드롭다운(카테고리) 에서 고른 해당카테고리로 이동 
 		return "redirect:/board/dutchpay?category="+brd_id;
 	}
@@ -226,7 +289,7 @@ public class DutchpayController {
 		return "redirect:/board/dutchpay?category="+brd_id;
 	}
 
-	@RequestMapping("/joinForm") // 상세게시글의 신청하기 버튼 (동의서 새창 띄우기)
+	@RequestMapping(value = "/joinForm") // 상세게시글의 신청하기 버튼 (동의서 새창 띄우기)
 	public String joinForm(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
 		
 		if (memberDetails != null)
@@ -333,5 +396,42 @@ public class DutchpayController {
 		int art_id = article.getArt_id(); 
 		return "redirect:/dutchpay/dutchpayDetail?brd_id="+brd_id+"&art_id="+art_id;
 	}
+	
+	
+	@RequestMapping(value = "/reportForm") // 신고하기 양식창 띄우기
+	public String reportForm(Article article, Model model
+						   , @AuthenticationPrincipal MemberDetails memberDetails
+						   , @RequestParam(required = false, value="report_id") Integer report_id) {
+		
+		if (memberDetails != null)
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		
+		Article reportForm = as.detail1(article);
+		model.addAttribute("reportForm", reportForm);
+		
+		
+		
+		return "dutchpay/reportForm";
+		
+	}
+	
+    
+    // 댓글 신고 (ajax 사용) 신고버튼
+//    @RequestMapping(value="/board/ReplyReport")
+//    @ResponseBody
+//    public String reportReply(@AuthenticationPrincipal MemberDetails memberDetails,
+//                         @RequestBody Article article, Model model) {
+//       JSONObject jsonObj = new JSONObject();
+//       
+//       if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+//       
+//       as.dbReportReply(article);
+//       int result = article.getInsert_result();
+//       
+//       jsonObj.append("result", result);
+//       jsonObj.append("content", article.getReport_content());
+//       
+//       return jsonObj.toString() ;
+//    }
 	
 }

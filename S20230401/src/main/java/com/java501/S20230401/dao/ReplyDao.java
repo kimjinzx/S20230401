@@ -30,5 +30,9 @@ public interface ReplyDao {
 	public List<ReplyMember> getReplyByArticle(Article article);
 
 	public int hgInsertReply(Reply reply);
+	
+	// 김진현
+	int        replyInsert2(Article article);
+	int        replyDelete2(Article article);
 
 }

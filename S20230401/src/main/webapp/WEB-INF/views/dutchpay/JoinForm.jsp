@@ -35,12 +35,11 @@
 		return false;
 	} */	
 
-	
+
+
 </script>    
 </head>
 <body>
-<form method="post"></form>
-	
 	<div class="box1">
     	<h3>주의사항</h3>
     	회원간의 범죄 및 사기에 대한 신고처리를 담당해 해당유저의 권한을 제어합니다
@@ -66,18 +65,16 @@
     </div>
 	
 	<div>
-<form name="frm" method="post">
+<form name="agreeForm" id="applyForm" method="post">
 		<span>위 내용에 모두 동의하십니까?</span>
 		<input type="checkbox" id="agree" name="agree" required="required">
 		
-	
-
-	<input type="hidden" name="trd_id" value="${article.trd_id }">
+ 	<input type="hidden" name="trd_id" value="${article.trd_id }">
 	<input type="hidden" name="brd_id" value="${article.brd_id }">
 	<input type="hidden" name="art_id" value="${article.art_id }">
 	
 	<input type="submit" value="취소" 	onclick="javascript:self.close();">
-	<input type="submit" value="신청하기" formaction="${pageContext.request.contextPath }/dutchpay/ApplyInsert">
+ 	<input type="submit" value="신청하기" formaction="${pageContext.request.contextPath }/dutchpay/ApplyInsert"> 
 </form>
 	</div>
 </body>

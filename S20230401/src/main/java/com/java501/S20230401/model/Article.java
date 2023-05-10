@@ -111,5 +111,10 @@ public class Article {
 	private Integer		reply_count; // (조회수 오라클 함수)
 	private Date 		wait_date;
 	private Date		join_date;
+	private String 		trd_saveEnddate; // 마감날짜 작업을 위해 string으로 하나 더 만들었습니다.	
+	private String 		report_content;
+	private Date 		report_date;
+	private Integer 	report_status;
+	private String 		report_reason;
 
 }
