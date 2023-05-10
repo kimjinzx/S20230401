@@ -11,8 +11,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.MemberDetails;
@@ -40,6 +42,8 @@ public class CustomerController {
 	public String customerList(@AuthenticationPrincipal MemberDetails mD, 
 								Article article, Integer category, String currentPage, Model model ) {
 		System.out.println("CustomerController Start customerList..." );
+		//System.err.println(article.getSearch());
+		//System.err.println(article.getSearch_keyword());
 		// 유저 권한 확인
 		if (mD != null) {
 			model.addAttribute("memberInfo", mD.getMemberInfo());
@@ -49,7 +53,7 @@ public class CustomerController {
 		article.setBrd_id(category);
 		
 		// 전체 게시글 갯수
-		int totalCustomer =  as.totalCustomer(category);
+		int totalCustomer =  as.totalCustomer(article);
 		System.out.println("CustomerController totalCustomer=>" + totalCustomer);
 		
 		// Paging 작업
@@ -79,9 +83,12 @@ public class CustomerController {
 	
 	// 게시글, 댓글
 	@GetMapping(value = "/board/customer/detailCustomer")
+//	@GetMapping(value = "/board/customer/{art_id}")
+//  @PathVariable("art_id") String art_id,
 	public String detailCustomer(@AuthenticationPrincipal MemberDetails mD,
 								HttpServletRequest request, HttpServletResponse response,
 								Article article, Integer category, Model model) {
+//		article.setArt_id(Integer.parseInt(art_id));
 		System.out.println("CustomerController Start detailCustomer...");
 		
 		// 유저 권한 확인
@@ -282,25 +289,25 @@ public class CustomerController {
 	
 	@RequestMapping(value = "/board/customer/shSearch")
 	public String shSearch(@AuthenticationPrincipal MemberDetails mD,
-			 			   Article article, String currentPage, Integer category, Model model) {
-		if (mD != null) {
-			model.addAttribute("memberInfo", mD.getMemberInfo());
-		}
-		
-		System.out.println("CustomerController shSearch start");
-		
-		int totalCustomer = as.totalCustomer(article);
-		Paging page = new Paging(totalCustomer, currentPage);
-		article.setStart(page.getStart());
-		article.setEnd(page.getEnd());
-		
-		List<Article> shSearchCustomer = as.shSearchCustomer(article);
-		
-		model.addAttribute("totalCustomer", totalCustomer);
-		model.addAttribute("listCustomer", shSearchCustomer);
-		model.addAttribute("page", page);
-		model.addAttribute("category", category);
-		
+			 			   Article article, String currentPage, Integer category, RedirectAttributes redirectAttributes) {
+//		if (mD != null) {
+//			model.addAttribute("memberInfo", mD.getMemberInfo());
+//		}
+//		
+//		System.out.println("CustomerController shSearch start");
+//		
+//		int totalCustomer = as.totalCustomer(article);
+//		Paging page = new Paging(totalCustomer, currentPage);
+//		article.setStart(page.getStart());
+//		article.setEnd(page.getEnd());
+//		
+//		List<Article> shSearchCustomer = as.shSearchCustomer(article);
+//		
+//		model.addAttribute("totalCustomer", totalCustomer);
+//		model.addAttribute("listCustomer", shSearchCustomer);
+//		model.addAttribute("page", page);
+//		model.addAttribute("category", category);
+		redirectAttributes.addFlashAttribute("article", article);
 		return "redirect:/board/customer?category="+category;
 	}
 	

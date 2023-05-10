@@ -574,21 +574,6 @@ public class ArticleDaoImpl implements ArticleDao {
 	
 	// 최승환
 	@Override
-	public Integer totalCustomer(int brd_id) {
-		int totCustomerCount = 0;
-		System.out.println("ArticleDaoImpl Start totalCustomer...");
-		
-		try {
-			totCustomerCount = session.selectOne("shCustomerCount", brd_id);
-			System.out.println("ArticleDaoImpl shCustomerCount totCustomerCount->" +totCustomerCount);
-			
-		} catch (Exception e) {
-			System.out.println("ArticleDaoImpl shCustomerCount Exception->"+e.getMessage());
-		}
-		return totCustomerCount;
-	}
-	
-	@Override
 	public List<Article> listCustomer(Article article) {
 		List<Article> customerList = null;
 		System.out.println("ArticleDaoImpl listCustomer Start ..." );

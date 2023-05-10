@@ -699,14 +699,28 @@
 	
 	
 	<!-- 최승환 -->
-	<select id="shCustomerCount" resultType="int" parameterType="int">
+	<select id="shCustomerCount" resultType="int" parameterType="Article">
 		SELECT Count(*)
-		FROM article
+		FROM article a join member m using(mem_id)
 		WHERE brd_id BETWEEN #{brd_id} AND #{brd_id}+99
+		<choose>
+            <when test="search == 'shs_title'">
+                AND A.ART_TITLE LIKE '%' || #{search_keyword} || '%'
+            </when>
+            <when test="search == 'shs_content'">
+                AND A.ART_CONTENT LIKE '%' || #{search_keyword} || '%'
+            </when>
+            <when test="search == 'shs_title_content'">
+                AND (A.ART_TITLE || ' ' || A.ART_CONTENT) LIKE '%' || #{search_keyword} || '%'
+            </when>
+            <when test="search == 'shs_nickname'">
+                AND M.MEM_NICKNAME LIKE '%' || #{search_keyword} || '%'
+            </when>
+            <otherwise></otherwise>
+       	</choose>
 	</select>
 	
 	<select id="shListCustomer" parameterType="Article" resultType="Article">
-	 <![CDATA[
 		SELECT *
   		FROM 
   			(
@@ -719,11 +733,25 @@
       					GROUP BY ART_ID, BRD_ID
     				 	) R
     		ON A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID
-    		WHERE A.BRD_ID >= 1500 AND A.BRD_ID < 1600 and A.isdelete=0
+    		WHERE A.BRD_ID BETWEEN 1500 AND 1600 and A.isdelete=0
+    		<choose>
+	            <when test="search == 'shs_title'">
+	                AND A.ART_TITLE LIKE '%' || #{search_keyword} || '%'
+	            </when>
+	            <when test="search == 'shs_content'">
+	                AND A.ART_CONTENT LIKE '%' || #{search_keyword} || '%'
+	            </when>
+	            <when test="search == 'shs_title_content'">
+	                AND (A.ART_TITLE || ' ' || A.ART_CONTENT) LIKE '%' || #{search_keyword} || '%'
+	            </when>
+	            <when test="search == 'shs_nickname'">
+	                AND M.MEM_NICKNAME LIKE '%' || #{search_keyword} || '%'
+	            </when>
+	            <otherwise></otherwise>
+        	</choose>
     		ORDER BY A.ART_ID DESC
   			)
   		WHERE RN BETWEEN #{start} AND #{end} AND isdelete=0
- 	 ]]>	
 	</select>
 	
 	<select id="shListCustomerMenu" parameterType="Article" resultType="Article">
@@ -787,7 +815,7 @@
 		WHERE art_id = #{art_id} AND brd_id = #{brd_id} AND isdelete = 0
 	</update>
 	
-	<select id="shCustomerSearch" parameterType="Article" resultType="Article">
+<!-- 	<select id="shCustomerSearch" parameterType="Article" resultType="Article">
 		SELECT *
 		FROM 
 			(
@@ -835,7 +863,7 @@
 		    ORDER BY A.ART_ID DESC
 		)
 		WHERE RN BETWEEN #{start} AND #{end} AND isdelete = 0 
-	</select>
+	</select> -->
 	
 	
 </mapper>
