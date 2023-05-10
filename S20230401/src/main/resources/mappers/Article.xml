@@ -787,6 +787,55 @@
 		WHERE art_id = #{art_id} AND brd_id = #{brd_id} AND isdelete = 0
 	</update>
 	
+	<select id="shCustomerSearch" parameterType="Article" resultType="Article">
+		SELECT *
+		FROM 
+			(
+		    SELECT ROWNUM RN, A.*, M.MEM_NICKNAME, M.MEM_IMAGE, NVL(R.REP_COUNT, 0) REP_COUNT
+		    FROM ARTICLE A
+		    LEFT JOIN MEMBER M ON A.MEM_ID = M.MEM_ID
+		    LEFT JOIN 
+		    (
+		        SELECT ART_ID, BRD_ID, COUNT(*) REP_COUNT
+		        FROM REPLY
+		        GROUP BY ART_ID, BRD_ID
+		    ) R
+	    ON A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID
+	    
+	    WHERE (
+	    	<choose>
+	    		<when test="brd_id == 1500">
+	    			A.BRD_ID between 1500 and 1599
+	    		</when>
+	    		<otherwise>
+	    			A.BRD_ID = #{brd_id}
+	    		</otherwise>
+	    	</choose>
+	    AND A.isdelete = 0 )
+	
+	    AND (
+	        <choose>
+	            <when test="search == 'shs_title'">
+	                A.ART_TITLE LIKE '%' || #{search_keyword} || '%'
+	            </when>
+	            <when test="search == 'shs_content'">
+	                A.ART_CONTENT LIKE '%' || #{search_keyword} || '%'
+	            </when>
+	            <when test="search == 'shs_title_content'">
+	                (A.ART_TITLE || ' ' || A.ART_CONTENT) LIKE '%' || #{search_keyword} || '%'
+	            </when>
+	            <when test="search == 'shs_nickname'">
+	                M.MEM_NICKNAME LIKE '%' || #{search_keyword} || '%'
+	            </when>
+	            <otherwise>
+	                1=0
+	            </otherwise>
+	        </choose>
+		    )
+		    ORDER BY A.ART_ID DESC
+		)
+		WHERE RN BETWEEN #{start} AND #{end} AND isdelete = 0 
+	</select>
 	
 	
 </mapper>

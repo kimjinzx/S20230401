@@ -164,7 +164,9 @@ public class CustomerController {
 		if (mD != null) {
 			model.addAttribute("memberInfo", mD.getMemberInfo());
 		}
+		
 		System.out.println("CustomerController customerWriteForm start");
+		
 		model.addAttribute("category", category);
 		return "/customer/customerWriteForm";
 	}
@@ -278,6 +280,29 @@ public class CustomerController {
 		return "redirect:/board/customer?category="+category;
 	}
 	
+	@RequestMapping(value = "/board/customer/shSearch")
+	public String shSearch(@AuthenticationPrincipal MemberDetails mD,
+			 			   Article article, String currentPage, Integer category, Model model) {
+		if (mD != null) {
+			model.addAttribute("memberInfo", mD.getMemberInfo());
+		}
+		
+		System.out.println("CustomerController shSearch start");
+		
+		int totalCustomer = as.totalCustomer(article);
+		Paging page = new Paging(totalCustomer, currentPage);
+		article.setStart(page.getStart());
+		article.setEnd(page.getEnd());
+		
+		List<Article> shSearchCustomer = as.shSearchCustomer(article);
+		
+		model.addAttribute("totalCustomer", totalCustomer);
+		model.addAttribute("listCustomer", shSearchCustomer);
+		model.addAttribute("page", page);
+		model.addAttribute("category", category);
+		
+		return "redirect:/board/customer?category="+category;
+	}
 	
 	
 }

@@ -230,24 +230,37 @@
 		<a href="${pageContext.request.contextPath}/board/customer?currentPage=${page.startPage+page.pageBlock}&category=${category}">[다음]</a>
 	</c:if>	
 	<!-- 글쓰기 버튼 -->
-	
+	<br>
 	<c:choose>
 		<c:when test="${memberInfo != null }">
-			<button onclick="location.href='${pageContext.request.contextPath}/board/customer/customerWriteForm'">글쓰기</button>
+			<p align="right"><button onclick="location.href='${pageContext.request.contextPath}/board/customer/customerWriteForm?category=${category }'">글쓰기</button></p>
 		</c:when>
 	</c:choose>
+	
 	<!--  글쓰기버튼끝 -->
 	
-	<form action="shsearch" method="post" name="shsearch">
-	<input type="text" >	
-	<input type="submit" value="검색">
-	</form>
+	<br>
+	
+	<!--  글 검색 -->
+	
+	<form action="${pageContext.request.contextPath}/board/customer/shSearch?brd_id=${category}&category=${category}" method="post" name="shSearch">
+   		<select name="search">
+				<option value="shs_title">제목</option>
+				<option value="shs_content">내용</option>
+				<option value="shs_title_content">제목+내용</option>
+				<option value="shs_nickname">닉네임</option>
+		</select> 
+   
+        <input type="text" name="search_keyword" placeholder="검색할 내용을 입력하세요">
+        <button type="submit">검색 </button><p>
+    </form>
+    
+    <!-- 글 검색 끝 -->
 	
 	</div>
 	
+	<!-- 여기까지 -->
 	
-	
-		
 		<button id="scrollToTop" class="adv-hover">
 			<svg style="fill: var(--subtheme); stroke: var(--subtheme); stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round;" width="20" height="10" viewBox="0 0 32 16">
 				<path d="M 15 1 L 1 15 31 15 Z"/>

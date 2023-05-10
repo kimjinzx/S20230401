@@ -627,6 +627,7 @@ public class ArticleDaoImpl implements ArticleDao {
 			
 		return listMenu;
 	}
+	
 	@Override
 	public int insertCustomer(Article article) {
 		int result = 0;
@@ -638,6 +639,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return result;
 	}
+	
 	@Override
 	public int updateCustomer(Article article) {
 		int updateCount = 0;
@@ -651,6 +653,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		System.out.println("아티클다오임플 업데이트"+ article);
 		return updateCount;
 	}
+	
 	@Override
 	public int deleteCustomer(Article article) {
 		int dresult = 0;
@@ -662,6 +665,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return dresult;
 	}
+	
 	@Override
 	public Integer customerViewCount(Article article) {
 		System.out.println("ArticleDaoImpl customerViewCount start");
@@ -676,5 +680,33 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return vCount;
 	}
+	
+	@Override
+	public int totalCustomer(Article article) {
+		int totCustomerCount = 0;
+		System.out.println("ArticleDaoImpl Start int totalCustomer...");
+		
+		try {
+			totCustomerCount = session.selectOne("shCustomerCount", article);
+			System.out.println("ArticleDaoImpl shCustomerCount int totCustomerCount->" +totCustomerCount);
+			
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl int shCustomerCount Exception->"+e.getMessage());
+		}
+		return totCustomerCount;
+	}
+	
+	@Override
+	public List<Article> shCustomerSearch(Article article) {
+		List<Article> shCustomerSearch = null;
+		System.out.println("ArticleDaoImpl shCustomerSearch Start" );
+		try {
+			shCustomerSearch = session.selectList("shCustomerSearch", article);
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl shCustomerSearch Exception->"+e.getMessage());
+		}
+		return shCustomerSearch;
+	}
+	
 	
 }

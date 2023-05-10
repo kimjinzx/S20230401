@@ -172,9 +172,9 @@
 			<form action="writeCustomer" method="post" name="frm">
 				<table>
 					<tr><th>작성자 </th>
-					<td><img src="${pageContext.request.contextPath}/${memberInfo.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">${memberInfo.mem_nickname }<td>
+					<td><img src="${pageContext.request.contextPath}/uploads/profile/${memberInfo.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">${memberInfo.mem_nickname }<td>
 					<input type="hidden" name="mem_id" value="${memberInfo.mem_id}">
-					<input type="hidden" name="brd_id" value="${category}">
+					<input type="hidden" name="category" value="${category}">
 					
 					<tr><th>분류:</th><td>
 					<select name="brd_id">
@@ -203,7 +203,7 @@
 					<tr><th>태그5</th><td>
 					<input type="text" name="art_tag5" class="tag"><br>
 					<tr>
-					<td colspan="2">
+					<td colspan="2" align="right">
 					<input type="submit" value="등록" />
 					<input type="button" value="목록" onclick="location.href='${pageContext.request.contextPath}/board/customer?category=1500'"/>
 					</td>

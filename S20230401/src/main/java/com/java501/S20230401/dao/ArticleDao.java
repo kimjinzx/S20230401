@@ -86,4 +86,6 @@ public interface ArticleDao {
 	int 			updateCustomer(Article article);
 	int 			deleteCustomer(Article article);
 	Integer 		customerViewCount(Article article);
+	int 			totalCustomer(Article article);
+	List<Article> 	shCustomerSearch(Article article);
 }

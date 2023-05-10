@@ -368,4 +368,20 @@ public class ArticleServiceImpl implements ArticleService {
 	public Integer customerViewCount(Article article) {
 		return ad.customerViewCount(article);
 	}
+	@Override
+	public int totalCustomer(Article article) {
+		System.out.println("ArticleServiceImpl Start int total...");
+		int totCustomerCnt = ad.totalCustomer(article);
+		System.out.println("ArticleServiceImpl totalCustomer totCustomerCnt-> " + totCustomerCnt);
+
+		return totCustomerCnt;
+	}
+	@Override
+	public List<Article> shSearchCustomer(Article article) {
+		List<Article> shCustomerSearch = null;
+		System.out.println("ArticleServiceImpl shSearchCustomer Start..." );
+		shCustomerSearch = ad.shCustomerSearch(article);
+		System.out.println("ArticleServiceImpl shSearchCustomer shCustomerSearch size()->" +shCustomerSearch.size());
+		return shCustomerSearch;	
+	}
 }

@@ -80,4 +80,6 @@ public interface ArticleService {
 	int 				updateCustomer(Article article);
 	int 				deleteCustomer(Article article);
 	Integer 			customerViewCount(Article article);
+	List<Article> 		shSearchCustomer(Article article);
+	int 				totalCustomer(Article article);
 }
