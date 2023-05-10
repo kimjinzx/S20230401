@@ -114,12 +114,12 @@ public class AdminController {
 				Map<Integer, Object> reportItems = new HashMap<Integer, Object>();
 				for (Report rpt : reports) {
 					Integer rpt_id = rpt.getReport_id();
-					if (reportItems.containsKey(rpt_id));
+					if (reportItems.containsKey(rpt_id)) continue;
 					String rawType = rpt.getType();
-					String pascal = rawType.substring(0, 1).toUpperCase() + rawType.toLowerCase().substring(1);
+					String pascal = rawType == null ? null : rawType.substring(0, 1).toUpperCase() + rawType.toLowerCase().substring(1);
 //					Object resultInstance = repos.hgGetInstanceByReportId(rpt_id, pascal);
 					try { reportItems.put(rpt_id, Class.forName("com.java501.S20230401.model." + pascal).cast(repos.hgGetInstanceByReportId(rpt_id, pascal))); }
-					catch (Exception e) { e.printStackTrace(); }
+					catch (Exception e) { reportItems.put(rpt_id, null); }
 //					switch(rawType.toUpperCase()) {
 //						case "MEMBER": reportItems.put(rpt_id, (Member)resultInstance); break;
 //						case "ARTICLE": reportItems.put(rpt_id, (Article)resultInstance); break;

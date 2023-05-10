@@ -103,7 +103,7 @@
 										</c:when>
 										<c:when test="${report.type == 'ARTICLE' }">
 											<div class="display-flex justify-content-flex-start align-items-center">
-												<span>
+												<span class="font-size-12px color-theme-font opacity-0_5">
 													<c:choose>
 														<c:when test="${report_item.brd_id >= 1000 && report_item.brd_id < 1100 }">함께해요</c:when>
 														<c:when test="${report_item.brd_id >= 1100 && report_item.brd_id < 1200 }">같이사요</c:when>
@@ -113,8 +113,8 @@
 														<c:when test="${report_item.brd_id >= 1500 && report_item.brd_id < 1600 }">고객센터</c:when>
 													</c:choose>
 												</span>
-												<span>&gt;</span>
-												<span>
+												<span class="font-size-12px color-theme-font opacity-0_5" style="margin: 0 5px;">&gt;</span>
+												<span class="font-size-14px color-subtheme font-weight-bolder">
 													<c:choose>
 														<c:when test="${report_item.brd_id == 1010 }">밥/카페</c:when>
 														<c:when test="${report_item.brd_id == 1020 }">스포츠/운동</c:when>
@@ -147,9 +147,9 @@
 												</span>
 											</div>
 											<div class="display-flex justify-content-flex-start align-items-center">
-												<span class="color-subtheme font-weight-bolder">${report_item.art_title }</span>
+												<span class="color-subtheme font-weight-bolder font-size-20px">${report_item.art_title }</span>
 											</div>
-											<div class="display-flex justify-content-space-between align-items-center">
+											<div class="display-flex justify-content-space-between align-items-center" style="border-top: 2.5px solid var(--subtheme);">
 												<span>${report_item.mem_id }</span>
 												<div class="display-flex justify-content-flex-end align-items-center">
 													<c:forEach var="i" begin="1" end="5">
@@ -163,7 +163,7 @@
 											<div class="display-flex justify-content-space-between align-items-center">
 												
 											</div>
-											<div>
+											<div style="border-top: 2.5px solid var(--subtheme);">
 												${report_item.art_content }
 											</div>
 										</c:when>

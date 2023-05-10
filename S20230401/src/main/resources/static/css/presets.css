@@ -100,6 +100,9 @@ button.warning-button * {
 .overflow-y-hidden { overflow-y: hidden; }
 .overflow-y-auto { overflow-y: auto; }
 
+.opacity-0_5 { opacity: 0.5; }
+.opacity-0_25 { opacity: 0.25; }
+
 .color-theme { color: var(--theme); }
 .color-theme-font { color: var(--theme-font); }
 .color-subtheme { color: var(--subtheme); }
@@ -114,6 +117,9 @@ button.warning-button * {
 .font-size-14px { font-size: 14px; }
 .font-size-15px { font-size: 15px; }
 .font-size-16px { font-size: 16px; }
+.font-size-18px { font-size: 18px; }
+.font-size-20px { font-size: 20px; }
+.font-size-24px { font-size: 24px; }
 
 .font-weight-lighter { font-weight: lighter; }
 .font-weight-normal { font-weight: normal; }
