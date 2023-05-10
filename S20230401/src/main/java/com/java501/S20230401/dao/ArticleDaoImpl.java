@@ -524,6 +524,49 @@ public class ArticleDaoImpl implements ArticleDao {
 		return dbChangeCancelStatus;
 	}
 	
+	@Override
+	public int dbArticleGoodUp(Article article) {
+		int dbArticleGoodUp = 0;
+		try {
+			dbArticleGoodUp = session.update("dbArticleGoodUp", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dbArticleGoodUp;
+	}
+	
+	@Override
+	public int dbArticleBadUp(Article article) {
+		int dbArticleBadUp = 0;
+		try {
+			dbArticleBadUp = session.update("dbArticleBadUp", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dbArticleBadUp;
+	}
+	
+	@Override
+	public int dbReplyGoodUp(Article article) {
+		int dbReplyGoodUp = 0;
+		try {
+			dbReplyGoodUp = session.update("dbReplyGoodUp", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dbReplyGoodUp;
+	}
+	
+	@Override
+	public int dbReplyBadUp(Article article) {
+		int dbReplyBadUp = 0;
+		try {
+			dbReplyBadUp = session.update("dbReplyBadUp", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dbReplyBadUp;
+	}
 	
 	
 	

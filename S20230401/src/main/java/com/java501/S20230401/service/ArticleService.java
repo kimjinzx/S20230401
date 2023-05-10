@@ -65,7 +65,10 @@ public interface ArticleService {
 	int				dbChangeStatus(Article article);
 	int 			dbChangeEndStatus(Article article);
 	int 			dbChangeCancelStatus(Article article);
-	
+	int 			dbArticleGoodUp(Article article);
+	int 			dbArticleBadUp(Article article);
+	int 			dbReplyGoodUp(Article article);
+	int 			dbReplyBadUp(Article article);
 	
 	
 	

@@ -301,8 +301,30 @@ public class ArticleServiceImpl implements ArticleService {
 		return changeCancelStatus;
 	}
 	
+	@Override
+	public int dbArticleGoodUp(Article article) {
+		int dbArticleGoodUp = ad.dbArticleGoodUp(article);
+		return dbArticleGoodUp;
+	}
 	
+	@Override
+	public int dbArticleBadUp(Article article) {
+		int dbArticleBadUp = ad.dbArticleBadUp(article);
+		return dbArticleBadUp;
+	}
 	
+	@Override
+	public int dbReplyGoodUp(Article article) {
+		int dbReplyGoodUp = ad.dbReplyGoodUp(article);
+		return dbReplyGoodUp;
+	}
+	
+	@Override
+	public int dbReplyBadUp(Article article) {
+		int dbReplyBadUp = ad.dbReplyBadUp(article);
+		return dbReplyBadUp;
+	}
+
 	
 	
 	

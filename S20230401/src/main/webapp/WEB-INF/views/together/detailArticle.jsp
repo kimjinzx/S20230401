@@ -335,6 +335,139 @@
 			}
 		});
 	});
+	
+	
+	// 게시글 추천
+	$(() => {
+		$('.article_good_Up').click(e => {
+			
+			if(confirm('정말 추천하시겠습니까 ?') == true) {
+			
+			let rawData = { art_id : ${detailArticle.art_id}, brd_id : ${detailArticle.brd_id} }
+		
+			let sendData = JSON.stringify(rawData);
+	
+			$.ajax({
+			  url : "/board/articleGoodUp",
+			  type : 'post',
+			  data : sendData,
+			  dataType :'json',
+			  contentType : 'application/json',
+			  success : data => {
+					  console.log(data.result);
+				  if(data.result == 1) {
+					  alert('추천 완료');
+					  
+				  } else {
+					  alert('한 시간에 한번씩만 가능합니다.');
+				  }
+	  			}
+			});
+			} else {
+				return;
+			}
+		});
+	});
+	
+	
+	// 게시글 비추천
+	$(() => {
+		$('.article_bad_Up').click(e => {
+			
+			if(confirm('정말 비추천하시겠습니까 ?') == true) {
+			
+			let rawData = { art_id : ${detailArticle.art_id}, brd_id : ${detailArticle.brd_id} }
+		
+			let sendData = JSON.stringify(rawData);
+	
+			$.ajax({
+			  url : "/board/articleBadUp",
+			  type : 'post',
+			  data : sendData,
+			  dataType :'json',
+			  contentType : 'application/json',
+			  success : data => {
+					  console.log(data.result);
+				  if(data.result == 1) {
+					  alert('비추천 완료');
+					  
+				  } else {
+					  alert('한 시간에 한번씩만 가능합니다.');
+				  }
+	  			}
+			});
+			} else {
+				return;
+			}
+		});
+	});
+	
+	// 댓글 추천
+	$(() => {
+		$('.reply_good').click(e => {
+			
+			if(confirm('정말 추천하시겠습니까 ?') == true) {
+			
+			let rawData = { art_id : ${detailArticle.art_id}, brd_id : ${detailArticle.brd_id}, 
+							rep_id : $(e.target).closest('.reply_box').find('input[name="rep_id"]').val()}
+		
+			let sendData = JSON.stringify(rawData);
+	
+			$.ajax({
+			  url : "/board/replyGoodUp",
+			  type : 'post',
+			  data : sendData,
+			  dataType :'json',
+			  contentType : 'application/json',
+			  success : data => {
+					  console.log(data.result);
+				  if(data.result == 1) {
+					  alert('추천 완료');
+					  
+				  } else {
+					  alert('한 시간에 한번씩만 가능합니다.');
+				  }
+	  			}
+			});
+			} else {
+				return;
+			}
+		});
+	});
+	
+	
+	// 댓글 비추천
+	$(() => {
+		$('.reply_bad').click(e => {
+			
+			if(confirm('정말 비추천하시겠습니까 ?') == true) {
+			
+			let rawData = { art_id : ${detailArticle.art_id}, brd_id : ${detailArticle.brd_id}, 
+							rep_id : $(e.target).closest('.reply_box').find('input[name="rep_id"]').val()}
+		
+			let sendData = JSON.stringify(rawData);
+	
+			$.ajax({
+			  url : "/board/replyBadUp",
+			  type : 'post',
+			  data : sendData,
+			  dataType :'json',
+			  contentType : 'application/json',
+			  success : data => {
+					  console.log(data.result);
+				  if(data.result == 1) {
+					  alert('비추천 완료');
+					  
+				  } else {
+					  alert('한 시간에 한번씩만 가능합니다.');
+				  }
+	  			}
+			});
+			} else {
+				return;
+			}
+		});
+	});
 		
 	
 	function deleteReply(brd_id, art_id, rep_id, mem_id) {
@@ -479,10 +612,7 @@
 		</tr>
 		<tr>
 			<th>마감 일자</th>
-			<td><c:set var="date" value="${detailArticle.trd_finish }" /> <c:choose>
-					<c:when test="${date eq null}"></c:when>
-					<c:otherwise>${date }까지</c:otherwise>
-				</c:choose></td>
+ 			<td>${detailArticle.trd_finish }까지</td>
 		</tr>
 		<tr>
 			<th>조회수</th>
@@ -500,12 +630,10 @@
 	<br>
 	<c:choose>
 		<c:when test="${memberInfo.mem_id != null}">
-			<input type="button" class="article_favorite" value="관심목록">
-			<input type="button" class="article_good" value="추천"
-				onclick="location.href='">
-			<input type="button" class="article_bad" value="비추천"
-				onclick="location.href='">
-			<input type="button" class="article_report" value="신고하기">
+			<input type="button" class="article_favorite" 	value="관심목록">
+			<input type="button" class="article_good_Up" 	value="추천">
+			<input type="button" class="article_bad_Up" 	value="비추천"	>
+			<input type="button" class="article_report" 	value="신고하기">
 		</c:when>
 	</c:choose>
 	<br>
@@ -669,7 +797,7 @@
 	<c:forEach var="reply" items="${replyList }">
 		<c:choose>
 			<c:when test="${reply.isdelete == 1 }">
-				<div> 					
+				<div class = "replyList"> 					
 					<input type="hidden" name="art_id" value="${reply.art_id }">
 					<input type="hidden" name="brd_id" value="${reply.brd_id }">
 					<input type="hidden" name="mem_id" value="${reply.mem_id }">
@@ -709,7 +837,7 @@
 								<input class="reply_modify" type="button" value="수정">
 								<input class="reply_cancel" type="button" value="취소" style="display: none;">
 								<input class="reply_delete" type="button" value="삭제" style="display: inline;"
-									onclick="deleteReply(${reply.brd_id}, ${reply.art_id}, ${reply.rep_id}, '${reply.mem_id}');">
+									onclick="deleteReply(${reply.brd_id}, ${reply.art_id}, ${reply.rep_id}, ${reply.mem_id});">
 							</c:when>
 						</c:choose>
 		
@@ -737,7 +865,7 @@
 									style="margin: 10px; width: 1225px; height: 20px; font-size: 12px;"></input>
 								<div style="display: block;" id="replyButton">
 									<input type="submit" class="re_replySubmit" value="댓글"> 
-									<input type="reset"  class="re_replyReset" value="취소">
+									<input type="reset"  class="re_replyReset"  value="취소">
 								</div>
 							</c:when>
 							<c:otherwise>

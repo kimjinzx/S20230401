@@ -66,6 +66,14 @@ public interface ArticleDao {
 	int 			dbChangeStatus(Article article);
 	int 			dbChangeEndStatus(Article article);
 	int 			dbChangeCancelStatus(Article article);
+	int 			dbArticleGoodUp(Article article);
+	int 			dbArticleBadUp(Article article);
+	int             dbReplyGoodUp(Article article);
+	int				dbReplyBadUp(Article article);
+	
+	
+	
+	
 	
 	
 	
@@ -99,5 +107,6 @@ public interface ArticleDao {
 	Article 		detailCustomer(Article article);
 	List<Article> 	listCustomerMenu(Article article);
 	int 			insertCustomer(Article article);
+
 
 }

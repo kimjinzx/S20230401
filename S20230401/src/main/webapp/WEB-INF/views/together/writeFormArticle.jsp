@@ -11,25 +11,58 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/index.js"></script>
 <script>
 
-$(document).ready(function(){
-    // reg_parent가 선택되면
-    $('#reg_parent').change(function(){
-        var reg_parent = $(this).val();
-        
-        // reg_id 드롭다운 메뉴 초기화
-        $('#reg_id').empty();
-        
-        // 제한없음 옵션 추가
-        $('#reg_id').append('<option value="">제한없음</option>');
-        
-        // 선택된 reg_parent를 가진 region들을 동적으로 추가
-        <c:forEach var="region" items="${regions}">
-            if (${region.reg_parent} == reg_parent) {
-                $('#reg_id').append('<option value="' + ${region.reg_id} + '">' + '${region.reg_name}' + '</option>');
-            }
-        </c:forEach>
-    });
-});
+	$(document).ready(function(){
+	    // reg_parent가 선택되면
+	    $('#reg_parent').change(function(){
+	        var reg_parent = $(this).val();
+	        
+	        // reg_id 드롭다운 메뉴 초기화
+	        $('#reg_id').empty();
+	        
+	        // 제한없음 옵션 추가
+	        $('#reg_id').append('<option value="">제한없음</option>');
+	        
+	        // 선택된 reg_parent를 가진 region들을 동적으로 추가
+	        <c:forEach var="region" items="${regions}">
+	            if (${region.reg_parent} == reg_parent) {
+	                $('#reg_id').append('<option value="' + ${region.reg_id} + '">' + '${region.reg_name}' + '</option>');
+	            }
+	        </c:forEach>
+	    });
+	});
+
+
+	// 페이지가 로드될 때 실행되는 함수
+	document.addEventListener("DOMContentLoaded", function() {
+	  // dateTimeLocal이라는 id값을 가진 요소를 가져옴
+	  let dateElement = document.getElementById('dateTimeLocal');
+	  // dateElement가 존재하는 경우
+	  if (dateElement) {
+	    // 현재 날짜와 시간을 ISOString 형식으로 가져와서 시간대 옵셋을 적용하고, 끝에서 5번째 글자까지 자름
+	    let date = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -5);
+	    // dateTimeLocal 요소의 값에 date 값을 할당함
+	    dateElement.value = date;
+	    // dateTimeLocal 요소의 min 속성에 date 값을 할당함
+	    dateElement.setAttribute("min", date);
+	    
+	    // dateTimeLocal 요소의 값이 변경될 때 실행되는 함수
+	    function setMinValue() {
+	      // dateTimeLocal 요소의 값이 현재 시간 이전인 경우
+	      if (dateElement.value < date) {
+	        // 경고창을 띄우고, dateTimeLocal 요소의 값을 현재 시간으로 설정함
+	        alert('현재 시간보다 이전의 날짜는 설정할 수 없습니다.');
+	        dateElement.value = date;
+	      }
+	      let selectedDate = new Date(dateElement.value);
+	      selectedDate.setSeconds(0);
+	      dateElement.value = selectedDate.toISOString().slice(0, -8);
+	    }
+	    
+	    // dateTimeLocal 요소의 onchange 이벤트에 setMinValue 함수를 할당함
+	    dateElement.onchange = setMinValue;
+	  }
+	});
+		
 </script>
 
 <link href="https://unpkg.com/sanitize.css" rel="stylesheet">
@@ -249,7 +282,8 @@ $(document).ready(function(){
 			</tr>
 			<tr>
 				<th>마감일자</th>
-				<td><input type="date" name="trd_enddate1" required="required"></td>
+				<td><input type="datetime-local" name="trd_enddate1" id="dateTimeLocal" 
+				onchange="setMinValue()" required="required"></td>
 			</tr>
 			<tr>
 				<th>모집인원 (본인 포함)</th>

@@ -239,10 +239,7 @@
 					<td>${art.reg_name }</td>
 					<td>${art.trd_loc }</td>
 					<td>${art.trd_max }</td>
-					<td><c:set var="date" value="${art.trd_finish }" /> <c:choose>
-							<c:when test="${date eq null}"></c:when>
-							<c:otherwise>${date }까지</c:otherwise>
-						</c:choose></td>
+					<td>${art.trd_finish }까지</td>
 					<td>${art.trd_minage }세</td>
 					<td>${art.trd_maxage }세</td>
 					<td><c:set var="gender" value="${art.c2_comm_id }" />

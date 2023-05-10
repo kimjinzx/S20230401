@@ -28,6 +28,25 @@ $(document).ready(function(){
         </c:forEach>
     });
 });
+
+
+document.addEventListener("DOMContentLoaded", function() {
+	let dateElement = document.getElementById('dateTimeLocal');
+	if (dateElement) {
+		let date = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, -5);
+		dateElement.value = date;
+		dateElement.setAttribute("min", date);
+
+		function setMinValue() {
+			if (dateElement.value < date) {
+				alert('현재 시간보다 이전의 날짜는 설정할 수 없습니다.');
+				dateElement.value = date;
+			}
+		}
+
+		dateElement.onchange = setMinValue;
+	}
+});
 </script>
 </head>
 <body>
@@ -106,7 +125,8 @@ $(document).ready(function(){
  				<c:set var="enddate">
 					<fmt:formatDate value="${article.trd_enddate }" pattern="yyyy-MM-dd"/>
 				</c:set> 
-				<td><input type="date" name="trd_enddate1" value="${enddate }" pattern="yyyy-MM-dd" required="required"></td>
+				<td><input type="datetime-local" name="trd_enddate1" id="dateTimeLocal" 
+				onchange="setMinValue()" required="required"></td>
 			</tr>
 			<tr>
 				<th>모집인원</th>

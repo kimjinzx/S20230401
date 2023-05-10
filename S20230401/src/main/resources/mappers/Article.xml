@@ -708,6 +708,36 @@
 		WHERE trd_id = #{trd_id}
 	</update>	
 	
+	<update id="dbArticleGoodUp" parameterType="Article">
+		UPDATE 	Article
+		SET 	ART_GOOD = ART_GOOD + 1
+		WHERE 	ART_ID = #{art_id}
+		AND	  	brd_id = #{brd_id}
+	</update>
+	
+	<update id="dbArticleBadUp" parameterType="Article">
+		UPDATE 	Article
+		SET 	ART_bad = ART_bad + 1
+		WHERE 	ART_ID = #{art_id}
+		AND	  	brd_id = #{brd_id}
+	</update>
+	
+	<update id="dbReplyGoodUp" parameterType="Article">
+		UPDATE 	reply
+		SET 	rep_good = rep_good + 1
+		WHERE 	art_id = #{art_id}
+		AND	  	brd_id = #{brd_id}
+		and		rep_id = #{rep_id}
+	</update>
+	
+	<update id="dbReplyBadUp" parameterType="Article">
+		UPDATE 	reply
+		SET 	rep_bad = rep_bad + 1
+		WHERE 	art_id = #{art_id}
+		AND	  	brd_id = #{brd_id}
+		and		rep_id = #{rep_id}
+	</update>
+	
 	
 	
 	

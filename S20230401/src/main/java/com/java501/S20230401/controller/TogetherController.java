@@ -72,6 +72,8 @@ public class TogetherController {
 
 		return "together/listArticle";
 	}
+	
+	
 
 	@RequestMapping(value = "/board/detailArticle")
 	public String detailArticle(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
@@ -136,6 +138,7 @@ public class TogetherController {
 		List<Article> joinList =  as.dbTradeJoinMember(article);
 		model.addAttribute("joinList", joinList);
 		
+		
 		// 게시글 별 신청 대기자 리스트
 		List<Article> waitingList =  as.dbTradeWaitingMember(article);
 		model.addAttribute("waitingList", waitingList);
@@ -144,6 +147,8 @@ public class TogetherController {
 		return "together/detailArticle";
 	}
 
+	
+	
 	@RequestMapping(value = "/board/writeFormArticle")
 	public String writeFormArticle(@AuthenticationPrincipal MemberDetails memberDetails, Model model) {
 		if (memberDetails != null)
@@ -208,6 +213,7 @@ public class TogetherController {
 		return "redirect:/board/together?category=1000";
 	}
 
+	
 	@RequestMapping(value = "/board/updateFormArticle")
 	public String updateFormArticle(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
 			Article article, Model model) {
@@ -528,4 +534,196 @@ public class TogetherController {
 		
 		return resultStr;
 	 }
+	 
+	// 게시글 추천 Up
+	 @RequestMapping(value="/board/articleGoodUp")
+	 @ResponseBody
+	 public String ArticleGoodUp(@AuthenticationPrincipal MemberDetails memberDetails,
+			 					 @RequestBody Article article, 
+			 					 HttpServletRequest request,
+								 HttpServletResponse response,
+								 Model model) {
+		 
+		 JSONObject jsonObj = new JSONObject();
+		 
+		 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		 int art_id = article.getArt_id();
+		 int brd_id = article.getBrd_id();
+		 int mem_id = memberDetails.getMemberInfo().getMem_id();
+		 
+			Cookie oldCookie = null;	// oldCookie 객체 생성
+		    Cookie[] cookies = request.getCookies();	// cookies 배열에 모든 쿠키를 담는다.
+		    if (cookies != null) {			// 쿠키가 있으면?
+		         for (Cookie cookie : cookies) {	// 쿠키들로 반복문을 돌려서
+		            if (cookie.getName().equals("ArticleGoodUp")) {	// 이름이 viewArticle인 쿠키가 있으면?
+		               oldCookie = cookie;	// 쿠키를 내 oldCookie에 담는다.
+		            }
+		         }
+		      }
+		    
+		      if (oldCookie != null) {				// oldCookie가 있으면 그걸 가져와서 값을 설정해준다.
+		          if (!oldCookie.getValue().contains(String.format("[%s_%s_%s]", art_id, brd_id, mem_id))) {
+		        	  int ArticleGoodUp = as.dbArticleGoodUp(article); // 추천수 올리는 메서드
+		              oldCookie.setValue(oldCookie.getValue() + String.format("[%s_%s_%s]", art_id, brd_id, mem_id));
+		              oldCookie.setPath("/");
+		              oldCookie.setMaxAge(60 * 60); // 1시간 (초 * 분 * 시간)
+		              response.addCookie(oldCookie);
+		              jsonObj.append("result", ArticleGoodUp);
+		          } 
+		      } else {								// oldCookie가 없으면 newCookie를 새로 만든다.
+		    	  	  int ArticleGoodUp = as.dbArticleGoodUp(article); // 추천수 올리는 메서드
+		              Cookie newCookie = new Cookie("ArticleGoodUp", String.format("[%s_%s_%s]", art_id, brd_id, mem_id));
+		              newCookie.setPath("/");
+		              newCookie.setMaxAge(60 * 60); // 1시간 (초 * 분 * 시간)
+		              response.addCookie(newCookie);
+		              jsonObj.append("result", ArticleGoodUp);
+		      }
+		 
+		 return jsonObj.toString();
+	 }
+	 
+		// 게시글 비추천 Up
+	 @RequestMapping(value="/board/articleBadUp")
+	 @ResponseBody
+	 public String ArticleBadUp(@AuthenticationPrincipal MemberDetails memberDetails,
+			 					 @RequestBody Article article, 
+			 					 HttpServletRequest request,
+								 HttpServletResponse response,
+								 Model model) {
+		 
+		 JSONObject jsonObj = new JSONObject();
+		 
+		 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		 int art_id = article.getArt_id();
+		 int brd_id = article.getBrd_id();
+		 int mem_id = memberDetails.getMemberInfo().getMem_id();
+		 
+			Cookie oldCookie = null;	// oldCookie 객체 생성
+		    Cookie[] cookies = request.getCookies();	// cookies 배열에 모든 쿠키를 담는다.
+		    if (cookies != null) {			// 쿠키가 있으면?
+		         for (Cookie cookie : cookies) {	// 쿠키들로 반복문을 돌려서
+		            if (cookie.getName().equals("articleBadUp")) {	// 이름이 viewArticle인 쿠키가 있으면?
+		               oldCookie = cookie;	// 쿠키를 내 oldCookie에 담는다.
+		            }
+		         }
+		      }
+		    
+		      if (oldCookie != null) {				// oldCookie가 있으면 그걸 가져와서 값을 설정해준다.
+		          if (!oldCookie.getValue().contains(String.format("[%s_%s_%s]", art_id, brd_id, mem_id))) {
+		        	  int articleBadUp = as.dbArticleBadUp(article); // 추천수 올리는 메서드
+		              oldCookie.setValue(oldCookie.getValue() + String.format("[%s_%s_%s]", art_id, brd_id, mem_id));
+		              oldCookie.setPath("/");
+		              oldCookie.setMaxAge(60 * 60); // 1시간 (초 * 분 * 시간)
+		              response.addCookie(oldCookie);
+		              jsonObj.append("result", articleBadUp);
+		          } 
+		      } else {								// oldCookie가 없으면 newCookie를 새로 만든다.
+		    	  	  int articleBadUp = as.dbArticleBadUp(article); // 추천수 올리는 메서드
+		              Cookie newCookie = new Cookie("articleBadUp", String.format("[%s_%s_%s]", art_id, brd_id, mem_id));
+		              newCookie.setPath("/");
+		              newCookie.setMaxAge(60 * 60); // 1시간 (초 * 분 * 시간)
+		              response.addCookie(newCookie);
+		              jsonObj.append("result", articleBadUp);
+		      }
+		 
+		 return jsonObj.toString();
+	 }
+	 
+	// 댓글 추천 Up
+	 @RequestMapping(value="/board/replyGoodUp")
+	 @ResponseBody
+	 public String ReplyGoodUp(@AuthenticationPrincipal MemberDetails memberDetails,
+			 					 @RequestBody Article article, 
+			 					 HttpServletRequest request,
+								 HttpServletResponse response,
+								 Model model) {
+		 
+		 JSONObject jsonObj = new JSONObject();
+		 
+		 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		 int art_id = article.getArt_id();
+		 int brd_id = article.getBrd_id();
+		 int rep_id = article.getRep_id();
+		 int mem_id = memberDetails.getMemberInfo().getMem_id();
+		 
+			Cookie oldCookie = null;	// oldCookie 객체 생성
+		    Cookie[] cookies = request.getCookies();	// cookies 배열에 모든 쿠키를 담는다.
+		    if (cookies != null) {			// 쿠키가 있으면?
+		         for (Cookie cookie : cookies) {	// 쿠키들로 반복문을 돌려서
+		            if (cookie.getName().equals("replyGoodUp")) {	// 이름이 viewArticle인 쿠키가 있으면?
+		               oldCookie = cookie;	// 쿠키를 내 oldCookie에 담는다.
+		            }
+		         }
+		      }
+		    
+		      if (oldCookie != null) {				// oldCookie가 있으면 그걸 가져와서 값을 설정해준다.
+		          if (!oldCookie.getValue().contains(String.format("[%s_%s_%s_%s]", art_id, brd_id, rep_id, mem_id))) {
+		        	  int replyGoodUp = as.dbReplyGoodUp(article); // 추천수 올리는 메서드
+		              oldCookie.setValue(oldCookie.getValue() + String.format("[%s_%s_%s_%s]", art_id, brd_id, rep_id, mem_id));
+		              oldCookie.setPath("/");
+		              oldCookie.setMaxAge(60 * 60); // 1시간 (초 * 분 * 시간)
+		              response.addCookie(oldCookie);
+		              jsonObj.append("result", replyGoodUp);
+		          } 
+		      } else {								// oldCookie가 없으면 newCookie를 새로 만든다.
+		    	  	  int replyGoodUp = as.dbReplyGoodUp(article); // 추천수 올리는 메서드
+		              Cookie newCookie = new Cookie("replyGoodUp", String.format("[%s_%s_%s_%s]", art_id, brd_id, rep_id, mem_id));
+		              newCookie.setPath("/");
+		              newCookie.setMaxAge(60 * 60); // 1시간 (초 * 분 * 시간)
+		              response.addCookie(newCookie);
+		              jsonObj.append("result", replyGoodUp);
+		      }
+		 
+		 return jsonObj.toString();
+	 }
+	 
+	 
+		// 댓글 비추천 Up
+	 @RequestMapping(value="/board/replyBadUp")
+	 @ResponseBody
+	 public String ReplyBadUp(@AuthenticationPrincipal MemberDetails memberDetails,
+			 					 @RequestBody Article article, 
+			 					 HttpServletRequest request,
+								 HttpServletResponse response,
+								 Model model) {
+		 
+		 JSONObject jsonObj = new JSONObject();
+		 
+		 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		 int art_id = article.getArt_id();
+		 int brd_id = article.getBrd_id();
+		 int rep_id = article.getRep_id();
+		 int mem_id = memberDetails.getMemberInfo().getMem_id();
+		 
+			Cookie oldCookie = null;	// oldCookie 객체 생성
+		    Cookie[] cookies = request.getCookies();	// cookies 배열에 모든 쿠키를 담는다.
+		    if (cookies != null) {			// 쿠키가 있으면?
+		         for (Cookie cookie : cookies) {	// 쿠키들로 반복문을 돌려서
+		            if (cookie.getName().equals("replyBadUp")) {	// 이름이 viewArticle인 쿠키가 있으면?
+		               oldCookie = cookie;	// 쿠키를 내 oldCookie에 담는다.
+		            }
+		         }
+		      }
+		    
+		      if (oldCookie != null) {				// oldCookie가 있으면 그걸 가져와서 값을 설정해준다.
+		          if (!oldCookie.getValue().contains(String.format("[%s_%s_%s_%s]", art_id, brd_id, rep_id, mem_id))) {
+		        	  int replyBadUp = as.dbReplyBadUp(article); // 추천수 올리는 메서드
+		              oldCookie.setValue(oldCookie.getValue() + String.format("[%s_%s_%s_%s]", art_id, brd_id, rep_id, mem_id));
+		              oldCookie.setPath("/");
+		              oldCookie.setMaxAge(60 * 60); // 1시간 (초 * 분 * 시간)
+		              response.addCookie(oldCookie);
+		              jsonObj.append("result", replyBadUp);
+		          } 
+		      } else {								// oldCookie가 없으면 newCookie를 새로 만든다.
+		    	  	  int replyBadUp = as.dbReplyBadUp(article); // 추천수 올리는 메서드
+		              Cookie newCookie = new Cookie("replyBadUp", String.format("[%s_%s_%s_%s]", art_id, brd_id, rep_id, mem_id));
+		              newCookie.setPath("/");
+		              newCookie.setMaxAge(60 * 60); // 1시간 (초 * 분 * 시간)
+		              response.addCookie(newCookie);
+		              jsonObj.append("result", replyBadUp);
+		      }
+		 
+		 return jsonObj.toString();
+	 }
+	 
 }

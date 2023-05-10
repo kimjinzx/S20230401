@@ -56,7 +56,8 @@
         <table class="report_table" border="1">
             <tr>
                 <th>신고내용</th>
-                <td><textarea class="report_content" name="report_content" rows="30" cols="50" style="resize: none;"></textarea></td>
+                <td><textarea class="report_content" name="report_content" placeholder="신고 내용을 작성해주세요"
+                rows="30" cols="50" style="resize: none;"></textarea></td>
             </tr>
             <tr>
                 <td><button type="button" class="rep_submit">신고하기</button></td>
