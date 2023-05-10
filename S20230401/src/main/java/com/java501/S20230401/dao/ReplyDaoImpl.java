@@ -148,5 +148,80 @@ public class ReplyDaoImpl implements ReplyDao {
 			e.printStackTrace();
 		}
 		return dbUpdateReply;
-	}	
+	}
+	
+	// 김찬영
+	//댓글 조회
+	@Override
+	public List<Reply> replyAll(Reply reply) {
+		List<Reply> replyAll = null;
+		System.out.println("ArticleDaoImpl replyAll Start..");
+		try {
+			replyAll = session.selectList("cyReply", reply);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return replyAll;
+	}
+	//댓글 작성
+	@Override
+	public int cywriteReply(Reply reply) {
+		int reulst = 0;
+		try {
+			reulst = session.insert("cywriteReply", reply);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return reulst;
+	}
+	//댓글 삭제
+	@Override
+	public int cydeleteReply(Reply reply) {
+		int reulst = 0;
+		try {
+			reulst = session.delete("cydeleteReply", reply);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return reulst;
+	}
+	// 댓글 수정
+	@Override
+	public int updateReply(Reply reply) {
+		System.out.println(reply);
+		System.out.println("Reply 댓글 수정");
+		int result = 0;
+		try {
+			result = session.update("cyupdateReply", reply);
+		} catch (Exception e) {
+			System.out.println("updateReplyDaoImpl reply e.getMessage()->"+e.getMessage());
+		}
+		return result;
+	}
+	// 댓글 좋아요
+	@Override
+	public int replyupdategood(Reply reply) {
+		System.out.println(reply);
+		System.out.println("ReplyDaoImpl 댓글 좋아요");
+		int result = 0;
+		try {
+			result = session.update("cyUpdateGoodReply", reply);
+		} catch (Exception e) {
+			System.out.println("updateReplyDaoImpl reply e.getMessage()->"+e.getMessage());
+		}
+		return result;
+	}
+	// 댓글 싫어요
+	@Override
+	public int replyupdatebad(Reply reply) {
+		System.out.println(reply);
+		System.out.println("ReplyDaoImpl 댓글 싫어요");
+		int result = 0;
+		try {
+			result = session.update("cyUpdateBadReply", reply);
+		} catch (Exception e) {
+			System.out.println("updateReplyDaoImpl reply e.getMessage()->"+e.getMessage());
+		}
+		return result;
+	}
 }

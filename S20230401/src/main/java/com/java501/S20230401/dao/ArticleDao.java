@@ -90,16 +90,19 @@ public interface ArticleDao {
 	
 	
 	// 김찬영
-	int				totalArticle();								//총 리스트
-	List<Article> 	listArticle(Article article);				//리스트
-	Article			cyArticlereadDetail(Article article);		//상세페이지
-	Article 		cyArticlereadupdate(Article article);		//수정페이지 상세
-	Article 		detatilArticle(int art_title);				//상세페이지
-	int				cyArticleinsert(Article article);			//게시물 작성
-	int				cyArticlemodify(Article article);			//게시물 수정
-	
-	
-	
+	int				totalArticle();								
+	List<Article> 	listArticle(Article article);				
+//	List<Article> 	listReply(Article article);				
+	Article			cyArticlereadDetail(Article article);		
+	Article 		cyArticlereadupdate(Article article);		
+	Article 		detatilArticle(int art_title);				
+	int				cyArticleinsert(Article article);			
+	int				cyArticlemodify(Article article);			
+	public int 		cyArticledelete(Article article);			
+	int				updateView(Article article);
+	int				updateGood(Article article);
+	int				updateBad(Article article);
+//	public int 		totalArticleSearch(Article article);
 	
 	// 최승환
 	int				totalCustomer();

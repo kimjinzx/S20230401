@@ -401,6 +401,14 @@ public class ArticleServiceImpl implements ArticleService {
 		System.out.println("ArticleServiceImpl totalArticle totArticleCnt->" + totArticleCnt);
 		return totArticleCnt;
 	}
+	//댓글
+//	@Override
+//	public int totalArticleSearch(Article article) {
+//		System.out.println("아티클 서비스임플 댓글 스타트");
+//		int totalArticleSearch = ad.totalArticle();
+//		System.out.println("ArticleServiceImpl totlaArticleSearch totalArticleSearch->" + totalArticleSearch);
+//		return totalArticleSearch;
+//	}
 	//리스트 조회
 	@Override
 	public List<Article> listArticle(Article article) {
@@ -410,6 +418,7 @@ public class ArticleServiceImpl implements ArticleService {
 		System.out.println("ArticleServiceImpl listArticle articleList.size()->" +articleList.size());
 		return articleList;
 	}
+
 	// 상세페이지 조회
 	@Override
 	public Article cyArticlereadDetail(Article article) {
@@ -449,6 +458,36 @@ public class ArticleServiceImpl implements ArticleService {
 		int result = ad.cyArticleinsert(article);
 		return result;
 	}
+	//상세페이지에서 삭제하기
+	@Override
+	public Article cyArticledelete(Article article) {
+		System.out.println("ArticleServiceImpl delete...");
+		int result = ad.cyArticledelete(article);
+		return null;
+	}
+	//조회수 증가
+	@Override
+	public int updateView(Article article) {
+		System.out.println("ArticleServiceImpl updateView");
+		int result = ad.updateView(article);
+		return result;
+	}
+	// 게시물 좋아요
+	@Override
+	public int updateGood(Article article) {
+		System.out.println("ArticleServiceImpl updateView");
+		int result = ad.updateGood(article);
+		return result;
+	}
+	// 게시물 싫어요
+	@Override
+	public int updateBad(Article article) {
+		System.out.println("ArticleServiceImpl updateView");
+		int result = ad.updateBad(article);
+		return result;
+	}
+
+
 
 	// 최승환
 	@Override

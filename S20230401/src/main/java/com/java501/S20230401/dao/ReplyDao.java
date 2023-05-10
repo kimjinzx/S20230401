@@ -34,4 +34,13 @@ public interface ReplyDao {
 	int 	dbUpdateReply(Reply reply);
 	
 
+	
+	// 김찬영
+	List<Reply> 	replyAll(Reply reply);	
+	int 			cywriteReply(Reply reply);
+	int 			cydeleteReply(Reply reply);
+	int 			updateReply(Reply reply);
+	int				replyupdategood(Reply reply);
+	int 			replyupdatebad(Reply reply);
+	
 }

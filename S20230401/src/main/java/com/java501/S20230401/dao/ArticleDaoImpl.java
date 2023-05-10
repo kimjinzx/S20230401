@@ -660,13 +660,6 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
 	// 김찬영
 	// 총리스트
 	@Override
@@ -683,6 +676,20 @@ public class ArticleDaoImpl implements ArticleDao {
 		
 		return totArticleCount;
 	}
+	//검색
+//	@Override
+//	public int totalArticleSearch(Article article) {
+//		int searchArticleCount = 0;
+//		System.out.println("아티클다오임플 검색..");
+//		try {
+//			searchArticleCount = session.selectOne("cyArticleKeyword", article);
+//			System.out.println("아티클임플 서치아티클 카운트 ->" + searchArticleCount);
+//		} catch (Exception e) {
+//			System.out.println("아티클 임플 서치아티클 Exception->"+ e.getMessage());
+//		}
+//		return searchArticleCount;
+//	}
+	
 	// 리스트조회
 	@Override
 	public List<Article> listArticle(Article article) {
@@ -695,6 +702,8 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return articleList;
 	}
+	
+
 	//상세페이지
 	@Override
 	public Article cyArticlereadDetail(Article article) {
@@ -759,10 +768,64 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return result;
 	}
+	@Override
+	public int cyArticledelete(Article article) {
+		System.out.println(article);
+		System.out.println("ArticleDaoImpl delete Start...");
+		int result = 0;
+		try {
+			result = session.delete("cyArticledelete", article);
+		} catch (Exception e) {
+			System.out.println("ArticleImpl article e.getMessage()->"+e.getMessage());
+		}
+		return result;
+	}
+		//조회수
+		@Override
+		public int updateView(Article article) {
+			System.out.println(article);
+			System.out.println("ArticleDaoImpl updateView Start..article");
+			int result = 0;
+			try {
+				result = session.update("cyUpdateView", article);
+			} catch (Exception e) {
+				System.out.println("ArticleImpl article e.getMessage()->"+e.getMessage());
+			}
+			return result;
+		}
+		//추천
+		@Override
+		public int updateGood(Article article) {
+			System.out.println(article);
+			System.out.println("ArticleDaoImpl updateView Start..article");
+			int result = 0;
+			try {
+				result = session.update("cyUpdateGood", article);
+			} catch (Exception e) {
+				System.out.println("ArticleImpl article e.getMessage()->"+e.getMessage());
+			}
+			return result;
+		}
+		//비추천
+		@Override
+		public int updateBad(Article article) {
+			System.out.println(article);
+			System.out.println("ArticleDaoImpl updateView Start..article");
+			int result = 0;
+			try {
+				result = session.update("cyUpdateBad", article);
+			} catch (Exception e) {
+				System.out.println("ArticleImpl article e.getMessage()->"+e.getMessage());
+			}
+			return result;
+		}
 	
 	
-	
-	
+		
+		
+		
+		
+		
 	
 	// 최승환
 	@Override
@@ -793,6 +856,8 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return customerList;	
 	}
+	
+	
 	
 	@Override
 	public Article detailCustomer(Article article) {
@@ -830,5 +895,4 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return result;
 	}
-
 }

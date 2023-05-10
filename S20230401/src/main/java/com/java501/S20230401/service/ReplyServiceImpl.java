@@ -83,4 +83,43 @@ public class ReplyServiceImpl implements ReplyService {
 		return rd.dbUpdateReply(reply);
 	}
 	
+	//김찬영
+	// 댓글 조회
+	@Override
+	public List<Reply> replyAll(Reply reply) {
+		/* List<Reply> replyAll = null; */
+		return rd.replyAll(reply);
+	}
+	//댓글 작성
+	@Override
+	public int cywriteReply(Reply reply) {
+		return rd.writeReply(reply);
+	}
+	//댓글 삭제
+	@Override
+	public int cydeleteReply(Reply reply) {
+		return rd.deleteReply(reply);
+	}
+	//댓글 수정
+	@Override
+	public int cyupdateReply(Reply reply) {
+		System.out.println("댓글서비스 임플");
+		int result = rd.updateReply(reply);
+		return result;
+	}
+	//댓글 좋아요
+	@Override
+	public int replyupdategood(Reply reply) {
+		System.out.println("ReplyServiceImpl 댓글 좋아요");
+		int result = rd.replyupdategood(reply);
+		return result;
+	}
+	//댓글 싫어요
+	@Override
+	public int replyupdatebad(Reply reply) {
+		System.out.println("ReplyServiceImpl 댓글 싫어요");
+		int result = rd.replyupdatebad(reply);
+		return result;
+	}
+	
 }

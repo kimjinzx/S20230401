@@ -48,7 +48,7 @@ import com.java501.S20230401.service.ReplyService;
 
 import lombok.RequiredArgsConstructor;
 
-//@Controller
+@Controller
 @RequiredArgsConstructor
 public class ArticleController {
 	private final ArticleService as;
@@ -144,13 +144,13 @@ public class ArticleController {
 	}
 
 	@PostMapping(value = "/board/{boardName}/writeProc")
-	public String writeArticleProcess(Article article, @RequestParam int category,
+	public String writeArticleProcess(Article article, @RequestParam int brd_idLink,
 									  @PathVariable String boardName,
 									  String articleEditor,
 									  @AuthenticationPrincipal MemberDetails memberDetails) {
 		article.setMem_id(memberDetails.getMemberInfo().getMem_id());
 		int result = as.insertArticle(article);
-		return "redirect:/board/" + boardName + "?brd_id=" + category;
+		return "redirect:/board/" + boardName + "?brd_id=" + brd_idLink;
 	}
 	
 	@GetMapping(value = "/board/{boardName}/{art_id}")

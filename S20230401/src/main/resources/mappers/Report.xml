@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.java501.S20230401.model.ReportMapper">
+
+
+ 	<insert id="cyReportinsert" parameterType="Report">
+		insert into report
+        	(report_id, mem_id, report_content, report_date, report_status, report_reason)
+		values
+			((select max(report_id) + 1 from report), #{mem_id}, #{report_content}, sysdate, 1, null)
+	</insert> 
+
+
+
+</mapper>
