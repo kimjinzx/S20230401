@@ -47,7 +47,7 @@ $(document).ready(function(){
 		    var minDate = year + "-" + month + "-" + day;
 		    document.getElementById("dateTimeLocal").value = minDate;
 		  }
-		}
+		} 
 	
 </script>
 </head>
