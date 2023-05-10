@@ -132,8 +132,46 @@ public class ReplyDaoImpl implements ReplyDao {
 		} catch (Exception e) {
 			System.out.println("댓글에러"+e.getMessage());
 		}
+		System.out.println("댓글다오임플 리플값"+ reply);
 		return listReply;
 	}
+	
+	@Override
+	public int customerWriteReply(Reply reply) {
+		int cReplyWrite = 0;
+		System.out.println("ArticleDaoImpl customerWriteReply start");
+		try {
+			cReplyWrite = session.insert("shWriteReply", reply);
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl customerWriteReply Exception->"+e.getMessage());
+		}
+		return cReplyWrite ;
+	}
+	@Override
+	public int customerDeleteReply(Reply reply) {
+		int deleteResult = 0;
+		System.out.println("ArticleDaoImpl customerDeleteReply start");
+		try {
+			deleteResult = session.delete("shDeleteReply", reply);
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl customerDeleteReply Exception->"+e.getMessage());
+		}
+		return deleteResult;
+	}
+	@Override
+	public int customerUpdateReply(Reply reply) {
+		int upRResult = 0;
+		System.out.println("ArticleDaoImpl customerUpdateReply start");
+		try {
+			upRResult = session.update("shUpdateReply", reply);
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl customerUpdateReply Exception->"+e.getMessage());
+		}
+		return upRResult;
+	}	
+	
+	
+	
 	
 	// 유현규
 	@Override

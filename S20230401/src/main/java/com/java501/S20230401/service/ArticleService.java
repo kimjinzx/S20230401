@@ -105,10 +105,14 @@ public interface ArticleService {
 //	public int 			totalArticleSearch(Article article);
 	
 	// 최승환
-	int 				totalCustomer();
 	List<Article> 		listCustomer(Article article);
 	Article 			detailCustomer(Article article);
 	List<Article> 		listCustomerMenu(Article article);
-	public int 			insertCustomer(Article article);
+	int		 			insertCustomer(Article article);
+	int 				updateCustomer(Article article);
+	int 				deleteCustomer(Article article);
+	Integer 			customerViewCount(Article article);
+	List<Article> 		shSearchCustomer(Article article);
+	int 				totalCustomer(Article article);
 
 }

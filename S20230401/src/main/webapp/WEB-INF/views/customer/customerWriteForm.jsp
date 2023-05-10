@@ -167,24 +167,43 @@
 	</aside>
 	<main>
 		<!-- 내용작성 -->
-		<div align="center">
+		<div class="container" align="center">
 			<h2>고객센터 글쓰기</h2>
-			<form action="writeCustomer" method="get" name="frm">
+			<form action="writeCustomer" method="post" name="frm">
 				<table>
+					<tr><th>작성자 </th>
+					<td><img src="${pageContext.request.contextPath}/uploads/profile/${memberInfo.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">${memberInfo.mem_nickname }<td>
+					<input type="hidden" name="mem_id" value="${memberInfo.mem_id}">
+					<input type="hidden" name="category" value="${category}">
+					
+					<tr><th>분류:</th><td>
+					<select name="brd_id">
+						<option value="1510">공지</option>
+						<option value="1520">Q&amp;A</option>
+						<option value="1530">이벤트</option>
+						<option value="1540">문의/건의</option>
+					</select><td>
 					
 					<tr><th>제목</th><td>
 					<input type="text" name="art_title" placeholder="제목을 입력해 주세요" required="required">
-	
-			
-					<tr><th>작성자</th><td>
-					<input type="text" name="mem_nickname"  value="${mem_nickname}" readonly>
 	
 				
 					<tr><th>내용</th><td>
 					<textarea rows="20" cols="50" name="art_content" placeholder="내용을 입력해 주세요" required="required"></textarea>
 					
+					
+					<tr><th>태그1</th><td>
+					<input type="text" name="art_tag1" class="tag"><br>
+					<tr><th>태그2</th><td>
+					<input type="text" name="art_tag2" class="tag"><br>
+					<tr><th>태그3</th><td>
+					<input type="text" name="art_tag3" class="tag"><br>
+					<tr><th>태그4</th><td>
+					<input type="text" name="art_tag4" class="tag"><br>
+					<tr><th>태그5</th><td>
+					<input type="text" name="art_tag5" class="tag"><br>
 					<tr>
-					<td colspan="2">
+					<td colspan="2" align="right">
 					<input type="submit" value="등록" />
 					<input type="button" value="목록" onclick="location.href='${pageContext.request.contextPath}/board/customer?category=1500'"/>
 					</td>

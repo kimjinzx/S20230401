@@ -523,14 +523,9 @@ public class ArticleServiceImpl implements ArticleService {
 
 
 
+	
+	
 	// 최승환
-	@Override
-	public int totalCustomer() {
-		System.out.println("ArticleServiceImpl Start totalCustomer..." );
-		int totCustomerCnt = ad.totalCustomer();
-		System.out.println("ArticleServiceImpl totalCustomer totCustomerCnt->" + totCustomerCnt);
-		return totCustomerCnt;
-	}
 	@Override
 	public List<Article> listCustomer(Article article) {
 		List<Article> customerList = null;
@@ -558,5 +553,39 @@ public class ArticleServiceImpl implements ArticleService {
 		System.out.println("ArticleServiceImpl insertCustomer Start");
 		result = ad.insertCustomer(article);
 		return result;
+	}
+	@Override
+	public int updateCustomer(Article article) {
+		int updateCustomer = 0;
+		System.out.println("ArticleServiceImpl updateCustomer Start");
+		updateCustomer = ad.updateCustomer(article);
+		return updateCustomer;
+	}
+	@Override
+	public int deleteCustomer(Article article) {
+		int dresult = 0;
+		System.out.println("ArticleServiceImpl deleteCustomer Start");
+		dresult = ad.deleteCustomer(article);
+		return dresult;
+	}
+	@Override
+	public Integer customerViewCount(Article article) {
+		return ad.customerViewCount(article);
+	}
+	@Override
+	public int totalCustomer(Article article) {
+		System.out.println("ArticleServiceImpl Start int total...");
+		int totCustomerCnt = ad.totalCustomer(article);
+		System.out.println("ArticleServiceImpl totalCustomer totCustomerCnt-> " + totCustomerCnt);
+
+		return totCustomerCnt;
+	}
+	@Override
+	public List<Article> shSearchCustomer(Article article) {
+		List<Article> shCustomerSearch = null;
+		System.out.println("ArticleServiceImpl shSearchCustomer Start..." );
+		shCustomerSearch = ad.shCustomerSearch(article);
+		System.out.println("ArticleServiceImpl shSearchCustomer shCustomerSearch size()->" +shCustomerSearch.size());
+		return shCustomerSearch;	
 	}
 }

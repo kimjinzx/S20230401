@@ -72,6 +72,28 @@ public class ReplyServiceImpl implements ReplyService {
 		System.out.println("댓글 서비스 시작"+ listReply);
 		return listReply;
 	}
+	@Override
+	public int customerWriteReply(Reply reply) {
+		int cReplyWrite = 0;
+		System.out.println("ArticleServiceImpl customerWriteReply Start");
+		cReplyWrite = rd.customerWriteReply(reply);
+		return cReplyWrite;
+	}
+	@Override
+	public int customerDeleteReply(Reply reply) {
+		int deleteResult = 0;
+		System.out.println("ArticleServiceImpl customerWriteReply Start");
+		deleteResult = rd.customerDeleteReply(reply);
+		return deleteResult;
+	}
+	@Override
+	public int customerUpdateReply(Reply reply) {
+		int upRResult = 0;
+		System.out.println("ArticleServiceImpl customerUpdateReply Start");
+		upRResult = rd.customerUpdateReply(reply);
+		return upRResult;
+	}
+	
 	
 	// 유현규
 	@Override

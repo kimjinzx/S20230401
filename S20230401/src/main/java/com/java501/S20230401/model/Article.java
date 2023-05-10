@@ -128,4 +128,5 @@ public class Article {
 	// 최승환
 	// 조인
 	private Integer		rep_count;
+	private String		search_keyword;
 }

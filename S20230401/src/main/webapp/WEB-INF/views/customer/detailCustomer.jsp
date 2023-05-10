@@ -16,6 +16,12 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/presets.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/layout.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/index.css">
+<style>
+	td {
+        text-align: center;
+      }
+</style>
+
 </head>
 <body>
 	<header>
@@ -167,36 +173,112 @@
 	</aside>
 	<main>
 		<!-- detailCustomer코드 -->
-	<div class="container" align="center">
-	<h2>공지사항</h2>
-	<table border="1" style="width: 500px;">
-		<tr><th>작성자</th><td>${article.mem_nickname}</td></tr>
-		<tr><th>이미지</th><td><img src="${pageContext.request.contextPath}/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;"></td></tr>
-		<tr><th>작성일</th><td><fmt:formatDate value="${article.art_regdate }" pattern="yy-MM-dd"/></td></tr>
-		<tr><th>조회수</th><td>${article.art_read}</td></tr>
-		<tr><th>제목</th><td >${article.art_title }</td></tr>
-		<tr><th height="300">내용</th><td valign="top">${article.art_content }</td></tr>
-		<tr><td colspan="2">
-			<input type="button" value="수정" onclick="location.href=''">
-			<input type="button" value="삭제" onclick="location.href=''">
-			<input type="button" value="목록" onclick="location.href='${pageContext.request.contextPath}/board/customer?category=${category}'"></td>
-		<tr><th>추천수</th><td>${article.art_good}</td></tr>
-		<tr><th>비추천수</th><td>${article.art_bad}</td></tr>
-	</table>
-	
-		<p>${replyCount}개의 댓글 <button>댓글 작성</button></p>
-		
-	<c:forEach var="reply" items="${replyList }">
-	<table border="1">
-		<tr><th>작성자</th><th>프사</th><th>댓글내용</th><th>추천</th><th>비추천</th><th>작성시간</th></tr>
-		<tr><td>${reply.mem_nickname}</td>
-		<td><img src="${pageContext.request.contextPath}/${reply.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;"></td>
-		<td>${reply.rep_content }</td><td>${reply.rep_good }</td><td>${reply.rep_bad }</td>
-		<td><fmt:formatDate value="${reply.rep_regdate }" pattern="yy-MM-dd"/></td>
-	</table>
-	</c:forEach>
-	
-	</div>
+		<div align="center">
+		<h2>작성글</h2>
+		<table border="1" style="width:500px; table-layout:fixed; word-break:break-all;">
+		<tbody>
+			<tr>
+				<th>작성자</th>
+				<td colspan="3"><img src="${pageContext.request.contextPath}/uploads/profile/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">${article.mem_nickname}</td>
+			</tr>
+			<tr>
+				<th>작성일</th>
+				<td colspan="3"><fmt:formatDate value="${article.art_regdate }" pattern="yy-MM-dd HH:mm:ss"/></td>
+			</tr>
+			<tr>
+				<th>조회수</th>
+				<td colspan="3">${article.art_read}</td>
+			</tr>
+			<tr>
+				<th>제목</th>
+				<td colspan="3">${article.art_title }</td>
+			</tr>
+			<tr>
+				<th height="300">내용</th>
+				<td colspan="3" valign="top">${article.art_content }</td>
+			</tr>
+			<tr>
+				<th>태그</th>
+				<td colspan="3">
+				${article.art_tag1 != '' ? article.art_tag1 : ''}
+	  			${article.art_tag2 != '' ? article.art_tag2 : ''}
+	  			${article.art_tag3 != '' ? article.art_tag3 : ''}
+	  			${article.art_tag4 != '' ? article.art_tag4 : ''}
+	  			${article.art_tag5 != '' ? article.art_tag5 : ''}
+  				</td>
+  			</tr>
+ 			<tr>
+	 			<td colspan="2">${article.art_good }<br><button>추천</button></td>
+				<td colspan="2">${article.art_bad }<br><button>비추천</button></td>
+  			</tr>
+			</tbody>
+			</table>
+  			
+<%-- 			<tr><th>추천</th><td>${article.art_good}</td></tr>
+			<tr><th>비추천수</th><td>${article.art_bad}</td></tr> --%>
+		<p align= "right">  			
+  		<c:choose>
+			<c:when test="${memberInfo.mem_id != null && memberInfo.mem_id == article.mem_id }">
+				<input type="button" value="글 수정" onclick="location.href='${pageContext.request.contextPath}/board/customer/updateFormC?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category}'">
+				<input type="button" value="글 삭제" onclick="location.href='${pageContext.request.contextPath}/board/customer/deleteCustomer?art_id=${article.art_id }&brd_id=${article.brd_id }&category=${category}'">
+			</c:when>
+		</c:choose>
+  				<input type="button" value="목록" onclick="location.href='${pageContext.request.contextPath}/board/customer?category=${category}'">
+		</p>
+		<br>
+		<!-- 댓글 -->
+		<div>
+		${replyCount}개의 댓글
+		<br>
+		<c:choose>
+			<c:when test="${memberInfo.mem_id != null}">
+				<form action="shcustomerWriteReply" method="post" name="reply">
+		<div>
+					<table border="1" style="width:500px; table-layout:fixed; word-break:break-all;">
+					<tr>
+						<td width="70px">
+							<img src="${pageContext.request.contextPath}/uploads/profile/${memberInfo.mem_image}" alt="예시" style="max-height: 30px; max-width: 30px;">${memberInfo.mem_nickname}
+						</td>
+						<td width="300px">
+							<textarea name="rep_content" placeholder="내용을 입력해 주세요" required="required" style="width:100%; border: 0; resize: none;"></textarea>
+						</td>
+						<td>
+							<p align="right"><input type="submit" value="댓글작성"></p>
+						</td>
+					</tr>
+					</table>
+						<input type="hidden" name="mem_id" value="${memberInfo.mem_id}">								
+						<input type="hidden" name="rep_id" value="${reply.rep_id}">					
+						<input type="hidden" name="art_id" value="${article.art_id}">									
+						<input type="hidden" name="brd_id" value="${article.brd_id}">
+		</div>									
+				</form>
+			</c:when>
+		</c:choose>
+
+		<!-- 댓글목록 -->
+		<div>
+			<c:forEach var="reply" items="${replyList }">
+				<table border="1" style="width:500px; table-layout:fixed; word-break:break-all;">
+					<tr><td width="70px"><img src="${pageContext.request.contextPath}/uploads/profile/${reply.mem_image}" alt="예시" style="max-height: 30px; max-width: 30px;">${reply.mem_nickname}</td>
+					<td width="300px">${reply.rep_content }</td>
+					<td width="25px">${reply.rep_good }</td>
+					<td width="25px">${reply.rep_bad }</td>
+					<td width="70px"><fmt:formatDate value="${reply.rep_regdate }" pattern="yy-MM-dd HH:mm:ss"/>
+				</table>
+
+			<c:choose>
+				<c:when test="${memberInfo.mem_id == reply.mem_id }">
+				<p align="right">
+				<input type="button" value="댓글수정" onclick="location.href='${pageContext.request.contextPath}/board/customer/customerUpdateReply?art_id=${article.art_id }&rep_id=${reply.rep_id }&brd_id=${article.brd_id }&category=${category}'">
+				<input type="button" value="댓글삭제" onclick="location.href='${pageContext.request.contextPath}/board/customer/customerDeleteReply?art_id=${article.art_id }&rep_id=${reply.rep_id }&brd_id=${article.brd_id }&category=${category}'">
+				</p>
+				</c:when>
+			</c:choose>
+			</c:forEach>
+		</div>
+		</div>
+		</div>
 
 		<!-- 여기까지 -->
 

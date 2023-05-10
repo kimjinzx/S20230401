@@ -233,22 +233,38 @@
 
 	<!-- 최승환 -->
 	<select id="shcountReply" parameterType="Reply" resultType="int">
-	<![CDATA[
 		SELECT COUNT(*) as rep_cnt
 		FROM reply
-		WHERE art_id=#{art_id} and brd_id=#{brd_id}
-		]]>
+		WHERE art_id=#{art_id} and brd_id=#{brd_id} AND isdelete = 0
 	</select>
 	
 	<select id="shlistReply" parameterType="Reply" resultType="Reply">
-	<![CDATA[
-		  SELECT reply.*, member.*
-			FROM reply
-			JOIN member ON reply.mem_id = member.mem_id
-			WHERE reply.art_id = #{art_id} AND reply.brd_id = #{brd_id}
-	]]>
+		SELECT reply.*, member.*
+		FROM reply
+		JOIN member ON reply.mem_id = member.mem_id
+		WHERE reply.art_id = #{art_id} AND reply.brd_id = #{brd_id} AND reply.isdelete = 0
 	</select>
 	
+	<insert id="shWriteReply" parameterType="Reply">
+		INSERT INTO reply (art_id, brd_id, rep_id, mem_id, rep_content, rep_regdate, rep_good, rep_bad, rep_parent, rep_step, isdelete, report_id) 
+    	VALUES (#{art_id}, #{brd_id},
+			    	(SELECT NVL(max(rep_id), 0)+ 1
+				    FROM reply
+				    WHERE art_id = #{art_id} AND brd_id = #{brd_id}),  
+				    #{mem_id}, #{rep_content}, SYSDATE, 0, 0, 1, 1, 0, NULL)
+	</insert>
+	
+	<insert id="shDeleteReply" parameterType="Reply">
+		UPDATE reply
+		SET isdelete = 1
+		WHERE art_id = #{art_id} AND brd_id = #{brd_id} AND rep_id = #{rep_id}
+	</insert>
+	
+	<update id="shUpdateReply" parameterType="Reply">
+		UPDATE reply
+		SET	rep_content = #{rep_content}
+		WHERE art_id = #{art_id} AND brd_id = #{brd_id} AND rep_id = #{rep_id}
+	</update>
 	
 	
 	<!-- 유현규 -->
