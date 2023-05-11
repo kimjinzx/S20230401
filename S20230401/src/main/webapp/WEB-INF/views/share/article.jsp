@@ -125,7 +125,9 @@
 				<div class="share-trdHeader">
 					<span>${article.trade.trd_cost > 0 ? article.trade.trd_cost : '무료나눔'}</span>
 					<span>가입일 : <button class="btn" type="button"><fmt:formatDate value="${article.art_regdate}" pattern="yy-MM-dd"/></button></span>
-					<span><button>마감일 : <fmt:formatDate value="${article.trade.trd_enddate}" pattern="yyyy-MM-dd"/></button></span>
+					<span id="trd_enddate"><button>마감일 : <fmt:formatDate value="${article.trade.trd_enddate}" pattern="yyyy-MM-dd HH:mm:ss"/></button></span>
+					<div id="remaining_time"></div>
+
 				</div>
 				<div class="share-trdContent">
 					<span>지역제한 : ${article.trade.region.reg_name}</span>
