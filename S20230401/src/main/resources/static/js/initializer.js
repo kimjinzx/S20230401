@@ -67,8 +67,8 @@ $(() => {
 	
 	
 	/* Toggle And Fix Button */
-	//$('.toggle').attr('data-toggle', "false");
-	$('.toggle').load(e => $(e.target).attr('data-toggle', "false"));
+	$('.toggle').attr('data-toggle', "false");
+	//$('.toggle').load(e => $(e.target).attr('data-toggle', "false"));
 	$('.toggle').on('click', e => {
 		if (e.target.getAttribute('data-toggle') == "false") e.target.setAttribute('data-toggle', "true");
 		else e.target.setAttribute('data-toggle', "false");
