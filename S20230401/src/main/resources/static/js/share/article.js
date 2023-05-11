@@ -361,3 +361,22 @@ function reportCheck(report_id){
         throw error;
     });
 }
+
+window.onload = function() {
+    var endDate = new Date();
+    endDate.setHours(endDate.getHours() + 168); // 예시로 7일 후 종료로 설정함
+    var x = setInterval(function() {
+      var now = new Date().getTime();
+      var distance = endDate - now;
+      if (distance < 0) {
+        clearInterval(x);
+        document.getElementById("remaining_time").innerHTML = "EXPIRED";
+        return;
+      }
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+      document.getElementById("remaining_time").innerHTML = days + "일 " + hours + "시간 " + minutes + "분 " + seconds + "초 ";
+    }, 1000);
+  }
