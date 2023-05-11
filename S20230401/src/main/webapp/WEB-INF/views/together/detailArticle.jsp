@@ -477,7 +477,7 @@
 		  return false;
 	  }
 	}
-	
+
 		
 </script>
 
@@ -506,22 +506,22 @@
 
 	<p>
 		<input type="button" value="전체"
-			onclick="${pageContext.request.contextPath}location.href='together?category=1000'">
+			onclick="location.href='${pageContext.request.contextPath }/board/together?category=1000';">
 		<input type="button" value="밥 & 카페"
-			onclick="${pageContext.request.contextPath}location.href='together?category=1010'">
+			onclick="location.href='${pageContext.request.contextPath }/board/together?category=1010';">
 		<input type="button" value="스포츠"
-			onclick="${pageContext.request.contextPath}location.href='together?category=1020'">
+			onclick="location.href='${pageContext.request.contextPath }/board/together?category=1020';">
 		<input type="button" value="쇼핑"
-			onclick="${pageContext.request.contextPath}location.href='together?category=1030'">
+			onclick="location.href='${pageContext.request.contextPath }/board/together?category=1030';">
 		<input type="button" value="문화생활"
-			onclick="${pageContext.request.contextPath}location.href='together?category=1040'">
+			onclick="location.href='${pageContext.request.contextPath }/board/together?category=1040';">
 		<input type="button" value="취미생활"
-			onclick="${pageContext.request.contextPath}location.href='together?category=1050'">
+			onclick="location.href='${pageContext.request.contextPath }/board/together?category=1050';">
 		<input type="button" value="기타"
-			onclick="${pageContext.request.contextPath}location.href='together?category=1060'">
+			onclick="location.href='${pageContext.request.contextPath }/board/together?category=1060';">
 	<p>
 		<input type="button" value="목록"
-			onclick="${pageContext.request.contextPath }location.href='together?category=1000';">
+			onclick="location.href='${pageContext.request.contextPath }/board/together?category=1000';">
 		<c:choose>
 			<c:when test="${memberInfo.mem_id == detailArticle.mem_id}">
 				<input type="button" value="수정하기"

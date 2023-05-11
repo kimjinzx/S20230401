@@ -93,6 +93,8 @@ public interface ArticleService {
 	int 			dbArticleBadUp(Article article);
 	int 			dbReplyGoodUp(Article article);
 	int 			dbReplyBadUp(Article article);
+	int 			dbCondArticleCnt(Article article);
+	List<Article>	dbListSearchArticle(Article article);
 	
 	
 	

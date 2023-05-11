@@ -406,6 +406,18 @@ public class ArticleServiceImpl implements ArticleService {
 		int dbReplyBadUp = ad.dbReplyBadUp(article);
 		return dbReplyBadUp;
 	}
+	
+	@Override
+	public int dbCondArticleCnt(Article article) {
+		int dbCondArticleCnt = ad.dbCondArticleCnt(article);
+		return dbCondArticleCnt;
+	}
+	@Override
+	public List<Article> dbListSearchArticle(Article article) {
+		List<Article> dbListSearchArticle = null;
+		dbListSearchArticle = ad.dbListSearchArticle(article);
+		return dbListSearchArticle;
+	}
 
 	
 	

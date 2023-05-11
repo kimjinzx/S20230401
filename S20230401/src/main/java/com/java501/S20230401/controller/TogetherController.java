@@ -15,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -75,13 +76,14 @@ public class TogetherController {
 	
 	
 
-	@RequestMapping(value = "/board/detailArticle")
-	public String detailArticle(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
+	@RequestMapping(value = "/board/together/{art_number}")
+	public String detailArticle(@AuthenticationPrincipal MemberDetails memberDetails,
+								 @PathVariable String art_number,						// 세션의 로그인 유저 정보
 								 Article article, Join join, 
 								 HttpServletRequest request,
 								 HttpServletResponse response,
 								 Model model) {
-
+		article.setArt_id(Integer.parseInt(art_number));
 		if (memberDetails != null)
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		
@@ -288,7 +290,7 @@ public class TogetherController {
 
 		model.addAttribute("insertReply", insertReply);
 
-		return "redirect:/board/detailArticle?art_id=" + art_id + "&brd_id=" + brd_id;
+		return "redirect:/board/together/" + art_id +"?brd_id="+ brd_id + "&category=1000";
 	}
 	
 	
@@ -305,7 +307,7 @@ public class TogetherController {
 		int brd_id = reply.getBrd_id();
 		model.addAttribute("deleteReply", deleteReply);
 
-		return "redirect:/board/detailArticle?art_id=" + art_id + "&brd_id=" + brd_id;
+		return "redirect:/board/together/" + art_id +"?brd_id="+ brd_id + "&category=1000";
 	}
 
 	// 댓글 수정
@@ -725,5 +727,40 @@ public class TogetherController {
 		 
 		 return jsonObj.toString();
 	 }
+	 
+	 @RequestMapping(value = "board/listSearch")
+		public String listSearch(@AuthenticationPrincipal MemberDetails memberDetails,
+				Article article, int category, String currentPage, Model model) {
+			
+         System.out.println("board/listSearch start...");
+			if (memberDetails != null)
+				model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+			
+			// category 값을 brd_id에 할당.
+			article.setBrd_id(category);
+			int number = article.getBrd_id();
+			
+	        System.out.println("board/listSearch number->"+number);
+			// Article 전체 Count
+			int condArticleCnt = as.dbCondArticleCnt(article);
+	        System.out.println("board/listSearch condArticleCnt->"+condArticleCnt);
+			// Paging 작업
+			Paging page = new Paging(condArticleCnt, currentPage);
+			// Parameter Article --> Page만 추가 Setting
+			article.setStart(page.getStart()); // 시작시 1
+			article.setEnd(page.getEnd()); // 시작시 10
+
+			List<Article> listSearchArticle = as.dbListSearchArticle(article);
+	        System.out.println("board/listSearch listSearchArticle->"+listSearchArticle);
+	        
+	        
+			model.addAttribute("article", article);
+			model.addAttribute("totalArticle", condArticleCnt);
+			model.addAttribute("listArticle", listSearchArticle);
+			model.addAttribute("category", number);
+			model.addAttribute("page", page);
+
+			return "together/listArticle";
+		}
 	 
 }

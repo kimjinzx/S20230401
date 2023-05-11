@@ -719,6 +719,33 @@ public class ArticleDaoImpl implements ArticleDao {
 		return dbReplyBadUp;
 	}
 	
+	@Override
+	public int dbCondArticleCnt(Article article) {
+		int dbCondArticleCnt = 0;
+		try {
+			dbCondArticleCnt = session.selectOne("dbCondArticleCnt", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dbCondArticleCnt;
+	}
+	
+	
+	@Override
+	public List<Article> dbListSearchArticle(Article article) {
+		List<Article> dbListSearchArticle = null;
+		try {
+			dbListSearchArticle = session.selectList("dbListSearchArticle", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dbListSearchArticle;
+	}
+	
+	
+	
+	
+	
 	
 	
 	// 김찬영

@@ -177,6 +177,17 @@
 		<h1>함께 해요 게시판</h1>
 		<p>
 		<p>
+		<form action="listSearch">
+			<input type="hidden" name="category" value="${category }">
+	   		<select name="search">
+					<option value="s_art_title">제목</option>
+					<option value="s_mem_nickname">닉네임</option>
+			</select> 
+	   
+	        <input type="text" name="keyword" placeholder="검색어을 입력하세요">
+	        <button type="submit">검색 </button><p>
+		</form>
+		    
 			<c:choose>
 				<c:when test="${memberInfo.mem_id != null}">
 				<input type="button" value="글쓰기" onclick="${pageContext.request.contextPath}location.href='writeFormArticle'">
@@ -199,7 +210,7 @@
 				onclick="location.href='${pageContext.request.contextPath}/board/together?category=1060'">
 
 
-			<c:set var="num" value="${page.total-page.start+1 }"></c:set>
+		<c:set var="num" value="${page.total-page.start+1 }"></c:set>
 		<table>
 			<tr>
 				<th>거래상태</th>
@@ -227,7 +238,7 @@
 			</tr>
 			<c:forEach var="art" items="${listArticle }">
 					<input type="hidden" value ="${art.trd_id }">
-				<tr style="cursor: pointer;" onclick="location.href='detailArticle?brd_id=${art.brd_id}&art_id=${art.art_id}';">
+				<tr style="cursor: pointer;" onclick="location.href='${pageContext.request.contextPath }/board/together/${art.art_id}?brd_id=${art.brd_id }&category=1000';">
 					<td>${art.c1_comm_value }</td>
 					<td>${art.art_tag1 }</td>
 					<td>${art.art_tag2 }</td>
@@ -263,16 +274,43 @@
 		</table>
 
 		<c:if test="${page.startPage > page.pageBlock }">
-			<a
-				href="${pageContext.request.contextPath}/board/together?category=${category }&currentPage=${page.startPage-page.pageBlock}">[이전]</a>
+			<c:choose>
+				<c:when test="${param.search == 's_art_title'}">
+					<a href="${pageContext.request.contextPath}/board/listSearch?category=${category }&search=s_art_title&keyword=${article.keyword }&currentPage=${page.startPage-page.pageBlock}">[이전]</a>	
+				</c:when>
+				<c:when test="${param.search == 's_mem_nickname'}">
+					<a href="${pageContext.request.contextPath}/board/listSearch?category=${category }&search=s_mem_nickname&keyword=${article.keyword }&currentPage=${page.startPage-page.pageBlock}">[이전]</a>
+				</c:when>
+				<c:otherwise>
+					<a href="${pageContext.request.contextPath}/board/together?category=${category }&currentPage=${page.startPage-page.pageBlock}">[이전]</a>
+				</c:otherwise>
+			</c:choose>
 		</c:if>
 		<c:forEach var="i" begin="${page.startPage}" end="${page.endPage}">
-			<a
-				href="${pageContext.request.contextPath}/board/together?category=${category }&currentPage=${i}">[${i}]</a>
+			<c:choose>
+				<c:when test="${param.search == 's_art_title'}">
+					<a href="${pageContext.request.contextPath}/board/listSearch?category=${category }&search=s_art_title&keyword=${article.keyword }&currentPage=${i}">[${i}]</a>
+				</c:when>
+				<c:when test="${param.search == 's_mem_nickname'}">
+					<a href="${pageContext.request.contextPath}/board/listSearch?category=${category }&search=s_mem_nickname&keyword=${article.keyword }&currentPage=${i}">[${i}]</a>
+				</c:when>
+				<c:otherwise>
+					<a href="${pageContext.request.contextPath}/board/together?category=${category }&currentPage=${i}">[${i}]</a>
+				</c:otherwise>
+			</c:choose>	
 		</c:forEach>
 		<c:if test="${page.endPage < page.totalPage }">
-			<a
-				href="${pageContext.request.contextPath}/board/together?category=${category }&currentPage=${page.startPage+page.pageBlock}">[다음]</a>
+			<c:choose>
+				<c:when test="${param.search == 's_art_title'}">
+					<a href="${pageContext.request.contextPath}/board/listSearch?category=${category }&search=s_art_title&keyword=${article.keyword }&currentPage=${page.startPage+page.pageBlock}">[다음]</a>	
+				</c:when>
+				<c:when test="${param.search == 's_mem_nickname'}">
+					<a href="${pageContext.request.contextPath}/board/listSearch?category=${category }&search=s_mem_nickname&keyword=${article.keyword }&currentPage=${page.startPage+page.pageBlock}">[다음]</a>
+				</c:when>
+				<c:otherwise>
+					<a href="${pageContext.request.contextPath}/board/together?category=${category }&currentPage=${page.startPage+page.pageBlock}">[다음]</a>
+				</c:otherwise>
+			</c:choose>
 		</c:if>
 		
 		<button id="scrollToTop" class="adv-hover">

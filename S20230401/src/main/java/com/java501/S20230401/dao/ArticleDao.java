@@ -83,6 +83,8 @@ public interface ArticleDao {
 	int 			dbArticleBadUp(Article article);
 	int             dbReplyGoodUp(Article article);
 	int				dbReplyBadUp(Article article);
+	int 			dbCondArticleCnt(Article article);
+	List<Article>   dbListSearchArticle(Article article);
 	
 	
 	
