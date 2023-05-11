@@ -17,33 +17,26 @@
 </style>
 
 <script type="text/javascript">
-	/*  function goWriteForm(p_mem_id) {
-		 alert('p_mem_id -> '+p_mem_id);
-	 	 // Check if the user is logged in
-	 	 if (sessionStorage.getItem('p_mem_id') !== null) {
-	 	   // Redirect to dutchpayWriteForm.jsp
-	 	   window.location.href = 'dutchpayWriteForm.jsp';
+	  function goWriteForm(p_mem_id) {
+	 	 if ( p_mem_id != null ) {
+	 		location.href="/dutchpay/dutchpayWriteForm";
 	 	 } else {
-	    // Redirect to loginForm.jsp
-	 	   window.location.href = 'loginForm.jsp';
+	 		alert('로그인이 필요한 서비스입니다.');
+	 	    location.href = '/login';
 	 	 }
-		} */
- 
-
-
-
+		} 
 </script>
 </head>
 <body>
 
+<a><strong>전체목록</strong></a>
 <a href="${pageContext.request.contextPath }/board/dutchpay?category=1110">식료품</a>
 <a href="${pageContext.request.contextPath }/board/dutchpay?category=1120">의류/잡화</a>
 <a href="${pageContext.request.contextPath }/board/dutchpay?category=1130">생활용품</a>
 <a href="${pageContext.request.contextPath }/board/dutchpay?category=1140">해외배송</a>
 <a href="${pageContext.request.contextPath }/board/dutchpay?category=1150">기타</a><p>
-<%-- <input type="button" value="글쓰기" onclick="goWriteForm${ATR.mem_id }">    --%>
-<input type="button" value="글쓰기" onclick="location.href='/dutchpay/dutchpayWriteForm'">    
 
+<input type="button" value="글쓰기" onclick="goWriteForm(${memberInfo.mem_id})">    
 
 	 <c:forEach var="ATR" items="${dutchpayList }">
 	 

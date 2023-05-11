@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.java501.S20230401.dao.ArticleDao;
 import com.java501.S20230401.dao.CommDao;
+import com.java501.S20230401.dao.FavoriteDao;
 import com.java501.S20230401.dao.JoinDao;
 import com.java501.S20230401.dao.RegionDao;
 import com.java501.S20230401.dao.ReplyDao;
@@ -27,7 +28,9 @@ public class ArticleServiceImpl implements ArticleService {
 	private final CommDao 		cd;
 	private final ReplyDao 		rpd;
 	private final JoinDao       jd;
-	private final WaitingDao       wd;
+	private final WaitingDao    wd;
+	private final FavoriteDao   fd;
+	
 
 
 	// 유현규 로그인 기능 추가
@@ -461,6 +464,18 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public int jhWaitListYN(Article article) {
 		return wd.jhWaitListYN(article);
+	}
+	@Override
+	public void favoriteInsert1(Article article) {
+		fd.favoriteInsert2(article);
+	}
+	@Override
+	public int favoriteInsertYN1(Article article) {
+		return fd.favoriteInsertYN2(article);
+	}
+	@Override
+	public void replyUpdate1(Article article) {
+		rpd.replyUpdate2(article);
 	}
 
 	

@@ -127,6 +127,10 @@ public class ReplyDaoImpl implements ReplyDao {
 	}
 	@Override
 	public int replyDelete2(Article article) {
-		return session.update("JHReplyUpdate", article);		
+		return session.update("JHReplyDelete", article);		
+	}
+	@Override
+	public void replyUpdate2(Article article) {
+		session.update("JHReplyUpdate",article);
 	}	
 }

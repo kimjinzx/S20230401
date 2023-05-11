@@ -95,6 +95,9 @@ public interface ArticleService {
 	public int              payCompleted1(int trd_id);
 	public int              jhJoinListYN(Article article);
 	public int              jhWaitListYN(Article article);
+	public void             favoriteInsert1(Article article);
+	public int              favoriteInsertYN1(Article article);
+	public void             replyUpdate1(Article article);
 
 	
 	

@@ -16,14 +16,25 @@
 	
 
 </style>
+<script type="text/javascript">
+	  function goWriteForm(p_mem_id) {
+	 	 if ( p_mem_id != null ) {
+	 		location.href="/dutchpay/dutchpayWriteForm";
+	 	 } else {
+	 		alert('로그인이 필요한 서비스입니다.');
+	 	    location.href = '/login';
+	 	 }
+		} 
+</script>
 </head>
 <body>
 <a href="${pageContext.request.contextPath }/board/dutchpay?category=1100">전체목록</a>
 <a href="${pageContext.request.contextPath }/board/dutchpay?category=1110">식료품</a>
 <a href="${pageContext.request.contextPath }/board/dutchpay?category=1120">의류/잡화</a>
+<a><strong>생활용품</strong></a>
 <a href="${pageContext.request.contextPath }/board/dutchpay?category=1140">해외배송</a>
 <a href="${pageContext.request.contextPath }/board/dutchpay?category=1150">기타</a><p>
-<input type="button" value="글쓰기" onclick="location.href='/dutchpay/dutchpayWriteForm'"> 
+<input type="button" value="글쓰기" onclick="goWriteForm(${memberInfo.mem_id})">    
 	 <c:forEach var="ATR" items="${dutchpayList }">
 	<div class="container" >
 		<span>작성자 : ${ATR.mem_image}  ${ATR.mem_nickname } (${ATR.mem_username })</span><p>
