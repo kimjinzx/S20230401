@@ -16,5 +16,6 @@ public interface ReportDao {
 	
 	// 양동균
 	int shareReport(Report report); // 신고
+	boolean shareIsReport(Report report);
 
 }

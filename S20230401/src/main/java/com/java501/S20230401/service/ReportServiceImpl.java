@@ -39,4 +39,7 @@ public class ReportServiceImpl implements ReportService {
 	@Override
 	public int shareReport(Report report) { return pd.shareReport(report); }
 
+	@Override
+	public boolean shareIsReport(Report report) { return pd.shareIsReport(report); }
+
 }
