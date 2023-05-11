@@ -7,7 +7,6 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.java501.S20230401.model.Article_Trade_Reply;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Join;
 import com.java501.S20230401.model.Region;
@@ -722,96 +721,6 @@ public class ArticleDaoImpl implements ArticleDao {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	// 김진현
-	@Override
-	public List<Article_Trade_Reply> getDutchpayList(String boardName) {
-		List<Article_Trade_Reply> dutchpayList2 = null;
-		try {
-			dutchpayList2 = session.selectList("JHDutchpay" + boardName);
-		} catch (Exception e) {
-			System.out.println("ArticleDaoImpl dutchpayList2 Exception -> "+e.getMessage());
-		}
-		return dutchpayList2;
-	}
-	@Override
-	public Article_Trade_Reply detail2(Article_Trade_Reply atr) {
-		Article_Trade_Reply atr2 = null;
-		try {				
-			atr2 = session.selectOne("JHDutchpayDetail",atr);
-		} catch (Exception e) {
-			System.out.println("ArticleServiceImpl detail2 Exception -> "+e.getMessage());
-		}
-		return atr2;
-	}
-	@Override
-	public void dutchpayInsert2(Article_Trade_Reply atr) {
-		try {
-			System.out.println(atr);
-			session.selectOne("JHInsert",atr);
-		} catch (Exception e) {
-			System.out.println("ArticleServiceImpl dutchpayInsert2 Exception -> "+e.getMessage());
-		}
-	}
-	@Override
-	public List<Comm> category2() {
-		List<Comm> cm = null;
-		try {
-			cm = session.selectList("JHCategory");
-		} catch (Exception e) {
-			System.out.println("ArticleServiceImpl category2 Exception -> "+e.getMessage());
-		}
-		return cm;
-	}
-	@Override
-	public List<Region> loc2() {
-		List<Region> re = null;
-		try {
-			re = session.selectList("JHLoc");
-		} catch (Exception e) {
-			System.out.println("ArticleServiceImpl region2 Exception -> "+e.getMessage());
-		}
-		return re;
-	}
-	@Override
-	public Article_Trade_Reply updateForm2(Article_Trade_Reply atr) {
-		Article_Trade_Reply updateForm = null;
-		try {
-			updateForm = session.selectOne("JHUpdateForm",atr);
-		} catch (Exception e) {
-			System.out.println("ArticleServiceImpl updateForm2 Exception -> "+e.getMessage());
-		}
-		return updateForm;
-	}
-	@Override
-	public List<Comm> category_ud2() {
-		List<Comm> cm = null;
-		try {
-			cm = session.selectList("JHCategoryUd");
-		} catch (Exception e) {
-			System.out.println("ArticleServiceImpl category_ud2 Exception -> "+e.getMessage());
-		}
-		return cm;
-	}
-	@Override
-	public List<Region> loc_ud2() {
-		List<Region> re = null;
-		try {
-			re = session.selectList("JHLocUd");
-		} catch (Exception e) {
-			System.out.println("ArticleServiceImpl loc_ud2 Exception -> "+e.getMessage());
-		}
-		return re;
-	}
-	
-	
 	// 김찬영
 	// 총리스트
 	@Override
@@ -1105,4 +1014,246 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 	
 	
+	
+	
+	
+	
+	//김진현
+		@Override
+		public List<Article> getDutchpayList(String boardName) {
+			List<Article> dutchpayList2 = null;
+			
+			try {
+				dutchpayList2 = session.selectList("JHDutchpay" + boardName);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl dutchpayList2 Exception -> "+e.getMessage());
+			}
+			return dutchpayList2;
+		}
+		@Override
+		public Article detail2(Article article) {
+			Article article2 = null;
+			try {				
+				article2 = session.selectOne("JHDutchpayDetail",article);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl detail2 Exception -> "+e.getMessage());
+			}
+			return article2;
+		}
+		
+		@Override
+		public List<Article> repList2(Article article) {
+			List<Article> repList = null;
+			try {
+				repList = session.selectList("JHRepList",article);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl repList2 Exception -> "+e.getMessage());
+			}
+			return repList;
+		}
+
+		@Override
+		public List<Comm> payStatus2() {
+			List<Comm> payStatus = null;
+			try {
+				payStatus = session.selectList("JHPayStatus");
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl payStatus2 Exception -> "+e.getMessage());
+			}
+			return payStatus;
+		}
+		
+		@Override
+		public Article payStatusPro2(Article article) {
+			Article payStatusPro = null;
+			try {
+				payStatusPro = session.selectOne("JHPayStatusPro",article);  
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl payStatusPro2 Exception -> "+e.getMessage());
+			}
+			return payStatusPro;
+		}
+		
+		@Override
+		public void dutchpayInsert2(Article article) {
+			try {
+				System.out.println("article Dao -> "+article);
+				session.selectOne("JHInsert",article);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl dutchpayInsert2 Exception -> "+e.getMessage());
+			}
+		}
+		
+		@Override
+		public List<Comm> category2() {
+			List<Comm> cm = null;
+			try {
+				cm = session.selectList("JHCategory");
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl category2 Exception -> "+e.getMessage());
+			}
+			return cm;
+		}
+
+
+		@Override
+		public List<Region> loc2() {
+			List<Region> re = null;
+			try {
+				re = session.selectList("JHLoc");
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl region2 Exception -> "+e.getMessage());
+			}
+			return re;
+		}
+
+		
+		@Override
+		public Article updateForm2(Article article) {
+			Article updateForm = null;
+			try {
+				updateForm = session.selectOne("JHUpdateForm",article);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl updateForm2 Exception -> "+e.getMessage());
+			}
+			return updateForm;
+		}
+
+		@Override
+		public List<Region> loc_ud2() {
+			List<Region> re = null;
+			try {
+				re = session.selectList("JHLocUd");
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl loc_ud2 Exception -> "+e.getMessage());
+			}
+			return re;
+		}
+		
+		@Override
+		public void dutchpayUpdate2(Article article) {
+			try {
+				System.out.println(article);
+				session.selectOne("JHUpdate",article);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl dutchpayUpdate2 Exception -> "+e.getMessage());
+			}
+		}
+		
+		@Override
+		public void dutchpayDelete2(Article article) {
+			try {
+				session.selectOne("JHDelete",article);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl dutchpayDelete2 Exception -> "+e.getMessage());
+			}
+		}
+		
+		@Override
+		public int DeatilRead2(Article article) {
+			int read = 0;
+			try {
+				read = session.update("JHDeatilRead",article);
+			} catch (Exception e) {
+			}
+			return read;
+		}
+		
+		@Override
+		public int totalArticle2() {
+			int page = 0;
+			try {
+				page = session.selectOne("JHPaging");
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl totalArticle2 Exception -> "+e.getMessage());
+			}
+			return page;
+		}
+		
+
+		@Override
+		public void applyInsert2(Article article) {
+			try {
+				session.selectOne("JHJoinApply",article);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl applyInsert2 Exception -> "+e.getMessage());
+			}
+		}
+		
+		@Override
+		public Article applyCancel2(Article article) {
+			Article cancle = null;
+			try {
+				cancle = session.selectOne("JHapplyCancel",article);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl applyCancel2 Exception -> "+e.getMessage());
+
+			}
+			return cancle;
+		}
+		
+		@Override
+		public Article joinCancel2(Article article) {
+			Article joinCancel = null;
+			try {
+				joinCancel = session.selectOne("JHJoinCancel",article);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl joinCancel2 Exception -> "+e.getMessage());
+			}
+			return joinCancel;
+		}
+
+		@Override
+		public List<Article> joinList2(Article article) {
+			List<Article> joinList2 = null;
+			try {
+				joinList2 = session.selectList("JHJoinList",article);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl joinList2 Exception -> "+e.getMessage());
+			}
+			return joinList2;
+		}
+		@Override
+		public List<Article> waitList2(Article article) {
+			List<Article> waitList2 = null;
+			try {
+				waitList2 = session.selectList("JHWaitList",article);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl waitList2 Exception -> "+e.getMessage());
+			}
+			return waitList2;
+		}
+		
+		@Override
+		public Article joinDeny2(Article article) {
+			Article joinDeny2 = null;
+			try {
+				joinDeny2 = session.selectOne("JHJoinDeny",article);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl joinDeny2 Exception -> "+e.getMessage());
+			}
+			return joinDeny2;
+		}
+		
+		@Override
+		public Article joinAccept2(Article article) {
+			Article joinAccept2 = null;
+			try {
+				joinAccept2 = session.selectOne("JHJoinAccept",article);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl joinAccept2 Exception -> "+e.getMessage());
+			}
+			return joinAccept2;
+		}
+		@Override
+		public int payCompleted2(int trd_id) {
+			int payCompleted = 0;
+			try {
+				payCompleted = session.update("JHPayCompleted",trd_id);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl payCompleted2 Exception -> "+e.getMessage());
+			}
+			return payCompleted;
+		}
+
 }

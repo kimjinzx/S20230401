@@ -7,8 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.java501.S20230401.dao.ArticleDao;
 import com.java501.S20230401.dao.CommDao;
+import com.java501.S20230401.dao.JoinDao;
 import com.java501.S20230401.dao.RegionDao;
 import com.java501.S20230401.dao.ReplyDao;
+import com.java501.S20230401.dao.WaitingDao;
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Member;
 import com.java501.S20230401.model.Reply;
@@ -17,7 +19,6 @@ import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Join;
 import com.java501.S20230401.model.Region;
 import com.java501.S20230401.util.SummaryType;
-import com.java501.S20230401.model.Article_Trade_Reply;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Region;
 import com.java501.S20230401.model.MemberInfo;
@@ -32,6 +33,8 @@ public class ArticleServiceImpl implements ArticleService {
 	private final RegionDao 	rd;
 	private final CommDao 		cd;
 	private final ReplyDao 		rpd;
+	private final JoinDao       jd;
+	private final WaitingDao    wd;
 
 
 	// 유현규 로그인 기능 추가
@@ -417,59 +420,8 @@ public class ArticleServiceImpl implements ArticleService {
 	
 	
 	
-	// 김진현
-	@Override
-	public List<Article_Trade_Reply> getDutchpayList(String boardName) {
-		List<Article_Trade_Reply> atr = ad.getDutchpayList(boardName);
-		return atr;
-	}
-
-	@Override
-	public Article_Trade_Reply detail1(Article_Trade_Reply atr) {
-		Article_Trade_Reply atr1 = null;
-		atr1 = ad.detail2(atr);
-		return atr1;
-	}
-
-	@Override
-	public List<Comm> category1() {
-		List<Comm> cm = null;
-		cm = ad.category2();
-		return cm;
-	}
-
-	@Override
-	public List<Region> loc1() {
-		List<Region> re = null;
-		re = ad.loc2();
-		return re;
-	}
-
-	@Override
-	public void dutchpayInsert1(Article_Trade_Reply atr) {
-		ad.dutchpayInsert2(atr);
-	}
 	
-	@Override
-	public Article_Trade_Reply updateForm1(Article_Trade_Reply atr) {
-		Article_Trade_Reply updateForm = null;
-		updateForm = ad.updateForm2(atr);
-		return updateForm;
-	}
 
-	@Override
-	public List<Comm> category_ud1() {
-		List<Comm> cm = null;
-		cm = ad.category_ud2();
-		return cm;
-	}
-
-	@Override
-	public List<Region> loc_ud1() {
-		List<Region> re = null;
-		re = ad.loc_ud2();
-		return re;
-	}
 
 	// 김찬영
 	// 총리스트 	
@@ -633,4 +585,170 @@ public class ArticleServiceImpl implements ArticleService {
 		System.out.println("ArticleServiceImpl shSearchCustomer shCustomerSearch size()->" +shCustomerSearch.size());
 		return shCustomerSearch;
 	}
+	
+	
+	
+	
+	
+	@Override//김진현
+	public List<Article> getDutchpayList(String boardName) {
+		List<Article> article = ad.getDutchpayList(boardName);
+		return article;
+	}
+
+	@Override
+	public Article detail1(Article article) {
+		Article article1 = null;
+		article1 = ad.detail2(article);
+		return article1;
+	}
+	
+	@Override
+	public List<Article> repList1(Article article) {
+		List<Article> repList = ad.repList2(article);
+		return repList;
+	}
+
+	@Override
+	public List<Comm> payStatus1() {
+		List<Comm> payStatus = null;
+		payStatus = ad.payStatus2();
+		return payStatus;
+	}
+	
+
+	public Article payStatusPro1(Article article) {
+		Article payStatusPro = null;
+		payStatusPro = ad.payStatusPro2(article);
+		return payStatusPro;
+	}
+	
+	@Override
+	public void replyInsert1(Article article) {
+		 rpd.replyInsert2(article);
+	}
+	
+	@Override
+	public void replyDelete1(Article article) {
+		rpd.replyDelete2(article);
+	}
+
+	@Override
+	public List<Comm> category1() {
+		List<Comm> cm = null;
+		cm = ad.category2();
+		return cm;
+	}
+
+	@Override
+	public List<Region> loc1() {
+		List<Region> re = null;
+		re = ad.loc2();
+		return re;
+	}
+
+	@Override
+	public void dutchpayInsert1(Article article) {
+		ad.dutchpayInsert2(article);
+	}
+	
+	@Override
+	public Article updateForm1(Article article) {
+		Article updateForm = null;
+		updateForm = ad.updateForm2(article);
+		return updateForm;
+	}
+
+	@Override
+	public List<Region> loc_ud1() {
+		List<Region> re = null;
+		re = ad.loc_ud2();
+		return re;
+	}
+
+	@Override
+	public void dutchpayUpdate1(Article article) {
+		ad.dutchpayUpdate2(article);
+		
+	}
+
+	@Override
+	public void dutchpayDelete1(Article article) {
+		ad.dutchpayDelete2(article);
+		
+	}
+
+	@Override
+	public int DeatilRead1(Article article) {
+		int read = 0;
+		read = ad.DeatilRead2(article);
+		return read;
+	}
+	
+	@Override
+	public int totalArticle1() {
+		int page = 0;
+		page = ad.totalArticle2();
+		return page;
+	}
+	
+	@Override
+	public void applyInsert1(Article article) {
+		ad.applyInsert2(article);
+	}
+
+	@Override
+	public Article applyCancel1(Article article) {
+		Article cancel = null;
+		cancel = ad.applyCancel2(article);
+		return cancel;
+	}
+	
+	@Override
+	public Article joinCancel1(Article article) {
+		Article joinCancel = null;
+		joinCancel = ad.joinCancel2(article);
+		return joinCancel;
+	}
+
+	@Override
+	public List<Article> joinList1(Article article) {
+		List<Article> joinList = null;
+		joinList = ad.joinList2(article);
+		return joinList;
+	}
+	@Override
+	public List<Article> waitList1(Article article) {
+		List<Article> waitList = null;
+		waitList = ad.waitList2(article);
+		return waitList;
+	}
+	@Override
+	public Article joinDeny1(Article article) {
+		Article joinDeny1 = null;
+		joinDeny1 = ad.joinDeny2(article);
+		return joinDeny1;
+	}
+	@Override
+	public Article joinAccept1(Article article) {
+		Article joinAccept1 = null;
+		joinAccept1 = ad.joinAccept2(article);
+		return joinAccept1;
+	}
+	@Override
+	public int payCompleted1(int trd_id) {
+		int payCompleted = 0;
+		payCompleted = ad.payCompleted2(trd_id);
+		return payCompleted;
+	}
+	@Override
+	public int jhJoinListYN(Article article) {
+		return jd.jhJoinListYN(article);
+	}
+	
+	@Override
+	public int jhWaitListYN(Article article) {
+		return wd.jhWaitListYN(article);
+	}
+	
 }

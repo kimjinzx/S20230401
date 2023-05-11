@@ -2,16 +2,12 @@ package com.java501.S20230401.dao;
 
 import java.util.List;
 
-
-import com.java501.S20230401.model.Article_Trade_Reply;
-import com.java501.S20230401.model.Comm;
-import com.java501.S20230401.model.Join;
-import com.java501.S20230401.model.Region;
-
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.ArticleMember;
-import com.java501.S20230401.model.Reply;
+import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.MemberInfo;
+import com.java501.S20230401.model.Region;
+import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.util.SummaryType;
 
 public interface ArticleDao {
@@ -95,15 +91,6 @@ public interface ArticleDao {
 	
 	
 	
-	// 김진현
-	List<Article_Trade_Reply> 			getDutchpayList(String boardName);
-	Article_Trade_Reply                 detail2(Article_Trade_Reply atr);
-	void 								dutchpayInsert2(Article_Trade_Reply atr);
-	List<Comm>           				category2();
-	List<Region>    			        loc2();
-	Article_Trade_Reply 				updateForm2(Article_Trade_Reply atr);
-	List<Comm> 							category_ud2();
-	List<Region> 						loc_ud2();
 	
 	
 	// 김찬영
@@ -126,9 +113,37 @@ public interface ArticleDao {
 	Article 		detailCustomer(Article article);
 	List<Article> 	listCustomerMenu(Article article);
 	int 			insertCustomer(Article article);
-	int 			updateCustomer(Article article);
-	int 			deleteCustomer(Article article);
-	Integer 		customerViewCount(Article article);
-	int 			totalCustomer(Article article);
-	List<Article> 	shCustomerSearch(Article article);
+	int updateCustomer(Article article);
+	int deleteCustomer(Article article);
+	Integer customerViewCount(Article article);
+	int totalCustomer(Article article);
+	List<Article> shCustomerSearch(Article article);
+
+	
+	
+	// 김진현
+	List<Article> 			getDutchpayList(String boardName);
+	Article                 detail2(Article article);
+	public List<Article> 	repList2(Article article);
+	public List<Comm>       payStatus2();
+	public Article 			payStatusPro2(Article article);
+	List<Comm>           	category2();
+	List<Region>    		loc2();
+	public void 			dutchpayInsert2(Article article);
+	Article 				updateForm2(Article article);
+	List<Region> 			loc_ud2();
+	void 					dutchpayUpdate2(Article article);
+	void 					dutchpayDelete2(Article article);
+	public int 				DeatilRead2(Article article);
+	public int 				totalArticle2();
+	void                    applyInsert2(Article article);
+	public Article 			applyCancel2(Article article);
+	public Article 			joinCancel2(Article article);
+	public List<Article>    joinList2(Article article);
+	public List<Article>    waitList2(Article article);
+	public Article 			joinDeny2(Article article);
+	public Article          joinAccept2(Article article);
+	public int              payCompleted2(int trd_id);
+	
+	
 }

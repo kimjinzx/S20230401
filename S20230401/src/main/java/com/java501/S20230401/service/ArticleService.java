@@ -4,10 +4,10 @@ import java.util.List;
 
 import javax.servlet.http.Cookie;
 
-import com.java501.S20230401.model.Article_Trade_Reply;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Region;
 import com.java501.S20230401.model.Reply;
+import com.java501.S20230401.model.Waiting;
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.ArticleMember;
 import com.java501.S20230401.model.MemberInfo;
@@ -98,16 +98,6 @@ public interface ArticleService {
 	
 	
 	
-	// 김진현
-	List<Article_Trade_Reply> 			getDutchpayList(String boardName);//진현
-	Article_Trade_Reply                 detail1(Article_Trade_Reply atr);
-	List<Comm> 							category1();
-	List<Region>         				loc1();
-	void 								dutchpayInsert1(Article_Trade_Reply atr);
-	Article_Trade_Reply		 			updateForm1(Article_Trade_Reply atr);
-	List<Comm> 							category_ud1();
-	List<Region> 						loc_ud1();
-	
 	// 김찬영
 	int					totalArticle();
 	List<Article> 		listArticle(Article article);
@@ -134,4 +124,37 @@ public interface ArticleService {
 	List<Article> 		shSearchCustomer(Article article);
 	int 				totalCustomer(Article article);
 
+	
+	
+	// 김진현
+	List<Article> 			getDutchpayList(String boardName);//진현
+	Article                 detail1(Article article);
+	public List<Article> 	repList1(Article article);
+	public List<Comm>		payStatus1();
+	public Article 			payStatusPro1(Article article);
+	public void	            replyInsert1(Article article);
+	public void             replyDelete1(Article article);
+	List<Comm> 				category1();
+	List<Region>         	loc1();
+	void 					dutchpayInsert1(Article article);
+	Article		 			updateForm1(Article article);
+	List<Region> 			loc_ud1();
+	public void 			dutchpayUpdate1(Article article);
+	public void 			dutchpayDelete1(Article article);
+	public int 				DeatilRead1(Article article);
+	public int 				totalArticle1();
+	void 			        applyInsert1(Article article);
+	public Article 			applyCancel1(Article article);
+	public Article			joinCancel1(Article article);
+	public List<Article>    joinList1(Article article);
+	public List<Article>    waitList1(Article article);
+	public Article 			joinDeny1(Article article);
+	public Article          joinAccept1(Article article);
+	public int              payCompleted1(int trd_id);
+	public int              jhJoinListYN(Article article);
+	public int              jhWaitListYN(Article article);
+
+	
+	
+	
 }

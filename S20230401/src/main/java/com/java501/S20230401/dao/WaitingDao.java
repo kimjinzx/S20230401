@@ -13,5 +13,6 @@ public interface WaitingDao {
 	int dgUserWaiting(Article shareUser); // 대기열 여부
 	int shareWaitingDel(Article article);
 
-
+	// 김진현
+	int         jhWaitListYN(Article article);
 }

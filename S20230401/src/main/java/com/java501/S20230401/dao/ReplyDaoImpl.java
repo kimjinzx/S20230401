@@ -321,4 +321,14 @@ public class ReplyDaoImpl implements ReplyDao {
 		}
 		return result;
 	}
+	
+	// 김진현
+	@Override
+	public int replyInsert2(Article article) {
+		return session.insert("JHReplyInsert", article);
+	}
+	@Override
+	public int replyDelete2(Article article) {
+		return session.update("JHReplyUpdate", article);		
+	}
 }

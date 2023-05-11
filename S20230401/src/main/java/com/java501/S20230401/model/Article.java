@@ -1,7 +1,6 @@
 package com.java501.S20230401.model;
 
 import java.util.Date;
-import java.util.List;
 
 import lombok.Data;
 
@@ -129,4 +128,9 @@ public class Article {
 	// 조인
 	private Integer		rep_count;
 	private String		search_keyword;
+	
+	//김진현 
+	private Integer		reply_count; // (조회수 오라클 함수)
+	private String 		trd_saveEnddate; // 마감날짜 작업을 위해 string으로 하나 더 만들었습니다.	
+
 }

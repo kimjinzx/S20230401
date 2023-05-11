@@ -40,6 +40,10 @@ public interface ReplyDao {
 	int 	dbDeleteReply(Reply reply);
 	int 	dbUpdateReply(Reply reply);
 	
+	
+	// 김진현
+	int        replyInsert2(Article article);
+	int        replyDelete2(Article article);
 
 	
 	// 김찬영
