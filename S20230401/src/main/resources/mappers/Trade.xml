@@ -21,6 +21,42 @@
 		<collection property="comm" 	resultMap="com.java501.S20230401.model.CommMapper.dgCommMap"/>
 		<collection property="region" 	resultMap="com.java501.S20230401.model.RegionMapper.dgRegionMap"/>
 	</resultMap>
+	<!-- 거래 수정 -->
+	<update id="dgUpdateTrade" parameterType="Trade">
+		UPDATE	TRADE
+		SET		TRD_MAX 	= #{trd_max, 	jdbcType=INTEGER},
+				TRD_STATUS  = #{trd_status, jdbcType=INTEGER},
+				TRD_ENDDATE = #{trd_enddate,jdbcType=DATE},
+				TRD_COST	= #{trd_cost,	jdbcType=INTEGER},
+				REG_ID		= #{reg_id,		jdbcType=INTEGER},
+				TRD_LOC		= #{trd_loc,	jdbcType=VARCHAR},
+				TRD_GENDER	= #{trd_gender,	jdbcType=INTEGER},
+				TRD_MINAGE	= #{trd_minage,	jdbcType=INTEGER},
+				TRD_MAXAGE 	= #{trd_maxage,	jdbcType=INTEGER}
+		WHERE	TRD_ID = #{trd_id}
+	</update>
+	<select id="dgGetTrade" parameterType="Article" resultType="Trade">
+		SELECT	*
+		FROM 	TRADE
+		WHERE	TRD_ID = (SELECT	TRD_ID
+							FROM 	ARTICLE
+							WHERE	ART_ID = #{art_id} 
+							AND		BRD_ID = #{brd_id})
+	</select>
+	<!-- 거래 상태 확인 -->
+	<select id="dgShareTradeMax" parameterType="Trade" resultType="Integer">
+		SELECT  COUNT(*)
+		FROM    TRADE T JOIN JOIN J
+		ON      T.TRD_ID = J.TRD_ID
+		WHERE   T.TRD_ID = #{trd_id}
+		GROUP BY T.TRD_MAX
+		HAVING  T.TRD_MAX = COUNT(T.TRD_ID)
+	</select>
+	<update id="dgShareTradeStatus" parameterType="Trade">
+		UPDATE 	TRADE
+		SET 	TRD_STATUS = #{trd_status}
+		WHERE	TRD_ID = #{trd_id}
+	</update>
 	
 	<!-- 유현규 -->
 	<select id="hgGetRecentOFFEREDTrade" parameterType="Trade" resultType="TradeInfo">

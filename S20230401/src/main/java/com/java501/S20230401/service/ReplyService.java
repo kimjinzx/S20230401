@@ -12,6 +12,8 @@ public interface ReplyService {
 	List<Reply> replyShareList(Article article);
 	int writeReply(Reply reply);
 	int deleteReply(Reply reply);
+	int dgUpdateReply(Reply reply);
+	int dgReportReply(Reply reply);
 
 	// 백준
 	Reply 						replyCount(Reply reply);

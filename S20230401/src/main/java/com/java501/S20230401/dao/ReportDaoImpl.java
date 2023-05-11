@@ -42,4 +42,17 @@ public class ReportDaoImpl implements ReportDao {
 	public Object hgGetInstanceByReportId(int report_id, String pascalClassName) {
 		return session.selectOne("hgGet" + pascalClassName + "ByReportId", report_id);
 	}
+
+	// 양동균
+	@Override
+	public int shareReport(Report report) {
+		int result = 0;
+		try {
+			result = session.insert("dgShareReport", report);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
 }

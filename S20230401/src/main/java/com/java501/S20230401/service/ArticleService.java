@@ -2,6 +2,8 @@ package com.java501.S20230401.service;
 
 import java.util.List;
 
+import javax.servlet.http.Cookie;
+
 import com.java501.S20230401.model.Article_Trade_Reply;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Region;
@@ -33,6 +35,15 @@ public interface ArticleService {
 	Article detailShareArticle(Article article);	// 댓글
 	int readShareArticle(Article article);
 	int writeShareArticle(Article article);	// 글쓰기
+    int dgDeleteArticle(Article article); // 글삭제
+	int dgVoteGood(Article article); // 추천
+	int dgVoteBad(Article article); // 비추천
+	int dgReportArticle(Article article); // 신고
+	
+	
+	
+
+	
 
 	// 백준
 	Integer 			totalArticle(int brd_id);

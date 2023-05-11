@@ -33,4 +33,10 @@ public class ReportServiceImpl implements ReportService {
 	public Object hgGetInstanceByReportId(int report_id, String pascalClassName) {
 		return pd.hgGetInstanceByReportId(report_id, pascalClassName);
 	}
+	
+	
+	// 양동균
+	@Override
+	public int shareReport(Report report) { return pd.shareReport(report); }
+
 }

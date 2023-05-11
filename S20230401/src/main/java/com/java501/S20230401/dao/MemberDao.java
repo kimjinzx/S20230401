@@ -9,7 +9,7 @@ import com.java501.S20230401.model.MemberInfo;
 public interface MemberDao {
 
 	// 양동균
-	List<Member> allMemberList(Article article);
+	int dgReportMember(Member member);
 
 	// 유현규
 	public Member findByMemberUsername(String username);

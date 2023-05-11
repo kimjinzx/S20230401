@@ -24,7 +24,7 @@
 	<select id="gdReplyShareList" parameterType="Article" resultMap="dgReplyMap">
 		SELECT  *
 		FROM   (SELECT  ROWNUM RN, J.*
-		        FROM   (SELECT  R.*, M.MEM_USERNAME, M.MEM_NICKNAME, M.MEM_EMAIL, M.MEM_AUTHORITY, M.MEM_IMAGE, M.MEM_LATEST
+		        FROM   (SELECT  R.*, M.MEM_USERNAME, M.MEM_NICKNAME, M.MEM_EMAIL, M.MEM_AUTHORITY, M.MEM_IMAGE, M.MEM_LATEST, M.REPORT_ID AS memReport_id
 		                FROM    REPLY R, MEMBER M
 		                WHERE   R.MEM_ID = M.MEM_ID(+))J
 				WHERE 	ART_ID = #{art_id}
@@ -33,7 +33,7 @@
 		        )
 		WHERE 	ISDELETE = 0
 	</select>
-	<!-- 댓글 작성  -->
+	<!-- 댓글, 대댓글 작성  -->
 	<insert id="dgWriteReply" parameterType="Reply">
 		INSERT 
 		INTO    REPLY(ART_ID, BRD_ID, REP_ID, MEM_ID, REP_CONTENT, REP_REGDATE, REP_GOOD, REP_BAD, REP_PARENT, REP_STEP, ISDELETE)
@@ -61,7 +61,10 @@
 		        </choose>
 		        <choose>
 		        	<when test="rep_step != null">
-		        		#{rep_step}+1,
+		        		(SELECT  NVL(MAX(REP_STEP),0)+1
+		        		 FROM    REPLY
+		        		 WHERE   ART_ID = #{art_id}
+		        		 AND     BRD_ID = #{brd_id}),
 		        	</when>
 		        	<otherwise>
 		        		0,
@@ -77,7 +80,19 @@
 		AND     ART_ID = #{art_id}
 		AND     REP_ID = #{rep_id}
 	</update>
-	
+	<!-- 댓글 수정 -->
+	<update id="dgUpdateReply" parameterType="Reply">
+		UPDATE	REPLY
+		SET 	REP_CONTENT = #{rep_content}
+		WHERE	REP_ID = #{rep_id}
+		AND		ART_ID = #{art_id}
+		AND		BRD_ID = #{brd_id}
+	</update>
+	<update id="dgReportReply" parameterType="Reply">
+		UPDATE	REPLY
+		SET		REPORT_ID = #{report_id}
+		WHERE 	REP_ID = #{rep_id}
+	</update>
 
 
 

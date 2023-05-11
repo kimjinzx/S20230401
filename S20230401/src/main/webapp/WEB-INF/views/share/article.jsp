@@ -1,100 +1,141 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="../preset.jsp" %>
+<%@ include file="/WEB-INF/views/preset.jsp" %>
+<%@ include file="/WEB-INF/views/share/modal.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script type="text/javascript" >
-/*
-$(document).ready(() => {
-	$(".reply-inner").click(e => {
-		console.log(e.target.getAttribute('class')); // 클릭 이벤트 발생시 e.target의 클래스 출력
-		let rep = $(e.target).closest('.reply-detail').find(".reply-write");
-		rep.toggle();
-	});
-});
-*/
-
-	$(document).ready(() => {
-		$(".reply-inner").click(e => {
-			console.log(e.target.getAttribute('class')); // 클릭 이벤트 발생시 e.target의 클래스 출력
-			$(e.target).closest('.reply-detail').find(".reply-replyWrite").toggle();
-		});
-	});
+<script type="text/javascript">
 	
-/* 	$(document).ready(function (){
-		$(".btns-delete").click(function(){
-			location.href="";
-		});
-	}); */
-	function rep_delete(brd_id, art_id, rep_id) {
-		location.href = '${pageContext.request.contextPath}/board/share/delete?art_id='+art_id+'&brd_id='+brd_id+'&rep_id='+rep_id;
-	}
-	
+	// 그 전 페이지의 정보 삭제
+	sessionStorage.clear();
+	// 세션 스토리지에 pageContext 저장 URL용
+	sessionStorage.setItem('contextPath', '${pageContext.request.contextPath}');
+	sessionStorage.setItem('artId', '${article.art_id}');
+	sessionStorage.setItem('brdId', '${article.brd_id}');
+	sessionStorage.setItem('memId', '${article.mem_id}');
+	sessionStorage.setItem('category', '${category}');
+	sessionStorage.setItem('loginUser', '${memberInfo.mem_id}')
 
-/*
-$(document).ready(function() {
-	$(".reply-detail").click(function() {
-		$(this).find(".reply-write").toggle();
-	});
-});
-*/
-		//$(".reply-write")
-		//$(".reply-write").hide();
-		//$(e.target).closest('.reply-list').siblings('.reply-write')[0].toggle();
-
-/* 	function repWrite(pIndex){
-		let rep = document.getElementById("reply-write"+pIndex).style.display;
-		
-		document.getElementById("reply-write"+pIndex).style.display = (rep == "none")? "" : "none";
-	} */
 </script>
-<style type="text/css">
-	.board-articleList{
-		width: 80%;
-		margin: auto;
-	}
-	.reply-detail{
-		display: flex;
-		flex-direction: column;
-		padding: 10px;
-	}
-	.reply-view{
-		border: 1px solid #0193F8;
-		border-radius: 2.5px;
-	}
-	.reply-member{
-		border-bottom: 1px solid #0193F8;
-		
-	}
-	.reply-login > span{
-		display: block;
-		text-align: center;
-	}
-</style>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/share/article.js"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/share/article.css">
+
 </head>
 <body>
-	<div class="board-articleList">
-		<div class="view-content">
-		
-			<div class="view-member">
-				<span><img alt="회원 프사" src="${pageContext.request.contextPath}/image/share/${article.member.mem_image}" style="width: 120px; height: 120px;"></span>
-				<span>${article.member.mem_nickname}</span>
-				<span>${article.member.mem_gender}</span>
+	<div class="view-content">
+			
+		<!-- 게시글 -->
+		<div class="view-article">
+			<!-- 임시 로그인 -->
+			<c:if test="${memberInfo == null}"><div class="login" style="text-align: right;"><a href="${pageContext.request.contextPath}/login"><h1>로그인좀 해보시겠소..?</h1></a></div></c:if>
+			<c:if test="${memberInfo != null}"><div class="logout" style="text-align: right;"><a href="${pageContext.request.contextPath}/logout"><h1>로그아웃</h1></a></div></c:if>
+
+			<!-- 게시글의 정보 -->
+			<div class="article-header">
+				<input type="hidden" id="article_id"name="art_id" 	value="${article.art_id}">
+				<input type="hidden" id="brd_id" 	name="brd_id" 	value="${article.brd_id}">
+				<input type="hidden" id="category" 	name="category" value="${category}">
+				<input type="hidden" id="mem_id" 	name="mem_id" 	value="${article.mem_id}">
+				<input type="hidden" id="article_nickname" 			value="${article.member.mem_nickname}">
+				<input type="hidden" id="artReport_id" 				value="${article.report_id}">
+				<input type="hidden" id="login_member" 		name="login_member" 	value="${memberInfo.mem_id}">
+				<input type="hidden" id="login_authority" 	name="login_authority" 	value="${memberInfo.mem_authority}">
+				<!-- 카테고리 표시 -->
+				<div class="article-category" style="display: flex;">
+					<span class="category-name">
+						<a style="border-radius: 5px; color: white; font-size: xx-large; padding: 5px; background-color: #6c757d; text-decoration: none;" href="${pageContext.request.contextPath}/board/share?category=${article.brd_id}">${article.brd_name}</a>
+					</span>
+					<span style="display: flex; flex-grow: 1; justify-content: flex-end;">
+						<!-- 글 수정 삭제 -->
+						<c:if test="${article.mem_id == memberInfo.mem_id || memberInfo.mem_authority >= 108}">
+							<button id="btns-artUpdate" onclick="art_Update()">수정</button>
+							<button id="btns-artDelete" onclick="art_Delete()">삭제</button>
+						</c:if>
+						<button onclick="location.href='${pageContext.request.contextPath}/board/share?category=${category}';">목록</button>
+					</span>
+				</div>
+				<hr />
+			</div>
+			
+			<!-- 글 제목 및 상태 -->
+			<div class="article-title">
+				<div class="title-status">
+					<c:if test="${article.status_name != null}"><button class="btn">${article.status_name}</button></c:if>
+				</div>
+				<div class="title-subject">
+					${article.art_title}
+				</div>
+				<!-- 게시글 신고 -->
+				<div class="modal-report">
+					<c:if test="${not empty memberInfo}">
+						<svg id="article-report" viewBox="0 0 512 512" weith="30" height="30"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z"/></svg>
+					</c:if>
+				</div>
 			</div>
 			<hr />
 			
-			<div class="view-article">
-				<div class="article-head">
-				
-					<div class="article-category">
-						<span class="category-name">${article.brd_name}</span>
-						<input type="hidden" value="${category}">
-						<span><button onclick="location.href='${pageContext.request.contextPath}/board/share?category=${category}';">목록</button></span>
+			<!-- 작성자 -->
+			<div class="article-memberRow" style="display: flex; align-items: center;">
+				<span><img alt="profile" src="${pageContext.request.contextPath}/uploads/profile/${article.member.mem_image}" style="width: 60px; height: 60px; border-radius: 30px; margin-right: 20px;"></span>
+				<div class="article-member" style="display: flex; align-items: center;">
+					<div class="modal-report">
+						<span id="member_nickname">${article.member.mem_nickname}</span>
+						<c:if test="${not empty memberInfo}">
+							<svg id="member-report" viewBox="0 0 512 512" weith="30" height="30"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z"/></svg>
+							<input type="hidden" id="member_id" value="${article.member.mem_id}">
+							<input type="hidden" id="memReport_id" value="${article.member.report_id}">
+						</c:if>
 					</div>
+				</div>
+				<div class="article-memberInfo" style="font-size: 14px; flex-grow: 1; text-align: right;">
+					<span>추천 ${article.art_good}</span>
+					<span>비추천 ${article.art_bad}</span>
+					<span>댓글 ${article.rep_cnt == null ? 0:article.rep_cnt}</span>
+					<span>조회수 ${article.art_read}</span>
+					<span>작성일 <fmt:formatDate value="${article.art_regdate}" pattern="yy.MM.dd HH:mm:ss"/></span>
+				</div>
+
+			</div>
+			<hr />
+			
+			<!-- 태그 출력 및 검색 -->
+			<div class="article-info">
+				<div class="view-tag">
+					<form action="${pageContext.request.contextPath}/board/share/searchForm">
+						<input type="hidden" name="category" value="${category}">
+						<input type="hidden" name="brd_id" value="${brd_id}">
+						<input type="hidden" name="search" value="articleTag">
+						<c:forEach begin="1" end="5" varStatus="status">
+							<c:set var="art_tag" value="art_tag${status.index}"/>
+								<c:if test="${article[art_tag] != null}">
+									<button class="btns-tag" name="keyWord" value="${article[art_tag]}">${article[art_tag]}</button>
+								</c:if>
+						</c:forEach>
+					</form>
+				</div>
+			</div><hr />
+			
+				
+			<!-- 거래 관련 내용 -->
+			<div class="article-trade">
+				
+				<div class="share-trdHeader">
+					<span>${article.trade.trd_cost > 0 ? article.trade.trd_cost : '무료나눔'}</span>
+					<span>가입일 : <button class="btn" type="button"><fmt:formatDate value="${article.art_regdate}" pattern="yy-MM-dd"/></button></span>
+					<span><button>마감일 : <fmt:formatDate value="${article.trade.trd_enddate}" pattern="yyyy-MM-dd"/></button></span>
+				</div>
+				<div class="share-trdContent">
+					<span>지역제한 : ${article.trade.region.reg_name}</span>
+					<span>상세장소 : ${article.trade.trd_loc}</span>
 					<hr />
+					<span>최대 인원 : ${article.trade.trd_max}명</span>
+					<span>최소 나이 : ${article.trade.trd_minage>0? article.trade.trd_minage:'제한없음' }</span>
+					<span>최대 나이 : ${article.trade.trd_maxage>0? article.trade.trd_maxage:'제한없음'}</span>
+					<span>성별 제한 : ${article.trade.trd_gender==201? '남자만':article.trade.trd_gender==202? '여자만':'제한없음'}</span>
+				</div><hr />
 					
 					<div class="article-title">
 						<span><button class="btn">${article.status_name}</button></span>
@@ -114,109 +155,178 @@ $(document).ready(function() {
 										<c:if test="${article[art_tag] != null}">
 											<span>${article[art_tag]}</span>
 										</c:if>
-								</c:forEach>
-							</span>
-						</div>
-						<hr />
-						<div class="article-trade">
-							<span>
-								${article.trade.trd_cost > 0 ? article.trade.trd_cost : '무료나눔'}
-							</span><br>
-							<span>상세장소 :${article.trade.trd_loc}</span>
-							<span>지역제한 :${article.trade.region.reg_name}</span>
-							<span>조회 ${article.art_read}</span>
-							<span>추천 ${article.art_good}</span>
-							<span>비추천 ${article.art_bad}</span><br>
-							<span>${article.member.mem_nickname}</span>
-							<span>${article.gen_name}</span>
-							<span>가입일 : <button class="btn" type="button"><fmt:formatDate value="${article.art_regdate}" pattern="yy-MM-dd :HH:mm:ss"/></button></span>
-						</div>
-					</div>
-					<hr />
-				</div>
-				
-				<div class="article-body">
-					<div class="article-content">
-						<span>내용</span>
-						<hr />
-						<span>${article.art_content}</span>
-					</div>
-					<div class="article-vote">
-						<span><button>추천 ${article.art_good}</button></span>
-						<span><button>비추천 ${article.art_bad}</button></span>
-					</div>
-				</div>
-				
-				<hr />
-				<div class="reply-count">
-					<span>댓글 수 : (${article.rep_cnt})</span>
-				</div>
-				<hr />
-				
-				<div class="reply-list">
-					<c:forEach var="reply" items="${replyList}" varStatus="status">
-						<div class="reply-detail">
-							<div class="reply-view" style="display: flex; ${(reply.rep_id != reply.rep_parent) ? 'margin-left: 20px;' : ''}">
-								<div class="reply-image">
-									<span><img alt="회원 프사" src="${pageContext.request.contextPath}/image/share/${reply.member.mem_image}" style="width: 80px; height: 80px;"></span>
-								</div>
-								<div class="reply-inner" style="flex-grow: 1">
-									<div class="reply-member" style="display: flex;">
-										<span>${reply.member.mem_nickname}</span>
-										<span>작성일 : <fmt:formatDate value="${reply.rep_regdate}" pattern="yy-MM-dd :HH:mm:ss"/></span>
-										<span>최종 접속일 : <fmt:formatDate value="${reply.member.mem_latest}" pattern="yy-MM-dd :HH:mm:ss"/></span>
-									</div>
-									<div class="reply-content">
-										<span>${reply.rep_content}</span>
-									</div>
-								</div>
-								<c:if test="${article.mem_id == memberInfo.mem_id}">
-									<div class="reply-button">
-										<span><button>작성버튼</button></span>
-										<span>
-											<button class="btns-delete" onclick="rep_delete(${article.brd_id},${article.art_id},${reply.rep_id})">
-												삭제
-											</button>
-										</span>
-									</div>
-								</c:if>
+										<button class="btns-action" id="btns-refuse">거절</button>
+									</c:when>
+									<c:when test="${waiting.mem_id == memberInfo.mem_id}">
+										<button class="btns-action" id="btns-waitCancel">취소</button>
+									</c:when>
+								</c:choose>
 							</div>
-							<div class="reply-replyWrite" style="display: none; margin-left: 10%">
-								<form action="${pageContext.request.contextPath}/board/share/replyForm" method="post">
-									<span><input type="hidden" name="brd_id" 	value="${article.brd_id}"></span>
-									<span><input type="hidden" name="art_id" 	value="${article.art_id}"></span>
-									<span><input type="hidden" name="category" 	value="${category}"></span>
-									<span><input type="hidden" name="rep_id" 	value="${reply.rep_id}"></span>
-									<span><input type="hidden" name="rep_parent"value="${reply.rep_parent}"></span>
-									<span><input type="hidden" name="rep_step"	value="${reply.rep_step}"></span>
-									<span><input type="text" name="rep_content" placeholder="댓글을 작성하세요."></span>
-									<span><input type="submit" value="등록"></span>
-								</form>
-							</div>
-						</div>
+						</div><hr />
 					</c:forEach>
-					<div class="reply-write">
-						<c:choose>
-							<c:when test="${memberInfo != null}">
-								<form action="${pageContext.request.contextPath}/board/share/replyForm" method="post">
-									<span><input type="hidden" name="brd_id" 	value="${article.brd_id}"></span>
-									<span><input type="hidden" name="art_id" 	value="${article.art_id}"></span>
-									<span><input type="hidden" name="category" 	value="${category}"></span>
-									<span><input type="text" name="rep_content" placeholder="댓글을 작성하세요."></span>
-									<span><input type="submit" value="등록"></span>
-								</form>
-							</c:when>
-							<c:otherwise>
-								<div class="reply-login">
-									<span>본 게시물에 댓글을 작성하실 권한이 없습니다. 로그인 하신 후 댓글을 다실 수 있습니다.</span>
-									<span>ShareGo <a href="${pageContext.request.contextPath }/login">로그인</a></span>
-								</div>
-							</c:otherwise>
-						</c:choose>
-					</div>
+					<c:if test="${empty waitingList}"><p style="text-align: center;">아직 신청자가 없어요</p></c:if>
 				</div>
+					
+
+				<!-- 거래 신청, 찜 -->
+				<div class="share-btns">
+					<c:if test="${memberInfo != null}">
+						<div class="btns-favorite">
+							<c:choose>
+								<c:when test="${userFavorite > 0}">
+									<button class="btns-action" id="btns-favoriteDel">찜 취소</button>
+								</c:when>
+								<c:when test="${userFavorite == 0}">
+									<button class="btns-action" id="btns-favorite">찜</button>
+								</c:when>
+							</c:choose>
+						</div>
+						<div class="btns-trade">
+							<c:choose>
+								<c:when test="${userWaiting == 0 && userJoin == 0 && joinList.size() < article.trade.trd_max}">
+									<button class="btns-action" id="btns-apply">신청</button>
+								</c:when>
+								<c:when test="${joinList.size() == article.trade.trd_max}">
+									<button class="btns-action" id="btns-end">모집 완료</button>
+								</c:when>
+							</c:choose>
+						</div>
+					</c:if>
+					<c:if test="${memberInfo == null}"><div class="login" style="text-align: right;"><a href="${pageContext.request.contextPath}/login"><h1>로그인좀 해보시겠소..?</h1></a></div></c:if>
 				</div>
 			</div>
+		</div><hr />
+			
+		<!-- 본문 내용 -->
+		<div class="article-body">
+			<div class="article-content">
+				<label for="content">내용</label>
+				<hr />
+				<textarea name="art_content" disabled="disabled">${article.art_content}</textarea>
+			</div>
+
+			<!-- 추천 비추천 -->
+			<div class="share-btns" id="btns-vote">
+				<button class="btns-good" id="btns-good">추천 <span>${article.art_good}</span></button>
+				<button class="btns-good" id="btns-goodcancel" style="display: none; background-color: #0193F8;">추천 <span>${article.art_good}</span></button>
+				<button class="btns-bad" id="btns-bad">비추천 <span>${article.art_bad}</span></button>
+				<button class="btns-bad" id="btns-badcancel" style="display: none; background-color: red;">비추천 <span>${article.art_bad}</span></button>
+			</div>
+		</div><hr />
+		
+		
+		<!-- 댓글 부분 -->		
+		<div class="reply-list">
+			<div class="list-toggle">
+				<c:choose>
+					<c:when test="${article.rep_cnt > 0}">
+						<button id="btns-show" style="display: none;">▶ 펼치기</button>
+						<button id="btns-hide">▼ 접기</button>
+						<span>댓글 수 : (${article.rep_cnt})</span>
+						<hr />
+					</c:when>
+					<c:otherwise>
+						<p style="text-align: center;">이 글은 아직 댓글이 없어요<br> 댓글 남겨 주실꺼죠??</p>
+					</c:otherwise>
+				</c:choose>
+			</div>
+			
+			<!-- 댓글 리스트 -->
+			<c:forEach var="reply" items="${replyList}" varStatus="status">
+				<div class="reply-detail">
+					<input type="hidden" id="reply_id" name="rep_id" value="${reply.rep_id}">
+					<input type="hidden" id="reply_nickname" value="${reply.member.mem_nickname}">
+					<input type="hidden" id="repReport_id" 	value="${reply.report_id}">
+					<div class="reply-view" style="display: flex; ${(reply.rep_id != reply.rep_parent) ? 'margin-left: 20px;' : ''}">
+						
+						<div class="reply-image">
+							<span><img alt="profile" src="${pageContext.request.contextPath}/uploads/profile/${reply.member.mem_image}" style="width: 80px; height: 80px;"></span>
+						</div> 
+						
+						<!-- 댓글 본문 -->
+						<div class="reply-inner" style="flex-grow: 1">
+							<!-- 유저 신고 -->
+							<div class="reply-member" style="display: flex;">
+								<div class="modal-report">
+									<span id="member_nickname">${reply.member.mem_nickname}</span>
+									<c:if test="${not empty memberInfo}">
+										<svg id="member-report" viewBox="0 0 512 512" weith="30" height="30"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z"/></svg>
+										<input type="hidden" id="member_id" value="${reply.member.mem_id}">
+										<input type="hidden" id="memReport_id" value="${reply.member.report_id}">
+									</c:if>
+								</div>
+								<span>작성일 : <fmt:formatDate value="${reply.rep_regdate}" pattern="yy-MM-dd :HH:mm:ss"/></span>
+								<span>최종 접속일 : <fmt:formatDate value="${reply.member.mem_latest}" pattern="yy-MM-dd :HH:mm:ss"/></span>
+							</div>
+							
+							<!-- 댓글 수정 -->
+							<div class="reply-content">
+								<textarea class="rep-content" id="rep-content${status.index}" disabled="disabled" autofocus="autofocus">${reply.rep_content}</textarea>
+							</div>
+						</div>
+						
+						
+						<!-- 댓글 버튼 -->
+						<div class="reply-button">
+							<c:if test="${reply.mem_id == memberInfo.mem_id || memberInfo.mem_authority > 108}">
+								<span>
+									<button class="btns-repWrite">작성</button>
+								</span>
+								<span>
+									<button class="btns-repUpdate">수정</button>
+									<button class="btns-repComplete" style="display: none;" onclick="rep_Update(${status.index})">완료</button>
+								</span>
+								<span>
+									<button class="btns-delete" onclick="rep_delete(${article.brd_id},${article.art_id},${reply.rep_id})">삭제</button>
+									<button class="btns-cancel" style="display: none;">취소</button>
+								</span>
+							</c:if>
+							<!-- 댓글 신고 -->
+							<div class="modal-report">
+								<c:if test="${not empty memberInfo}">
+									<svg id="reply-report" viewBox="0 0 512 512" weith="30" height="30"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z"/></svg>
+								</c:if>
+							</div>
+						</div>
+					</div>
+					
+				<!-- 댓글의 댓글 작성 -->
+				<div class="reply-replyWrite" style="display: none; margin-left: 10%">
+					<form action="${pageContext.request.contextPath}/board/share/replyForm" method="post">
+						<span><input type="hidden" id="brd_id${status.index}" name="brd_id" 	value="${article.brd_id}"></span>
+						<span><input type="hidden" id="art_id${status.index}" name="art_id" 	value="${article.art_id}"></span>
+						<span><input type="hidden" id="rep_id${status.index}" name="rep_id" 	value="${reply.rep_id}"></span>
+						<span><input type="hidden" name="category" 	value="${category}"></span>
+						<span><input type="hidden" name="rep_parent"value="${reply.rep_parent}"></span>
+						<span><input type="hidden" name="rep_step"	value="${reply.rep_step}"></span>
+						<textarea style="border: none; resize: none; width: 90%; height: 90%;" placeholder="댓글을 입력하세요" name="rep_content"></textarea>
+						<span><input type="submit" value="등록"></span>
+					</form>
+				</div>
+			</div>
+			</c:forEach>
+			
+			<!-- 새로운 댓글 작성 -->
+			<div class="reply-write">
+				<c:choose>
+					<c:when test="${memberInfo != null}">
+						<form action="${pageContext.request.contextPath}/board/share/replyForm" method="post">
+							<span><input type="hidden" name="brd_id" 	value="${article.brd_id}"></span>
+							<span><input type="hidden" name="art_id" 	value="${article.art_id}"></span>
+							<span><input type="hidden" name="category" 	value="${category}"></span>
+							<textarea style="border: none; resize: none; width: 90%; height: 90%;" placeholder="댓글을 입력하세요" name="rep_content"></textarea>
+							<span><input type="submit" value="등록"></span>
+						</form>
+					</c:when>
+					<c:otherwise>
+						<div class="reply-login">
+							<span>본 게시물에 댓글을 작성하실 권한이 없습니다. 로그인 하신 후 댓글을 다실 수 있습니다.</span>
+							<span>ShareGo <a href="${pageContext.request.contextPath }/login">로그인</a></span>
+						</div>
+					</c:otherwise>
+				</c:choose>
+			</div>
 		</div>
+	</div>
 </body>
 </html>

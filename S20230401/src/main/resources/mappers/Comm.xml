@@ -33,7 +33,7 @@
 		FROM    COMM
 		WHERE   COMM_ID = #{comm_id}
 	</select>
-	
+	<!-- 공통테이블 저장 / 권한-100 / 성별-200 / 쪽지상태-300 / 거래상태-400 / 카테고리-1000~ -->
 	<select id="dgCommList" parameterType="int" resultType="Comm">
 		SELECT  *
 		FROM    COMM

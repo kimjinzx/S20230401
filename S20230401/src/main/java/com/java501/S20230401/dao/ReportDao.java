@@ -14,4 +14,7 @@ public interface ReportDao {
 	int 		cyReportinsert(Report report);
 
 	
+	// 양동균
+	int shareReport(Report report); // 신고
+
 }

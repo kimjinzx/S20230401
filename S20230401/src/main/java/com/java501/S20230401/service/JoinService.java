@@ -9,4 +9,10 @@ public interface JoinService {
 
 
 
+	// 양동균
+	int shareJoinAdd(Article article);
+	int shareJoinDel(Article article);
+	List<Join> shareJoinList(Integer trd_id);
+	int shareUserJoin(Article shareUser);
+
 }

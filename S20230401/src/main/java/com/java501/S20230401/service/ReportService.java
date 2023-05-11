@@ -13,5 +13,9 @@ public interface ReportService {
 	// 김찬영
 	int 			cyReportinsert(Report report);
 	
+	
+	// 양동균
+	// 신고
+	int shareReport(Report report);
 
 }

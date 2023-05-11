@@ -12,6 +12,8 @@ public interface ReplyDao {
 	List<Reply> replyShareList(Article article);
 	int writeReply(Reply reply);
 	int deleteReply(Reply reply);
+	int dgUpdateReply(Reply reply);
+	int dgReportReply(Reply reply); // 신고
 	
 	
 	// 백준

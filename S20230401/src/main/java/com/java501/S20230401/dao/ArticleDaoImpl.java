@@ -1,5 +1,7 @@
 package com.java501.S20230401.dao;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -38,6 +40,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return allArtCnt;
 	}
+	// 모든 글 조회
 	@Override
 	public List<Article> allArticleList(Article article) {
 		List<Article> allArticleList = null;
@@ -59,7 +62,6 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return detailArticle;
 	}
-	
 	// 게시글 조회수 증가
 	@Override
 	public int readShareArticle(Article article) {
@@ -83,6 +85,65 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return result;
 	}
+	// 글 삭제
+	@Override
+	public int dgDeleteArticle(Article article) {
+		int result = 0;
+		try {
+			result = session.update("dgDeleteArticle", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	// 글 추천
+	@Override
+	public int dgVoteGood(Article article) {
+		int result = 0;
+		try {
+			result = session.update("dgVoteGood", article);
+			if(result != 0) result = session.selectOne("dgArtGood", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	// 글 비추천
+	@Override
+	public int dgVoteBad(Article article) {
+		int result = 0;
+		try {
+			result = session.update("dgVoteBad", article);
+			if(result != 0) result = session.selectOne("dgArtBad", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	// 게시글 수정
+	@Override
+	public int updateShare(Article article) {
+		int result = 0;
+		try {
+			result = session.update("dgUpdateArticle", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	// 글 신고
+	@Override
+	public int dgReportArticle(Article article) {
+		int result = 0;
+		try {
+			result = session.update("dgReportArticle", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	
 	
 	
 	

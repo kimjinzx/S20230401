@@ -18,17 +18,16 @@ public class ReplyServiceImpl implements ReplyService {
 	
 	// 양동균
 	@Override
-	public List<Reply> replyShareList(Article article) {
-		return rd.replyShareList(article);
-	}
+	public List<Reply> replyShareList(Article article) {return rd.replyShareList(article);	}
 	@Override
-	public int writeReply(Reply reply) {
-		return rd.writeReply(reply);
-	}
+	public int writeReply(Reply reply) {return rd.writeReply(reply);	}
 	@Override
-	public int deleteReply(Reply reply) {
-		return rd.deleteReply(reply);
-	}
+	public int deleteReply(Reply reply) {return rd.deleteReply(reply);	}
+	@Override
+	public int dgUpdateReply(Reply reply) {return rd.dgUpdateReply(reply);	}
+	@Override
+	public int dgReportReply(Reply reply) {	return rd.dgReportReply(reply); }
+	
 	
 	// 백준
 	@Override

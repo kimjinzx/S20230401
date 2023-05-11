@@ -50,9 +50,33 @@ public class ReplyDaoImpl implements ReplyDao {
 		}
 		return result;
 	}
+	// 댓글 업데이트
+	@Override
+	public int dgUpdateReply(Reply reply) {
+		int result = 0;
+		try {
+			result = session.update("dgUpdateReply", reply);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	// 댓글 신고
+	@Override
+	public int dgReportReply(Reply reply) {
+		int result = 0;
+		try {
+			result = session.update("dgReportReply", reply);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 	
 
+	
+	
 	// 백준
 	@Override
 	public Reply replyCount(Reply reply) {

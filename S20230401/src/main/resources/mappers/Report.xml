@@ -3,7 +3,7 @@
 
 <mapper namespace="com.java501.S20230401.model.ReportMapper">
 
-
+	<!-- 김찬영 -->
  	<insert id="cyReportinsert" parameterType="Report">
 		insert into report
         	(report_id, mem_id, report_content, report_date, report_status, report_reason)
@@ -40,4 +40,30 @@
 	<select id="hgGetReplyByReportId" parameterType="int" resultType="Reply">
 		SELECT * FROM REPLY WHERE REPORT_ID = #{report_id}
 	</select>
+	
+	
+	<!-- 양동균 -->
+	<insert id="dgShareReport" parameterType="Report">
+		INSERT	INTO
+		REPORT	(REPORT_ID, MEM_ID, REPORT_CONTENT, REPORT_DATE, REPORT_STATUS)
+		VALUES  (
+				<choose>
+					<when test="report_id != null">
+						#{report_id},
+					</when>
+					<otherwise>
+						(SELECT MAX(REPORT_ID)+1 FROM REPORT),
+					</otherwise>
+				</choose>
+				#{mem_id},
+				#{report_content},
+				SYSDATE,
+				0)
+		<selectKey keyProperty="report_id" resultType="int" order="AFTER">
+			SELECT 	MAX(REPORT_ID)
+			FROM 	REPORT
+			WHERE	mem_id = #{mem_id}
+		</selectKey>
+	</insert>
+	
 </mapper>

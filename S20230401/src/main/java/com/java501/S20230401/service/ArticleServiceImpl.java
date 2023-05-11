@@ -104,7 +104,19 @@ public class ArticleServiceImpl implements ArticleService {
 	// 글쓰기
 	@Override
 	public int writeShareArticle(Article article) {	return ad.writeShareArticle(article);}
+	// 글 삭제
+	@Override
+	public int dgDeleteArticle(Article article) { return ad.dgDeleteArticle(article);	}
+	// 글 추천
+	@Override
+	public int dgVoteGood(Article article) { return ad.dgVoteGood(article);}
+	// 글 비추천
+	@Override
+	public int dgVoteBad(Article article) {	return ad.dgVoteBad(article);}
+	@Override
+	public int dgReportArticle(Article article) { return ad.dgReportArticle(article); }
 
+	
 	// 백준
 	@Override
 	public Integer totalArticle(int brd_id) {
@@ -619,6 +631,6 @@ public class ArticleServiceImpl implements ArticleService {
 		System.out.println("ArticleServiceImpl shSearchCustomer Start..." );
 		shCustomerSearch = ad.shCustomerSearch(article);
 		System.out.println("ArticleServiceImpl shSearchCustomer shCustomerSearch size()->" +shCustomerSearch.size());
-		return shCustomerSearch;	
+		return shCustomerSearch;
 	}
 }

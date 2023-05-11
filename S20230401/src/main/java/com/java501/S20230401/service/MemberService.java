@@ -8,7 +8,7 @@ import com.java501.S20230401.util.MemberSearchKeyword;
 
 public interface MemberService {
 	// 양동균
-	List<Member> allMemberList(Article article);
+	int dgReportMember(Member member); // 신고
 
 	// 유현규
 	public Member getMember(String keyword, MemberSearchKeyword type);
