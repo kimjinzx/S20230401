@@ -44,10 +44,10 @@ $(document).ready(()=>{
 // 댓글 기능 - 댓글 수정
 $(document).ready(() => {
     $('.btns-repUpdate, .btns-cancel, .btns-repComplete').click(e => {
-        var condition = $('.rep-content').prop('disabled');
+        let condition = $(e.target).closest('.reply-view').find('textarea.rep-content').prop('disabled');
         $(e.target)
         .closest('.reply-view')
-        .find('.rep-content').prop('disabled', condition ? false : true).focus().end()
+        .find('textarea.rep-content').prop('disabled', condition ? false : true).focus().end()
         .find('.btns-repUpdate').toggle().end()
         .find('.btns-delete').toggle().end()
         .find('.btns-repComplete').toggle().end()
@@ -204,7 +204,7 @@ $(()=>{
 });
 function userListButtonClick(e){
 	if(loginUser > 0){
-		let mem_id = $(e.target).closest('.userList-memberInfo').find('#mem_id').val();
+		let mem_id = $(e.target).closest('.userList-memberInfo').find('#member_id').val();
 		let message;
 		let action;
 		
