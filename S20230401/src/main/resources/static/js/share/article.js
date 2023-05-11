@@ -275,7 +275,18 @@ $(()=>{
             action = 'member';
         }
 
+    // fetch(`${contextPath}/board/share/isReport?art${action}?art_id=${artId}&brd_id=${brdId}&mem_id=${mem_id}&category=${category}`)
+    // .then(response => response.json())
+    // .then(isReport => {
+    //     if(isReport){
+    //         alert('이미 신고 되었습니다.');
+    //     }else{
+    //         alert('새로운 신고 접수');
+    //     }
+    // })
+    // .catch(error => console.error(error));
     });
+
     $('#btns-reportApply').click(()=>{
         if($('#report-Checkbox').is(':checked')){
             if(confirm('신고 하시겠습니까?')){
