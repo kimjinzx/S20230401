@@ -517,7 +517,7 @@
 	</aside>
 	<main>
 		<div class="container" style="margin: 10px;">
-		<form id="write-form" name="write-form" action="/board/${boardName }/writeProc" method="post" enctype="multipart/form-data" onsubmit="writeAction();">
+		<form id="write-form" name="write-form" action="/board/${boardName }/writeProc" method="post" enctype="multipart/form-data" accept-charset="UTF-8" onsubmit="writeAction();">
 			<input type="hidden" id="category" name="category" value="${brd_id }">
 			<input type="hidden" id="mem_id" name="mem_id" value="${memberInfo.mem_id }">
 			<div class="form-group">

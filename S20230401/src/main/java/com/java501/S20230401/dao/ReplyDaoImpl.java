@@ -184,6 +184,11 @@ public class ReplyDaoImpl implements ReplyDao {
 		return session.insert("hgInsertReply", reply);
 	}
 	
+	@Override
+	public List<ReplyMember> hgGetRepliesOfMember(int mem_id) {
+		return session.selectList("hgGetRepliesOfMember", mem_id);
+	}
+	
 	
 	// 임동빈
 	@Override

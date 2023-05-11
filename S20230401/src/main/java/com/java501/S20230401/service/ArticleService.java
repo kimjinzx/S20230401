@@ -18,6 +18,14 @@ public interface ArticleService {
 	public Article getArticleById(Article searcher);
 	public MemberInfo getMemberInfoById(int mem_id);
 	public ArticleMember getArticleMemberById(Article searcher);
+	public List<ArticleMember> hgGetArticlesOfMember(int mem_id);
+	public int hgIncreaseReadCount(Article searcher);
+	public int hgRecommendArticle(Article searcher);
+	public int hgCompressedUpdateArticle(Article article);
+	public int hgDeleteArticle(Article article);
+	public int hgRestoreArticle(Article article);
+	public int hgInsertAdminArticle(Article article);
+	public List<Article> hgAdminArticleList(Article searcher);
 
 	// 양동균
 	int allTotalArt(Article article);

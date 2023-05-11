@@ -25,5 +25,7 @@
 		
 		<typeAlias type="com.java501.S20230401.model.Article_Trade_Reply" alias="Article_Trade_Reply"/>		
 		<typeAlias type="com.java501.S20230401.model.ReplyMember"		alias="ReplyMember"/>
+		
+		<typeAlias type="com.java501.S20230401.model.TradeInfo"			alias="TradeInfo"/>
 	</typeAliases>
 </configuration>

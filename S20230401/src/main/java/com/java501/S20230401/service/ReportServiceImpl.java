@@ -1,5 +1,7 @@
 package com.java501.S20230401.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.java501.S20230401.dao.ReportDao;
@@ -17,5 +19,18 @@ public class ReportServiceImpl implements ReportService {
 		int result = pd.cyReportinsert(report);
 		return result;
 	}
-
+	
+	// 유현규
+	@Override
+	public int hgGetCountAllUnprocessedReports() {
+		return pd.hgGetCountAllUnprocessedReports();
+	}
+	@Override
+	public List<Report> hgGetAllUnprocessedReports(Report report) {
+		return pd.hgGetAllUnprocessedReports(report);
+	}
+	@Override
+	public Object hgGetInstanceByReportId(int report_id, String pascalClassName) {
+		return pd.hgGetInstanceByReportId(report_id, pascalClassName);
+	}
 }

@@ -21,4 +21,5 @@ public interface MemberDao {
 	public void setAuthority(Integer mem_id, int authority);
 
 
+
 }

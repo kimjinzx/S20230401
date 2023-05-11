@@ -104,6 +104,10 @@ public class ReplyServiceImpl implements ReplyService {
 	public int hgInsertReply(Reply reply) {
 		return rd.hgInsertReply(reply);
 	}
+	@Override
+	public List<ReplyMember> hgGetRepliesOfMember(int mem_id) {
+		return rd.hgGetRepliesOfMember(mem_id);
+	}
 	
 	
 	// 임동빈
