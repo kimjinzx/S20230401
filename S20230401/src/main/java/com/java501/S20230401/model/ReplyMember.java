@@ -33,4 +33,6 @@ public class ReplyMember {
 	private String 	mem_name;
 	private Date 	mem_birthday;
 	private Date 	mem_latest;
+	
+	private String brd_name;
 }

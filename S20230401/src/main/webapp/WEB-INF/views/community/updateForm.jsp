@@ -283,6 +283,9 @@
 		justify-content: space-between;
 		align-items: center;
 	}
+	.tag{
+		width: 80px;
+	}
 </style>
 </head>
 <body>
@@ -444,27 +447,28 @@
 			<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1320'">자랑하기</button>
 			<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1330'">홍보하기</button>
 			<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1340'">질문/요청</button>
-			<form action="bjUpdate" method="post" name="update">
+			<form action="bjUpdate" method="post" name="update" >
 			<table >
 				<tr><th>닉네임</th>
 				<td><img src="${pageContext.request.contextPath}/${memberInfo.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
 				${memberInfo.mem_nickname}</td></tr>
-				<tr><th>제목</th><td><input type="text" name="art_title" > </td></tr>
-				<tr><th colspan="2">태그<br>태그1 : <input type="text" name="art_tag1" class="tag"><br>
-							      태그2 : <input type="text" name="art_tag2" class="tag"><br>
-							      태그3 : <input type="text" name="art_tag3" class="tag"><br>
-							      태그4 : <input type="text" name="art_tag4" class="tag"><br>
-							      태그5 : <input type="text" name="art_tag5" class="tag"><br></th></tr>
-				<tr><th>내용</th><td><textarea rows="20" cols="100" name="art_content"></textarea></td></tr>
+				<tr><th>제목</th><td><input type="text" name="art_title" value="${article.art_title }" style="width: 700px;"> </td></tr>
+				<tr><th colspan="2">태그<br>태그1 # <input type="text" name="art_tag1" class="tag" value="${article.art_tag1}" >
+							      태그2 # <input type="text" name="art_tag2" class="tag" value="${article.art_tag2 }" >
+							      태그3 # <input type="text" name="art_tag3" class="tag" value="${article.art_tag3 }" >
+							      태그4 # <input type="text" name="art_tag4" class="tag" value="${article.art_tag4 }" >
+							      태그5 # <input type="text" name="art_tag5" class="tag" value="${article.art_tag5 }" ></th></tr>
+				<tr><th>내용</th><td><input type="text" name="art_content" value="${article.art_content }" style="width: 700px; height: 400px;"></td></tr>
 				<tr><td colspan="1">
 					<input type="button" value="목록" 
-						onclick="location.href='${pageContext.request.contextPath}/board/community?category=${category }'"></td>
-					<td>
+						onclick="location.href='${pageContext.request.contextPath}/board/community?category=${category}'"></td>
+					<td>			
 					<input type="submit" value="수정완료"></td>						
 				</tr>	
 			</table>
 			<input type="number" name="art_id" value="${article.art_id }">
 			<input type="number" name="brd_id" value="${article.brd_id }">
+			<input type="number" name="category" value="${category}">
 			</form>
 		</div>
 	

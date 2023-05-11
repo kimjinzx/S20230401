@@ -98,7 +98,7 @@
 </head>
 <body>
 	<div class="container">
-		<form id="write-form" name="write-form" action="/board/${boardName }/writeProc" method="post" enctype="multipart/form-data" onsubmit="writeAction();">
+		<form id="write-form" name="write-form" action="/board/${boardName }/writeProc" method="post" enctype="multipart/form-data" accept-charset="UTF-8" onsubmit="writeAction();">
 			<input type="hidden" id="brd_idLink" name="brd_idLink" value="${brd_id }">
 			<div class="form-group">
 				<div class="input-box">

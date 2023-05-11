@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -96,9 +97,10 @@ public class ArticleController {
 	}
 	
 	@ResponseBody
-	@PostMapping(value = "/board/{boardName}/imageUpload")
+	@PostMapping(value = "/board/{boardName}/imageUpload", produces = "application/text; charset=UTF-8")
 	public void imageUploadInArticle(@PathVariable String boardName, HttpServletResponse response,
 									 MultipartHttpServletRequest request) throws Exception {
+		response.setCharacterEncoding("UTF-8");
 		JSONObject jsonObject = null;
 		PrintWriter printWriter = null;
 		//MultipartFile file = request.getFile("upload");
@@ -144,13 +146,13 @@ public class ArticleController {
 	}
 
 	@PostMapping(value = "/board/{boardName}/writeProc")
-	public String writeArticleProcess(Article article, @RequestParam int category,
+	public String writeArticleProcess(Article article, @RequestParam int brd_idLink,
 									  @PathVariable String boardName,
 									  String articleEditor,
 									  @AuthenticationPrincipal MemberDetails memberDetails) {
 		article.setMem_id(memberDetails.getMemberInfo().getMem_id());
 		int result = as.insertArticle(article);
-		return "redirect:/board/" + boardName + "?brd_id=" + category;
+		return "redirect:/board/" + boardName + "?brd_id=" + brd_idLink;
 	}
 	
 	@GetMapping(value = "/board/{boardName}/{art_id}")
@@ -160,6 +162,7 @@ public class ArticleController {
 							  @RequestParam Integer category,
 							  String currentPage,
 							  HttpServletRequest request,
+							  HttpServletResponse response,
 							  Model model) {
 		String baseUrl = ServletUriComponentsBuilder.fromRequestUri(request)
 										            .replacePath(null)
@@ -170,13 +173,34 @@ public class ArticleController {
 		Article searcher = new Article();
 		searcher.setArt_id(art_id);
 		searcher.setBrd_id(brd_id);
+		// 쿠키 구워서 조회수 증가시키는 로직
+		Cookie oldCookie = null;
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("viewArticle")) {
+					oldCookie = cookie;
+				}
+			}
+		}
+		if (oldCookie != null) {
+			if (!oldCookie.getValue().contains(String.format("[%s_%s]", art_id, brd_id))) {
+				as.hgIncreaseReadCount(searcher); // 조회수 올리는 메서드
+				oldCookie.setValue(oldCookie.getValue() + String.format("&[%s_%s]", art_id, brd_id));
+				oldCookie.setPath("/");
+				oldCookie.setMaxAge(60 * 60 * 24);
+				response.addCookie(oldCookie);
+			}
+		} else {
+			as.hgIncreaseReadCount(searcher); // 조회수 올리는 메서드
+			Cookie newCookie = new Cookie("viewArticle", String.format("[%s_%s]", art_id, brd_id));
+			newCookie.setPath("/");
+			newCookie.setMaxAge(60 * 60 * 24);
+			response.addCookie(newCookie);
+		}
+		// 쿠키 끝!
 		ArticleMember article = as.getArticleMemberById(searcher);
 		MemberInfo writerInfo = as.getMemberInfoById(article.getMem_id());
-		/*
-		 * List<Comm> categories = new ArrayList<Comm>();
-		 * for (int i = 1000; i <= 1500 ; i += 100) categories.addAll(cs.getCategoryListBySuper(i));
-		 * Map<Integer, String> categoryMap = categories.stream().collect(Collectors.toMap(Comm::getComm_id, Comm::getComm_value)); model.addAttribute("categories", categoryMap);
-		 */
 		if (category.intValue() != brd_id) model.addAttribute("board", cs.getCommById(brd_id).getComm_value());
 		else model.addAttribute("board", null);
 		String boardScope = cs.getValueById(category);
@@ -186,15 +210,72 @@ public class ArticleController {
 		model.addAttribute("writerInfo", writerInfo);
 		model.addAttribute("article", article);
 		model.addAttribute("brd_id", brd_id);
-		return "viewArticle_Backup";
+		//return "viewArticle_Backup";
+		return "viewArticle";
+	}
+	
+	@ResponseBody
+	@PostMapping(value = "/board/{boardName}/{art_id}/recommend")
+	public String recommend(@AuthenticationPrincipal MemberDetails memberDetails,
+							@PathVariable String boardName,
+							@PathVariable int art_id,
+							HttpServletRequest request,
+							HttpServletResponse response,
+							@RequestBody Map<String, Object> data) {
+		JSONObject jsonObj = new JSONObject();
+		if (memberDetails == null) {
+			jsonObj.append("result", -1);
+			return jsonObj.toString();
+		}
+		int brd_id = (int)data.get("brd_id");
+		boolean isGood = (boolean)data.get("isGood");
+		Article searcher = new Article();
+		searcher.setArt_id(art_id);
+		searcher.setBrd_id(brd_id);
+		searcher.setArt_good(0);
+		searcher.setArt_bad(0);
+		if (isGood) searcher.setArt_good(1);
+		else searcher.setArt_bad(1);
+		// 쿠키 구워서 추천 | 비추천 수 증가시키는 로직
+		Cookie oldCookie = null;
+		String typeName = isGood ? "recommendArticle" : "deprecatedArticle";
+		Cookie[] cookies = request.getCookies();
+		if (cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals(typeName)) {
+					oldCookie = cookie;
+				}
+			}
+		}
+		int result = 0;
+		if (oldCookie != null) {
+			if (!oldCookie.getValue().contains(String.format("[%s_%s]", art_id, brd_id))) {
+				result = as.hgRecommendArticle(searcher); // 추천 | 비추천 수 올리는 메서드
+				oldCookie.setValue(oldCookie.getValue() + String.format("&[%s_%s]", art_id, brd_id));
+				oldCookie.setPath("/");
+				oldCookie.setMaxAge(60 * 60 * 24);
+				response.addCookie(oldCookie);
+			}
+		} else {
+			result = as.hgRecommendArticle(searcher); // 추천 | 비추천 수 올리는 메서드
+			Cookie newCookie = new Cookie(typeName, String.format("[%s_%s]", art_id, brd_id));
+			newCookie.setPath("/");
+			newCookie.setMaxAge(60 * 60 * 24);
+			response.addCookie(newCookie);
+		}
+		// 쿠키 끝!
+		Article affectedArticle = as.getArticleById(searcher);
+		jsonObj.append("result", result);
+		jsonObj.append("value", isGood ? affectedArticle.getArt_good() : affectedArticle.getArt_bad());
+		return jsonObj.toString();
 	}
 	
 	@PostMapping(value = "/board/{boardName}/{art_id}/replies")
 	public String viewReply(@AuthenticationPrincipal MemberDetails memberDetails,
-			  					  @PathVariable String boardName,
-			  					  @PathVariable int art_id,
-			  					  @RequestBody Map<String, Object> data,
-			  					  Model model) {
+			  				@PathVariable String boardName,
+			  				@PathVariable int art_id,
+			  				@RequestBody Map<String, Object> data,
+			  				Model model) {
 		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		int brd_id = (int)data.get("brd_id");
 		Article article = new Article();
@@ -208,13 +289,13 @@ public class ArticleController {
 	@ResponseBody
 	@PostMapping(value = "/board/{boardName}/{art_id}/replyWrite")
 	public String writeReply(@AuthenticationPrincipal MemberDetails memberDetails,
-			  					  @PathVariable String boardName,
-							      @PathVariable int art_id,
-							      @RequestBody Map<String, Object> data) {
+			  				 @PathVariable String boardName,
+							 @PathVariable int art_id,
+							 @RequestBody Map<String, Object> data) {
 		JSONObject result = new JSONObject();
 		int brd_id = (int)data.get("brd_id");
 		int mem_id = (int)data.get("mem_id");
-		String rep_content = (String)data.get("rep_content");
+		String rep_content = "<xmp>" + (String)data.get("rep_content") + "</xmp>";
 		String reply_add = null;
 		String display_whose = null;
 		Integer rep_parent = null;

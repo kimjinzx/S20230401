@@ -7,6 +7,8 @@ import com.java501.S20230401.model.Join;
 
 public interface JoinService {
 
+
+
 	// 양동균
 	int shareJoinAdd(Article article);
 	int shareJoinDel(Article article);

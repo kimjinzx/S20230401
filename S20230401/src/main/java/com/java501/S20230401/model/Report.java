@@ -14,5 +14,9 @@ public class Report {
 	private String 	report_reason;
 	
 	// 유현규
-	private String 	type;
+	private String type;
+	// for Paging
+	private String 	pageNum;
+	private Integer start;
+	private Integer end;
 }

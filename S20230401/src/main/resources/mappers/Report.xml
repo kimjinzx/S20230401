@@ -3,6 +3,45 @@
 
 <mapper namespace="com.java501.S20230401.model.ReportMapper">
 
+	<!-- 김찬영 -->
+ 	<insert id="cyReportinsert" parameterType="Report">
+		insert into report
+        	(report_id, mem_id, report_content, report_date, report_status, report_reason)
+		values
+			((select max(report_id) + 1 from report), #{mem_id}, #{report_content}, sysdate, 1, null)
+	</insert> 
+	
+	<!-- 유현규 -->
+	<select id="hgGetCountAllUnprocessedReports" resultType="int">
+		SELECT NVL(COUNT(*), 0) FROM REPORT WHERE REPORT_STATUS = 0
+	</select>
+	<select id="hgGetAllUnprocessedReports" parameterType="Report" resultType="Report">
+		SELECT *
+		FROM (SELECT ROWNUM RN, R.*, M.MEM_NICKNAME, T.TYPE
+			  FROM (SELECT *
+			  		FROM REPORT
+			  		WHERE REPORT_STATUS = 0
+			  		ORDER BY REPORT_DATE DESC)
+			  	   R LEFT OUTER JOIN MEMBER M ON (R.MEM_ID = M.MEM_ID)
+									 JOIN (SELECT REPORT_ID, 'ARTICLE' TYPE FROM ARTICLE WHERE REPORT_ID IS NOT NULL
+				  		 				    UNION
+				  		 				    SELECT REPORT_ID, 'MEMBER' TYPE FROM MEMBER WHERE REPORT_ID IS NOT NULL
+				  						    UNION
+				  						    SELECT REPORT_ID, 'REPLY' TYPE FROM REPLY WHERE REPORT_ID IS NOT NULL)
+				  						   T ON (R.REPORT_ID = T.REPORT_ID))
+		WHERE RN BETWEEN #{start} AND #{end}
+	</select>
+	<select id="hgGetMemberByReportId" parameterType="int" resultType="Member">
+		SELECT * FROM MEMBER WHERE REPORT_ID = #{report_id}
+	</select>
+	<select id="hgGetArticleByReportId" parameterType="int" resultType="Article">
+		SELECT * FROM ARTICLE WHERE REPORT_ID = #{report_id}
+	</select>
+	<select id="hgGetReplyByReportId" parameterType="int" resultType="Reply">
+		SELECT * FROM REPLY WHERE REPORT_ID = #{report_id}
+	</select>
+	
+	
 	<!-- 양동균 -->
 	<insert id="dgShareReport" parameterType="Report">
 		INSERT	INTO

@@ -1,10 +1,14 @@
 package com.java501.S20230401.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Trade;
+import com.java501.S20230401.model.TradeInfo;
+import com.java501.S20230401.util.TradeType;
 
 import lombok.RequiredArgsConstructor;
 
@@ -13,6 +17,13 @@ import lombok.RequiredArgsConstructor;
 public class TradeDaoImpl implements TradeDao {
 	private final SqlSession session;
 	
+	// 유현규
+	@Override
+	public List<TradeInfo> hgGetTradesByType(Trade searcher, TradeType type) {
+		return session.selectList("hgGetRecent" + type.toString() + "Trade", searcher);
+	}
+	
+	// 양동균
 	@Override
 	public int updateShare(Article article) {
 		int result = 0;
@@ -38,5 +49,4 @@ public class TradeDaoImpl implements TradeDao {
 			e.printStackTrace();
 		}
 	}
-
 }

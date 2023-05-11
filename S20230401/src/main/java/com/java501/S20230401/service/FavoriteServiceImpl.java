@@ -13,6 +13,14 @@ import lombok.RequiredArgsConstructor;
 public class FavoriteServiceImpl implements FavoriteService {
 	private final FavoriteDao fd;
 	
+	@Override
+	public int cyFavorite(Favorite favorite) {
+		System.out.println("관심서버 임플 insert");
+		int result = fd.cyFavorite(favorite);
+		return result;
+	}
+	
+	
 	// 양동균
 	// 찜목록 추가
 	@Override
@@ -23,5 +31,4 @@ public class FavoriteServiceImpl implements FavoriteService {
 	@Override
 	// 찜목록 조회
 	public int dgUserFavorite(Article shareUser) { return fd.dgUserFavorite(shareUser); }
-
 }

@@ -11,11 +11,8 @@
 <h1>글작성</h1>
 <form action="${pageContext.request.contextPath }/dutchpay/dutchpayWritePro" method="post" >
 
-		<input type="hidden" name="mem_id" value="1">
-		<input type="hidden" name="trd_status" value="401">
+		
 <table border="1"> 
-		
-		
 		<tr><th>제목</th><td><input type="text" name="art_title" required="required">
 		
 		<tr><th>카테고리</th><td>
@@ -33,9 +30,9 @@
 			<input type="text" name="art_tag4" >
 			<input type="text" name="art_tag5" ></td></tr>
 		
-		<tr><th>가격</th><td><input     type="number" name="trd_cost"     	required="required"></td></tr>
-		<tr><th>모집인원</th><td><input  type="number" name="trd_max" 	    	required="required"></td></tr>
-	    <!-- <tr><th>마감일자</th><td><input  type="date"   name="trd_enddate" 	    required="required"></td></tr> --> 
+		<tr><th>가격</th><td><input     type="number" name="trd_cost"     	required="required"> 원</td></tr>
+		<tr><th>모집인원</th><td><input  type="number" name="trd_max" 	    	required="required"> 명 (작성자 제외)</td></tr>
+	    <tr><th>마감일자</th><td><input  type="date"   name="trd_saveEnddate" 	    required="required"></td></tr>
 		
 		<tr><th>지역</th><td>
 			<select name="reg_id">

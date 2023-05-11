@@ -137,62 +137,23 @@
 					<span>성별 제한 : ${article.trade.trd_gender==201? '남자만':article.trade.trd_gender==202? '여자만':'제한없음'}</span>
 				</div><hr />
 					
-				<!-- 참가중인 회원 목록 -->
-				<div class="share-userList">
-					<h2>거래 참가자 명단</h2><hr />
-					<c:forEach var="join" items="${joinList}">
-						<span>참여일 : <fmt:formatDate value="${join.join_date}" pattern="yy-MM-dd HH:mm:ss"/></span>
-						<div class="userList-memberInfo">
-							<img src="${pageContext.request.contextPath}/uploads/profile/${join.member.mem_image}" alt="profile" style="width: 60px; height: 60px; border-radius: 30px; margin-right: 20px;">
-							<div class="userList-details">
-								<h3>${join.member.mem_username}</h3>
-								<div class="modal-report">
-									<span id="member_nickname">${join.member.mem_nickname}</span>
-									<c:if test="${not empty memberInfo}">
-										<svg id="member-report" viewBox="0 0 512 512" weith="30" height="30"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z"/></svg>
-									</c:if>
-									<input type="hidden" id="member_id" name="mem_id" value="${join.mem_id}">
-									<input type="hidden" id="memReport_id" value="${join.member.report_id}">
-								</div>
-							</div>
-							<div class="userList-btns">
-								<c:choose>
-									<c:when test="${article.mem_id == memberInfo.mem_id}">
-										<button class="btns-action" id="btns-drop">추방</button>
-									</c:when>
-									<c:when test="${join.mem_id == memberInfo.mem_id}">
-										<button class="btns-action" id="btns-joinCancel">취소</button>
-									</c:when>
-								</c:choose>
-							</div>
-						</div><hr />
-					</c:forEach>
-					<c:if test="${empty joinList}"><p style="text-align: center;">아직 참가자가 없어요</p></c:if>
-				</div>
-				
-				<!-- 거래 대기열 회원 목록 -->
-				<div class="share-userList">
-					<h2>거래 신청자 명단</h2><hr />
-					<c:forEach var="waiting" items="${waitingList}" varStatus="status">
-						<span>신청일 : <fmt:formatDate value="${waiting.wait_date}" pattern="yy-MM-dd HH:mm:ss"/></span>
-						<div class="userList-memberInfo">
-							<img src="${pageContext.request.contextPath}/uploads/profile/${waiting.member.mem_image}" alt="profile" style="width: 60px; height: 60px; border-radius: 30px; margin-right: 20px;">
-							<div class="userList-details">
-								<h3>${waiting.member.mem_username}</h3>
-								<div class="modal-report">
-									<span id="member_nickname">${waiting.member.mem_nickname}</span>
-									<c:if test="${not empty memberInfo}">
-										<svg id="member-report" viewBox="0 0 512 512" weith="30" height="30"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z"/></svg>
-									</c:if>
-									<input type="hidden" id="member_id" name="mem_id" value="${waiting.mem_id}">
-									<input type="hidden" id="memReport_id" value="${waiting.member.report_id}">
-								</div>
-							</div>
-							<div class="userList-btns">
-								<c:choose>
-									<c:when test="${article.mem_id == memberInfo.mem_id}">
-										<c:if test="${article.trade.trd_max ne joinList.size()}">
-											<button class="btns-action" id="btns-accept">승인</button>
+					<div class="article-title">
+						<span><button class="btn">${article.status_name}</button></span>
+						<span>${article.art_title}</span>
+						<span>마감일 : <fmt:formatDate value="${article.trade.trd_enddate}" pattern="yyyy-MM-dd"/></span>
+						
+						<span>아이콘1</span>
+						<span>아이콘2</span>
+						<span>아이콘3</span>
+					</div>
+					<hr />
+					<div class="article-info">
+						<div class="info-tag">
+							<span>
+								<c:forEach begin="1" end="5" varStatus="status">
+									<c:set var="art_tag" value="art_tag${status.index}"/>
+										<c:if test="${article[art_tag] != null}">
+											<span>${article[art_tag]}</span>
 										</c:if>
 										<button class="btns-action" id="btns-refuse">거절</button>
 									</c:when>

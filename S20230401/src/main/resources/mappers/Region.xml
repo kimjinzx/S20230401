@@ -14,7 +14,6 @@
 	</select>
 	
 	
-	
 	<!-- 양동균 -->	
 	<resultMap type="Region" id="dgRegionMap">
 		<id 	column="reg_id" 		property="reg_id"/><!-- PK -->
@@ -34,6 +33,7 @@
 		WHERE 	REG_PARENT = #{reg_id}
 		ORDER BY REG_ID ASC 
 	</select>
+	
 	
 	
 	

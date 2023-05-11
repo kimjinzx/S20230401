@@ -28,7 +28,6 @@ public class Member {
 	// 참고
 	private Comm 	comm;
 	
-	
 	// 임동빈
 	private String pageNum;
 	private Integer start;

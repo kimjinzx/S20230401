@@ -14,11 +14,84 @@
 				#{art_tag4, jdbcType=VARCHAR}, #{art_tag5, jdbcType=VARCHAR}, NULL,
 				0, 0, 0, 0, 0, NULL)
 	</insert>
+	<insert id="hgInsertAdminArticle" parameterType="Article">
+		INSERT INTO ARTICLE (ART_ID, BRD_ID, ART_TITLE, MEM_ID, ART_REGDATE, ART_CONTENT,
+							 ART_TAG1, ART_TAG2, ART_TAG3, ART_TAG4, ART_TAG5, TRD_ID, ART_GOOD,
+							 ART_BAD, ART_READ, ART_ISNOTICE, ISDELETE, REPORT_ID)
+		VALUES ((SELECT MAX(ART_ID) + 1 FROM ARTICLE WHERE BRD_ID = #{brd_id}), #{brd_id},
+				#{art_title, jdbcType=VARCHAR}, #{mem_id}, SYSDATE, #{art_content, jdbcType=VARCHAR},
+				#{art_tag1, jdbcType=VARCHAR}, #{art_tag2, jdbcType=VARCHAR}, #{art_tag3, jdbcType=VARCHAR},
+				#{art_tag4, jdbcType=VARCHAR}, #{art_tag5, jdbcType=VARCHAR}, NULL,
+				0, 0, 0, 0, 0, NULL)
+		<selectKey keyProperty="art_id" resultType="int" order="AFTER">
+			SELECT MAX(ART_ID) ART_ID FROM ARTICLE WHERE BRD_ID = #{brd_id}
+		</selectKey>
+	</insert>
+	<update id="hgCompressedUpdateArticle" parameterType="Article">
+		UPDATE ARTICLE SET ART_TITLE = #{art_title}, ART_CONTENT = #{art_content}, ART_TAG1 = #{art_tag1, jdbcType=VARCHAR},
+								   ART_TAG2 = #{art_tag2, jdbcType=VARCHAR}, ART_TAG3 = #{art_tag3, jdbcType=VARCHAR},
+								   ART_TAG4 = #{art_tag4, jdbcType=VARCHAR}, ART_TAG5 = #{art_tag5, jdbcType=VARCHAR}
+		WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
+	</update>
+	<update id="hgDeleteArticle" parameterType="Article">
+		UPDATE ARTICLE SET ISDELETE = 1 WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
+	</update>
+	<update id="hgRestoreArticle" parameterType="Article">
+		UPDATE ARTICLE SET ISDELETE = 0 WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
+	</update>
 	<select id="hgGetArticleById" parameterType="Article" resultType="Article">
 		SELECT * FROM ARTICLE
 		WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
 	</select>
-	
+	<select id="hgAdminArticleList" parameterType="Article" resultType="Article">
+		SELECT  *
+		FROM    (SELECT ROWNUM AS RN, J.*
+		         FROM   (SELECT *
+		                 FROM ( SELECT  *
+		                        FROM    ARTICLE A
+		                        JOIN    (   SELECT  C1.COMM_VALUE AS BRD_NAME, B.*
+		                                    FROM    BOARD B JOIN COMM C1
+		                                    ON      BRD_ID IN COMM_ID
+		                                 )USING(BRD_ID)
+		                        JOIN	(   SELECT  C2.COMM_VALUE AS GEN_NAME, M.*
+		                                    FROM    MEMBER M JOIN COMM C2
+		                                    ON      MEM_GENDER IN COMM_ID
+		                                 )USING(MEM_ID)
+				                LEFT OUTER JOIN 	(   SELECT  C3.COMM_VALUE AS STATUS_NAME, T.*, R.REG_NAME
+				                                        FROM    TRADE T LEFT OUTER JOIN COMM C3
+				                                        ON      T.TRD_STATUS = C3.COMM_ID
+				                                        LEFT OUTER JOIN REGION R
+				                                        ON      T.REG_ID = R.REG_ID
+				                         )USING(TRD_ID)
+		                        LEFT OUTER JOIN    (    SELECT 	COUNT(*) AS REP_CNT, ART_ID, BRD_ID
+		                                                FROM 	REPLY
+		                                                WHERE 	ISDELETE = 0
+		                                                GROUP BY(ART_ID, BRD_ID)
+		                                            )USING(BRD_ID, ART_ID)
+		                       )
+		                 WHERE      BRD_ID <choose>
+		                 						<when test="brd_id == 999">
+													BETWEEN #{brd_id} and #{brd_id}+600
+												</when>
+												<when test="brd_id % 100 != 0">
+													= #{brd_id}
+												</when>
+												<otherwise>
+													BETWEEN #{brd_id} and #{brd_id}+99
+												</otherwise>
+											</choose>
+		                 ORDER BY   ART_REGDATE DESC) J)
+		WHERE 	RN BETWEEN #{start} and #{end}
+	</select>
+	<update id="hgIncreaseReadCount" parameterType="Article">
+		UPDATE ARTICLE SET ART_READ = ART_READ + 1
+		WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
+	</update>
+	<update id="hgRecommendArticle" parameterType="Article">
+		UPDATE ARTICLE SET ART_GOOD = ART_GOOD + #{art_good},
+						   ART_BAD = ART_BAD + #{art_bad}
+		WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
+	</update>
 	
 	<!-- 양동균 -->
 	<resultMap type="Article" id="dgArticleMap">
@@ -273,6 +346,7 @@
 		<![CDATA[
 			brd_id >= #{brd_id} AND brd_id < #{brd_id} + 100
 		]]>
+		AND isdelete = 0 AND art_isnotice = 0
 	</select>
 	<select id="bjarticlePart" parameterType="int" resultType="int">
 		SELECT COUNT(*) FROM ARTICLE
@@ -294,12 +368,59 @@
 		        ) R ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID) 
 		        WHERE A.BRD_ID BETWEEN 1300 AND 1399
 		        AND A.isdelete = 0 
-		        ORDER BY A.ART_ID DESC
+		        ORDER BY A.ART_REGDATE DESC
 		    ) TEMP
 		    INNER JOIN member M ON TEMP.mem_id = M.mem_id
 		)
 		WHERE RN BETWEEN #{start} AND #{end}
 	</select>
+	
+	<select id="bjSearch" parameterType="Article" resultType="Article">
+	  SELECT *
+	  FROM (
+	    SELECT ROWNUM RN, TEMP.*, M.mem_nickname, M.mem_image
+	    FROM (
+	      SELECT A.*, NVL(R.REP_CNT, 0) AS REP_CNT
+	      FROM ARTICLE A
+	      LEFT OUTER JOIN (
+	        SELECT ART_ID, BRD_ID, COUNT(*) REP_CNT
+	        FROM REPLY
+	        GROUP BY ART_ID, BRD_ID
+	      ) R ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID)
+	      WHERE
+	      <choose>
+	      	<when test="brd_id == 1300">
+	      		(A.BRD_ID - MOD(A.BRD_ID, 100)) = #{brd_id}
+	      	</when>
+	      	<otherwise>
+	      		A.BRD_ID = #{brd_id}
+	      	</otherwise>
+	      </choose>
+	      AND A.isdelete = 0
+	      <choose>
+	          <when test="bjSearchOption == 'bjStitle'">
+	            AND A.art_title LIKE '%' || #{bjKeyword} || '%'
+	          </when>
+	          <when test="bjSearchOption == 'bjScontent'">
+	            AND A.art_content LIKE '%' || #{bjKeyword} || '%'
+	          </when>
+	          <when test="bjSearchOption == 'bjStiCon'">
+	            AND (A.art_title LIKE '%' || #{bjKeyword} || '%' OR A.art_content LIKE '%' || #{bjKeyword} || '%')
+	          </when>
+	        </choose>
+	      ORDER BY A.ART_REGDATE DESC
+	    ) TEMP
+	    INNER JOIN member M ON TEMP.mem_id = M.mem_id
+	    <choose>
+		   	<when test="bjSearchOption == 'bjSnick'">
+	           AND M.mem_nickname LIKE '%' || #{bjKeyword} || '%'
+		    </when>
+	    </choose>
+	  )
+	  WHERE RN BETWEEN #{start} AND #{end}
+	</select>
+
+	
 	<select id="bjArticleMenu" parameterType="Article" resultType="Article">
 		SELECT *
 		FROM (
@@ -315,7 +436,7 @@
 		        ) R ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID) 
 		        WHERE A.BRD_ID = #{brd_id}
 		        AND A.isdelete = 0 
-		        ORDER BY A.ART_ID DESC
+		        ORDER BY A.ART_REGDATE DESC
 		    ) TEMP
 		    INNER JOIN member M ON TEMP.mem_id = M.mem_id
 		)
@@ -336,14 +457,49 @@
 	</update>
 	
 	<insert id="bjWriteArticle" parameterType="Article">
-    INSERT INTO ARTICLE (ART_ID, BRD_ID, ART_TITLE, MEM_ID, ART_REGDATE, ART_CONTENT,
-							 ART_TAG1, ART_TAG2, ART_TAG3, ART_TAG4, ART_TAG5, TRD_ID, ART_GOOD,
-							 ART_BAD, ART_READ, ART_ISNOTICE, ISDELETE, REPORT_ID)
-		VALUES ((SELECT MAX(ART_ID) + 1 FROM ARTICLE WHERE BRD_ID = #{brd_id}), #{brd_id},
-				#{art_title, jdbcType=VARCHAR}, #{mem_id}, SYSDATE, #{art_content, jdbcType=VARCHAR},
-				#{art_tag1, jdbcType=VARCHAR}, #{art_tag2, jdbcType=VARCHAR}, #{art_tag3, jdbcType=VARCHAR},
-				#{art_tag4, jdbcType=VARCHAR}, #{art_tag5, jdbcType=VARCHAR}, NULL,
-				0, 0, 0, 0, 0, NULL)
+    INSERT INTO ARTICLE (
+    			ART_ID, 
+    			BRD_ID, 
+    			ART_TITLE, 
+    			MEM_ID, 
+    			ART_REGDATE, 
+    			ART_CONTENT,
+				ART_TAG1, 
+				ART_TAG2, 
+				ART_TAG3, 
+				ART_TAG4, 
+				ART_TAG5, 
+				TRD_ID, 
+				ART_GOOD,
+				ART_BAD, 
+				ART_READ, 
+				ART_ISNOTICE, 
+				ISDELETE, 
+				REPORT_ID
+							)
+		VALUES 
+				((SELECT MAX(ART_ID) + 1 FROM ARTICLE WHERE BRD_ID = #{brd_id}), 
+				#{brd_id},
+				#{art_title, jdbcType=VARCHAR}, 
+				#{mem_id}, 
+				SYSDATE, 
+				#{art_content, jdbcType=VARCHAR},
+				#{art_tag1, jdbcType=VARCHAR}, 
+				#{art_tag2, jdbcType=VARCHAR}, 
+				#{art_tag3, jdbcType=VARCHAR},
+				#{art_tag4, jdbcType=VARCHAR}, 
+				#{art_tag5, jdbcType=VARCHAR}, 
+				NULL,
+				0, 0, 0, 
+				<choose>
+		            <when test="art_isnotice != null">
+		                #{art_isnotice, jdbcType=INTEGER},
+		            </when>
+	            <otherwise>
+	                	0,
+	            </otherwise>
+	        	</choose>
+        		 0, NULL)
 	</insert>
 	
 	<update id="bjUpdate" parameterType="Article">
@@ -365,7 +521,19 @@
 		WHERE art_id=#{art_id} AND brd_id = #{brd_id}
 	</update>
 	
-	
+	<update id="bjGood" parameterType="Article">
+		UPDATE article
+			SET
+				art_good = art_good+1
+		WHERE art_id = #{art_id} AND brd_id = #{brd_id}		
+	</update>
+
+	<update id="bjBad" parameterType="Article">
+		UPDATE article
+			SET
+				art_bad = art_bad+1
+		WHERE art_id = #{art_id} AND brd_id = #{brd_id}		
+	</update>
 	
 	
 	
@@ -374,15 +542,14 @@
 	
 	
 	<!-- 임동빈 -->
-		<select id="ArticleTotalCnt" resultType="int">
+	<select id="dbArticleTotalCnt" resultType="int">
 		select 	Count(*) 
 		FROM   	article 
 		WHERE  	brd_id between 1010 and 1060
 		AND    	isdelete = 0
 	</select>
 
-	<select id="ArticleBoardCnt" parameterType="Article"
-		resultType="int">
+	<select id="dbArticleBoardCnt" parameterType="Article" resultType="int">
 		SELECT 	Count(*) 
 		FROM 	article 
 		WHERE 	brd_id=#{brd_id}
@@ -390,7 +557,7 @@
 	</select>
 
 
-	<select id="tkArticleListAll" parameterType="Article" resultType="Article">
+	<select id="dbArticleListAll" parameterType="Article" resultType="Article">
 		SELECT * FROM (
 		    SELECT ROWNUM RN, TT.*
 		    FROM (
@@ -457,7 +624,7 @@
 			
 	</select>
 
-	<select id="tkArticleListBoard" parameterType="Article" resultType="Article">
+	<select id="dbArticleListBoard" parameterType="Article" resultType="Article">
 		SELECT * FROM (
 		    SELECT ROWNUM RN, TT.*
 		    FROM (
@@ -524,7 +691,7 @@
 	</select>
 
 
-	<select id="tkArticleDetail" parameterType="Article" resultType="Article">
+	<select id="dbArticleDetail" parameterType="Article" resultType="Article">
         SELECT  		  a.*
         				, m.*
         				, r.*
@@ -565,21 +732,23 @@
 		group by    a.art_id, a.brd_id
 	</select> -->
 
-	<select id="tkReplyList" parameterType="Article" resultType="Article">
+	<select id="dbReplyList" parameterType="Article" resultType="Article">
 		SELECT        r.*
-					, a.*
-					, m.*
-		FROM        reply r LEFT JOIN article a ON(a.art_id = r.art_id  and a.brd_id = r.brd_id)
-                    		LEFT JOIN member  m ON(r.mem_id = m.mem_id)
-		WHERE 		a.brd_id = #{brd_id}
-		AND   		a.art_id = #{art_id}
-		AND			r.isdelete = 0
+		             , a.*
+		             , m.*
+		FROM          reply r 
+		LEFT JOIN     article a ON (a.art_id = r.art_id AND a.brd_id = r.brd_id)
+		LEFT JOIN     member m ON (r.mem_id = m.mem_id)
+		WHERE         a.brd_id = #{brd_id}
+		AND           a.art_id = #{art_id}
+		AND           (r.isdelete = 0 OR (r.isdelete = 1 AND r.rep_parent = r.rep_id))
+		ORDER BY      r.rep_parent, r.rep_step
 	</select>
 	
-	<select id = "insertArticle" statementType="CALLABLE" parameterType="Article">
+	<select id = "dbInsertArticle" statementType="CALLABLE" parameterType="Article">
 		{
 		call Insert_Article(
-			1
+			  #{mem_id,		   mode= IN,  jdbcType=NUMERIC}
 			, 401
 			, #{trd_max,       mode= IN,  jdbcType=NUMERIC}
 			, #{trd_enddate,   mode= IN,  jdbcType=DATE}
@@ -618,7 +787,7 @@
             , 0, 0, 0, 0, 0, null)
 	</insert> -->
 	
- 	<update id="deleteArticle" parameterType="Article">
+ 	<update id="dbDeleteArticle" parameterType="Article">
 		UPDATE article
 		SET    isdelete = 1
 		WHERE  brd_id = #{brd_id} 
@@ -653,11 +822,11 @@
  		AND			brd_id 		= #{brd_id}
 	</update> -->
 	
-	<select id="updateArticle" parameterType="Article" statementType="CALLABLE">
+	<select id="dbUpdateArticle" parameterType="Article" statementType="CALLABLE">
 	{
 		call Update_Article(
 			  #{trd_id, 	   mode= IN,  jdbcType=NUMERIC}
-			, 1
+			, #{mem_id,		   mode= IN,  jdbcType=NUMERIC}
 			, 401
 			, #{trd_max,       mode= IN,  jdbcType=NUMERIC}
 			, #{trd_enddate,   mode= IN,  jdbcType=DATE}
@@ -680,6 +849,144 @@
 		}
 	</select>
 	
+	<update id="dbReadArticleCnt" parameterType="Article">
+		UPDATE      ARTICLE
+        SET         ART_READ = ART_READ + 1
+        WHERE       BRD_ID = #{brd_id}
+        AND         ART_ID = #{art_id}
+	</update>
+	
+	<select id="dbInsertReportArticle" parameterType="Article" statementType="CALLABLE">
+	{
+		call Insert_Article_Report(
+			 #{report_id,		mode=IN,   jdbcType=NUMERIC}
+		   , #{mem_id,			mode=IN,   jdbcType=NUMERIC}
+		   , #{report_content,  mode=IN,   jdbcType=VARCHAR}
+		   , #{art_id,			mode=IN,   jdbcType=NUMERIC}
+		   , #{brd_id,	        mode=IN,   jdbcType=NUMERIC}
+		   , #{insert_result,   mode=OUT,  jdbcType=NUMERIC})
+	}	
+	</select>
+	
+	<select id="dbInsertReportReply" parameterType="Article" statementType="CALLABLE">
+	{
+		call Insert_Reply_Report(
+			 #{report_id,		mode=IN,   jdbcType=NUMERIC}
+		   , #{mem_id,			mode=IN,   jdbcType=NUMERIC}
+		   , #{report_content,  mode=IN,   jdbcType=VARCHAR}
+		   , #{art_id,			mode=IN,   jdbcType=NUMERIC}
+		   , #{brd_id,	        mode=IN,   jdbcType=NUMERIC}
+		   , #{rep_id, 			mode=IN,   jdbcType=NUMERIC}
+		   , #{insert_result,   mode=OUT,  jdbcType=NUMERIC})
+	}	
+	</select>
+	
+<!-- 	<update id="dbUpdateArticleReport" parameterType="Article">
+		UPDATE      ARTICLE
+        SET         REPORT_ID = REPORT_ID_SEQ.CURRVAL
+        WHERE       brd_id = #{brd_id}
+        AND         ART_ID = #{art_id}
+	</update> -->
+	
+	<update id="dbUpdateReplyReport" parameterType="Article">
+		UPDATE      Reply
+        SET         REPORT_ID = REPORT_ID_SEQ.CURRVAL
+        WHERE       brd_id = #{brd_id}
+        AND         ART_ID = #{art_id}
+        AND			REP_ID = #{rep_id}
+	</update>
+	
+	<select id="dbTradeJoinMember" parameterType="Article" resultType="Article">
+		select 	j.*, m.*
+		from 	join j left join member m  on (j.mem_id = m.mem_id)
+		where 	trd_id = #{trd_id}
+	</select>
+	
+	<select id="dbTradeWaitingMember" parameterType="Article" resultType="Article">
+		select 	w.*, m.*
+		from 	Waiting w left join member m  on (w.mem_id = m.mem_id)
+		where 	trd_id = #{trd_id}
+	</select>
+	
+	<insert id="dbTradeWaiting" parameterType="Article">
+		Insert into waiting (trd_id, mem_id, wait_date)
+		values              (#{trd_id}, #{mem_id}, sysdate)
+	</insert>
+	
+		
+	<insert id="dbTradeInsertJoin" parameterType="Article">
+		Insert into Join (trd_id, mem_id, join_date)
+		values           (#{trd_id}, #{mem_id}, sysdate)
+	</insert>
+	
+	<delete id="dbTradeDeleteWaiting" parameterType="Article">
+		DELETE From waiting
+		WHERE trd_id   = #{trd_id}
+		AND   mem_id   = #{mem_id}
+	
+	</delete>
+	
+	<delete id="dbJoinDelete" parameterType="Article">
+	DELETE From Join
+	WHERE trd_id 	= #{trd_id}
+	AND mem_id 		= #{mem_id}
+	</delete>
+	
+	
+	<insert id="dbFavoriteArticle" parameterType="Article">
+		Insert into Favorite (art_id, brd_id, mem_id)
+		values				(#{art_id}, #{brd_id}, #{mem_id})
+	</insert>
+	
+	<update id="dbChangeStatus" parameterType="Article">
+		UPDATE trade t
+		SET t.trd_status = 402
+		WHERE t.trd_id = #{trd_id} 
+		AND (SELECT COUNT(*) FROM join j WHERE j.trd_id = t.trd_id) = #{trd_max}
+	</update>
+	
+	<update id="dbChangeEndStatus" parameterType="Article">
+		UPDATE trade
+		SET trd_status = 403
+		WHERE trd_id = #{trd_id}
+		AND sysdate > trd_enddate
+	</update>	
+	
+	<update id="dbChangeCancelStatus" parameterType="Article">
+		UPDATE trade
+		SET trd_status = 404
+		WHERE trd_id = #{trd_id}
+	</update>	
+	
+	<update id="dbArticleGoodUp" parameterType="Article">
+		UPDATE 	Article
+		SET 	ART_GOOD = ART_GOOD + 1
+		WHERE 	ART_ID = #{art_id}
+		AND	  	brd_id = #{brd_id}
+	</update>
+	
+	<update id="dbArticleBadUp" parameterType="Article">
+		UPDATE 	Article
+		SET 	ART_bad = ART_bad + 1
+		WHERE 	ART_ID = #{art_id}
+		AND	  	brd_id = #{brd_id}
+	</update>
+	
+	<update id="dbReplyGoodUp" parameterType="Article">
+		UPDATE 	reply
+		SET 	rep_good = rep_good + 1
+		WHERE 	art_id = #{art_id}
+		AND	  	brd_id = #{brd_id}
+		and		rep_id = #{rep_id}
+	</update>
+	
+	<update id="dbReplyBadUp" parameterType="Article">
+		UPDATE 	reply
+		SET 	rep_bad = rep_bad + 1
+		WHERE 	art_id = #{art_id}
+		AND	  	brd_id = #{brd_id}
+		and		rep_id = #{rep_id}
+	</update>
 	
 	
 	
@@ -688,62 +995,86 @@
 	
 	
 	
-	
-	
-	
-	
-	
+
+
 	
 	<!-- 김찬영 -->
 	<!-- 리스트 조회-->
-	<select id="ArticleTotal" resultType="int">
-		select Count(*) FROM article
-	</select>
-	
-	<!-- 페이지 불러오기 -->
-	<select id="cyArticleListAll" parameterType="Article" resultType="Article">
-		<![CDATA[
+ <select id="ArticleTotal" resultType="int">
+		select Count(*) 
+		FROM article
+		where brd_id between 1400 and 1499
+	</select> 
 		
+	<!-- 페이지 불러오기 -->
+   	<select id="cyArticleListAll" parameterType="Article" resultType="Article">
 		SELECT *
 		FROM
 		(
 		    SELECT rownum rn, a.*
 		    FROM
-		        (SELECT * FROM article WHERE brd_id >= 1400 AND brd_id < 1500 ORDER BY art_id) a
+		        (SELECT *
+		         FROM article
+		         where  
+		        <choose>
+		        	<when test="brd_id == 1400">
+		        		brd_id between 1400 and 1499
+		        	</when>
+		        	<otherwise>
+		        		brd_id = #{brd_id}
+		        	</otherwise>
+		        </choose>
+		         and isdelete = 0
+		     ORDER BY art_id) a
 		)
-			WHERE rn >= #{start}
-			and   rn <= #{end}
-		]]>
+			WHERE rn between #{start} and #{end}
+	</select>  
+	<!-- 조회 -->
+	<select id="count" resultType="int">
+	 select count(brd_id) from article
 	</select>
-
+	
+	<!-- 검색 -->
+<!--  	<select id="cyArticleKeyword" parameterType="Article" resultType="Article">
+	<![CDATA[
+	select brd_id, art_title, art_content, mem_id, art_regdate, art_tag1, art_tag2, art_tag3, art_tag4, art_tag5 from(
+                select rownum as rn, brd_id, art_title, art_content, mem_id, art_regdate, art_tag1, art_tag2, art_tag3, art_tag4, art_tag5 
+                from article where rownum <= 10 and art_title like '%keyword%')
+        where rn > 0;
+        ]]>	
+	</select>  -->
+	
 	
 	<!-- 상세페이지 불러오기 -->
-	<select id="cyArticlereadDetail" parameterType="Article" resultType="Article">
+ 	<select id="cyArticlereadDetail" parameterType="Article" resultType="Article">
 			select *
 			from article a
 			left join member m 
 			on a.mem_id = m.mem_id
 			where a.art_id=#{art_id} and a.brd_id = #{brd_id}
 	</select>
-	<!-- 조회 -->
-	<select id="count" resultType="int">
-	 select count(brd_id) from article
-	</select>
-
-	<!-- 게시글 작성 -->
+	
+	
+		<!-- 게시글 작성 -->
  	<insert id="cyArticleinsert" parameterType="Article">
 		insert into 
-			article(art_id, brd_id, art_title, art_tag1, art_content)
-			values((Select max(art_id) + 1 from article where brd_id = #{brd_id}), #{brd_id}, #{art_title}, #{art_content}, #{art_content})
+			article(art_id, brd_id, art_title, mem_id, art_regdate, art_tag1, art_tag2, art_tag3, art_tag4, art_tag5, 
+			art_content, trd_id, art_good, art_bad, art_read, isdelete, report_id)
+			values((Select max(art_id) + 1 from article
+			where brd_id = #{brd_id}), #{brd_id}, #{art_title}, #{mem_id}, SYSDATE, #{art_tag1, jdbcType=VARCHAR}, #{art_tag2, jdbcType=VARCHAR},
+			#{art_tag3, jdbcType=VARCHAR}, #{art_tag4, jdbcType=VARCHAR}, #{art_tag5, jdbcType=VARCHAR},  #{art_content}, NULL, 0, 0, 0, 0, NULL)
 	</insert> 
 	
 		<!-- 게시글 작성 -->
    	<insert id="cyArticlewrite" parameterType="Article">
 		insert into 
-			article(brd_id, art_title, art_tag1, art_content)
-			values(#{brd_id}, #{art_title}, #{art_content}, #{art_content})
+			article(art_id, brd_id, art_title, mem_id, art_regdate, art_tag1, art_tag2, art_tag3, art_tag4, art_tag5, 
+			art_content, trd_id, art_good, art_bad, art_read, isdelete, report_id)
+			values((Select max(art_id) + 1 from article
+			where brd_id = #{brd_id}), #{brd_id}, #{mem_id}, #{art_title}, SYSDATE, #{art_tag1, jdbcType=VARCHAR}, #{art_tag2, jdbcType=VARCHAR},
+			#{art_tag3, jdbcType=VARCHAR}, #{art_tag4, jdbcType=VARCHAR}, #{art_tag5, jdbcType=VARCHAR},  #{art_content}, NULL, 0, 0, 0, 0, NULL)
 	</insert>  
-
+	
 	<!-- 수정페이지 불러오기 -->
 	<select id="cyArticlereadupdate" parameterType="Article" resultType="Article">
 			select *
@@ -755,7 +1086,6 @@
 	 <update id = "cyArticlemodify" parameterType="Article">
 			update article 
 		set 
-			art_id = #{art_id, jdbcType=VARCHAR},
 			art_title = #{art_title, jdbcType=VARCHAR},
 			art_tag1 = #{art_tag1, jdbcType=VARCHAR},
 			art_tag2 = #{art_tag2, jdbcType=VARCHAR},
@@ -765,6 +1095,40 @@
 			art_content = #{art_content, jdbcType=CLOB} 
 		where art_id = #{art_id, jdbcType=NUMERIC} and brd_id = #{brd_id, jdbcType=NUMERIC}
 	</update>
+	
+	<!-- 글 삭제하기 -->
+	<update id ="cyArticledelete" parameterType="Article">
+	update article set isdelete = 1
+	where art_id= #{art_id} and brd_id = #{brd_id}
+	</update>
+
+	<!-- 조회수 증가 -->
+	<update id="cyUpdateView" parameterType="Article">
+		update article set art_read = art_read + 1 
+	where art_id = #{art_id} and brd_id = #{brd_id}
+	</update>
+	
+	<!-- 추천 -->
+	<update id="cyUpdateGood" parameterType="Article">
+		update article set art_good = art_good + 1 
+		where art_id = #{art_id} and brd_id = #{brd_id}
+	</update>
+
+	<!-- 비추천 -->
+	<update id="cyUpdateBad" parameterType="Article">
+		update article set art_bad = art_bad + 1 
+		where art_id = #{art_id} and brd_id = #{brd_id}
+	</update>
+
+		
+			
+			
+			
+			
+			
+			
+			
+			
 	
 	
 	
@@ -781,38 +1145,62 @@
 	
 	
 	<!-- 최승환 -->
-	<select id="shCustomerCount" resultType="int">
-	 <![CDATA[
+	<select id="shCustomerCount" resultType="int" parameterType="Article">
 		SELECT Count(*)
-		FROM article
-		WHERE brd_id >=1500 and brd_id <1600
- 	 ]]>	
+		FROM article a join member m using(mem_id)
+		WHERE brd_id BETWEEN #{brd_id} AND #{brd_id}+99
+		<choose>
+            <when test="search == 'shs_title'">
+                AND A.ART_TITLE LIKE '%' || #{search_keyword} || '%'
+            </when>
+            <when test="search == 'shs_content'">
+                AND A.ART_CONTENT LIKE '%' || #{search_keyword} || '%'
+            </when>
+            <when test="search == 'shs_title_content'">
+                AND (A.ART_TITLE || ' ' || A.ART_CONTENT) LIKE '%' || #{search_keyword} || '%'
+            </when>
+            <when test="search == 'shs_nickname'">
+                AND M.MEM_NICKNAME LIKE '%' || #{search_keyword} || '%'
+            </when>
+            <otherwise></otherwise>
+       	</choose>
 	</select>
 	
 	<select id="shListCustomer" parameterType="Article" resultType="Article">
-	 <![CDATA[
 		SELECT *
   		FROM 
   			(
     		SELECT ROWNUM RN, A.*, M.MEM_NICKNAME, M.MEM_IMAGE, NVL(R.REP_COUNT, 0) REP_COUNT
     		FROM ARTICLE A
     		LEFT JOIN MEMBER M ON A.MEM_ID = M.MEM_ID
-    		LEFT JOIN 
-    			(
-      			SELECT ART_ID, BRD_ID, COUNT(*) REP_COUNT
-      			FROM REPLY
-      			GROUP BY ART_ID, BRD_ID
-    			) R
+    		LEFT JOIN	(
+      					SELECT ART_ID, BRD_ID, COUNT(*) REP_COUNT
+      					FROM REPLY
+      					GROUP BY ART_ID, BRD_ID
+    				 	) R
     		ON A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID
-    		WHERE A.BRD_ID >= 1500 AND A.BRD_ID < 1600
+    		WHERE A.BRD_ID BETWEEN 1500 AND 1600 and A.isdelete=0
+    		<choose>
+	            <when test="search == 'shs_title'">
+	                AND A.ART_TITLE LIKE '%' || #{search_keyword} || '%'
+	            </when>
+	            <when test="search == 'shs_content'">
+	                AND A.ART_CONTENT LIKE '%' || #{search_keyword} || '%'
+	            </when>
+	            <when test="search == 'shs_title_content'">
+	                AND (A.ART_TITLE || ' ' || A.ART_CONTENT) LIKE '%' || #{search_keyword} || '%'
+	            </when>
+	            <when test="search == 'shs_nickname'">
+	                AND M.MEM_NICKNAME LIKE '%' || #{search_keyword} || '%'
+	            </when>
+	            <otherwise></otherwise>
+        	</choose>
     		ORDER BY A.ART_ID DESC
   			)
-  		WHERE RN BETWEEN #{start} AND #{end}
- 	 ]]>	
+  		WHERE RN BETWEEN #{start} AND #{end} AND isdelete=0
 	</select>
 	
 	<select id="shListCustomerMenu" parameterType="Article" resultType="Article">
-	 <![CDATA[
 		SELECT *
   		FROM 
   			(
@@ -826,15 +1214,13 @@
       			GROUP BY ART_ID, BRD_ID
     			) R
     		ON A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID
-    		WHERE A.BRD_ID = #{brd_id}
+    		WHERE A.BRD_ID = #{brd_id} and A.isdelete=0
     		ORDER BY A.ART_ID DESC
   			)
-  		WHERE RN BETWEEN #{start} AND #{end}
- 	 ]]>	
+  		WHERE RN BETWEEN #{start} AND #{end} AND isdelete=0
 	</select>
 		
 	<select id="shCustomerDetail" parameterType="Article" resultType="Article">
-	  <![CDATA[
         	 SELECT A.*, M.MEM_NICKNAME, M.MEM_IMAGE, NVL(R.REP_COUNT, 0) REP_COUNT
 			 FROM ARTICLE A
 			 LEFT JOIN MEMBER M ON A.MEM_ID = M.MEM_ID
@@ -842,13 +1228,480 @@
 			 	 		FROM REPLY
 			 	 		GROUP BY ART_ID, BRD_ID) R
 			 	 		ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID)
-			 	 		WHERE A.ART_ID = #{art_id} AND A.BRD_ID = #{brd_id}
-	  ]]>
+			 	 		WHERE A.ART_ID = #{art_id} AND A.BRD_ID = #{brd_id} and A.isdelete=0
 	</select>
 	
 	<insert id="shInsertCustomer" parameterType="Article">
-		INSERT into article (art_id, brd_id, art_title, mem_id, art_content, art_regdate) 
-		VALUES (#{art_id}, #{brd_id}, #{art_title}, #{mem_id}, #{art_content}, #{art_regdate})
+    INSERT INTO article (art_id, brd_id, art_title, mem_id, art_content, art_regdate, art_tag1, art_tag2, art_tag3, art_tag4, art_tag5, art_good, art_bad, art_read, art_isnotice, isdelete) 
+    VALUES ((Select max(art_id) + 1 from article where brd_id = #{brd_id}), #{brd_id}, #{art_title}, #{mem_id}, #{art_content}, SYSDATE, #{art_tag1}, #{art_tag2}, #{art_tag3}, #{art_tag4}, #{art_tag5}, 0, 0, 0, 0, 0)
 	</insert>
 	
+	<update id="shCustomerUpdate" parameterType="Article">
+		UPDATE article
+		SET 
+			art_title = #{art_title}, 
+			art_content = #{art_content}, 
+			art_tag1 = #{art_tag1, jdbcType = VARCHAR}, 
+			art_tag2 = #{art_tag2, jdbcType = VARCHAR}, 
+			art_tag3 = #{art_tag3, jdbcType = VARCHAR}, 
+			art_tag4 = #{art_tag4, jdbcType = VARCHAR}, 
+			art_tag5 = #{art_tag5, jdbcType = VARCHAR}
+		WHERE brd_id = #{brd_id} AND art_id = #{art_id}
+	</update>
+	
+	<update id="shDeleteCustomer" parameterType="Article">
+		UPDATE article
+		SET isdelete = 1
+		WHERE art_id = #{art_id} AND brd_id = #{brd_id}
+	</update>
+	
+	<update id="shViewCount" parameterType="Article">
+		UPDATE article
+		SET art_read = art_read + 1
+		WHERE art_id = #{art_id} AND brd_id = #{brd_id} AND isdelete = 0
+	</update>
+	
+<!-- 	<select id="shCustomerSearch" parameterType="Article" resultType="Article">
+		SELECT *
+		FROM 
+			(
+		    SELECT ROWNUM RN, A.*, M.MEM_NICKNAME, M.MEM_IMAGE, NVL(R.REP_COUNT, 0) REP_COUNT
+		    FROM ARTICLE A
+		    LEFT JOIN MEMBER M ON A.MEM_ID = M.MEM_ID
+		    LEFT JOIN 
+		    (
+		        SELECT ART_ID, BRD_ID, COUNT(*) REP_COUNT
+		        FROM REPLY
+		        GROUP BY ART_ID, BRD_ID
+		    ) R
+	    ON A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID
+	    
+	    WHERE (
+	    	<choose>
+	    		<when test="brd_id == 1500">
+	    			A.BRD_ID between 1500 and 1599
+	    		</when>
+	    		<otherwise>
+	    			A.BRD_ID = #{brd_id}
+	    		</otherwise>
+	    	</choose>
+	    AND A.isdelete = 0 )
+	
+	    AND (
+	        <choose>
+	            <when test="search == 'shs_title'">
+	                A.ART_TITLE LIKE '%' || #{search_keyword} || '%'
+	            </when>
+	            <when test="search == 'shs_content'">
+	                A.ART_CONTENT LIKE '%' || #{search_keyword} || '%'
+	            </when>
+	            <when test="search == 'shs_title_content'">
+	                (A.ART_TITLE || ' ' || A.ART_CONTENT) LIKE '%' || #{search_keyword} || '%'
+	            </when>
+	            <when test="search == 'shs_nickname'">
+	                M.MEM_NICKNAME LIKE '%' || #{search_keyword} || '%'
+	            </when>
+	            <otherwise>
+	                1=0
+	            </otherwise>
+	        </choose>
+		    )
+		    ORDER BY A.ART_ID DESC
+		)
+		WHERE RN BETWEEN #{start} AND #{end} AND isdelete = 0 
+	</select> -->
+	
+	
+	
+	
+	
+	
+	
+	
+	<!-- 김진현 -->
+		<select id="JHDutchpayList" parameterType="Article" resultType="Article"><!-- 진현 -->
+		SELECT a.art_id, a.brd_id, a.mem_id,
+			   c.comm_value, a.art_title, a.art_regdate, m.mem_nickname,
+      		   a.art_tag1, a.art_tag2, a.art_tag3, a.art_tag4, a.art_tag5,
+       		   t.trd_cost, 
+       		   r.reg_name, 
+       		   t.trd_max, 
+       		   m.mem_image,
+       		   m.mem_username, 
+       		   t.trd_enddate, 
+       		   a.art_good, a.art_bad, a.art_read,
+       		   REP_CNT(brd_id, art_id) AS reply_count
+		FROM Article a
+		LEFT JOIN trade t ON a.trd_id = t.trd_id
+		LEFT JOIN comm c ON t.trd_status = c.comm_id
+		LEFT JOIN region r ON t.reg_id = r.reg_id
+		LEFT JOIN member m ON a.mem_id = m.mem_id
+		WHERE a.brd_id between 1100 and 1200 and a.isdelete = 0 
+		<!--  ORDER BY a.art.regdate desc -->
+	</select>
+	
+	<select id="JHDutchpayFoodList" resultType="Article">
+		SELECT a.art_id, a.brd_id,
+			   c.comm_value, a.art_title, a.art_regdate, m.mem_nickname,
+      		   a.art_tag1, a.art_tag2, a.art_tag3, a.art_tag4, a.art_tag5,
+       		   t.trd_cost, 
+       		   r.reg_name, 
+       		   t.trd_max, 
+       		   m.mem_image,
+       		   m.mem_username, 
+       		   t.trd_enddate, 
+       		   a.art_good, a.art_bad, a.art_read,
+       		   REP_CNT(brd_id, art_id) AS reply_count
+		FROM Article a
+		LEFT JOIN trade t ON a.trd_id = t.trd_id
+		LEFT JOIN comm c ON t.trd_status = c.comm_id
+		LEFT JOIN region r ON t.reg_id = r.reg_id
+		LEFT JOIN member m ON a.mem_id = m.mem_id
+		WHERE a.brd_id = 1110 and a.isdelete = 0 
+	</select>
+	
+	<select id="JHDutchpayClothesList"  resultType="Article">
+		SELECT a.art_id, a.brd_id,
+			   c.comm_value, a.art_title, a.art_regdate, m.mem_nickname,
+      		   a.art_tag1, a.art_tag2, a.art_tag3, a.art_tag4, a.art_tag5,
+       		   t.trd_cost, 
+       		   r.reg_name, 
+       		   t.trd_max, 
+       		   m.mem_image,
+       		   m.mem_username, 
+       		   t.trd_enddate, 
+       		   a.art_good, a.art_bad, a.art_read,
+       		   REP_CNT(brd_id, art_id) AS reply_count
+		FROM Article a
+		LEFT JOIN trade t ON a.trd_id = t.trd_id
+		LEFT JOIN comm c ON t.trd_status = c.comm_id
+		LEFT JOIN region r ON t.reg_id = r.reg_id
+		LEFT JOIN member m ON a.mem_id = m.mem_id
+		WHERE a.brd_id = 1120 and a.isdelete = 0 
+	</select>
+	
+	<select id="JHDutchpayHouseStuffList"  resultType="Article">
+		SELECT a.art_id, a.brd_id,
+			   c.comm_value, a.art_title, a.art_regdate, m.mem_nickname,
+      		   a.art_tag1, a.art_tag2, a.art_tag3, a.art_tag4, a.art_tag5,
+       		   t.trd_cost, 
+       		   r.reg_name, 
+       		   t.trd_max, 
+       		   m.mem_image,
+       		   m.mem_username, 
+       		   t.trd_enddate, 
+       		   a.art_good, a.art_bad, a.art_read,
+       		   REP_CNT(brd_id, art_id) AS reply_count
+		FROM Article a
+		LEFT JOIN trade t ON a.trd_id = t.trd_id
+		LEFT JOIN comm c ON t.trd_status = c.comm_id
+		LEFT JOIN region r ON t.reg_id = r.reg_id
+		LEFT JOIN member m ON a.mem_id = m.mem_id
+		WHERE a.brd_id = 1130 and a.isdelete = 0 
+	</select>
+	
+	<select id="JHDutchpayOverseasList"  resultType="Article">
+		SELECT a.art_id, a.brd_id,
+			   c.comm_value, a.art_title, a.art_regdate, m.mem_nickname,
+      		   a.art_tag1, a.art_tag2, a.art_tag3, a.art_tag4, a.art_tag5,
+       		   t.trd_cost, 
+       		   r.reg_name, 
+       		   t.trd_max, 
+       		   m.mem_image,
+       		   m.mem_username, 
+       		   t.trd_enddate, 
+       		   a.art_good, a.art_bad, a.art_read,
+       		   REP_CNT(brd_id, art_id) AS reply_count
+		FROM Article a
+		LEFT JOIN trade t ON a.trd_id = t.trd_id
+		LEFT JOIN comm c ON t.trd_status = c.comm_id
+		LEFT JOIN region r ON t.reg_id = r.reg_id
+		LEFT JOIN member m ON a.mem_id = m.mem_id
+		WHERE a.brd_id = 1140 and a.isdelete = 0 
+	</select>
+	
+	<select id="JHDutchpayEtcList"  resultType="Article">
+		SELECT a.art_id, a.brd_id,
+			   c.comm_value, a.art_title, a.art_regdate, m.mem_nickname,
+      		   a.art_tag1, a.art_tag2, a.art_tag3, a.art_tag4, a.art_tag5,
+       		   t.trd_cost, 
+       		   r.reg_name, 
+       		   t.trd_max, 
+       		   m.mem_image,
+       		   m.mem_username, 
+       		   t.trd_enddate, 
+       		   a.art_good, a.art_bad, a.art_read,
+       		   REP_CNT(brd_id, art_id) AS reply_count
+		FROM Article a
+		LEFT JOIN trade t ON a.trd_id = t.trd_id
+		LEFT JOIN comm c ON t.trd_status = c.comm_id
+		LEFT JOIN region r ON t.reg_id = r.reg_id
+		LEFT JOIN member m ON a.mem_id = m.mem_id
+		WHERE a.brd_id = 1150 and a.isdelete = 0 
+	</select>
+	
+	<select id="JHDutchpayDetail" parameterType="Article" resultType="Article">
+		SELECT a.art_id, a.brd_id, t.trd_id, mem_id	,comm_id ,a.report_id,
+			   m.mem_image, m.mem_username, m.mem_nickname,
+       		   c.comm_value, a.art_title, a.art_regdate, 
+       		   a.art_tag1, a.art_tag2, a.art_tag3, a.art_tag4, a.art_tag5,
+      		   t.trd_cost,
+      		   t.trd_max,
+       		   r.reg_name,
+       		   t.trd_loc, 
+       		   t.trd_enddate , a.art_good, a.art_bad, a.art_read,
+       		   a.art_content,
+               REP_CNT(brd_id, art_id) AS reply_count
+		FROM Article a
+		LEFT JOIN trade t  ON a.trd_id = t.trd_id
+		LEFT JOIN comm c   ON t.trd_status = c.comm_id
+		LEFT JOIN region r ON t.reg_id = r.reg_id
+		LEFT JOIN member m ON a.mem_id = m.mem_id
+        WHERE a.brd_id=#{brd_id} and a.art_id=#{art_id}
+	</select>
+	
+	<select id="JHRepList" parameterType="Article" resultType="Article">
+		SELECT r.rep_id, m.mem_nickname, r.rep_content, r.rep_regdate, r.rep_parent, r.rep_step
+		FROM reply r
+		LEFT JOIN member m
+		ON r.mem_id = m.mem_id
+		WHERE brd_id=#{brd_id} and art_id=#{art_id} and r.isdelete = 0
+		ORDER BY rep_regdate asc, rep_parent desc, rep_step desc 
+	</select>
+	
+	<insert id="JHReplyInsert" parameterType="Article">
+      INSERT 
+      INTO REPLY (  ART_ID
+               , BRD_ID
+               , REP_ID
+               , MEM_ID
+               , REP_CONTENT
+               , REP_REGDATE
+               , REP_GOOD
+               , REP_BAD
+               , REP_PARENT
+               , REP_STEP
+               , ISDELETE)
+      VALUES       (  #{art_id}
+               , #{brd_id}
+               , (SELECT NVL(MAX(REP_ID), 0) + 1 FROM REPLY
+                  WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id})
+               , #{mem_id}
+               , #{rep_content, jdbcType=VARCHAR}
+               , SYSDATE
+               , 0
+               , 0
+               , <choose>
+                  <when test="rep_parent == null">
+                     (SELECT NVL(MAX(REP_ID), 0) + 1 FROM REPLY
+                      WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}),
+                  </when>
+                  <otherwise>
+                     #{rep_parent},
+                  </otherwise>
+                 </choose>
+                    
+                 <choose>
+                  <when test="rep_parent == null">
+                     1,
+                  </when>
+                  <otherwise>
+                  (SELECT NVL(MAX(REP_STEP), 0) + 1 FROM REPLY
+                   WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
+                         AND REP_PARENT = #{rep_parent}),
+                  </otherwise>
+                 </choose>
+                 0)
+   </insert>
+	
+	<update id="JHReplyUpdate" parameterType="Article">
+		UPDATE reply 
+		SET  isdelete = 1
+		WHERE brd_id = #{brd_id}
+		AND art_id = #{art_id}
+		AND rep_id = #{rep_id}
+	</update>
+	
+	<select id="JHInsert" parameterType="Article" statementType="CALLABLE">
+		{
+			CALL insert_form(
+				#{brd_id, 			mode=IN,  jdbcType=NUMERIC},
+				#{art_title, 		mode=IN,  jdbcType=VARCHAR},
+				#{art_regdate, 		mode=IN,  jdbcType=DATE},
+				#{art_tag1, 		mode=IN,  jdbcType=VARCHAR},
+				#{art_tag2, 		mode=IN,  jdbcType=VARCHAR},
+				#{art_tag3, 		mode=IN,  jdbcType=VARCHAR},
+				#{art_tag4, 		mode=IN,  jdbcType=VARCHAR},
+				#{art_tag5, 		mode=IN,  jdbcType=VARCHAR},
+				#{art_content, 		mode=IN,  jdbcType=CLOB},
+				#{isdelete, 		mode=IN,  jdbcType=NUMERIC},
+				#{mem_id, 			mode=IN,  jdbcType=NUMERIC},
+				#{trd_status, 		mode=IN,  jdbcType=NUMERIC},
+				#{trd_saveEnddate, 	mode=IN,  jdbcType=VARCHAR},
+				#{trd_max, 			mode=IN,  jdbcType=NUMERIC},
+				#{trd_cost, 		mode=IN,  jdbcType=NUMERIC},
+				#{trd_loc, 			mode=IN,  jdbcType=VARCHAR},
+				#{reg_id, 			mode=IN,  jdbcType=NUMERIC}
+			)
+		}
+	</select>
+	
+	<select id="JHUpdateForm" parameterType="Article" resultType="Article">
+		SELECT a.art_id, a.brd_id,
+			   m.mem_image, m.mem_username, m.mem_nickname,
+			   a.art_regdate,
+			   a.art_title,
+       		   a.art_tag1, a.art_tag2, a.art_tag3, a.art_tag4, a.art_tag5,
+      		   t.trd_cost,
+      		   t.trd_max,
+      		   t.trd_loc,
+      		   t.trd_enddate,
+      		   r.reg_id,
+       		   a.art_content
+		FROM Article a
+		LEFT JOIN trade t  ON a.trd_id = t.trd_id
+		LEFT JOIN region r ON t.reg_id = r.reg_id
+		LEFT JOIN member m ON a.mem_id = m.mem_id
+		WHERE a.brd_id=#{brd_id} and a.art_id=#{art_id}
+
+	</select>
+	
+	<select id="JHUpdate" parameterType="Article" statementType="CALLABLE">
+		 {
+			CALL update_form(
+				#{art_id, 			mode=IN,  jdbcType=NUMERIC},
+				#{brd_id, 			mode=IN,  jdbcType=NUMERIC},
+				#{art_title, 		mode=IN,  jdbcType=VARCHAR},
+				#{art_tag1, 		mode=IN,  jdbcType=VARCHAR},
+				#{art_tag2, 		mode=IN,  jdbcType=VARCHAR},
+				#{art_tag3, 		mode=IN,  jdbcType=VARCHAR},
+				#{art_tag4, 		mode=IN,  jdbcType=VARCHAR},
+				#{art_tag5, 		mode=IN,  jdbcType=VARCHAR},
+				#{art_content, 		mode=IN,  jdbcType=CLOB},
+				#{trd_saveEnddate, 	mode=IN,  jdbcType=DATE},
+				#{trd_cost, 		mode=IN,  jdbcType=NUMERIC},
+				#{trd_max, 			mode=IN,  jdbcType=NUMERIC},
+				#{reg_id, 			mode=IN,  jdbcType=NUMERIC},
+				#{trd_loc, 			mode=IN,  jdbcType=VARCHAR}
+			)
+		}
+	</select>
+	
+	<select id="JHDelete" parameterType="Article" resultType="Article">
+		UPDATE Article SET isdelete = 1 WHERE brd_id = #{brd_id} and art_id = #{art_id}
+	</select>
+	
+	<update id="JHDeatilRead" parameterType="Article" >
+		UPDATE Article SET art_read = art_read+1 WHERE brd_id=#{brd_id} and art_id=#{art_id}
+	</update>
+
+	<select id="JHPaging" parameterType="Article" resultType="int">
+		SELECT count(*)
+		FROM 
+			(
+			SELECT rownum rn, a.*
+			FROM 
+				(SELECT *
+				 FROM Article
+				 WHERE
+			<choose>
+				<when test="brd_id == 1100">
+					brd_id between 1100 and 1200
+				</when>
+				<otherwise>
+					brd_id = #{brd_id}
+				</otherwise>
+			</choose>
+				and isdelete = 0
+				ORDER BY art_id) a
+			)
+		WHERE rn between #{start} and #{end}
+	</select>
+	
+	<select id="JHJoinApply" parameterType="Article" statementType="CALLABLE">
+		{
+			CALL APPLY_INSERT(
+				#{art_id, 		mode=IN,  jdbcType=INTEGER},
+				#{brd_id, 		mode=IN,  jdbcType=INTEGER},
+				#{mem_id, 		mode=IN,  jdbcType=INTEGER}
+			)
+		}
+	</select>
+	
+	<select id="JHapplyCancel" parameterType="Article" resultType="Article" >
+		DELETE FROM waiting WHERE trd_id = #{trd_id} and mem_id = #{mem_id}
+	</select>
+	
+	<select id="JHJoinCancel" parameterType="Article" resultType="Article" >
+		DELETE FROM join WHERE trd_id = #{trd_id} and mem_id = #{mem_id}
+	</select>
+	
+	<select id="JHJoinList" parameterType="Article" resultType="Article" >
+		SELECT m.mem_image, m.mem_username, m.mem_nickname, m.mem_id
+		FROM member m
+		LEFT JOIN join j
+		ON j.mem_id = m.mem_id
+		WHERE j.trd_id = #{trd_id}
+		ORDER BY join_date asc
+	</select>
+	
+	<select id="JHWaitList" parameterType="Article" resultType="Article" >
+		SELECT m.mem_image, m.mem_username, m.mem_nickname, w.wait_date, m.mem_id
+		FROM member m
+		LEFT join waiting w
+		ON w.mem_id = m.mem_id
+		WHERE w.trd_id = #{trd_id}
+		ORDER BY wait_date asc
+	</select>
+	
+	<select id="JHJoinListYN" parameterType="Article" resultType="int" >
+		SELECT count(*)
+		FROM join j
+		WHERE j.trd_id = #{trd_id}
+		AND j.mem_id = #{mem_id}
+	</select>
+	
+	<select id="JHWaitListYN" parameterType="Article" resultType="int" >
+		SELECT count(*)
+		FROM waiting w
+		WHERE w.trd_id = #{trd_id}
+		AND w.mem_id = #{mem_id}
+	</select>
+	
+	<delete id="JHJoinDeny" parameterType="Article" >
+		DELETE FROM waiting WHERE trd_id = #{trd_id} and mem_id = #{mem_id}
+	</delete>
+	
+	<select id="JHJoinAccept" parameterType="Article" statementType="CALLABLE">
+		{
+			CALL WAITINGTOJOIN(
+				#{trd_id, 		mode=IN,  jdbcType=INTEGER},
+				#{mem_id, 		mode=IN,  jdbcType=INTEGER}
+			)
+		}
+	</select>
+	
+	<select id="JHPayStatusPro" parameterType="Article" resultType="Article">
+		UPDATE trade 
+		SET trd_status = #{comm_id} 
+		WHERE trd_id = #{trd_id}
+	</select>
+	
+	<update id="JHPayCompleted" parameterType="int">
+		UPDATE trade 
+		SET trd_status = 403
+		WHERE trd_id = #{trd_id}
+	</update>
+	
+	<select id="JHReportInsert" parameterType="Article" statementType="CALLABLE">
+		 {
+			CALL REPORT_INSERT (
+				#{art_id, 			mode=IN,  jdbcType=NUMERIC},
+				#{brd_id, 			mode=IN,  jdbcType=NUMERIC},
+				#{report_id, 		mode=IN,  jdbcType=NUMERIC},
+				#{mem_id,	 		mode=IN,  jdbcType=NUMERIC},
+				#{report_content, 	mode=IN,  jdbcType=VARCHAR}
+			)
+		}
+	</select>
 </mapper>

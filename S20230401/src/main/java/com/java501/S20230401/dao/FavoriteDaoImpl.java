@@ -10,10 +10,20 @@ import lombok.RequiredArgsConstructor;
 
 @Repository
 @RequiredArgsConstructor
-public class FavoriteDaoImpl implements FavoriteDao{
-	private final SqlSession session;
+public class FavoriteDaoImpl implements FavoriteDao {
 
-	
+	private final SqlSession session;
+	@Override
+	public int cyFavorite(Favorite favorite) {
+		System.out.println("관심 다오 임플");
+		int result = 0;
+		try {
+			result = session.insert("cyFavorite", favorite);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 	
 	// 양동균

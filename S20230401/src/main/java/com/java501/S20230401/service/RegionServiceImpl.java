@@ -19,10 +19,12 @@ public class RegionServiceImpl implements RegionService {
 	public Region getRegion(int regionCode) {
 		return rd.getRegion(regionCode);
 	}
+	
 	@Override
 	public List<Region> getSuperRegions() {
 		return rd.getSuperRegions();
 	}
+	
 	@Override
 	public List<Region> getChildRegions(int parentRegionCode) {
 		return rd.getChildRegions(parentRegionCode);

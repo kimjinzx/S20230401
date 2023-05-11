@@ -40,6 +40,21 @@ public class ReplyServiceImpl implements ReplyService {
 		
 	}
 	
+	@Override
+	public int bjreReply(Reply reply) {
+		return rd.bjreReply(reply);
+	}
+	
+	@Override
+	public int bjReGood(Reply reply) {
+		return rd.bjReGood(reply);
+	}
+	@Override
+	public int bjReBad(Reply reply) {
+		return rd.bjReBad(reply);
+	}
+	
+	
 	// 최승환
 	@Override
 	public int shReplyCount(Reply reply) {
@@ -56,6 +71,28 @@ public class ReplyServiceImpl implements ReplyService {
 		System.out.println("댓글 서비스 시작"+ listReply);
 		return listReply;
 	}
+	@Override
+	public int customerWriteReply(Reply reply) {
+		int cReplyWrite = 0;
+		System.out.println("ArticleServiceImpl customerWriteReply Start");
+		cReplyWrite = rd.customerWriteReply(reply);
+		return cReplyWrite;
+	}
+	@Override
+	public int customerDeleteReply(Reply reply) {
+		int deleteResult = 0;
+		System.out.println("ArticleServiceImpl customerWriteReply Start");
+		deleteResult = rd.customerDeleteReply(reply);
+		return deleteResult;
+	}
+	@Override
+	public int customerUpdateReply(Reply reply) {
+		int upRResult = 0;
+		System.out.println("ArticleServiceImpl customerUpdateReply Start");
+		upRResult = rd.customerUpdateReply(reply);
+		return upRResult;
+	}
+	
 	
 	// 유현규
 	@Override
@@ -66,7 +103,63 @@ public class ReplyServiceImpl implements ReplyService {
 	public int hgInsertReply(Reply reply) {
 		return rd.hgInsertReply(reply);
 	}
-
-
+	@Override
+	public List<ReplyMember> hgGetRepliesOfMember(int mem_id) {
+		return rd.hgGetRepliesOfMember(mem_id);
+	}
+	
+	
+	// 임동빈
+	@Override
+	public int dbInsertReply(Reply reply) {
+		return rd.dbInsertReply(reply);
+	}
+	@Override
+	public int dbDeleteReply(Reply reply) {
+		return rd.dbDeleteReply(reply);
+	}
+	@Override
+	public int dbUpdateReply(Reply reply) {
+		return rd.dbUpdateReply(reply);
+	}
+	
+	//김찬영
+	// 댓글 조회
+	@Override
+	public List<Reply> replyAll(Reply reply) {
+		/* List<Reply> replyAll = null; */
+		return rd.replyAll(reply);
+	}
+	//댓글 작성
+	@Override
+	public int cywriteReply(Reply reply) {
+		return rd.writeReply(reply);
+	}
+	//댓글 삭제
+	@Override
+	public int cydeleteReply(Reply reply) {
+		return rd.deleteReply(reply);
+	}
+	//댓글 수정
+	@Override
+	public int cyupdateReply(Reply reply) {
+		System.out.println("댓글서비스 임플");
+		int result = rd.updateReply(reply);
+		return result;
+	}
+	//댓글 좋아요
+	@Override
+	public int replyupdategood(Reply reply) {
+		System.out.println("ReplyServiceImpl 댓글 좋아요");
+		int result = rd.replyupdategood(reply);
+		return result;
+	}
+	//댓글 싫어요
+	@Override
+	public int replyupdatebad(Reply reply) {
+		System.out.println("ReplyServiceImpl 댓글 싫어요");
+		int result = rd.replyupdatebad(reply);
+		return result;
+	}
 	
 }

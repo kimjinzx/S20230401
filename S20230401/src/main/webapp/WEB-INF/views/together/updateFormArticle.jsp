@@ -6,6 +6,50 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script>
+
+$(document).ready(function(){
+    // reg_parent가 선택되면
+    $('#reg_parent').change(function(){
+        var reg_parent = $(this).val();
+        
+        // reg_id 드롭다운 메뉴 초기화
+        $('#reg_id').empty();
+        
+        // 제한없음 옵션 추가
+        $('#reg_id').append('<option value="">제한없음</option>');
+        
+        // 선택된 reg_parent를 가진 region들을 동적으로 추가
+        <c:forEach var="region" items="${regions}">
+            if (${region.reg_parent} == reg_parent) {
+                $('#reg_id').append('<option value="' + ${region.reg_id} + '">' + '${region.reg_name}' + '</option>');
+            }
+        </c:forEach>
+    });
+});
+
+
+	function setMinValue() {
+		  // 현재 시간을 가져옵니다.
+		  var now = new Date();
+		  // 선택한 날짜를 가져옵니다.
+		  var selectedDate = new Date(document.getElementById("dateTimeLocal").value);
+		  // 선택한 날짜가 현재 시간 이전이라면 경고 메시지를 출력하고 오늘 날짜를 선택합니다.
+		  if (selectedDate < now) {
+		    alert("현재 시간 이전의 날짜는 선택할 수 없습니다.");
+		    var today = new Date();
+		    var month = today.getMonth() + 1;
+		    var day = today.getDate();
+		    var year = today.getFullYear();
+		    if (month < 10) month = "0" + month;
+		    if (day < 10) day = "0" + day;
+		    var minDate = year + "-" + month + "-" + day;
+		    document.getElementById("dateTimeLocal").value = minDate;
+		  }
+		} 
+	
+</script>
 </head>
 <body>
 	<h2>게시글 수정</h2>
@@ -18,7 +62,7 @@
 		<table>
 			<tr>
 				<th>카테고리</th>
-				<td><select name="brd_id">
+				<td><select name="brd_id" disabled="disabled">
 						<c:forEach var="category" items="${categories }">
 							<option ${category.comm_id == article.brd_id ? 'selected=selected' : ''} value = "${category.comm_id}">${category.comm_value }</option>
 						</c:forEach>
@@ -83,7 +127,8 @@
  				<c:set var="enddate">
 					<fmt:formatDate value="${article.trd_enddate }" pattern="yyyy-MM-dd"/>
 				</c:set> 
-				<td><input type="date" name="trd_enddate1" value="${enddate }" pattern="yyyy-MM-dd" required="required"></td>
+				<td><input type="date" name="trd_enddate1" id="dateTimeLocal" 
+				onchange="setMinValue()" required="required"></td>
 			</tr>
 			<tr>
 				<th>모집인원</th>
