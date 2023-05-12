@@ -58,6 +58,80 @@
 		border-radius: 8px;
 	}
 </style>
+<style>
+	#test_btn3, #test_btn4, #test_btn5{
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+	margin-right-4px;
+	font-size: 16px;
+	}
+	#btn_group1 input{
+	border: 1px solid white;
+	background-color:rgba(0,0,0,0);
+	color:gray;
+	padding:5px;
+	}
+	#btn_group1 input:hover{
+	color;white;
+	background-color:skyblue;
+	}
+
+	#test_btn0{
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+	margin-right-4px;
+	font-size: 16px;
+	}
+	#btn_group0 input{
+	border: 1px solid gray;
+	background-color:rgba(0,0,0,0);
+	color:gray;
+	padding:5px;
+	}
+	#btn_group0 input:hover{
+	color;white;
+	background-color:skyblue;
+	}
+	#test_btn1{
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	margin-right-4px;
+	}
+	#test_btn2{
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	margin-right-3px;
+	}
+	#btn_group input{
+	border: 1px solid white;
+	background-color:rgba(0,0,0,0);
+	color:black;
+	padding:5px;
+	}
+	#btn_group input:hover{
+	color;white;
+	background-color:skyblue;
+	}
+	#art-title {
+	font-size: 32px;
+	font-weight:bold;
+	letter-spacing: 2px;
+	text-align:left;
+	}
+	#art-content {
+	font-size: 16px;
+	text-align:left;
+	letter-spacing: 1px;
+	line-height:2;
+	}
+	#tag {
+	font-size:14px;
+	}
+</style>
 </head>
 <script type="text/javascript">
 function report() {
@@ -250,25 +324,24 @@ function copyUrl() {
 	<main>
 	<form action ="${pageContext.request.contextPath }/board/information/detail" id ="detail" >
 		<p>
-		<input type="button" value="목록" onclick="location.href='${pageContext.request.contextPath }/board/information?category=1400'">&nbsp;&nbsp;
-		<input type="button" value="수정하기" onclick="location.href='${pageContext.request.contextPath}/board/information/update?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category }';">&nbsp;&nbsp;
-		<input type="button" value="삭제하기" onclick="location.href='${pageContext.request.contextPath }/board/information/delete?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category }';">
+		<div id="btn_group1">
+		<input type="button" value="목록"  id="test_btn3" onclick="location.href='${pageContext.request.contextPath }/board/information?category=1400'">&nbsp;&nbsp;
+		<input type="button" value="수정하기" id="test_btn4" onclick="location.href='${pageContext.request.contextPath}/board/information/update?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category }';">&nbsp;&nbsp;
+		<input type="button" value="삭제하기" id="test_btn5" onclick="location.href='${pageContext.request.contextPath }/board/information/delete?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category }';"></div>
 		<input type="hidden" name="art_id" value="${article.art_id }">
 		<input type="hidden" name="brd_id" value="${article.brd_id }">
 		<input type="hidden" name="category" value="${category}">
 	        <h1>게시글 목록</h1>
 	        <span><img src="${pageContext.request.contextPath}/uploads/profile/${article.mem_image}" alt="회원 프로필" style="width: 40px; height: 40px;"></span>					
-			<span>${article.mem_nickname }</span>
-			<div><span>작성일자: <fmt:formatDate value="${article.art_regdate}" pattern="yyyy-MM-dd :HH:mm"/></span></div>
- 			<div>제목:  ${article.art_title }</div><p>
-			<div>내용:  ${article.art_content }</div>
-			<div>
-			<span><input type="image" src="${pageContext.request.contextPath}/image/good.png" width="25" onclick="location.href='${pageContext.request.contextPath }/board/information/updategood?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category }';"> ${article.art_good }</span>&nbsp;&nbsp;&nbsp;&nbsp;
-			<span><input type="image" src="${pageContext.request.contextPath}/image/bad.png" width="25" onclick="location.href='${pageContext.request.contextPath }/board/information/updatebad?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category }';"> ${article.art_bad }</span>&nbsp;&nbsp;&nbsp;&nbsp;
+			<span>${article.mem_nickname }</span><p>
+			<span><input type="image" src="${pageContext.request.contextPath}/image/good.png" width="25" onclick="location.href='${pageContext.request.contextPath }/board/information/updategood?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category }';"> ${article.art_good }</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<span><input type="image" src="${pageContext.request.contextPath}/image/bad.png" width="25" onclick="location.href='${pageContext.request.contextPath }/board/information/updatebad?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category }';"> ${article.art_bad }</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 			<span><input type="image" src="${pageContext.request.contextPath}/image/read.png" width="25">  ${article.art_read }</span>
- 			</div><p>
-			<div>
-			  <span>태그:
+			<div><span><fmt:formatDate value="${article.art_regdate}" pattern="yyyy-MM-dd :HH:mm"/></span></div>
+ 			<div id="art-title">${article.art_title }</div><p>
+			<div id="art-content">${article.art_content }</div>
+			<div id="tag"><p><p><p>
+			  <span>
 			    <c:if test="${not empty article.art_tag1}">
 			      #${article.art_tag1}
 			    </c:if>
@@ -285,13 +358,16 @@ function copyUrl() {
 			      #${article.art_tag5}
 			    </c:if>
 			  </span>
-			</div>
+			</div><p>
 						
-       <input type="image" src="${pageContext.request.contextPath}/image/report.png" width="25" onclick="report()" value="신고하기">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-       <input type="image" src="${pageContext.request.contextPath}/image/favorite.png" width="25" onclick="favorite(${article.art_id}, ${article.brd_id})" value="관심">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-       <input type="image" src="${pageContext.request.contextPath}/image/shareinfo.png" width="25" onclick="copyUrl()">
+			<div>
+		        <input type="image" src="${pageContext.request.contextPath}/image/report.png" width="25" onclick="report()" value="신고하기">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		        <input type="image" src="${pageContext.request.contextPath}/image/favorite.png" width="25" onclick="favorite(${article.art_id}, ${article.brd_id})" value="관심">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		        <input type="image" src="${pageContext.request.contextPath}/image/url.png" width="25" onclick="copyUrl()">
+ 			</div><p>
        
-</form>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</form>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 <!-- 댓글 작성 -->
 	<form action="${pageContext.request.contextPath}/board/information/replyWrite" method="post">
@@ -300,8 +376,8 @@ function copyUrl() {
 	<input type="hidden" name="mem_id" value="${memberInfo.mem_id}">
 	<span><input type="hidden" name="category" value="${category}"></span>
 		<h2>댓글 내용</h2>
-		<div><textarea rows="3" cols=180" name="rep_content" required="required" placeholder="댓글을 작성해주세요.">${reply.rep_content}</textarea></div>
-		<div><input type="submit" value="댓글 작성"></div><p>
+		<div><textarea rows="3" cols=60" name="rep_content" required="required" placeholder="댓글을 작성해주세요.">${reply.rep_content}</textarea></div>
+		<div id="btn_group0"><input type="submit" value="댓글 작성" id="test_btn0"></div><p>
 	</form>
 	<!-- 	조회 -->
 	<div class="list-Reply">
@@ -315,10 +391,10 @@ function copyUrl() {
 						<%-- <span>번호  ${reply.rep_id }</span> --%>
 						<span><input type="image" src="${pageContext.request.contextPath}/image/good.png" width="25" onclick="location.href='${pageContext.request.contextPath }/board/information/replyupdategood?art_id=${article.art_id}&brd_id=${article.brd_id}&rep_id=${reply.rep_id}&category=${category }';">  ${reply.rep_good }</span>
 						<span><input type="image" src="${pageContext.request.contextPath}/image/bad.png" width="25" onclick="location.href='${pageContext.request.contextPath }/board/information/replyupdatebad?art_id=${article.art_id}&brd_id=${article.brd_id}&rep_id=${reply.rep_id}&category=${category }';"> ${reply.rep_bad }</span>
-						<span>작성일자 <fmt:formatDate value="${reply.rep_regdate}" pattern="yyyy-MM-dd :HH:mm"/></span>
-						<div>
-						<span><input type="submit" value="수정"></span>
-						<span><input type="button" value="삭제" onclick="location.href='${pageContext.request.contextPath}/board/information/replydelete?art_id=${article.art_id}&brd_id=${article.brd_id}&rep_id=${reply.rep_id}&category=${category}';"></span>
+						<span><fmt:formatDate value="${reply.rep_regdate}" pattern="yyyy-MM-dd :HH:mm"/></span>
+						<div id="btn_group">
+						<span><input type="submit" value="수정" id="test_btn1"></span>
+						<span><input type="button" value="삭제" id="test_btn2" onclick="location.href='${pageContext.request.contextPath}/board/information/replydelete?art_id=${article.art_id}&brd_id=${article.brd_id}&rep_id=${reply.rep_id}&category=${category}';"></span>
 						</div>
 						<form action="${pageContext.request.contextPath}/board/information/updateReply" method="post">
 						<input type="hidden" name="art_id" value="${article.art_id}">
@@ -327,7 +403,7 @@ function copyUrl() {
 						<input type="hidden" name="category" value="${category }">
 						<span><input type="hidden" name="rep_parent"value="${reply.rep_parent}"></span>
 						<span><input type="hidden" name="rep_step"	value="${reply.rep_step}"></span>
-						<textarea rows="2" cols="100" name="rep_content"> ${reply.rep_content}</textarea>
+						<textarea rows="2" cols="60" name="rep_content"> ${reply.rep_content}</textarea>
 						</form>
 						<div class="reply-write" style="display:block; margin-left :5%">
 						<form action="${pageContext.request.contextPath}/board/information/replyWrite" method="post">
@@ -339,7 +415,7 @@ function copyUrl() {
 							<span><input type="hidden" name="rep_id" 	value="${reply.rep_id}"></span>
 							<span><input type="hidden" name="rep_parent"value="${reply.rep_parent}"></span>
 							<span><input type="hidden" name="rep_step"	value="${reply.rep_step}"></span>
-							<button type="button" onclick="replycontent()">댓글달기</button>
+							<div id="btn-reply"><button type="button" onclick="replycontent()">댓글달기</button></div>
 							<span id="inputSection" style="display:none"><input type="text"  style="width:650px; height:50px;" name="rep_content" placeholder="댓글을 작성해주세요.">
 							<input type="submit" value="작성하기">
 							</span>

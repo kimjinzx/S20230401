@@ -57,6 +57,18 @@
 		border-radius: 8px;
 	}
 </style>
+<style type="text/css">
+	.article {
+	    border-bottom: 1px solid #ccc;
+	    padding-top: 20px;
+	    margin-top: 20px;
+	    padding-bottom: 40px;
+	    margin-bottom: 40px;
+	}
+	.info-category{
+	 background-color: blue;
+	}
+</style>
 </head>
 <body>
 	<header>
@@ -207,15 +219,47 @@
 		
 	</aside>
 	<main>
-	<div>
-		<span style="color:#0193F8"><a href="${pageContext.request.contextPath }/board/information?category=1400">정보공유</a></span><a>&nbsp;</a>
-		<span style="color:#808080"><a href="${pageContext.request.contextPath }/board/information?category=1410">동네정보</a></span><a>&nbsp;</a>
-		<span style="color:#808080"><a href="${pageContext.request.contextPath }/board/information?category=1420">구매정보</a></span><a>&nbsp;</a>
-		<span style="color:#808080"><a href="${pageContext.request.contextPath }/board/information?category=1430">신규점포</a></span><a>&nbsp;</a>
-		<span style="color:#808080"><a href="${pageContext.request.contextPath }/board/information?category=1440">지역활동</a></span><a>&nbsp;</a>
+	<div id="info-category">
+		<span><a href="${pageContext.request.contextPath }/board/information?category=1400">정보공유</a></span><a>&nbsp;</a>
+		<span><a href="${pageContext.request.contextPath }/board/information?category=1410">동네정보</a></span><a>&nbsp;</a>
+		<span><a href="${pageContext.request.contextPath }/board/information?category=1420">구매정보</a></span><a>&nbsp;</a>
+		<span><a href="${pageContext.request.contextPath }/board/information?category=1430">신규점포</a></span><a>&nbsp;</a>
+		<span><a href="${pageContext.request.contextPath }/board/information?category=1440">지역활동</a></span><a>&nbsp;</a>
 	</div>
-	<button type="button" style="float:right; " onclick="location.href='${pageContext.request.contextPath }/board/information/write';">작성하기</button><p>
-	<table>
+	<form>
+	<div><button type="button" style="float:right; " onclick="location.href='${pageContext.request.contextPath }/board/information/write';">작성하기</button><p>
+		<c:forEach var="article" items="${listArticle }">
+		<div class="article">
+		<div>글번호: ${article.art_id }
+		<span>게시판번호: ${article.brd_id }</span></div>
+		<div><span><a href="${pageContext.request.contextPath }/board/information/detail?art_id=${article.art_id }&brd_id=${article.brd_id}&category=${category}">${article.art_title }</span></div>
+		<div><span>작성일: <fmt:formatDate value="${article.art_regdate}" pattern="yyyy-MM-dd :HH:mm"/></span></div>
+		  <span>
+			    <c:if test="${not empty article.art_tag1}">
+			      #${article.art_tag1}
+			    </c:if>
+			    <c:if test="${not empty article.art_tag2}">
+			      #${article.art_tag2}
+			    </c:if>
+			    <c:if test="${not empty article.art_tag3}">
+			      #${article.art_tag3}
+			    </c:if>
+			    <c:if test="${not empty article.art_tag4}">
+			      #${article.art_tag4}
+			    </c:if>
+			    <c:if test="${not empty article.art_tag5}">
+			      #${article.art_tag5}
+			    </c:if>
+			  </span><div>
+			  <span><input type="image" src="${pageContext.request.contextPath}/image/good.png" width="25">${article.art_good }</span>
+			  <span><input type="image" src="${pageContext.request.contextPath}/image/bad.png" width="25"> ${article.art_bad }</span>
+			  <span><input type="image" src="${pageContext.request.contextPath}/image/read.png" width="25"> ${article.art_read }</span>
+			  	</div>
+			 </div>
+		</c:forEach>
+	</div>
+</form>
+<%-- 	<table>
 	<tr>
 		<th>글번호</th>
 		<th>게시판 번호</th>
@@ -249,8 +293,9 @@
 		<td>${article.art_read }</td>
 	</tr>
 		</c:forEach>
-	</table>
+	</table> --%>
 	<!-- 페이징 -->
+	<div>
 	<c:if test ="${page.startPage > page.pageBlock }">
 		<a href="${pageContext.request.contextPath }/board/information?currentpage=${page.startPage-page.pageBlock}&category=${category}">[이전]</a>
 	</c:if>
@@ -260,21 +305,24 @@
 	<c:if test="${page.endPage < page.totalPage }">
 		<a href="${pageContext.request.contextPath }/board/information?currentPage=${page.startPage+page.pageBlock}&category=${category}">[다음]</a>
 	</c:if>
+	</div><p>
+		<!-- 검색 -->
+	<form action="/search" method="GET">
+		<input type="hidden" name="category" value="${category}">
+		<input type="hidden" name="brd_id" value="${category}">
+			 <div class="form-inline">
+				<select id="search" name="search">
+					<option value="">검색조건</option>
+					<option value="art_title">제목</option> 
+					<option value="art_content">내용</option>
+					<option value="mem_nickname">작성자</option>
+					<!-- <option value="tc">제목+내용</option> -->
+					<option value="all">전체조건</option>
+				</select>
+		<input class="Aticle" type="text" id="keyWord" name="keyWord" 
+			value="${art_content}" placeholder="검색어를 입력하세요"/>
+		<button type="submit">검색하기</button>
 	
-	<!-- 검색 -->
-<form action="/search" method="GET">
- <div class="form-inline">
-	<select id="search" name="search">
-		<option value="">검색조건</option>
-		<option value="art_title">제목</option> 
-		<option value="art_content">내용</option>
-		<option value="mem_nickname">작성자</option>
-		<!-- <option value="tc">제목+내용</option> -->
-		<option value="all">전체조건</option>
-	</select>
-	<input class="Aticle" type="text" id="keyWord" name="keyWord" 
-		value="${art_content}" placeholder="검색어를 입력하세요"/>
-	<button type="submit">Search</button>
 </div>
 </form>
 	

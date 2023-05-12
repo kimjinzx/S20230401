@@ -211,6 +211,7 @@ public class InformationController {
 		int art_id = article.getArt_id();
 		return "redirect:/board/information/detail?art_id=" + art_id + "&brd_id=" + brd_id + "&category=" + category;
 	}
+	
 	// 비추천
 	@RequestMapping(value="/board/information/updatebad")
 	public String updatebad(@AuthenticationPrincipal MemberDetails memberDetails, Article article, Integer category, Model model) {
