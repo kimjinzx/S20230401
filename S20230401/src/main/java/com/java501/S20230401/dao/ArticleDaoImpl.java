@@ -685,11 +685,19 @@ public class ArticleDaoImpl implements ArticleDao {
 			return read;
 		}
 		
+		
+		
 		@Override
-		public int totalArticle2() {
+		public int totalArticle2(Article article) {
 			int page = 0;
+			System.out.println("ArticleDaoImple Start paging...");
+			System.out.println("Dao pageStart -> "+article.getStart());
+		    System.out.println("Dao pageEnd -> "+article.getEnd());
+		      
 			try {
-				page = session.selectOne("JHPaging");
+					page = session.selectOne("JHPaging",article);
+				System.out.println("ArticleDaoImpl totalArticle page-> " + page);
+
 			} catch (Exception e) {
 				System.out.println("ArticleDaoImpl totalArticle2 Exception -> "+e.getMessage());
 			}
@@ -781,5 +789,52 @@ public class ArticleDaoImpl implements ArticleDao {
 			}
 			return payCompleted;
 		}
-
+		@Override
+		public List<Article> articleSearch2(Article article) {
+			List<Article> articleSearch = null;
+			try {
+				articleSearch = session.selectList("JHArticleSearch",article);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl articleSearch2 Exception -> "+e.getMessage());
+			}
+			return articleSearch;
+		}
+		
+		@Override
+		public void artGood2(Article article) {
+			try {
+				session.selectOne("JHArtGood",article);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl ArtGood2 Exception -> "+e.getMessage());
+			}
+		}
+		
+		@Override
+		public void artBad2(Article article) {
+			try {
+				session.selectOne("JHArtBad",article);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl ArtBad2 Exception -> "+e.getMessage());
+			}
+		}
+		
+		@Override
+		public void repGood2(Article article) {
+			try {
+				session.selectOne("JHRepGood",article);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl repGood2 Exception -> "+e.getMessage());
+			}
+		}
+		
+		@Override
+		public void repBad2(Article article) {
+			try {
+				session.selectOne("JHRepBad",article);
+			} catch (Exception e) {
+				System.out.println("ArticleDaoImpl repBad Exception -> "+e.getMessage());
+			}
+		}
+		
+		
 }

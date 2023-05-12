@@ -89,7 +89,7 @@ public interface ArticleDao {
 	void 					dutchpayUpdate2(Article article);
 	void 					dutchpayDelete2(Article article);
 	public int 				DeatilRead2(Article article);
-	public int 				totalArticle2();
+	public int 				totalArticle2(Article article);
 	void                    applyInsert2(Article article);
 	public Article 			applyCancel2(Article article);
 	public Article 			joinCancel2(Article article);
@@ -98,5 +98,10 @@ public interface ArticleDao {
 	public Article 			joinDeny2(Article article);
 	public Article          joinAccept2(Article article);
 	public int              payCompleted2(int trd_id);
+	public List<Article>    articleSearch2(Article article);
+	public void             artGood2(Article article);
+	public void             artBad2(Article article);
+	public void 			repGood2(Article article);
+	public void 			repBad2(Article article);
 	
 }

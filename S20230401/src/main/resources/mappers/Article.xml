@@ -292,7 +292,7 @@
 	
 	
 	<!-- 임동빈 -->
-		<select id="ArticleTotalCnt" resultType="int">
+	<select id="ArticleTotalCnt" resultType="int">
 		select 	Count(*) 
 		FROM   	article 
 		WHERE  	brd_id between 1010 and 1060
@@ -918,7 +918,8 @@
 	</select>
 	
 	<select id="JHRepList" parameterType="Article" resultType="Article">
-		SELECT r.rep_id, m.mem_nickname, r.rep_content, r.rep_regdate, r.rep_parent, r.rep_step, r.mem_id
+		SELECT r.rep_id, m.mem_nickname, r.rep_content, r.rep_regdate, 
+			   r.rep_parent, r.rep_step, r.mem_id, r.rep_good, r.rep_bad
 		FROM reply r
 		LEFT JOIN member m
 		ON r.mem_id = m.mem_id
@@ -1052,6 +1053,7 @@
 		UPDATE Article SET art_read = art_read+1 WHERE brd_id=#{brd_id} and art_id=#{art_id}
 	</update>
 
+
 	<select id="JHPaging" parameterType="Article" resultType="int">
 		SELECT count(*)
 		FROM 
@@ -1073,7 +1075,7 @@
 				ORDER BY art_id) a
 			)
 		WHERE rn between #{start} and #{end}
-	</select>
+	</select>  
 	
 	<select id="JHJoinApply" parameterType="Article" statementType="CALLABLE">
 		{
@@ -1181,6 +1183,43 @@
 		where brd_id = #{brd_id}
 		and art_id = #{art_id}
 		and rep_id = #{rep_id}
+	</update>
+	
+	<select id="JHArticleSearch" parameterType="Article" resultType="Article">
+		SELECT * 
+		FROM article 
+		WHERE art_title LIKE '%' || #{keyWord} || '%'
+		ORDER BY art_regdate
+	</select>
+	
+	<update id="JHArtGood" parameterType="Article">
+		UPDATE article
+		SET art_good = art_good+1
+		WHERE brd_id = #{brd_id}	
+		AND art_id = #{art_id}
+	</update>
+	
+	<update id="JHArtBad" parameterType="Article">
+		UPDATE article
+		SET art_bad = art_bad+1
+		WHERE brd_id = #{brd_id}	
+		AND art_id = #{art_id}
+	</update>
+	
+	<update id="JHRepGood" parameterType="Article">
+		UPDATE reply
+		SET rep_good = rep_good+1
+		WHERE brd_id = #{brd_id}
+		AND art_id = #{art_id}
+		AND rep_id = #{rep_id}
+	</update>
+	
+	<update id="JHRepBad" parameterType="Article">
+		UPDATE reply
+		SET rep_bad = rep_bad+1
+		WHERE brd_id = #{brd_id}
+		AND art_id = #{art_id}
+		AND rep_id = #{rep_id}
 	</update>
 	
 </mapper>

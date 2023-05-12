@@ -84,7 +84,7 @@ public interface ArticleService {
 	public void 			dutchpayUpdate1(Article article);
 	public void 			dutchpayDelete1(Article article);
 	public int 				DeatilRead1(Article article);
-	public int 				totalArticle1();
+	public int 				totalArticle1(Article article);
 	void 			        applyInsert1(Article article);
 	public Article 			applyCancel1(Article article);
 	public Article			joinCancel1(Article article);
@@ -98,6 +98,11 @@ public interface ArticleService {
 	public void             favoriteInsert1(Article article);
 	public int              favoriteInsertYN1(Article article);
 	public void             replyUpdate1(Article article);
+	public List<Article>    articleSearch1(Article article);
+	public void             artGood1(Article article);
+	public void             artBad1(Article article);
+	public void             repGood1(Article article);
+	public void             repBad1(Article article);
 
 	
 	

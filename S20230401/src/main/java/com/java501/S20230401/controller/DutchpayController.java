@@ -53,12 +53,18 @@ public class DutchpayController {
 	      model.addAttribute("dutchpayList", dutchpayList);
 	      
 	      // 페이징
-	      int totalAticle = as.totalArticle();
-	      System.out.println("컨트롤러 페이징 totalArticle -> "+totalAticle);
+//	      System.out.println("아티클 -> "+article);
+//	      int totalArticle = as.totalArticle1(article);
+//	      System.out.println("컨트롤러 페이징 totalArticle -> "+totalArticle);
+//	      
+//	      Paging page = new Paging(totalArticle, currentPage);
+//	      article.setStart(page.getStart());
+//	      article.setEnd(page.getEnd());
+//	      
+//	      System.out.println("controller pageStart -> "+page.getStart());
+//	      System.out.println("controller pageEnd -> "+page.getEnd());
 	      
-	      Paging page = new Paging(totalAticle, currentPage);
-	      article.setStart(page.getStart());
-	      article.setEnd(page.getEnd());
+	      
 	      
 	      return "dutchpay/" + viewName;
 	}
@@ -182,7 +188,7 @@ public class DutchpayController {
 		int art_id = article.getArt_id(); 
 		return "redirect:/dutchpay/dutchpayDetail?brd_id="+brd_id+"&art_id="+art_id;
 	}
-
+	
 	@GetMapping(value = "dutchpay/dutchpayWriteForm") //글쓰기 폼 
 	public String dutchpayWriteForm(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
 		
@@ -269,8 +275,8 @@ public class DutchpayController {
 		int brd_id = article.getBrd_id();
 		return "redirect:/board/dutchpay?category="+brd_id;
 	}
-	
-	@GetMapping(value = "/dutchpay/dutchpayDelete") //게시글 삭제
+	@ResponseBody
+	@PostMapping(value = "/dutchpay/dutchpayDelete") //게시글 삭제
 	public String delete(Article article, RedirectAttributes ra, Model model , @AuthenticationPrincipal MemberDetails memberDetails) {
 		
 		if (memberDetails != null)
@@ -283,7 +289,7 @@ public class DutchpayController {
 		as.dutchpayDelete1(article);
 		ra.addFlashAttribute("article",article);
 		int brd_id = article.getBrd_id();
-		return "redirect:/board/dutchpay?category="+brd_id;
+		return "";
 	}
 
 	@RequestMapping(value = "/joinForm") // 상세게시글의 신청하기 버튼 (동의서 새창 띄우기)
@@ -453,6 +459,75 @@ public class DutchpayController {
 		return resultStr;
 	}
 	
+	@RequestMapping(value = "/dutchpay/articleSearch")
+	public String articleSearch(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
+		
+		List<Article> articleSearch = as.articleSearch1(article);
+		model.addAttribute("articleSearch", articleSearch);
+	
+	return "/dutchpay/articleSearch";
+	}
+		
+	@ResponseBody
+	@PostMapping(value = "/dutchpay/artGood") //게시글 추천
+	public String ArtGood(Article article, Model model , @AuthenticationPrincipal MemberDetails memberDetails) {
+		
+		if (memberDetails != null)
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		article.setMem_id(memberDetails.getMemberInfo().getMem_id());
+		
+		System.out.println("controller Good brd_id -> "+article.getBrd_id());
+		System.out.println("controller Good art_id -> "+article.getArt_id());
+		as.artGood1(article);
+		
+		return "";
+	}	
+	
+	@ResponseBody
+	@PostMapping(value = "/dutchpay/artBad") //게시글 추천
+	public String ArtBad(Article article, Model model , @AuthenticationPrincipal MemberDetails memberDetails) {
+		
+		if (memberDetails != null)
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		article.setMem_id(memberDetails.getMemberInfo().getMem_id());
+		
+		System.out.println("controller Bad brd_id -> "+article.getBrd_id());
+		System.out.println("controller Bad art_id -> "+article.getArt_id());
+		as.artBad1(article);
+		
+		return "";
+	}	
+	
+	@ResponseBody
+	@PostMapping(value = "/dutchpay/repGood") //게시글 추천
+	public String repGood(Article article, Model model , @AuthenticationPrincipal MemberDetails memberDetails) {
+		
+		if (memberDetails != null)
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		article.setMem_id(memberDetails.getMemberInfo().getMem_id());
+		
+		System.out.println("controller Bad brd_id -> "+article.getBrd_id());
+		System.out.println("controller Bad art_id -> "+article.getArt_id());
+		as.repGood1(article);
+		
+		return "";
+	}	
+	
+	@ResponseBody
+	@PostMapping(value = "/dutchpay/repBad") //게시글 추천
+	public String repBad(Article article, Model model , @AuthenticationPrincipal MemberDetails memberDetails) {
+		
+		if (memberDetails != null)
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		article.setMem_id(memberDetails.getMemberInfo().getMem_id());
+		
+		System.out.println("controller Bad brd_id -> "+article.getBrd_id());
+		System.out.println("controller Bad art_id -> "+article.getArt_id());
+		as.repBad1(article);
+		
+		return "";
+	}	
+		
 //	@PostMapping(value = "/dutchpay/replyUpdate") // 댓글 수정
 //	public String replyUpdate(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
 //		

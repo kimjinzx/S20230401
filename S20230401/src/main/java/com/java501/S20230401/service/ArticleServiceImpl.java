@@ -401,9 +401,9 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 	
 	@Override
-	public int totalArticle1() {
+	public int totalArticle1(Article article) {
 		int page = 0;
-		page = ad.totalArticle2();
+		page = ad.totalArticle2(article);
 		return page;
 	}
 	
@@ -476,6 +476,28 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public void replyUpdate1(Article article) {
 		rpd.replyUpdate2(article);
+	}
+	@Override
+	public List<Article> articleSearch1(Article article) {
+		List<Article> articleSearch = null;
+		articleSearch = ad.articleSearch2(article);
+		return articleSearch;
+	}
+	@Override
+	public void artGood1(Article article) {
+		ad.artGood2(article);
+	}
+	@Override
+	public void artBad1(Article article) {
+		ad.artBad2(article);
+	}
+	@Override
+	public void repGood1(Article article) {
+		ad.repGood2(article);
+	}
+	@Override
+	public void repBad1(Article article) {
+		ad.repBad2(article);
 	}
 
 	

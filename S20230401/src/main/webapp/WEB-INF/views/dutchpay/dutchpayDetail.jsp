@@ -57,8 +57,6 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
 <script type="text/javascript">
 		
-	 function goApplyBtn(my_mem_id, trd_id, brd_id, art_id, trd_max) {
-	    	  
  	 function goApplyBtn(my_mem_id, trd_id, brd_id, art_id) {
 	    	  
 	    	  $.ajax({
@@ -82,16 +80,24 @@
 	    		  } 
 		
 	 
-	 function goDelete(p_brd_id, p_art_id) {
-		if (confirm("게시글을 삭제하시겠습니까?") == true){    
-		location.href="/dutchpay/dutchpayDelete?brd_id="+p_brd_id+"&art_id="+p_art_id;
-		 }else{   
-		     return false;
-		 }
-	}
-	 
-	 
-	 
+ 	 
+ 	 function goDelete(p_brd_id, p_art_id) {
+   	  
+   	  $.ajax({
+   				url:"<%=context%>/dutchpay/dutchpayDelete",
+   				data: {brd_id : p_brd_id,
+   					   art_id : p_art_id},
+   				type:'POST',
+   				dataType:'text',
+   				success:function(data){
+   					if(confirm("게시글을 삭제하시겠습니까?")){
+   						alert('삭제되었습니다.');
+   						location.href="/board/dutchpay?category="+p_brd_id;
+   					}
+   				}
+   	  		});
+   		  }
+ 	 
 	function goApplyCancel(p_brd_id, p_art_id, p_trd_id, p_mem_id) {
 		 if (confirm("신청을 취소하시겠습니까?") == true){    
 			location.href="/dutchpay/applyCancel?brd_id="+p_brd_id+"&art_id="+p_art_id+"&trd_id="+p_trd_id+"&mem_id="+p_mem_id;
@@ -208,7 +214,69 @@
 			}
   		});
 	 	}
-
+	
+	function goArtGood(p_brd_id, p_art_id) {
+	   	  
+	   	  $.ajax({
+	   				url:"<%=context%>/dutchpay/artGood",
+	   				data: {brd_id : p_brd_id,
+	   					   art_id : p_art_id},
+	   				type:'POST',
+	   				dataType:'text',
+	   				success:function(data){
+	   						alert('추천되었습니다.');
+	   						location.href="redirect:/dutchpay/dutchpayDetail?brd_id="+brd_id+"&art_id="+art_id;
+	   				}
+	   	  		});
+	   		  }
+	
+	function goArtBad(p_brd_id, p_art_id) {
+	   	  
+	   	  $.ajax({
+	   				url:"<%=context%>/dutchpay/artBad",
+	   				data: {brd_id : p_brd_id,
+	   					   art_id : p_art_id},
+	   				type:'POST',
+	   				dataType:'text',
+	   				success:function(data){
+	   						alert('비추천되었습니다.');
+	   						location.href="redirect:/dutchpay/dutchpayDetail?brd_id="+brd_id+"&art_id="+art_id;
+	   				}
+	   	  		});
+	   		  }
+	
+	function goreplyGood(p_brd_id, p_art_id, p_rep_id) {
+	   	  
+	   	  $.ajax({
+	   				url:"<%=context%>/dutchpay/repGood",
+	   				data: {brd_id : p_brd_id,
+	   					   art_id : p_art_id,
+	   					   rep_id : p_rep_id},
+	   				type:'POST',
+	   				dataType:'text',
+	   				success:function(data){
+	   						alert('추천되었습니다.');
+	   						location.href="redirect:/dutchpay/dutchpayDetail?brd_id="+brd_id+"&art_id="+art_id;
+	   				}
+	   	  		});
+	   		  }
+	
+	function  goreplyBad(p_brd_id, p_art_id, p_rep_id) {
+	   	  
+	   	  $.ajax({
+	   				url:"<%=context%>/dutchpay/repBad",
+	   				data: {brd_id : p_brd_id,
+	   					   art_id : p_art_id,
+	   					   rep_id : p_rep_id},
+	   				type:'POST',
+	   				dataType:'text',
+	   				success:function(data){
+	   						alert('비추천되었습니다.');
+	   						location.href="redirect:/dutchpay/dutchpayDetail?brd_id="+brd_id+"&art_id="+art_id;
+	   				}
+	   	  		});
+	   		  }
+	
  
 </script> 
 </head>
@@ -232,8 +300,8 @@
 	<c:when test="${memberInfo.mem_id != detail.mem_id}"> 
 		<input type="button" value="신고하기" 		onclick="goReport(${detail.brd_id },${detail.art_id },${detail.report_id })">
 		<input type="button" value="관심목록 추가" onclick="goFavorite(${detail.brd_id },${detail.art_id },${memberInfo.mem_id})">
-		<input type="submit" value="추천" 	formaction="">   	
-		<input type="submit" value="비추천" 	formaction="">
+		<input type="button" value="추천" 		onclick="goArtGood(${detail.brd_id },${detail.art_id })">   	
+		<input type="button" value="비추천" 		onclick="goArtBad(${detail.brd_id },${detail.art_id })">
 	</c:when>
 </c:choose>
 	</c:when>
@@ -421,6 +489,25 @@
 				<c:out value="${status.count }"/>
 				<c:out value="${Rep.mem_nickname }"/>
 				<fmt:formatDate value="${Rep.rep_regdate}" pattern="yyyy년M월d일  hh시mm분"/>
+		<c:choose> 
+			<c:when test="${memberInfo.mem_id > 0}"> 
+				<input type="button" value="추천"   onclick="goreplyGood(${detail.brd_id },${detail.art_id },${Rep.rep_id })">
+			</c:when>
+			<c:otherwise>
+			추천
+			</c:otherwise>
+		</c:choose>
+				<c:out value="${Rep.rep_good }"/>
+		<c:choose> 
+			<c:when test="${memberInfo.mem_id > 0}"> 
+				<input type="button" value="비추천" onclick="goreplyBad(${detail.brd_id },${detail.art_id },${Rep.rep_id })">
+			</c:when>
+			<c:otherwise>
+			비추천
+			</c:otherwise>
+		</c:choose>
+				<c:out value="${Rep.rep_bad }"/>
+				
 			<c:choose> 
 				<c:when test="${memberInfo.mem_id == Rep.mem_id}"> 
 					<input type="button" value="삭제" onclick="goreplyDelete(${detail.brd_id },${detail.art_id },${Rep.rep_id })">

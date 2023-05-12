@@ -15,16 +15,16 @@
 				background-color: #FAEBFF;
 				}
 </style>
-
 <script type="text/javascript">
-	  function goWriteForm(p_mem_id) {
+
+	    function goWriteForm(p_mem_id) {
 	 	 if ( p_mem_id != null ) {
 	 		location.href="/dutchpay/dutchpayWriteForm";
 	 	 } else {
 	 		alert('로그인이 필요한 서비스입니다.');
 	 	    location.href = '/login';
 	 	 }
-		} 
+		}   
 </script>
 </head>
 <body>
@@ -36,7 +36,16 @@
 <a href="${pageContext.request.contextPath }/board/dutchpay?category=1140">해외배송</a>
 <a href="${pageContext.request.contextPath }/board/dutchpay?category=1150">기타</a><p>
 
-<input type="button" value="글쓰기" onclick="goWriteForm(${memberInfo.mem_id})">    
+<input type="button" value="글쓰기" onclick="goWriteForm(${memberInfo.mem_id})">   
+
+<form action="/dutchpay/articleSearch">
+	<select name="search">
+		<option value="art_title">제목</option>
+<!-- 		<option value="mem_nickname">작성자</option>
+ -->	</select>
+	<input type="text" name="keyWord" placeholder="검색어를 입력해주세요">
+	<button type="submit">검색</button><p>
+</form> 
 
 	 <c:forEach var="ATR" items="${dutchpayList }">
 	 
@@ -64,15 +73,16 @@
 	</c:forEach>
                        <!-- 1              10    -->
  	 <c:if test ="${page.startPage > page.pageBlock }">
-    	<a href="${pageContext.request.contextPath }/board/dutchpay?currentpage=${page.startPage-page.pageBlock}&category=${category}">[이전]</a>
+    	<a href="${pageContext.request.contextPath }/board/dutchpay?category=${category }&currentPage=${page.startPage-page.pageBlock}">[이전]</a>
 	</c:if>
 	<c:forEach var="i" begin="${page.startPage}" end="${page.endPage}">
-    	<a href="${pageContext.request.contextPath }/board/dutchpay?currentPage=${i}&category=${category}">[${i}]</a>
+    	<a href="${pageContext.request.contextPath }/board/dutchpay?category=${category }&currentPage=${i}">[${i}]</a>
 	</c:forEach>
 					<!-- 10              5    -->
     <c:if test="${page.endPage < page.totalPage }">
-    	<a href="${pageContext.request.contextPath }/board/dutchpay?currentPage=${page.startPage+page.pageBlock}&category=${category}">[다음]</a>
+    	<a href="${pageContext.request.contextPath }/board/dutchpay?category=${category }&currentPage=${page.startPage+page.pageBlock}">[다음]</a>
     </c:if>
+ 
  
 </body>
 </html>
