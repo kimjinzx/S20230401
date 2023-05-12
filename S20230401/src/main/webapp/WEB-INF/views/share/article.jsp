@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/preset.jsp" %>
+<%@ include file="/WEB-INF/views/share/modal.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -325,10 +326,10 @@
 									</div>
 									<div class="userList-btns">
 										<c:choose>
-											<c:when test="${article.mem_id == memberInfo.mem_id}">
+											<c:when test="${article.mem_id == memberInfo.mem_id || memberInfo.mem_authority >= 108}">
 												<button class="btns-action adv-hover" id="btns-drop">추방</button>
 											</c:when>
-											<c:when test="${join.mem_id == memberInfo.mem_id}">
+											<c:when test="${join.mem_id == memberInfo.mem_id || memberInfo.mem_authority >= 108}">
 												<button class="btns-action adv-hover" id="btns-joinCancel">취소</button>
 											</c:when>
 										</c:choose>
@@ -363,13 +364,13 @@
 									</div>
 									<div class="userList-btns">
 										<c:choose>
-											<c:when test="${article.mem_id == memberInfo.mem_id}">
+											<c:when test="${article.mem_id == memberInfo.mem_id || memberInfo.mem_authority >= 108}">
 												<c:if test="${article.trade.trd_max ne joinList.size()}">
 													<button class="btns-action" id="btns-accept">승인</button>
 												</c:if>
 												<button class="btns-action" id="btns-refuse">거절</button>
 											</c:when>
-											<c:when test="${waiting.mem_id == memberInfo.mem_id}">
+											<c:when test="${waiting.mem_id == memberInfo.mem_id || memberInfo.mem_authority >= 108}">
 												<button class="btns-action" id="btns-waitCancel">취소</button>
 											</c:when>
 										</c:choose>
@@ -473,7 +474,7 @@
 							   <div class="reply-inner padding-0" style="flex-grow: 1">
 									<!-- 댓글 수정 -->
 									<div class="reply-content padding-0">
-										<textarea class="rep-content full-width full-height" id="rep-content${status.index}" disabled="disabled" autofocus="autofocus">${reply.rep_content}</textarea>
+										<textarea class="rep-content full-width full-height" id="rep-content${status.index}" disabled="disabled">${reply.rep_content}</textarea>
 									</div>
 							   </div>
 							</div>
