@@ -751,7 +751,6 @@ public class TogetherController {
 			article.setEnd(page.getEnd()); // 시작시 10
 
 			List<Article> listSearchArticle = as.dbListSearchArticle(article);
-	        System.out.println("board/listSearch listSearchArticle->"+listSearchArticle);
 	        
 	        
 			model.addAttribute("article", article);

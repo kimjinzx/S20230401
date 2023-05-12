@@ -139,8 +139,8 @@
 				
 				if(confirm('정말 취소하시겠습니까 ?') == true) {
 				
-				let rawData = { mem_id : ${memberInfo.mem_id},
-								trd_id : ${detailArticle.trd_id} }
+				let rawData = { trd_id : ${detailArticle.trd_id},
+								mem_id : ${memberInfo.mem_id == null ? 'null' : memberInfo.mem_id}}
 			
 				let sendData = JSON.stringify(rawData);
 		
@@ -243,7 +243,8 @@
 	// 관심목록 넣기
 		$(() => {
 			$('.article_favorite').click(e => {
-				let rawData = { art_id : ${article.art_id}, brd_id : ${article.brd_id}, mem_id : ${memberInfo.mem_id}};
+				let rawData = { art_id : ${article.art_id}, brd_id : ${article.brd_id},
+								mem_id : ${memberInfo.mem_id == null ? 'null' : memberInfo.mem_id}};
 				let sendData = JSON.stringify(rawData);
 		
 				$.ajax({
@@ -309,7 +310,7 @@
 			
 			if(confirm('정말 취소하시겠습니까 ?') == true) {
 			
-			let rawData = { mem_id : ${memberInfo.mem_id},
+			let rawData = { mem_id : ${memberInfo.mem_id == null ? 'null' : memberInfo.mem_id},
 							trd_id : ${detailArticle.trd_id} }
 		
 			let sendData = JSON.stringify(rawData);
@@ -477,28 +478,15 @@
 		  return false;
 	  }
 	}
+	
+	$(() => {
+		  $('.reply_button').click(e => {
+		    $(e.target).closest('.R').find('.insertRe_Reply').toggle();	
+		  });
+		});
 
 		
 </script>
-
-<!-- closest => 가장 가까운 (.->클래스, #->아이디,) 이름을 가진 놈 찾아 타겟으로 만듦.
-	find => 아래의 태그 찾음.
-	css => 속성을 입력하면 해당 속성을 찾아서 속성의 값을 알려줌 (두개면 앞에 놈의 값을 뒤에놈으로 바꿔줌)  -->
-
-<!--  <script>
-
-	function createButton() {
-    // 버튼 엘리먼트의 disply 속성을 'block'으로 변경.
-    	const replyButton = document.getElementById('replyButton');
-    	replyButton.style.display = 'block';
-    }
-	
-	function deleteButton() {
-	// 버튼 엘리먼트의 disply 속성을 'none'으로 변경.
-		const replyButton = document.getElementById('replyButton');
-		replyButton.style.display = 'none';
-	} 	
-</script>-->
 
 </head>
 <body>
@@ -794,7 +782,8 @@
 	<br>
 
 	<!-- 댓글리스트 -->
-	<c:forEach var="reply" items="${replyList }">
+	<div class="R">
+	<c:forEach var="reply" items="${replyList }" varStatus="status">
 		<c:choose>
 			<c:when test="${reply.isdelete == 1 }">
 				<div class = "replyList"> 					
@@ -832,6 +821,8 @@
 					<span style="float: right;">추천수 : ${reply.rep_good }&nbsp;</span>
 					</p>
 					<p>
+								<input class="reply_button" type="button" value="답글작성" style="display: inline;"
+								data-id="${status.count }">
 						<c:choose>
 							<c:when test="${memberInfo.mem_id == reply.mem_id}">
 								<input class="reply_modify" type="button" value="수정">
@@ -840,7 +831,6 @@
 									onclick="deleteReply(${reply.brd_id}, ${reply.art_id}, ${reply.rep_id}, ${reply.mem_id});">
 							</c:when>
 						</c:choose>
-		
 						<c:choose>
 							<c:when test="${memberInfo.mem_id != null}">
 								<input class="reply_bad"    style="float: right;" type="button" value="비추천">
@@ -851,14 +841,15 @@
 					</p>
 				</div>
 		
-				<div class="insertRe_Reply"
-					style="display: block; ${reply.rep_step > 1 ? 'margin-left: 50px' : ''}">
+				<div class="insertRe_Reply" style="display: none; ${reply.rep_step > 1 ? 'margin-left: 50px' : ''}"
+						data-id="${status.count }">
 					<form action="/board/insertReply" id="insertRe-Reply" method="post">
-						<input type="hidden" name="art_id" value="${detailArticle.art_id }">
-						<input type="hidden" name="brd_id" value="${detailArticle.brd_id }">
-						<input type="hidden" name="mem_id" value="${detailArticle.mem_id }">
-						<input type="hidden" name="rep_id" value="${reply.rep_id }">
-						<input type="hidden" name="rep_parent" value="${reply.rep_parent }">
+							<input type="hidden" name="art_id" value="${detailArticle.art_id }">
+							<input type="hidden" name="brd_id" value="${detailArticle.brd_id }">
+							<input type="hidden" name="mem_id" value="${detailArticle.mem_id }">
+							<input type="hidden" name="rep_id" value="${reply.rep_id }">
+							<input type="hidden" name="rep_parent" value="${reply.rep_parent }">
+						<div class="Re-ReplyBox">
 						<c:choose>
 							<c:when test="${memberInfo.mem_id != null}">
 								<input type="text" name="rep_content" placeholder="댓글을 입력하세요"
@@ -872,12 +863,14 @@
 								<span> 로그인이 필요합니다 </span>
 							</c:otherwise>
 						</c:choose>
+						</div>
 					</form>
 				</div>
 				<br>
 			</c:otherwise>
 		</c:choose>		
 	</c:forEach>
+	</div>
 
 
 </body>
