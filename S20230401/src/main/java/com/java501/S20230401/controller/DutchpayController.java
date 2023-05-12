@@ -11,6 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,47 +39,47 @@ import lombok.extern.slf4j.Slf4j;
 public class DutchpayController {
 	private final ArticleService as;
 	
-	@RequestMapping(value = "/board/dutchpay") // 대분류 같이사요 + 중분류 하위카테고리 이동 및 List조회  
-	public String dutchpayList(Article article,int category, String currentPage, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
-		
+	@RequestMapping(value = "/board/dutchpay")
+	public String articleList(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
+			Article article, int category, String currentPage, Model model) {
+
+		// 유저 정보를 다시 리턴 //memberDetails.getMemberInfo() DB의 유저와 대조 & 권한 확인
 		if (memberDetails != null)
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
-		
-		String viewName;
-		 String boardName;
-	      switch(category) { //카테고리 이동
-	      case 1110: viewName = "dutchpayFoodList"; boardName = "FoodList"; break;
-	      case 1120: viewName = "dutchpayClothesList"; boardName = "ClothesList"; break;
-	      case 1130: viewName = "dutchpayHouseStuffList"; boardName = "HouseStuffList"; break;
-	      case 1140: viewName = "dutchpayOverseasList"; boardName = "OverseasList"; break;
-	      case 1150: viewName = "dutchpayEtcList"; boardName = "EtcList"; break;
-	      default: viewName = "dutchpayList"; boardName = "List"; break;
-	      }
-	      List<Article> dutchpayList = as.JHgetDutchpayList(boardName);
-	      System.out.println("controller dutchpayList size() -> "+dutchpayList.size());
-	      model.addAttribute("dutchpayList", dutchpayList);
-	      
-	      // 페이징
-//	      System.out.println("아티클 -> "+article);
-//	      int totalArticle = as.totalArticle1(article);
-//	      System.out.println("컨트롤러 페이징 totalArticle -> "+totalArticle);
-//	      
-//	      Paging page = new Paging(totalArticle, currentPage);
-//	      article.setStart(page.getStart());
-//	      article.setEnd(page.getEnd());
-//	      
-//	      System.out.println("controller pageStart -> "+page.getStart());
-//	      System.out.println("controller pageEnd -> "+page.getEnd());
-	      
-	      
-	      
-	      return "dutchpay/" + viewName;
-	}
+
+		// category 값을 brd_id에 할당.
+		article.setBrd_id(category);
+		int number = article.getBrd_id();
+
+		// 전체 게시글 개수 Count
+		int totalArticle = as.JHtotalArticle1(article);
+
+		// Paging 작업
+		Paging page = new Paging(totalArticle, currentPage);
+		article.setStart(page.getStart()); // 시작시 1
+		article.setEnd(page.getEnd());
+
+		// 게시글 리스트 작업
+		List<Article> listArticle = as.JHgetDutchpayList(article);
+
+		model.addAttribute("article", article);
+		model.addAttribute("totalArticle", totalArticle);
+		model.addAttribute("listArticle", listArticle);
+		model.addAttribute("category", number);
+		model.addAttribute("page", page);
+
+		System.out.println("현재 brd_id -> "+article.getBrd_id());
+		return "dutchpay/dutchpayList";
+	}	
 	
-	@RequestMapping(value ="/dutchpay/dutchpayDetail") //상세 게시글    
-	public String dutchpayDetail(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails, HttpServletRequest request, HttpServletResponse response) {
+	
+	@RequestMapping(value ="/board/dutchpay/{art_id}") //상세 게시글    
+	public String dutchpayDetail(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails
+							   , HttpServletRequest request, HttpServletResponse response
+							   , @PathVariable("art_id") String art_id) {
 		
-		Integer art_id = null;
+		article.setArt_id(Integer.parseInt(art_id));
+		
 		Integer brd_id = null;
 		Integer mem_id = null;
 		
@@ -208,7 +209,7 @@ public class DutchpayController {
 		return "redirect:/dutchpay/dutchpayDetail?brd_id="+brd_id+"&art_id="+art_id;
 	}
 	
-	@PostMapping(value = "/dutchpay/replyInsert") // 댓글 입력
+	@PostMapping(value = "/board/dutchpay/replyInsert") // 댓글 입력
 	public String replyInsert(Article article, RedirectAttributes ra, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
 		
 		if (memberDetails != null)  
@@ -514,7 +515,7 @@ public class DutchpayController {
 		List<Article> articleSearch = as.JHarticleSearch1(article);
 		model.addAttribute("articleSearch", articleSearch);
 	
-	return "/dutchpay/articleSearch";
+	return "/duchpayList";
 	}
 		
 	@ResponseBody

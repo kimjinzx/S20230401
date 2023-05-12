@@ -30,11 +30,22 @@
 <body>
 
 <a><strong>전체목록</strong></a>
-<a href="${pageContext.request.contextPath }/board/dutchpay?category=1110">식료품</a>
+<%-- <a href="${pageContext.request.contextPath }/board/dutchpay?category=1110">식료품</a>
 <a href="${pageContext.request.contextPath }/board/dutchpay?category=1120">의류/잡화</a>
 <a href="${pageContext.request.contextPath }/board/dutchpay?category=1130">생활용품</a>
 <a href="${pageContext.request.contextPath }/board/dutchpay?category=1140">해외배송</a>
 <a href="${pageContext.request.contextPath }/board/dutchpay?category=1150">기타</a><p>
+ --%>
+			<input type="button" value="식료품"
+				onclick="location.href='${pageContext.request.contextPath}/board/dutchpay?category=1110'">
+			<input type="button" value="의류/잡화"
+				onclick="location.href='${pageContext.request.contextPath}/board/dutchpay?category=1120'">
+			<input type="button" value="생활용품"
+				onclick="location.href='${pageContext.request.contextPath}/board/dutchpay?category=1130'">
+			<input type="button" value="해외배송"
+				onclick="location.href='${pageContext.request.contextPath}/board/dutchpay?category=1140'">
+			<input type="button" value="기타"
+				onclick="location.href='${pageContext.request.contextPath}/board/dutchpay?category=1150'">
 
 <input type="button" value="글쓰기" onclick="goWriteForm(${memberInfo.mem_id})">   
 
@@ -47,7 +58,7 @@
 	<button type="submit">검색</button><p>
 </form> 
 
-	 <c:forEach var="ATR" items="${dutchpayList }">
+	 <c:forEach var="ATR" items="${listArticle }">
 	 
 	<div class="container" >
 		<input type="hidden" name="brd_id" value="${ATR.brd_id }">
@@ -57,7 +68,9 @@
 		
 		<span>작성자 : <img src="${pageContext.request.contextPath }/uploads/profile/${ATR.mem_image}" style="width:40px; height:40px; ">  ${ATR.mem_nickname } (${ATR.mem_username })</span><p>
 		<span>${ATR.comm_value }</span>
-		<span><a href="/dutchpay/dutchpayDetail?art_id=${ATR.art_id}&brd_id=${ATR.brd_id}">제목 : ${ATR.art_title }</a>
+		<span><a href="${pageContext.request.contextPath}/board/dutchpay/${ATR.art_id}?brd_id=${ATR.brd_id}&category=${category}">제목 : ${ATR.art_title }</a>
+<%-- 		<td><a href="${pageContext.request.contextPath}/board/customer/${article.art_id}?brd_id=${article.brd_id}&category=${category}">${article.art_title}</a></td>
+ --%><%-- 		<span><a href="/dutchpay/dutchpayDetail?art_id=${ATR.art_id}&brd_id=${ATR.brd_id}">제목 : ${ATR.art_title }</a> --%>
 		
 		
 		

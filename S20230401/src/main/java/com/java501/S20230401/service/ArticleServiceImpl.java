@@ -594,9 +594,9 @@ public class ArticleServiceImpl implements ArticleService {
 	
 	
 	@Override//김진현
-	public List<Article> JHgetDutchpayList(String boardName) {
-		List<Article> article = ad.JHgetDutchpayList(boardName);
-		return article;
+	public List<Article> JHgetDutchpayList(Article article) {
+		List<Article> List = ad.JHgetDutchpayList(article);
+		return List;
 	}
 
 	@Override

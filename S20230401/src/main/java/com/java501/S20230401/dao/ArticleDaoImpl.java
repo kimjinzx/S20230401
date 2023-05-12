@@ -1017,19 +1017,31 @@ public class ArticleDaoImpl implements ArticleDao {
 	
 	
 	
-	
 	//김진현
+	
 		@Override
-		public List<Article> JHgetDutchpayList(String boardName) {
+		public List<Article> JHgetDutchpayList(Article article) {
 			List<Article> dutchpayList2 = null;
-			
 			try {
-				dutchpayList2 = session.selectList("JHDutchpay" + boardName);
+				// article.getBrd_id() 따라서 분기 --> 전체
+				if (article.getBrd_id() == 1100) {
+					dutchpayList2 = session.selectList("JHDutchpay", article);
+				} else {
+					// 1010 밥/카페
+					// 1020 스포츠/운동
+					// 1030 쇼핑
+					// 1040 문화 생활
+					// 1050 취미 생활
+					// 1060 기타
+					dutchpayList2 = session.selectList("JHDutchpay", article);
+				}
+				System.out.println("Dao brd_id -> "+article.getBrd_id());
 			} catch (Exception e) {
-				System.out.println("ArticleDaoImpl dutchpayList2 Exception -> "+e.getMessage());
+				System.out.println("ArticleImpl dutchpayList2 e.getMessage()->"+e.getMessage());
 			}
 			return dutchpayList2;
 		}
+
 		@Override
 		public Article JHdetail2(Article article) {
 			Article article2 = null;
@@ -1165,11 +1177,9 @@ public class ArticleDaoImpl implements ArticleDao {
 		public int JHtotalArticle2(Article article) {
 			int page = 0;
 			System.out.println("ArticleDaoImple Start paging...");
-			System.out.println("Dao pageStart -> "+article.getStart());
-		    System.out.println("Dao pageEnd -> "+article.getEnd());
 		      
 			try {
-					page = session.selectOne("JHPaging",article);
+					page = session.selectOne("JHPaging");
 				System.out.println("ArticleDaoImpl totalArticle page-> " + page);
 
 			} catch (Exception e) {

@@ -126,7 +126,7 @@ public interface ArticleService {
 	
 	
 	// 김진현
-	List<Article> 			JHgetDutchpayList(String boardName);//진현
+	List<Article> 			JHgetDutchpayList(Article article);//진현
 	Article                 JHdetail1(Article article);
 	public List<Article> 	JHrepList1(Article article);
 	public List<Comm>		JHpayStatus1();

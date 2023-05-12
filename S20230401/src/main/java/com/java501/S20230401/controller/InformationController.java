@@ -48,6 +48,7 @@ public class InformationController {
 		// 유저 정보를 다시 리턴  //memberDetails.getMemberInfo() DB의 유저와 대조 & 권한 확인
 		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		
 		String viewName = "infoindex";
 		System.out.println("ArticleController Start listArticle...");
 		article.setBrd_id(category);

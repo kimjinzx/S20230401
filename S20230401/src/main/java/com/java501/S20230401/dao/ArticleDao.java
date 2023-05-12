@@ -122,7 +122,7 @@ public interface ArticleDao {
 	
 	
 	// 김진현
-	List<Article> 			JHgetDutchpayList(String boardName);
+	List<Article> 			JHgetDutchpayList(Article article);
 	Article                 JHdetail2(Article article);
 	public List<Article> 	JHrepList2(Article article);
 	public List<Comm>       JHpayStatus2();
