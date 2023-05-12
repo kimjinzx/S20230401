@@ -1,5 +1,7 @@
 package com.java501.S20230401.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -192,14 +194,16 @@ public class ShareController {
 		if(memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		
 		// 지역 제한 조회
-		//List<Region> regionList = regionService.dgRegionList();
+		// 이 아래는 꼭 들고 다녀야함!!!
 		Map<Region, List<Region>> regionHierachy = new HashMap<Region, List<Region>>();
 		List<Region> superRegions = regionService.getSuperRegions();
 		for (Region sups : superRegions) regionHierachy.put(sups, regionService.getChildRegions(sups.getReg_id()));
 		model.addAttribute("superRegions", superRegions);
 		model.addAttribute("regions", regionHierachy);
-		
+		// 여기까지는 꼭 들고 다녀야함!!!
+		//List<Region> regionList = regionService.dgRegionList();
 		//model.addAttribute("regionList", regionList);
+		
 		model.addAttribute("category", category);
 		
 		return "share/writeForm";
@@ -482,7 +486,7 @@ public class ShareController {
 //		System.out.println(articleList);
 		//log.info("\n카테고리 : {} \n키워드 : {} \n검색 내용 : {} \n널임? {}", category, article.getKeyWord(), article.getSearch());
 		redirectAttributes.addFlashAttribute("article", article);
-		return getRedirectShare(category);
+		return getRedirectSearch(article, category);
 	}
 
 	 // 찜 기능
@@ -666,6 +670,14 @@ public class ShareController {
 	// 카테고리로 돌아가기
 	public String getRedirectShare(Integer category) {
 		return String.format("redirect:/board/share?category=%s", category);
+	}
+	// 검색한 카테고리로 돌아가기
+	public String getRedirectSearch(Article article, Integer category) { 
+		try {
+			return String.format("redirect:/board/share?category=%s&search=%s&keyWord=%s", category, article.getSearch(), URLEncoder.encode(article.getKeyWord(), "UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			return getRedirectShare(category);
+		}
 	}
 	// 게시글로 돌아가기
 	public String getRedirectArticle(Article article, Integer category) {

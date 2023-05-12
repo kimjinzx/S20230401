@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>${boardName } ${currentPage == null ? '1' : currentPage } 페이지 ▒ ShareGo</title>
+<title>${boardName } ${param.search == null ? '' : '검색 ' }${currentPage == null ? '1' : currentPage } 페이지 ▒ ShareGo</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/initializer.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/layout.js"></script>
@@ -331,7 +331,7 @@
 					<!-- 글 시작 -->
 						<div class="article-info" style="display: flex; padding: 10px; flex-grow: 1;">
 							<div class="view-preview" style="display: flex; align-items: center; margin-right: 14px; border: 1px solid rgba(128, 128, 128, 0.5); border-radius: 2.5px; width: 82px; height: 82px;">
-								<img class="article-thumbnail" style="width: 80px; height: 80px; object-fit: cover;" src="${pageContext.request.contextPath }/image/ShareGo_Img.png" onload="$(this).attr('src', getThumbnail('<c:out value="${article.art_content}" escapeXml="true"/>', true));">
+								<img class="article-thumbnail" style="width: 80px; height: 80px; object-fit: cover;" src="${pageContext.request.contextPath }/image/ShareGo_Img.png" onload="$(this).attr('src', getThumbnail('<c:out value="${article.art_content}" escapeXml="true"/>', true));this.onload=null;$(this).removeAttr('onload');" onerror="this.onerror=null;this.src='${pageContext.request.contextPath }/image/ShareGo_Not_Found_Image.png';$(this).removeAttr('onerror');">
 							</div>
 							<div class="view-inner" style="display: flex; flex-direction: column; justify-content: center; flex-grow: 1;">
 								<!-- 글의 첫 줄 -->
@@ -469,22 +469,31 @@
 				</div>
 				<!-- 페이징 -->
 				<div class="board_paging" align="center" style="font-size: 18px; clear: both;">
-					<button class="paging-block display-flex justify-content-center align-items-center" onclick="location.href='${pageContext.request.contextPath }/board/share?currentPage=${page.startPage-page.pageBlock }&category=${category}';" ${page.startPage <= page.pageBlock ? 'disabled' : '' }>
+					<button class="paging-block display-flex justify-content-center align-items-center" onclick="location.href='${pageContext.request.contextPath }/board/share?currentPage=${page.startPage-page.pageBlock }&category=${category}${param.search == null ? '' : '&search='.concat(param.search) }${param.keyWord == null ? '' : '&keyWord='.concat(param.keyWord) }';" ${page.startPage <= page.pageBlock ? 'disabled' : '' }>
 						<svg viewBox="0 0 256 512">
 							<path d="M 224 32 L 32 256 224 480"/>
 						</svg>
 					</button>
 					<c:forEach var="i" begin="${page.startPage }" end="${page.endPage }">
-						<button class="paging-page display-flex justify-content-center align-items-center" onclick="location.href='${pageContext.request.contextPath }/board/share?currentPage=${i }&category=${category}';" ${page.currentPage == i ? 'disabled' : '' }>
+						<button class="paging-page display-flex justify-content-center align-items-center" onclick="location.href='${pageContext.request.contextPath }/board/share?currentPage=${i }&category=${category}${param.search == null ? '' : '&search='.concat(param.search) }${param.keyWord == null ? '' : '&keyWord='.concat(param.keyWord) }';" ${page.currentPage == i ? 'disabled' : '' }>
 							<span>${i }</span>
 						</button>
 					</c:forEach>
-					<button class="paging-block display-flex justify-content-center align-items-center" onclick="location.href='${pageContext.request.contextPath }/board/share?currentPage=${page.endPage + 1 }&category=${category}';" ${page.endPage == page.totalPage ? 'disabled' : '' }>
+					<button class="paging-block display-flex justify-content-center align-items-center" onclick="location.href='${pageContext.request.contextPath }/board/share?currentPage=${page.endPage + 1 }&category=${category}${param.search == null ? '' : '&search='.concat(param.search) }${param.keyWord == null ? '' : '&keyWord='.concat(param.keyWord) }';" ${page.endPage == page.totalPage ? 'disabled' : '' }>
 						<svg viewBox="0 0 256 512">
 							<path d="M 32 32 L 224 256 32 480"/>
 						</svg>
 					</button>
 				</div>
+				<%-- <c:set var="params" value=""/>
+				<c:forEach var='test' items="${param }" varStatus="status">
+					<c:choose>
+						<c:when test="${status.index == 0 }"><c:set var="params" value="?"/></c:when>
+						<c:otherwise><c:set var="params" value="${params}&"/></c:otherwise>
+					</c:choose>
+					<c:url var="params" value="${params}${test.key }=${test.value }"/>
+				</c:forEach> --%>
+				<c:out value="${params }"/>
 			</div>
 		</div>
 		

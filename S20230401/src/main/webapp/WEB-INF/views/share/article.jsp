@@ -29,7 +29,11 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/layout.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/share/article.css">
 <script type="text/javascript">
+	
 	$(() => {
+		$('.article_content').find('img').error(e => {
+			$(e.target).closest('img').attr('src', `${contextPath}/image/ShareGo_Not_Found_Image.png`);
+		});
 		$('.board-toggle').click(e => {
 			let parent = $(e.target).closest('.board-summary');
 			let children = parent.find('.board-summary-part');
