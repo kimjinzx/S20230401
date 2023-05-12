@@ -12,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -110,10 +111,13 @@ public class CommunityController {
 		return "community/communityIndex";
 	}
 	
-	@GetMapping(value = "board/community/detailContent")
+	//디테일 상세보기
+	@GetMapping(value = "board/community/{art_id}")
 	public String detailContent(HttpServletRequest request, @AuthenticationPrincipal MemberDetails memberDetails, 
+										@PathVariable("art_id") String art_id,
 										Article article, int category, Model model, HttpServletResponse response) 
 	{
+		article.setArt_id(Integer.parseInt(art_id));
 	    if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 	    System.out.println("CommunityController detail 시작");
 	    System.out.println("아티클정보"+article);
@@ -167,7 +171,7 @@ public class CommunityController {
 	}
 
 	
-	
+	//글쓰기 폼
 	@RequestMapping(value = "board/community/communityWrite")
 	public String communityFormWrite(@AuthenticationPrincipal MemberDetails memberDetails,int category, Model model) {
 		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
@@ -182,6 +186,7 @@ public class CommunityController {
 		return "community/communityWrite";
 	}
 	
+	//글쓰기
 	@PostMapping(value = "board/community/bjcommunitywrite")
 	public String communityWrite(@AuthenticationPrincipal MemberDetails memberDetails,int category, Article article, Model model) {
 		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
@@ -226,8 +231,7 @@ public class CommunityController {
 		model.addAttribute("uptCnt", updateCount);
 		model.addAttribute("category", category);
 		
-		return "redirect:/board/community/detailContent?art_id="
-												+article.getArt_id()+"&brd_id="+article.getBrd_id()+"&category="+category;
+		return "redirect:/board/community/"+article.getArt_id()+"?brd_id="+article.getBrd_id()+"&category="+category;
 	}
 	
 	
@@ -248,8 +252,7 @@ public class CommunityController {
 		System.out.println("reply 값 ->" + reply);
 		model.addAttribute("reply", reWrite);
 		
-		return "redirect:/board/community/detailContent?art_id="
-												+reply.getArt_id()+"&brd_id="+reply.getBrd_id()+"&category="+reply.getBrd_id();   
+		return "redirect:/board/community/"+reply.getArt_id()+"?brd_id="+reply.getBrd_id()+"&category="+reply.getBrd_id();   
 		
 	}
 	
@@ -258,8 +261,7 @@ public class CommunityController {
 		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		int reDelete = as.replyDelete(reply);
 
-		return "redirect:/board/community/detailContent?art_id="
-												+reply.getArt_id()+"&brd_id="+reply.getBrd_id()+"&category="+reply.getBrd_id();  
+		return "redirect:/board/community/"+reply.getArt_id()+"?brd_id="+reply.getBrd_id()+"&category="+reply.getBrd_id();  
 	}
 	
 	@PostMapping(value = "board/community/bjreReply")
@@ -269,8 +271,7 @@ public class CommunityController {
 		
 		model.addAttribute("reply", reply);
 		System.out.println("대댓글 reply 값 ->" +reply);
-		return "redirect:/board/community/detailContent?art_id="
-												+reply.getArt_id()+"&brd_id="+reply.getBrd_id()+"&category="+reply.getBrd_id();
+		return "redirect:/board/community/"+reply.getArt_id()+"?brd_id="+reply.getBrd_id()+"&category="+reply.getBrd_id();
 	}
 	
 	@ResponseBody

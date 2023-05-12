@@ -472,7 +472,7 @@
 					<td>${boardMap[article.brd_id]}</td>
 					<td><img src="${pageContext.request.contextPath}/uploads/profile/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
 						${article.mem_nickname }</td>
-					<td><a href="${pageContext.request.contextPath}/board/community/detailContent?art_id=${article.art_id }&brd_id=${article.brd_id }&category=${category }">${article.art_title}</a></td>
+					<td><a href="${pageContext.request.contextPath}/board/community/${article.art_id}?brd_id=${article.brd_id }&category=${category }">${article.art_title}</a></td>
 					<td>
 				    <c:if test="${not empty article.art_tag1}">
 				        #${article.art_tag1}
@@ -518,7 +518,7 @@
 				<td>${boardMap[article.brd_id]}</td>
 				<td><img src="${pageContext.request.contextPath}/uploads/profile/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
 						${article.mem_nickname }</td>
-				<td><a href="${pageContext.request.contextPath}/board/community/detailContent?art_id=${article.art_id }&brd_id=${article.brd_id }&category=${category }">${article.art_title}</a></td>
+				<td><a href="${pageContext.request.contextPath}/board/community/${article.art_id }?brd_id=${article.brd_id }&category=${category }">${article.art_title}</a></td>
 				<td>
 				    <c:if test="${not empty article.art_tag1}">
 				        #${article.art_tag1}

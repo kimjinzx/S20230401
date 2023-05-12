@@ -450,7 +450,7 @@
 			<form action="bjUpdate" method="post" name="update" >
 			<table >
 				<tr><th>닉네임</th>
-				<td><img src="${pageContext.request.contextPath}/${memberInfo.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
+				<td><img src="${pageContext.request.contextPath}/uploads/profile/${memberInfo.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
 				${memberInfo.mem_nickname}</td></tr>
 				<tr><th>제목</th><td><input type="text" name="art_title" value="${article.art_title }" style="width: 700px;"> </td></tr>
 				<tr><th colspan="2">태그<br>태그1 # <input type="text" name="art_tag1" class="tag" value="${article.art_tag1}" >
