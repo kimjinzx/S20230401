@@ -29,7 +29,11 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/layout.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/share/article.css">
 <script type="text/javascript">
+	
 	$(() => {
+		$('.article_content').find('img').error(e => {
+			$(e.target).closest('img').attr('src', `${contextPath}/image/ShareGo_Not_Found_Image.png`);
+		});
 		$('.board-toggle').click(e => {
 			let parent = $(e.target).closest('.board-summary');
 			let children = parent.find('.board-summary-part');
@@ -237,7 +241,7 @@
 				<!-- 작성자 -->
 				<div class="article-memberRow display-flex align-items-center" style="border-bottom: 1px solid rgba(128, 128, 128, 0.5);">
 					<div class="user-profile-image-in-list">
-						<img src="${pageContext.request.contextPath}/uploads/profile/${article.member.mem_image}" onerror="this.onerror=null; this.src='${pageContext.request.contextPath }/image/abstract-user.svg';"></span>
+						<img src="${pageContext.request.contextPath}/uploads/profile/${article.member.mem_image}" onerror="this.onerror=null; this.src='${pageContext.request.contextPath }/image/abstract-user.svg';">
 					</div>
 					<div class="article-member" style="display: flex; align-items: center;">
 						<div class="modal-report display-flex justify-content-flex-start align-items-center padding-0">
@@ -444,7 +448,7 @@
 							<div class="reply-view display-flex flex-direction-column justify-content-flex-start align-items-stretch" style="${(reply.rep_id != reply.rep_parent) ? 'margin-left: 32px; background-color: rgba(var(--subtheme-rgb), 0.125);' : ''}">
 								<div class="reply-header display-flex justify-content-flex-start align-items-center">
 								<div class="user-profile-image-in-list">
-									<img alt="profile" src="${pageContext.request.contextPath}/uploads/profile/${reply.member.mem_image}">
+									<img src="${pageContext.request.contextPath}/uploads/profile/${reply.member.mem_image}" onerror="this.onerror=null; this.src='${pageContext.request.contextPath }/image/abstract-user.svg';">
 								</div>
 								<div class="reply-header-info modal-report display-flex justify-content-flex-start align-items-center">
 									<span id="member_nickname" class="font-weight-bolder">${reply.member.mem_nickname}</span>
@@ -474,7 +478,7 @@
 							   <div class="reply-inner padding-0" style="flex-grow: 1">
 									<!-- 댓글 수정 -->
 									<div class="reply-content padding-0">
-										<textarea class="rep-content full-width full-height" id="rep-content${status.index}" disabled="disabled">${reply.rep_content}</textarea>
+										<textarea class="rep-content full-width full-height" id="rep-content${status.index}" disabled="disabled" autofocus="autofocus">${reply.rep_content}</textarea>
 									</div>
 							   </div>
 							</div>

@@ -12,7 +12,10 @@ const getThumbnail = (art_content, justSrc = false, thumbnailIndex = 0) => {
 	let imgs = $virtualDiv.find('img');
 	let notFoundSrc = window.location.origin + '/image/ShareGo_Not_Found_Image.png';
 	if (!imgs || imgs.length == 0) return justSrc? notFoundSrc : $('<img src="' + notFoundSrc + '"/>');
-	else return justSrc ? $(imgs[imgs.length - 1 < thumbnailIndex ? imgs.length - 1 : thumbnailIndex]).attr('src') : imgs[imgs.length - 1 < thumbnailIndex ? imgs.length - 1 : thumbnailIndex];
+	else {
+		let imgValue = imgs[imgs.length - 1 < thumbnailIndex ? imgs.length - 1 : thumbnailIndex];
+		return justSrc ? $(imgValue).attr('src') : imgValue;
+	}
 };
 
 $(() => {
