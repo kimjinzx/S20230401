@@ -17,7 +17,9 @@ public class MemberDetails implements UserDetails {
 	@Autowired
 	private CommDao cd;
 	
-	public MemberDetails(MemberInfo memberInfo) { this.memberInfo = memberInfo; }
+	public MemberDetails(MemberInfo memberInfo) {
+		this.memberInfo = memberInfo;
+	}
 	
 	// 유현규
 	@Override

@@ -12,4 +12,11 @@ public class Report {
 	private Date 	report_date;
 	private Integer report_status;
 	private String 	report_reason;
+	
+	// 유현규
+	private String type;
+	// for Paging
+	private String 	pageNum;
+	private Integer start;
+	private Integer end;
 }

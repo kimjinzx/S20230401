@@ -2,19 +2,34 @@ package com.java501.S20230401.controller;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.json.JSONObject;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Comm;
+import com.java501.S20230401.model.Join;
+import com.java501.S20230401.model.MemberDetails;
 import com.java501.S20230401.model.Region;
 import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.Paging;
+import com.java501.S20230401.service.ReplyService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,18 +39,22 @@ import lombok.RequiredArgsConstructor;
 public class TogetherController {
 
 	private final ArticleService as;
+	private final ReplyService rs;
 
 	@RequestMapping(value = "/board/together")
-	public String articleList(Article article, int category, String currentPage, Model model) {
-		System.out.println("articleList controller Start");
+	public String articleList(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
+			Article article, int category, String currentPage, Model model) {
+
+		// 유저 정보를 다시 리턴 //memberDetails.getMemberInfo() DB의 유저와 대조 & 권한 확인
+		if (memberDetails != null)
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+
+		// category 값을 brd_id에 할당.
 		article.setBrd_id(category);
 		int number = article.getBrd_id();
-		System.out.println("article.getBrd_id() = " + number);
-		System.out.println("articleList controller getBrd_id->" + article.getBrd_id());
 
 		// 전체 게시글 개수 Count
-		int totalArticle = as.totalArticle(article);
-		System.out.println("ArticleController totalArticle => " + totalArticle);
+		int totalArticle = as.dbtotalArticle(article);
 
 		// Paging 작업
 		Paging page = new Paging(totalArticle, currentPage);
@@ -53,61 +72,121 @@ public class TogetherController {
 
 		return "together/listArticle";
 	}
+	
+	
 
 	@RequestMapping(value = "/board/detailArticle")
-	public String detailArticle(Article article, Model model) {
-		System.out.println("ArticleController Start detailArticle...");
+	public String detailArticle(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
+								 Article article, Join join, 
+								 HttpServletRequest request,
+								 HttpServletResponse response,
+								 Model model) {
 
+		if (memberDetails != null)
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		
+		int art_id = article.getArt_id();
+		int brd_id = article.getBrd_id();
+
+		// 내가 만든 쿠키 (조회수)
+		Cookie oldCookie = null;	// oldCookie 객체 생성
+	    Cookie[] cookies = request.getCookies();	// cookies 배열에 모든 쿠키를 담는다.
+	    if (cookies != null) {			// 쿠키가 있으면?
+	         for (Cookie cookie : cookies) {	// 쿠키들로 반복문을 돌려서
+	            if (cookie.getName().equals("viewArticle")) {	// 이름이 viewArticle인 쿠키가 있으면?
+	               oldCookie = cookie;	// 쿠키를 내 oldCookie에 담는다.
+	            }
+	         }
+	      }
+	    
+	      if (oldCookie != null) {	// oldCookie가 있으면 그걸 가져와서 값을 설정해준다.
+	          if (!oldCookie.getValue().contains(String.format("[%s_%s]", art_id, brd_id))) {
+	        	 as.dbReadArticleCnt(article); // 조회수 올리는 메서드
+	             oldCookie.setValue(oldCookie.getValue() + String.format("&[%s_%s]", art_id, brd_id));
+	             oldCookie.setPath("/");
+	             oldCookie.setMaxAge(60 * 60); // 1시간 (초 * 분 * 시간)
+	             response.addCookie(oldCookie);
+	          } 
+	      } else {		// oldCookie가 없으면 newCookie를 새로 만든다.
+	        	  as.dbReadArticleCnt(article); // 조회수 올리는 메서드
+	              Cookie newCookie = new Cookie("viewArticle", String.format("[%s_%s]", art_id, brd_id));
+	              newCookie.setPath("/");
+	              newCookie.setMaxAge(60 * 60); // 1시간 (초 * 분 * 시간)
+	              response.addCookie(newCookie);
+	      }
+		
 		// 상세게시글 요소 구현
-		Article detailArticle = as.detailArticle(article);
+		Article detailArticle = as.dbdetailArticle(article);
 		model.addAttribute("detailArticle", detailArticle);
 
+		article.setTrd_max(detailArticle.getTrd_max());
+		article.setTrd_id(detailArticle.getTrd_id());
+		
+		if (detailArticle.getTrd_status() != 404) {
+			// 인원 다 차면 게시글 상태 변경 (진행중)
+			as.dbChangeStatus(article);
+			// 날짜 다 지나면 게시글 상태 변경 (거래 완료)
+			as.dbChangeEndStatus(article);
+		}
+		
 		// 게시글 별 댓글 리스트
-		List<Article> replyList = as.replyList(article);
+		List<Article> replyList = as.dbreplyList(article);
 		model.addAttribute("replyList", replyList);
+		
+		
+		// 게시글 별 신청자 리스트
+		List<Article> joinList =  as.dbTradeJoinMember(article);
+		model.addAttribute("joinList", joinList);
+		
+		
+		// 게시글 별 신청 대기자 리스트
+		List<Article> waitingList =  as.dbTradeWaitingMember(article);
+		model.addAttribute("waitingList", waitingList);
+	
 
 		return "together/detailArticle";
 	}
 
+	
+	
 	@RequestMapping(value = "/board/writeFormArticle")
-	public String writeFormArticle(Model model) {
-		System.out.println("ArticleController Start writeFormArticle...");
+	public String writeFormArticle(@AuthenticationPrincipal MemberDetails memberDetails, Model model) {
+		if (memberDetails != null)
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 
 		// 카테고리별 콤보박스
 		List<Comm> categoryList = as.categoryName();
-		System.out.println("ArticleController category => " + categoryList.size());
 		model.addAttribute("categories", categoryList);
 
 		// 성별 콤보박스
 		List<Comm> genderList = as.genderName();
-		System.out.println("ArticleController gender => " + genderList.size());
 		model.addAttribute("genders", genderList);
 
 		// 지역별 콤보박스
 		List<Region> regionList = as.regionName();
-		System.out.println("ArticleController region => " + regionList.size());
 		model.addAttribute("regions", regionList);
 
 		// 지역별 부모 콤보박스
 		List<Region> parentRegionList = as.parentRegionName();
-		System.out.println("ArticleController Parentregion => " + parentRegionList.size());
 		model.addAttribute("parentRegions", parentRegionList);
 
 		return "together/writeFormArticle";
 	}
 
 	@RequestMapping(value = "/board/writeArticle")
-	public String writeArticle(Article article, Model model, 
+	public String writeArticle(@AuthenticationPrincipal MemberDetails memberDetails, Article article, Model model,
 			@RequestParam("trd_enddate1") @DateTimeFormat(pattern = "yyyy-MM-dd") Date trd_enddate) {
-		System.out.println("ArticleController Start writeEmp...");
+		if (memberDetails != null)
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+
 		article.setTrd_enddate(trd_enddate);
-		
+		article.setMem_id(memberDetails.getMemberInfo().getMem_id());
+
 		// 프로시저 Insert_Article 이용 => 게시글 작성
 		as.dbWriteArticle(article);
 		int insertResult = article.getInsert_result();
 		int brd_id = article.getBrd_id();
-		System.out.println("article.getInsert_result() =>" + insertResult);
-
+		
 		model.addAttribute("insertResult", insertResult);
 		model.addAttribute("article", article);
 
@@ -121,55 +200,64 @@ public class TogetherController {
 	}
 
 	@RequestMapping(value = "/board/deleteArticle")
-	public String deleteArticle(Article article, Model model) {
-		System.out.println("ArticleController Start delete...");
+	public String deleteArticle(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
+			Article article, Model model) {
+
+		if (memberDetails != null)
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 
 		// 게시글 삭제 (isdelete = 0 => 1)
-		int deleteresult = as.deleteArticle(article);
-
+		int deleteresult = as.dbdeleteArticle(article);
 		model.addAttribute("result", deleteresult);
+
 		return "redirect:/board/together?category=1000";
 	}
 
+	
 	@RequestMapping(value = "/board/updateFormArticle")
-	public String updateFormArticle(Article article, Model model) {
-		System.out.println("ArticleController Start writeFormArticle...");
+	public String updateFormArticle(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
+			Article article, Model model) {
+
+		if (memberDetails != null)
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 
 		// 게시글 수정 양식 (상세 게시글 값 가져오기)
-		Article updateFormArticle = as.detailArticle(article);
+		Article updateFormArticle = as.dbdetailArticle(article);
 		model.addAttribute("article", updateFormArticle);
 
 		// 카테고리별 콤보박스
 		List<Comm> categoryList = as.categoryName();
-		System.out.println("ArticleController category => " + categoryList.size());
 		model.addAttribute("categories", categoryList);
 
 		// 성별 콤보박스
 		List<Comm> genderList = as.genderName();
-		System.out.println("ArticleController category => " + genderList.size());
 		model.addAttribute("genders", genderList);
 
 		// 지역별 콤보박스
 		List<Region> regionList = as.regionName();
-		System.out.println("ArticleController region => " + regionList.size());
 		model.addAttribute("regions", regionList);
 
 		// 지역별 부모 콤보박스
 		List<Region> parentRegionList = as.parentRegionName();
-		System.out.println("ArticleController Parentregion => " + parentRegionList.size());
 		model.addAttribute("parentRegions", parentRegionList);
 
 		return "together/updateFormArticle";
 	}
 
 	@RequestMapping(value = "/board/updateArticle")
-	public String updateArticle(Article article, Model model,
-			@RequestParam("trd_enddate1") @DateTimeFormat(pattern = "yyyy-MM-dd") Date trd_enddate) {
-		System.out.println("ArticleController Start updateArticle...");
+	public String updateArticle(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
+								Article article, Model model,
+								@RequestParam("trd_enddate1") @DateTimeFormat(pattern = "yyyy-MM-dd") Date trd_enddate) {
+
+		if (memberDetails != null)
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 
 		article.setTrd_enddate(trd_enddate);
+		
 		// 게시글 수정 (프로시저 사용 => Update_Article)
 		as.dbUpdateArticle(article);
+		System.out.println(article.getTrd_max());
+		
 		int updateArticle = article.getInsert_result();
 		int brd_id = article.getBrd_id();
 
@@ -182,6 +270,460 @@ public class TogetherController {
 			return "forward:/board/updateFormArticle";
 		}
 	}
+
+	// 댓글 입력
+	@RequestMapping(value = "/board/insertReply")
+	public String insertReply(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
+			Reply reply, Model model) {
+
+		if (memberDetails != null)
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+
+		reply.setMem_id(memberDetails.getMemberInfo().getMem_id());
+
+		int insertReply = rs.dbInsertReply(reply);
+
+		int art_id = reply.getArt_id();
+		int brd_id = reply.getBrd_id();
+
+		model.addAttribute("insertReply", insertReply);
+
+		return "redirect:/board/detailArticle?art_id=" + art_id + "&brd_id=" + brd_id;
+	}
 	
 	
+	// 댓글 삭제
+	@RequestMapping(value = "/board/deleteReply")
+	public String deleteReply(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
+			Reply reply, Model model) {
+		if (memberDetails != null)
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+
+		int deleteReply = rs.dbDeleteReply(reply);
+
+		int art_id = reply.getArt_id();
+		int brd_id = reply.getBrd_id();
+		model.addAttribute("deleteReply", deleteReply);
+
+		return "redirect:/board/detailArticle?art_id=" + art_id + "&brd_id=" + brd_id;
+	}
+
+	// 댓글 수정
+	@RequestMapping(value = "/board/updateReply")
+	@ResponseBody
+	public String updateReply(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
+			@RequestBody Reply reply, Model model, Map<String, Object> data) {
+
+		JSONObject jsonObj = new JSONObject();
+
+		if (memberDetails != null)
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+
+		int updateReply = rs.dbUpdateReply(reply);
+		// String updateReply = Integer.toString(updateReply);
+
+		// int art_id = reply.getArt_id();
+		// int brd_id = reply.getBrd_id();
+
+		model.addAttribute("updateReply", updateReply);
+
+		jsonObj.append("result", updateReply);
+		jsonObj.append("content", reply.getRep_content());
+
+		return jsonObj.toString();
+	}
+
+	// 게시글 신고폼
+	 @RequestMapping(value="/board/ArticleReportForm")
+	 public String reportFormArticle(@AuthenticationPrincipal MemberDetails memberDetails
+			 						, @RequestParam int art_id
+			 						, @RequestParam int brd_id
+			 						, @RequestParam(required = false, value="report_id") Integer report_id
+			 						, Model model) {
+	 
+	 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+
+	 Article article = new Article();
+	 article.setArt_id(art_id);
+	 article.setBrd_id(brd_id);
+	 article.setReport_id(report_id);
+	 
+	 model.addAttribute("article", article);
+	 
+	 return "together/ArticleReportForm";
+
+	 }
+	 
+	 // 게시글 신고 (ajax 사용)
+	 @RequestMapping(value="/board/ArticleReport")
+	 @ResponseBody
+	 public String reportArticle(@AuthenticationPrincipal MemberDetails memberDetails,
+			 					 @RequestBody Article article, Model model) {
+		 JSONObject jsonObj = new JSONObject();
+		 
+		 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		 
+		 
+		 as.dbReportArticle(article);
+		 int result = article.getInsert_result();
+		 System.out.println(result);
+		 
+		 jsonObj.append("result", result);
+		 jsonObj.append("content", article.getReport_content());
+		 
+		 return jsonObj.toString();
+	 }
+	 
+	// 댓글 신고폼
+	 @RequestMapping(value="/board/ReplyReportForm")
+	 public String reportFormReply(@AuthenticationPrincipal MemberDetails memberDetails
+			 						, @RequestParam int art_id
+			 						, @RequestParam int brd_id
+			 						, @RequestParam int rep_id
+			 						, @RequestParam(required = false, value="report_id") Integer report_id
+			 						, Model model) {
+	 
+	 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+
+	 Article article = new Article();
+	 article.setArt_id(art_id);
+	 article.setBrd_id(brd_id);
+	 article.setRep_id(rep_id);
+	 article.setReport_id(report_id);
+
+	 model.addAttribute("article", article);
+	 
+	 return "together/ReplyReportForm";
+
+	 }
+	 
+	 // 댓글 신고 (ajax 사용)
+	 @RequestMapping(value="/board/ReplyReport")
+	 @ResponseBody
+	 public String reportReply(@AuthenticationPrincipal MemberDetails memberDetails,
+			 				   @RequestBody Article article, Model model) {
+		 JSONObject jsonObj = new JSONObject();
+		 
+		 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		 
+		 as.dbReportReply(article);
+		 int result = article.getInsert_result();
+		 
+		 jsonObj.append("result", result);
+		 jsonObj.append("content", article.getReport_content());
+		 
+		 return jsonObj.toString() ;
+	 }
+	 
+	 // 거래 신청하기 폼
+	 @RequestMapping(value="/board/TradeJoinForm")
+	 public String TradeJoinForm(@AuthenticationPrincipal MemberDetails memberDetails
+			 						, @RequestParam int art_id
+			 						, @RequestParam int brd_id
+			 						, Model model) {
+	 
+	 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+
+	 Article article = new Article();
+	 article.setArt_id(art_id);
+	 article.setBrd_id(brd_id);
+	 Article detailArticle = as.dbdetailArticle(article);
+	 
+	 // article.setMem_id(memberDetails.getMemberInfo().getMem_id());
+	 
+	 model.addAttribute("article", detailArticle);
+	 
+	 return "together/TradeJoinForm";
+
+	 }
+	 
+	 // 거래 신청 (ajax 사용)
+	 @RequestMapping(value="/board/TradeWaiting")
+	 @ResponseBody
+	 public String TradeWaiting(@AuthenticationPrincipal MemberDetails memberDetails,
+			 					 @RequestBody Article article, Model model) {
+		 JSONObject jsonObj = new JSONObject();
+		 
+		 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		 
+		  int TradeWaiting = as.dbTradeWaiting(article);
+		 
+		  jsonObj.append("result", TradeWaiting);
+		 
+		 return jsonObj.toString() ;
+	 }
+	 
+	 // 거래 대기자 -> 거래 신청자 수락 (ajax 사용)
+	 @RequestMapping(value="/board/joinAccept")
+	 @ResponseBody
+	 public String TradeJoinAccept(@AuthenticationPrincipal MemberDetails memberDetails,
+			 					   @RequestBody Article article, Model model) {
+		 JSONObject jsonObj = new JSONObject();
+		 
+		 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		 
+		  int TradeJoinAccept = as.dbTradeJoinAccept(article);
+		 
+		  jsonObj.append("result", TradeJoinAccept);
+		 
+		 return jsonObj.toString();
+	 }
+	 
+	 
+	 // 거래 대기자 -> 거래 신청자 수락 (ajax 사용)
+	 @RequestMapping(value="/board/joinRefuse")
+	 @ResponseBody
+	 public String TradeJoinRefuse(@AuthenticationPrincipal MemberDetails memberDetails,
+			 					   @RequestBody Article article, Model model) {
+		 JSONObject jsonObj = new JSONObject();
+		 
+		 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		 
+		  int TradeJoinRefuse = as.dbTradeJoinRefuse(article);
+		 
+		  jsonObj.append("result", TradeJoinRefuse);
+		 
+		 return jsonObj.toString();
+	 }
+	 
+	 // 거래 신청자 (Join) -> 취소 (삭제) (ajax)
+	 @RequestMapping(value="/board/joinDelete")
+	 @ResponseBody
+	 public String joinDelete(@AuthenticationPrincipal MemberDetails memberDetails,
+			 					   @RequestBody Article article, Model model) {
+		 JSONObject jsonObj = new JSONObject();
+		 
+		 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		 
+		  int joinDelete = as.dbJoinDelete(article);
+		 
+		  jsonObj.append("result", joinDelete);
+		 
+		 return jsonObj.toString();
+	 }
+	 
+	 // 관심목록 등록
+	 @RequestMapping(value="/board/favoriteArticle")
+	 @ResponseBody
+	 public String favoriteArticle(@AuthenticationPrincipal MemberDetails memberDetails,
+	                                @RequestBody Article article, Model model) {
+	    
+		 String resultStr = "";
+	         if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+
+	         int favoriteArticle = as.dbfavoriteArticle(article);
+	         
+	         resultStr =  Integer.toString(favoriteArticle);
+	        
+	     return resultStr;
+	 }
+	 
+	 
+	// 작성자가 거래를 취소 (거래 취소)
+	 @RequestMapping(value="/board/tradeCancel")
+	 @ResponseBody
+	 public String tradeCancel(@AuthenticationPrincipal MemberDetails memberDetails, @RequestBody Article article, Model model) {	
+		 
+		String resultStr = "";
+
+		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+
+		int changeCancelStatus = as.dbChangeCancelStatus(article);
+		
+		resultStr = Integer.toString(changeCancelStatus);
+		
+		return resultStr;
+	 }
+	 
+	// 게시글 추천 Up
+	 @RequestMapping(value="/board/articleGoodUp")
+	 @ResponseBody
+	 public String ArticleGoodUp(@AuthenticationPrincipal MemberDetails memberDetails,
+			 					 @RequestBody Article article, 
+			 					 HttpServletRequest request,
+								 HttpServletResponse response,
+								 Model model) {
+		 
+		 JSONObject jsonObj = new JSONObject();
+		 
+		 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		 int art_id = article.getArt_id();
+		 int brd_id = article.getBrd_id();
+		 int mem_id = memberDetails.getMemberInfo().getMem_id();
+		 
+			Cookie oldCookie = null;	// oldCookie 객체 생성
+		    Cookie[] cookies = request.getCookies();	// cookies 배열에 모든 쿠키를 담는다.
+		    if (cookies != null) {			// 쿠키가 있으면?
+		         for (Cookie cookie : cookies) {	// 쿠키들로 반복문을 돌려서
+		            if (cookie.getName().equals("ArticleGoodUp")) {	// 이름이 viewArticle인 쿠키가 있으면?
+		               oldCookie = cookie;	// 쿠키를 내 oldCookie에 담는다.
+		            }
+		         }
+		      }
+		    
+		      if (oldCookie != null) {				// oldCookie가 있으면 그걸 가져와서 값을 설정해준다.
+		          if (!oldCookie.getValue().contains(String.format("[%s_%s_%s]", art_id, brd_id, mem_id))) {
+		        	  int ArticleGoodUp = as.dbArticleGoodUp(article); // 추천수 올리는 메서드
+		              oldCookie.setValue(oldCookie.getValue() + String.format("[%s_%s_%s]", art_id, brd_id, mem_id));
+		              oldCookie.setPath("/");
+		              oldCookie.setMaxAge(60 * 60); // 1시간 (초 * 분 * 시간)
+		              response.addCookie(oldCookie);
+		              jsonObj.append("result", ArticleGoodUp);
+		          } 
+		      } else {								// oldCookie가 없으면 newCookie를 새로 만든다.
+		    	  	  int ArticleGoodUp = as.dbArticleGoodUp(article); // 추천수 올리는 메서드
+		              Cookie newCookie = new Cookie("ArticleGoodUp", String.format("[%s_%s_%s]", art_id, brd_id, mem_id));
+		              newCookie.setPath("/");
+		              newCookie.setMaxAge(60 * 60); // 1시간 (초 * 분 * 시간)
+		              response.addCookie(newCookie);
+		              jsonObj.append("result", ArticleGoodUp);
+		      }
+		 
+		 return jsonObj.toString();
+	 }
+	 
+		// 게시글 비추천 Up
+	 @RequestMapping(value="/board/articleBadUp")
+	 @ResponseBody
+	 public String ArticleBadUp(@AuthenticationPrincipal MemberDetails memberDetails,
+			 					 @RequestBody Article article, 
+			 					 HttpServletRequest request,
+								 HttpServletResponse response,
+								 Model model) {
+		 
+		 JSONObject jsonObj = new JSONObject();
+		 
+		 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		 int art_id = article.getArt_id();
+		 int brd_id = article.getBrd_id();
+		 int mem_id = memberDetails.getMemberInfo().getMem_id();
+		 
+			Cookie oldCookie = null;	// oldCookie 객체 생성
+		    Cookie[] cookies = request.getCookies();	// cookies 배열에 모든 쿠키를 담는다.
+		    if (cookies != null) {			// 쿠키가 있으면?
+		         for (Cookie cookie : cookies) {	// 쿠키들로 반복문을 돌려서
+		            if (cookie.getName().equals("articleBadUp")) {	// 이름이 viewArticle인 쿠키가 있으면?
+		               oldCookie = cookie;	// 쿠키를 내 oldCookie에 담는다.
+		            }
+		         }
+		      }
+		    
+		      if (oldCookie != null) {				// oldCookie가 있으면 그걸 가져와서 값을 설정해준다.
+		          if (!oldCookie.getValue().contains(String.format("[%s_%s_%s]", art_id, brd_id, mem_id))) {
+		        	  int articleBadUp = as.dbArticleBadUp(article); // 추천수 올리는 메서드
+		              oldCookie.setValue(oldCookie.getValue() + String.format("[%s_%s_%s]", art_id, brd_id, mem_id));
+		              oldCookie.setPath("/");
+		              oldCookie.setMaxAge(60 * 60); // 1시간 (초 * 분 * 시간)
+		              response.addCookie(oldCookie);
+		              jsonObj.append("result", articleBadUp);
+		          } 
+		      } else {								// oldCookie가 없으면 newCookie를 새로 만든다.
+		    	  	  int articleBadUp = as.dbArticleBadUp(article); // 추천수 올리는 메서드
+		              Cookie newCookie = new Cookie("articleBadUp", String.format("[%s_%s_%s]", art_id, brd_id, mem_id));
+		              newCookie.setPath("/");
+		              newCookie.setMaxAge(60 * 60); // 1시간 (초 * 분 * 시간)
+		              response.addCookie(newCookie);
+		              jsonObj.append("result", articleBadUp);
+		      }
+		 
+		 return jsonObj.toString();
+	 }
+	 
+	// 댓글 추천 Up
+	 @RequestMapping(value="/board/replyGoodUp")
+	 @ResponseBody
+	 public String ReplyGoodUp(@AuthenticationPrincipal MemberDetails memberDetails,
+			 					 @RequestBody Article article, 
+			 					 HttpServletRequest request,
+								 HttpServletResponse response,
+								 Model model) {
+		 
+		 JSONObject jsonObj = new JSONObject();
+		 
+		 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		 int art_id = article.getArt_id();
+		 int brd_id = article.getBrd_id();
+		 int rep_id = article.getRep_id();
+		 int mem_id = memberDetails.getMemberInfo().getMem_id();
+		 
+			Cookie oldCookie = null;	// oldCookie 객체 생성
+		    Cookie[] cookies = request.getCookies();	// cookies 배열에 모든 쿠키를 담는다.
+		    if (cookies != null) {			// 쿠키가 있으면?
+		         for (Cookie cookie : cookies) {	// 쿠키들로 반복문을 돌려서
+		            if (cookie.getName().equals("replyGoodUp")) {	// 이름이 viewArticle인 쿠키가 있으면?
+		               oldCookie = cookie;	// 쿠키를 내 oldCookie에 담는다.
+		            }
+		         }
+		      }
+		    
+		      if (oldCookie != null) {				// oldCookie가 있으면 그걸 가져와서 값을 설정해준다.
+		          if (!oldCookie.getValue().contains(String.format("[%s_%s_%s_%s]", art_id, brd_id, rep_id, mem_id))) {
+		        	  int replyGoodUp = as.dbReplyGoodUp(article); // 추천수 올리는 메서드
+		              oldCookie.setValue(oldCookie.getValue() + String.format("[%s_%s_%s_%s]", art_id, brd_id, rep_id, mem_id));
+		              oldCookie.setPath("/");
+		              oldCookie.setMaxAge(60 * 60); // 1시간 (초 * 분 * 시간)
+		              response.addCookie(oldCookie);
+		              jsonObj.append("result", replyGoodUp);
+		          } 
+		      } else {								// oldCookie가 없으면 newCookie를 새로 만든다.
+		    	  	  int replyGoodUp = as.dbReplyGoodUp(article); // 추천수 올리는 메서드
+		              Cookie newCookie = new Cookie("replyGoodUp", String.format("[%s_%s_%s_%s]", art_id, brd_id, rep_id, mem_id));
+		              newCookie.setPath("/");
+		              newCookie.setMaxAge(60 * 60); // 1시간 (초 * 분 * 시간)
+		              response.addCookie(newCookie);
+		              jsonObj.append("result", replyGoodUp);
+		      }
+		 
+		 return jsonObj.toString();
+	 }
+	 
+	 
+		// 댓글 비추천 Up
+	 @RequestMapping(value="/board/replyBadUp")
+	 @ResponseBody
+	 public String ReplyBadUp(@AuthenticationPrincipal MemberDetails memberDetails,
+			 					 @RequestBody Article article, 
+			 					 HttpServletRequest request,
+								 HttpServletResponse response,
+								 Model model) {
+		 
+		 JSONObject jsonObj = new JSONObject();
+		 
+		 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		 int art_id = article.getArt_id();
+		 int brd_id = article.getBrd_id();
+		 int rep_id = article.getRep_id();
+		 int mem_id = memberDetails.getMemberInfo().getMem_id();
+		 
+			Cookie oldCookie = null;	// oldCookie 객체 생성
+		    Cookie[] cookies = request.getCookies();	// cookies 배열에 모든 쿠키를 담는다.
+		    if (cookies != null) {			// 쿠키가 있으면?
+		         for (Cookie cookie : cookies) {	// 쿠키들로 반복문을 돌려서
+		            if (cookie.getName().equals("replyBadUp")) {	// 이름이 viewArticle인 쿠키가 있으면?
+		               oldCookie = cookie;	// 쿠키를 내 oldCookie에 담는다.
+		            }
+		         }
+		      }
+		    
+		      if (oldCookie != null) {				// oldCookie가 있으면 그걸 가져와서 값을 설정해준다.
+		          if (!oldCookie.getValue().contains(String.format("[%s_%s_%s_%s]", art_id, brd_id, rep_id, mem_id))) {
+		        	  int replyBadUp = as.dbReplyBadUp(article); // 추천수 올리는 메서드
+		              oldCookie.setValue(oldCookie.getValue() + String.format("[%s_%s_%s_%s]", art_id, brd_id, rep_id, mem_id));
+		              oldCookie.setPath("/");
+		              oldCookie.setMaxAge(60 * 60); // 1시간 (초 * 분 * 시간)
+		              response.addCookie(oldCookie);
+		              jsonObj.append("result", replyBadUp);
+		          } 
+		      } else {								// oldCookie가 없으면 newCookie를 새로 만든다.
+		    	  	  int replyBadUp = as.dbReplyBadUp(article); // 추천수 올리는 메서드
+		              Cookie newCookie = new Cookie("replyBadUp", String.format("[%s_%s_%s_%s]", art_id, brd_id, rep_id, mem_id));
+		              newCookie.setPath("/");
+		              newCookie.setMaxAge(60 * 60); // 1시간 (초 * 분 * 시간)
+		              response.addCookie(newCookie);
+		              jsonObj.append("result", replyBadUp);
+		      }
+		 
+		 return jsonObj.toString();
+	 }
+	 
 }

@@ -5,10 +5,10 @@ import java.util.List;
 import com.java501.S20230401.model.Comm;
 
 public interface CommService {
-	// 현재 카테고리 이름 식별
-	String categoryName(int comm_id);
-	// 카테고리 목록 가져오기
-	List<Comm> commList(int comm_id);
+
+	// 양동균
+	String categoryName(int comm_id); // 현재 카테고리 이름
+	List<Comm> commList(int comm_id); // 카테고리 목록 (공통 테이블 대분류 번호 입력)
 	
 	public Comm getCommById(int comm_id);
 	public Comm getCommByName(String comm_value);

@@ -2,8 +2,8 @@ package com.java501.S20230401.service;
 
 import java.util.List;
 
-import com.java501.S20230401.model.Comm;
-import com.java501.S20230401.model.Region;
+import javax.servlet.http.Cookie;
+import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.model.Waiting;
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Comm;
@@ -19,6 +19,14 @@ public interface ArticleService {
 	public Article getArticleById(Article searcher);
 	public MemberInfo getMemberInfoById(int mem_id);
 	public ArticleMember getArticleMemberById(Article searcher);
+	public List<ArticleMember> hgGetArticlesOfMember(int mem_id);
+	public int hgIncreaseReadCount(Article searcher);
+	public int hgRecommendArticle(Article searcher);
+	public int hgCompressedUpdateArticle(Article article);
+	public int hgDeleteArticle(Article article);
+	public int hgRestoreArticle(Article article);
+	public int hgInsertAdminArticle(Article article);
+	public List<Article> hgAdminArticleList(Article searcher);
 
 	// 양동균
 	int allTotalArt(Article article);
@@ -26,6 +34,15 @@ public interface ArticleService {
 	Article detailShareArticle(Article article);	// 댓글
 	int readShareArticle(Article article);
 	int writeShareArticle(Article article);	// 글쓰기
+    int dgDeleteArticle(Article article); // 글삭제
+	int dgVoteGood(Article article); // 추천
+	int dgVoteBad(Article article); // 비추천
+	int dgReportArticle(Article article); // 신고
+	
+	
+	
+
+	
 
 	// 백준
 	Integer 			totalArticle(int brd_id);
@@ -35,37 +52,77 @@ public interface ArticleService {
 	Integer 			upreadCount(Article article);
 	List<Article> 		listMagnager();
 	int 				bjWriteArticle(Article article);
-	public int 			bjUpdateArticle(Article article);
-	public int 			delete(Article article);
+	int 				bjUpdateArticle(Article article);
+	int 				delete(Article article);
+	int 				replyWrite(Reply reply);
+	int					replyDelete(Reply reply);
+	List<Article>		bjArtSearch(Article article);
+	Integer				bjGood(Article article);
+	Integer				bjBad(Article article);
+	
+	
+	
 	
 	// 임동빈
-	int 			totalArticle(Article article);
+	int 			dbtotalArticle(Article article);
 	List<Article> 	dbListArticle(Article article);
-	Article 		detailArticle(Article article);
+	Article 		dbdetailArticle(Article article);
 	List<Region> 	regionName();
 	List<Region>	parentRegionName();
 	List<Comm> 		categoryName();
 	List<Comm>		genderName();
-	List<Article> 	replyList(Article article);
+	List<Article> 	dbreplyList(Article article);
 	void 			dbWriteArticle(Article article);
 	void			dbUpdateArticle(Article article);
-	int 			deleteArticle(Article article);
+	int 			dbdeleteArticle(Article article);
+	int				dbReadArticleCnt(Article article);
+	Article 		dbReportArticle(Article article);
+	Article 		dbReportReply(Article article);
+	List<Article>   dbTradeJoinMember(Article article);
+	List<Article> 	dbTradeWaitingMember(Article article);
+	int 			dbTradeWaiting(Article article);
+	int 			dbTradeJoinAccept(Article article);
+	int 			dbTradeJoinRefuse(Article article);
+	int 			dbJoinDelete(Article article);
+	int 			dbfavoriteArticle(Article article);
+	int				dbChangeStatus(Article article);
+	int 			dbChangeEndStatus(Article article);
+	int 			dbChangeCancelStatus(Article article);
+	int 			dbArticleGoodUp(Article article);
+	int 			dbArticleBadUp(Article article);
+	int 			dbReplyGoodUp(Article article);
+	int 			dbReplyBadUp(Article article);
+	
+	
+	
+	
 	
 	// 김찬영
-	int				totalArticle();
-	List<Article> 	listArticle(Article article);
-	Article			cyArticlereadDetail(Article article);
-	Article 		cyArticlereadupdate(Article article);
-	Article 		detailArticle(int art_title);
-	int				cyArticleinsert(Article article);
-	int				cyArticlemodify(Article article);
+	int					totalArticle();
+	List<Article> 		listArticle(Article article);
+//	List<Article> 		listReply(Article article);
+	Article				cyArticlereadDetail(Article article);
+	Article 			cyArticlereadupdate(Article article);
+	Article 			detailArticle(int art_title);
+	int					cyArticleinsert(Article article);
+	int					cyArticlemodify(Article article);
+	public Article 		cyArticledelete(Article article);
+	int 				updateView(Article article);
+	int 				updateGood(Article article);
+	int 				updateBad(Article article);
+//	public int 			totalArticleSearch(Article article);
 	
 	// 최승환
-	int 				totalCustomer();
 	List<Article> 		listCustomer(Article article);
 	Article 			detailCustomer(Article article);
 	List<Article> 		listCustomerMenu(Article article);
-	public int 			insertCustomer(Article article);
+	int		 			insertCustomer(Article article);
+	int 				updateCustomer(Article article);
+	int 				deleteCustomer(Article article);
+	Integer 			customerViewCount(Article article);
+	List<Article> 		shSearchCustomer(Article article);
+	int 				totalCustomer(Article article);
+
 	
 	
 	// 김진현

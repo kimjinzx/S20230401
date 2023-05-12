@@ -19,14 +19,14 @@ public class MemberDaoImpl implements MemberDao {
 	
 	// 양동균
 	@Override
-	public List<Member> allMemberList(Article article) {
-		List<Member> allMemberList = null;
+	public int dgReportMember(Member member) {
+		int result = 0;
 		try {
-			allMemberList = session.selectList("dgAllMemberList", article);
+			result = session.update("dgReportMember", member);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return allMemberList;
+		return result;
 	}
 
 	

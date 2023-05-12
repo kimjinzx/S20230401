@@ -128,4 +128,21 @@
 			WHERE ROWNUM <= 5
 		]]>
 	</select>
+	<select id="hgGetArticlesOfMember" parameterType="int" resultType="ArticleMember">
+		<![CDATA[
+			SELECT *
+			FROM (SELECT A.*, C.COMM_VALUE BRD_NAME, T.TRD_ENDDATE, NVL(R.REP_COUNT, 0) REP_COUNT
+			 	  FROM ARTICLE A
+				  	   LEFT OUTER JOIN COMM C ON (A.BRD_ID = C.COMM_ID)
+				  	   LEFT OUTER JOIN TRADE T ON (A.TRD_ID = T.TRD_ID)
+				  	   LEFT OUTER JOIN (SELECT ART_ID, BRD_ID, COUNT(*) REP_COUNT
+				  	   					FROM REPLY
+				  	   					GROUP BY ART_ID, BRD_ID) R
+				  	   					ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID)
+			 	  WHERE A.MEM_ID = #{mem_id}
+				   		AND A.ISDELETE = 0
+			 	  ORDER BY A.ART_REGDATE DESC)
+			WHERE ROWNUM <= 10
+		]]>
+	</select>
 </mapper>
