@@ -85,7 +85,7 @@ public class CommunityController {
 		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		System.out.println("검색 컨트롤러 시작");
 		
-		int totalArticle = as.totalArticle(article);
+		int totalArticle = as.totalArticle(article.getBrd_id());
 		model.addAttribute("totalArticle", totalArticle);
 		
 		Paging page = new Paging(totalArticle, currentPage);
