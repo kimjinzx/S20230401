@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/preset.jsp" %>
+<%@ include file="/WEB-INF/views/share/modal.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -236,7 +237,7 @@
 				<!-- 작성자 -->
 				<div class="article-memberRow display-flex align-items-center" style="border-bottom: 1px solid rgba(128, 128, 128, 0.5);">
 					<div class="user-profile-image-in-list">
-						<img src="${pageContext.request.contextPath}/uploads/profile/${article.member.mem_image}" onerror="this.onerror=null; this.src='${pageContext.request.contextPath }/image/abstract-user.svg';"></span>
+						<img src="${pageContext.request.contextPath}/uploads/profile/${article.member.mem_image}" onerror="this.onerror=null; this.src='${pageContext.request.contextPath }/image/abstract-user.svg';">
 					</div>
 					<div class="article-member" style="display: flex; align-items: center;">
 						<div class="modal-report display-flex justify-content-flex-start align-items-center padding-0">
@@ -443,7 +444,7 @@
 							<div class="reply-view display-flex flex-direction-column justify-content-flex-start align-items-stretch" style="${(reply.rep_id != reply.rep_parent) ? 'margin-left: 32px; background-color: rgba(var(--subtheme-rgb), 0.125);' : ''}">
 								<div class="reply-header display-flex justify-content-flex-start align-items-center">
 								<div class="user-profile-image-in-list">
-									<img alt="profile" src="${pageContext.request.contextPath}/uploads/profile/${reply.member.mem_image}">
+									<img src="${pageContext.request.contextPath}/uploads/profile/${reply.member.mem_image}" onerror="this.onerror=null; this.src='${pageContext.request.contextPath }/image/abstract-user.svg';">
 								</div>
 								<div class="reply-header-info modal-report display-flex justify-content-flex-start align-items-center">
 									<span id="member_nickname" class="font-weight-bolder">${reply.member.mem_nickname}</span>

@@ -1,6 +1,7 @@
 package com.java501.S20230401.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -191,9 +192,14 @@ public class ShareController {
 		if(memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		
 		// 지역 제한 조회
-		List<Region> regionList = regionService.dgRegionList();
+		//List<Region> regionList = regionService.dgRegionList();
+		Map<Region, List<Region>> regionHierachy = new HashMap<Region, List<Region>>();
+		List<Region> superRegions = regionService.getSuperRegions();
+		for (Region sups : superRegions) regionHierachy.put(sups, regionService.getChildRegions(sups.getReg_id()));
+		model.addAttribute("superRegions", superRegions);
+		model.addAttribute("regions", regionHierachy);
 		
-		model.addAttribute("regionList", regionList);
+		//model.addAttribute("regionList", regionList);
 		model.addAttribute("category", category);
 		
 		return "share/writeForm";

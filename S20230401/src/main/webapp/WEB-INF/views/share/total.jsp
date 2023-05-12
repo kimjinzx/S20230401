@@ -24,17 +24,6 @@
 		border: none;
 		border-radius: 14px;
 	}
-	/* .btn-cost{
-		width: auto;
-		height: 25px;
-		font-size:15px;
-		font-family: 'Nanum Gothic';
-		color: white;
-		text-align: center;
-		background: red;
-		border: none;
-		border-radius: 8px;
-	} */
 	.btn-write {
 		background-color: var(--subtheme);
 		color: var(--subtheme-font);
@@ -341,8 +330,8 @@
 					<c:forEach var="article" items="${articleList}">
 					<!-- 글 시작 -->
 						<div class="article-info" style="display: flex; padding: 10px; flex-grow: 1;">
-							<div class="view-preview" style="display: flex; align-items: center; margin-right: 14px">
-								<img class="article-thumbnail" style="width: 80px; height: 80px; object-fit: cover;" src="${pageContext.request.contextPath }/image/ShareGo_Img.png" onload="$(this).attr('src', getThumbnail('${article.art_content}', true));">
+							<div class="view-preview" style="display: flex; align-items: center; margin-right: 14px; border: 1px solid rgba(128, 128, 128, 0.5); border-radius: 2.5px; width: 82px; height: 82px;">
+								<img class="article-thumbnail" style="width: 80px; height: 80px; object-fit: cover;" src="${pageContext.request.contextPath }/image/ShareGo_Img.png" onload="$(this).attr('src', getThumbnail('<c:out value="${article.art_content}" escapeXml="true"/>', true));">
 							</div>
 							<div class="view-inner" style="display: flex; flex-direction: column; justify-content: center; flex-grow: 1;">
 								<!-- 글의 첫 줄 -->
