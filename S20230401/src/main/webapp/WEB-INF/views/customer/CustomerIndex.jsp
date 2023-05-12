@@ -170,17 +170,44 @@
 	<div class="container" align="center">
 	
 	<h1>고객센터</h1>
-	<p style="text-align:center">게시글수: ${totalCustomer}</p>
+	
+	<p>
+		<div class="board-category" align="center" style="font-size: 20px">
+		<span class="item">
+			<a href="/board/customer?category=1500" class="active">&nbsp;전체&nbsp;</a>
+		</span>
+		<span class="item">
+			<a href="/board/customer?category=1510" class="active">&nbsp;공지&nbsp;</a>
+		</span>
+		<span class="item">
+			<a href="/board/customer?category=1520" class="active">&nbsp;Q&A&nbsp;</a>
+		</span>
+		<span class="item">
+			<a href="/board/customer?category=1530" class="active">&nbsp;이벤트&nbsp;</a>
+		</span>
+		<span class="item">
+			<a href="/board/customer?category=1540" class="active">&nbsp;문의/건의&nbsp;</a>
+		</span>
+	</div>
+	
+	<%-- <p style="text-align:left">게시글수: ${totalCustomer}</p> --%>
 	<c:set var="num" value="${page.total-page.start+1 }"></c:set>
 	
 	<table border="1">
-		<tr><th>글번호</th><th>제목</th><th>작성자</th><th>프사</th><th>작성일</th><th>댓글수</th><th>조회수</th><th>추천수</th><th>비추천수</th></tr>
+		<tr><th>글번호</th><th>제목</th><th>작성자</th><th>프사</th><th>태그</th><th>작성일</th><th>댓글수</th><th>조회수</th><th>추천수</th><th>비추천수</th></tr>
 		<c:forEach var="article" items="${listCustomer }">
 			<tr>
 			<td>${article.art_id }</td>
-			<td><a href="${pageContext.request.contextPath}/board/customer/detailCustomer?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${article.brd_id}">${article.art_title}</a></td>
+			<td><a href="${pageContext.request.contextPath}/board/customer/detailCustomer?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category}">${article.art_title}</a></td>
 			<td>${article.mem_nickname }</td>
-			<td><img src="${pageContext.request.contextPath}/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
+			<td><img src="${pageContext.request.contextPath}/uploads/profile/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
+			<td>
+			${article.art_tag1 != '' ? article.art_tag1 : ''}
+  			${article.art_tag2 != '' ? article.art_tag2 : ''}
+  			${article.art_tag3 != '' ? article.art_tag3 : ''}
+  			${article.art_tag4 != '' ? article.art_tag4 : ''}
+  			${article.art_tag5 != '' ? article.art_tag5 : ''}
+  			</td>
 			<td style="font-size : 12px">
 			<fmt:formatDate value="${article.art_regdate }" pattern="yy-MM-dd"/>
 			</td>
@@ -194,23 +221,46 @@
 	</table>	
 	
 	<c:if test="${page.startPage > page.pageBlock }">
-		<a href="listCustomer?currentPage=${page.startPage-page.pageBlock}">[이전]</a>
+		<a href="${pageContext.request.contextPath}/board/customer?currentPage=${page.startPage-page.pageBlock}&category=${category}">[이전]</a>
 	</c:if>
 	<c:forEach var="i" begin="${page.startPage}" end="${page.endPage}">
-		<a href="listCustomer?currentPage=${i}">[${i}]</a>
+		<a href="${pageContext.request.contextPath}/board/customer?currentPage=${i}&category=${brd_id}">[${i}]</a>
 	</c:forEach>
 	<c:if test="${page.endPage < page.totalPage }">
-		<a href="listCustomer?currentPage=${page.startPage+page.pageBlock}">[다음]</a>
+		<a href="${pageContext.request.contextPath}/board/customer?currentPage=${page.startPage+page.pageBlock}&category=${category}">[다음]</a>
 	</c:if>	
 	<!-- 글쓰기 버튼 -->
+	<br>
+	<c:choose>
+		<c:when test="${memberInfo != null }">
+			<p align="right"><button onclick="location.href='${pageContext.request.contextPath}/board/customer/customerWriteForm?category=${category }'">글쓰기</button></p>
+		</c:when>
+	</c:choose>
 	
-	<div class="row" align="right">
-	<input type="button" value="글쓰기"  onclick="location.href='${pageContext.request.contextPath}/board/customer/customerWriteForm'">
-	</div>
 	<!--  글쓰기버튼끝 -->
+	
+	<br>
+	
+	<!--  글 검색 -->
+	
+	<form action="${pageContext.request.contextPath}/board/customer/shSearch?brd_id=${category}&category=${category}" method="post" name="shSearch">
+   		<select name="search">
+				<option value="shs_title">제목</option>
+				<option value="shs_content">내용</option>
+				<option value="shs_title_content">제목+내용</option>
+				<option value="shs_nickname">닉네임</option>
+		</select> 
+   
+        <input type="text" name="search_keyword" placeholder="검색할 내용을 입력하세요">
+        <button type="submit">검색 </button><p>
+    </form>
+    
+    <!-- 글 검색 끝 -->
+	
 	</div>
 	
-		
+	<!-- 여기까지 -->
+	
 		<button id="scrollToTop" class="adv-hover">
 			<svg style="fill: var(--subtheme); stroke: var(--subtheme); stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round;" width="20" height="10" viewBox="0 0 32 16">
 				<path d="M 15 1 L 1 15 31 15 Z"/>

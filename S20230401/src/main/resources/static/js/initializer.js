@@ -7,7 +7,15 @@ const isUserColorTheme = window.localStorage.getItem('color-theme');
 const isOsColorTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 const getUserTheme = () => isUserColorTheme ? isUserColorTheme : isOsColorTheme;
 
-$(function() {
+const getThumbnail = (art_content, justSrc = false, thumbnailIndex = 0) => {
+	let $virtualDiv = $('<div></div>').html(art_content);
+	let imgs = $virtualDiv.find('img');
+	let notFoundSrc = window.location.origin + '/image/ShareGo_Not_Found_Image.png';
+	if (!imgs || imgs.length == 0) return justSrc? notFoundSrc : $('<img src="' + notFoundSrc + '"/>');
+	else return justSrc ? $(imgs[imgs.length - 1 < thumbnailIndex ? imgs.length - 1 : thumbnailIndex]).attr('src') : imgs[imgs.length - 1 < thumbnailIndex ? imgs.length - 1 : thumbnailIndex];
+};
+
+$(() => {
 	const getStyle = (el,styleProp) => {
 	    if (el.currentStyle) return el.currentStyle[styleProp];
 	    return document.defaultView.getComputedStyle(el,null)[styleProp];
@@ -34,10 +42,10 @@ $(function() {
 	};
 	
 	/* Advanced Hover Effect */
-	$('.adv-hover').mouseenter(e => {
-		hoverEffect(e.target, 0.2);
+	$(document).on('mouseenter', '.adv-hover', e => {
+		if (!$(e.target).attr('disabled')) hoverEffect(e.target, 0.2);
 	});
-	$('.adv-hover').mouseleave(e => {
+	$(document).on('mouseleave', '.adv-hover', e => {
 		e.target.style.backgroundColor = '';
 	});
 	
@@ -68,14 +76,15 @@ $(function() {
 	
 	/* Toggle And Fix Button */
 	$('.toggle').attr('data-toggle', "false");
-	$('.toggle').click(e => {
+	//$('.toggle').load(e => $(e.target).attr('data-toggle', "false"));
+	$('.toggle').on('click', e => {
 		if (e.target.getAttribute('data-toggle') == "false") e.target.setAttribute('data-toggle', "true");
 		else e.target.setAttribute('data-toggle', "false");
 	});
 	
 	
 	/* View Mode Switcher */
-	$('#viewMode').click(e => {
+	$('#viewMode').on('click', e => {
 		if ($('#viewMode').attr('data-toggle') == "false") {
 			$('#viewMode').attr('data-toggle', "true");
 			document.documentElement.setAttribute('color-theme', 'dark');

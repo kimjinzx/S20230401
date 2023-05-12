@@ -6,7 +6,10 @@ import lombok.Data;
 
 @Data
 public class Join {
-	private Integer	trd_id;
-	private Integer	mem_id;
+	private Integer	trd_id;		// PK
+	private Integer	mem_id;		// PK
 	private Date	join_date;
+	
+	// 참조
+	private Member 	member;
 }

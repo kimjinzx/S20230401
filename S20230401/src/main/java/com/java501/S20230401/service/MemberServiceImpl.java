@@ -18,9 +18,7 @@ public class MemberServiceImpl implements MemberService {
 	
 	// 양동균
 	@Override
-	public List<Member> allMemberList(Article article) {
-		return md.allMemberList(article);
-	}
+	public int dgReportMember(Member member) { return md.dgReportMember(member); }
 
 	// 유현규
 	@Override

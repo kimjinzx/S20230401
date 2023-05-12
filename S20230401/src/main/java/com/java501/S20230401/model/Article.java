@@ -95,6 +95,21 @@ public class Article {
 	// Region
 	private String 		reg_name;
 	private Integer 	reg_parent;
+	
+	// Report
+	
+	private String 	report_content;
+	private Date 	report_date;
+	private Integer report_status;
+	private String 	report_reason;
+	
+	// Join
+	private Date	join_date;
+	
+	// Wait
+	private Date    wait_date;
+	
+	
 	// 조회용
 	private Integer 	repCount;
 	private Integer 	artCount;
@@ -112,4 +127,10 @@ public class Article {
 	// 최승환
 	// 조인
 	private Integer		rep_count;
+	private String		search_keyword;
+	
+	//김진현 
+	private Integer		reply_count; // (조회수 오라클 함수)
+	private String 		trd_saveEnddate; // 마감날짜 작업을 위해 string으로 하나 더 만들었습니다.	
+
 }

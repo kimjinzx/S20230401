@@ -50,11 +50,31 @@ public class ReplyDaoImpl implements ReplyDao {
 		}
 		return result;
 	}
+	// 댓글 업데이트
+	@Override
+	public int dgUpdateReply(Reply reply) {
+		int result = 0;
+		try {
+			result = session.update("dgUpdateReply", reply);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	// 댓글 신고
+	@Override
+	public int dgReportReply(Reply reply) {
+		int result = 0;
+		try {
+			result = session.update("dgReportReply", reply);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 	
-	
-	
-	
+
 	
 	
 	// 백준
@@ -136,8 +156,46 @@ public class ReplyDaoImpl implements ReplyDao {
 		} catch (Exception e) {
 			System.out.println("댓글에러"+e.getMessage());
 		}
+		System.out.println("댓글다오임플 리플값"+ reply);
 		return listReply;
 	}
+	
+	@Override
+	public int customerWriteReply(Reply reply) {
+		int cReplyWrite = 0;
+		System.out.println("ArticleDaoImpl customerWriteReply start");
+		try {
+			cReplyWrite = session.insert("shWriteReply", reply);
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl customerWriteReply Exception->"+e.getMessage());
+		}
+		return cReplyWrite ;
+	}
+	@Override
+	public int customerDeleteReply(Reply reply) {
+		int deleteResult = 0;
+		System.out.println("ArticleDaoImpl customerDeleteReply start");
+		try {
+			deleteResult = session.delete("shDeleteReply", reply);
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl customerDeleteReply Exception->"+e.getMessage());
+		}
+		return deleteResult;
+	}
+	@Override
+	public int customerUpdateReply(Reply reply) {
+		int upRResult = 0;
+		System.out.println("ArticleDaoImpl customerUpdateReply start");
+		try {
+			upRResult = session.update("shUpdateReply", reply);
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl customerUpdateReply Exception->"+e.getMessage());
+		}
+		return upRResult;
+	}	
+	
+	
+	
 	
 	// 유현규
 	@Override
@@ -150,5 +208,127 @@ public class ReplyDaoImpl implements ReplyDao {
 		return session.insert("hgInsertReply", reply);
 	}
 	
+	@Override
+	public List<ReplyMember> hgGetRepliesOfMember(int mem_id) {
+		return session.selectList("hgGetRepliesOfMember", mem_id);
+	}
 	
+	
+	// 임동빈
+	@Override
+	public int dbInsertReply(Reply reply) {
+		
+		int dbInsertReply = 0;
+		try {
+			dbInsertReply = session.insert("dbInsertReply", reply);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dbInsertReply;
+	}
+	@Override
+	public int dbDeleteReply(Reply reply) {
+		int dbDeleteReply = 0;
+		try {
+			dbDeleteReply = session.update("dbDeleteReply", reply);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return dbDeleteReply;
+	}
+	@Override
+	public int dbUpdateReply(Reply reply) {
+		int dbUpdateReply = 0; 
+		try {
+			dbUpdateReply = session.update("dbUpdateReply", reply);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return dbUpdateReply;
+	}
+	
+	// 김찬영
+	//댓글 조회
+	@Override
+	public List<Reply> replyAll(Reply reply) {
+		List<Reply> replyAll = null;
+		System.out.println("ArticleDaoImpl replyAll Start..");
+		try {
+			replyAll = session.selectList("cyReply", reply);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return replyAll;
+	}
+	//댓글 작성
+	@Override
+	public int cywriteReply(Reply reply) {
+		int reulst = 0;
+		try {
+			reulst = session.insert("cywriteReply", reply);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return reulst;
+	}
+	//댓글 삭제
+	@Override
+	public int cydeleteReply(Reply reply) {
+		int reulst = 0;
+		try {
+			reulst = session.delete("cydeleteReply", reply);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return reulst;
+	}
+	// 댓글 수정
+	@Override
+	public int updateReply(Reply reply) {
+		System.out.println(reply);
+		System.out.println("Reply 댓글 수정");
+		int result = 0;
+		try {
+			result = session.update("cyupdateReply", reply);
+		} catch (Exception e) {
+			System.out.println("updateReplyDaoImpl reply e.getMessage()->"+e.getMessage());
+		}
+		return result;
+	}
+	// 댓글 좋아요
+	@Override
+	public int replyupdategood(Reply reply) {
+		System.out.println(reply);
+		System.out.println("ReplyDaoImpl 댓글 좋아요");
+		int result = 0;
+		try {
+			result = session.update("cyUpdateGoodReply", reply);
+		} catch (Exception e) {
+			System.out.println("updateReplyDaoImpl reply e.getMessage()->"+e.getMessage());
+		}
+		return result;
+	}
+	// 댓글 싫어요
+	@Override
+	public int replyupdatebad(Reply reply) {
+		System.out.println(reply);
+		System.out.println("ReplyDaoImpl 댓글 싫어요");
+		int result = 0;
+		try {
+			result = session.update("cyUpdateBadReply", reply);
+		} catch (Exception e) {
+			System.out.println("updateReplyDaoImpl reply e.getMessage()->"+e.getMessage());
+		}
+		return result;
+	}
+	
+	// 김진현
+	@Override
+	public int replyInsert2(Article article) {
+		return session.insert("JHReplyInsert", article);
+	}
+	@Override
+	public int replyDelete2(Article article) {
+		return session.update("JHReplyUpdate", article);		
+	}
 }

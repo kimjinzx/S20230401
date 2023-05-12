@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 public class CommDaoImpl implements CommDao {
 	private final SqlSession session;
 	
+	// 양동균
 	@Override
 	public String categoryName(int comm_id) {
 		String categoryName = "";

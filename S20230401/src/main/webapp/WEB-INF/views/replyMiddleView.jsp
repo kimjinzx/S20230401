@@ -24,7 +24,7 @@
 					</div>
 					<div style="display: flex; justify-content: flex-end; align-items: center;">
 						<c:if test="${memberInfo != null }">
-							<button type="button" onclick="$('.reply-reply-box').not(this).hide(); $('#reply-reply-box-${reply.rep_id }').toggle();" style="cursor: pointer; border: 0; outline: none; background-color: transparent; font-weight: bold; color: var(--theme-font);">댓글 달기</button>
+							<button type="button" onclick="$('.reply-reply-box').not('#reply-reply-box-${reply.rep_id }').hide(); $('#reply-reply-box-${reply.rep_id }').toggle();" style="cursor: pointer; border: 0; outline: none; background-color: transparent; font-weight: bold; color: var(--theme-font);">댓글 달기</button>
 						</c:if>
 					</div>
 				</div>
