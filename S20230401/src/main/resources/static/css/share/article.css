@@ -1,7 +1,7 @@
 @charset "UTF-8";
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
 
-div{
+.view-content div{
     padding: 5px;
 }
 
@@ -34,11 +34,11 @@ div.user-profile-image-in-list > img {
 	margin-left: auto;
 	padding: 0;
 }
-.view-content{
+/* .view-content{
     padding: 10% 20%;
     margin: auto;
     font-size: 16px;
-}
+} */
 button{
     width: auto;
     height: 25px;
