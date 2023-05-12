@@ -637,7 +637,6 @@
 		           		  , A.ART_TAG1
 		           		  , A.ART_TAG2
 		           		  , A.ART_TAG3
-		           		  , A.ART_TAG4
 		           		  , A.ART_TAG5
 		           		  , A.TRD_ID
 		           		  , A.ART_GOOD
@@ -1000,7 +999,7 @@
 	
 	<!-- 김찬영 -->
 	<!-- 리스트 조회-->
- <select id="ArticleTotal" resultType="int">
+ <select id="cyArticleTotal" resultType="int">
 		select Count(*) 
 		FROM article
 		where brd_id between 1400 and 1499
@@ -1030,7 +1029,7 @@
 			WHERE rn between #{start} and #{end}
 	</select>  
 	<!-- 조회 -->
-	<select id="count" resultType="int">
+	<select id="cycount" resultType="int">
 	 select count(brd_id) from article
 	</select>
 	

@@ -322,7 +322,7 @@ function copyUrl() {
 		
 	</aside>
 	<main>
-	<form action ="${pageContext.request.contextPath }/board/information/detail" id ="detail" >
+	<form action ="${pageContext.request.contextPath }/board/information/${article.art_id}?brd_id=${article.brd_id}&category=${category}" id ="detail" >
 		<p>
 		<div id="btn_group1">
 		<input type="button" value="목록"  id="test_btn3" onclick="location.href='${pageContext.request.contextPath }/board/information?category=1400'">&nbsp;&nbsp;

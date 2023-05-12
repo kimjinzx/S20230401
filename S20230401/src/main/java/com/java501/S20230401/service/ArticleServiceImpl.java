@@ -426,15 +426,15 @@ public class ArticleServiceImpl implements ArticleService {
 	// 김찬영
 	// 총리스트 	
 	@Override
-	public int totalArticle() {
+	public int cytotalArticle() {
 		System.out.println("ArticleServiceImpl Start total...");
-		int totArticleCnt = ad.totalArticle();
-		System.out.println("ArticleServiceImpl totalArticle totArticleCnt->" + totArticleCnt);
-		return totArticleCnt;
+		int cytotalArticle = ad.cytotalArticle();
+		System.out.println("ArticleServiceImpl totalArticle totArticleCnt->" + cytotalArticle);
+		return cytotalArticle;
 	}
-	//댓글
+	//검색
 //	@Override
-//	public int totalArticleSearch(Article article) {
+//	public int cytotalArticleSearch(Article article) {
 //		System.out.println("아티클 서비스임플 댓글 스타트");
 //		int totalArticleSearch = ad.totalArticle();
 //		System.out.println("ArticleServiceImpl totlaArticleSearch totalArticleSearch->" + totalArticleSearch);
@@ -442,12 +442,12 @@ public class ArticleServiceImpl implements ArticleService {
 //	}
 	//리스트 조회
 	@Override
-	public List<Article> listArticle(Article article) {
-		List<Article> articleList = null;
+	public List<Article> cylistArticle(Article article) {
+		List<Article> cylistArticle = null;
 		System.out.println("ArticleServiceImpl listManager Start..");
-		articleList = ad.listArticle(article);
-		System.out.println("ArticleServiceImpl listArticle articleList.size()->" +articleList.size());
-		return articleList;
+		cylistArticle = ad.cylistArticle(article);
+		System.out.println("ArticleServiceImpl listArticle articleList.size()->" +cylistArticle.size());
+		return cylistArticle;
 	}
 
 	// 상세페이지 조회
@@ -458,14 +458,14 @@ public class ArticleServiceImpl implements ArticleService {
 		System.out.println("ArticleServiceImpl cyArticlereadDetail article->" +article);
 		return result;
 	}
-	// 상세페이지?
-	@Override
-	public Article detailArticle(int art_title) {
-		System.out.println("ArticleServiceImpl detail...");
-		Article article = null;
-		article = ad.detatilArticle(art_title);
-		return article;
-	}
+//	// 상세페이지?
+//	@Override
+//	public Article cydetailArticle(int art_title) {
+//		System.out.println("ArticleServiceImpl detail...");
+//		Article article = null;
+//		article = ad.cydetailArticle(art_title);
+//		return article;
+//	}
 	// 수정페이지 상세페이지
 	@Override
 	public Article cyArticlereadupdate(Article article) {
@@ -498,23 +498,23 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 	//조회수 증가
 	@Override
-	public int updateView(Article article) {
+	public int cyupdateView(Article article) {
 		System.out.println("ArticleServiceImpl updateView");
-		int result = ad.updateView(article);
+		int result = ad.cyupdateView(article);
 		return result;
 	}
 	// 게시물 좋아요
 	@Override
-	public int updateGood(Article article) {
+	public int cyupdateGood(Article article) {
 		System.out.println("ArticleServiceImpl updateView");
-		int result = ad.updateGood(article);
+		int result = ad.cyupdateGood(article);
 		return result;
 	}
 	// 게시물 싫어요
 	@Override
-	public int updateBad(Article article) {
+	public int cyupdateBad(Article article) {
 		System.out.println("ArticleServiceImpl updateView");
-		int result = ad.updateBad(article);
+		int result = ad.cyupdateBad(article);
 		return result;
 	}
 

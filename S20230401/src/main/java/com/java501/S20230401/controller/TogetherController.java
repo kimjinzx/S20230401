@@ -519,6 +519,7 @@ public class TogetherController {
 	 }
 	 
 	 
+	 
 	// 작성자가 거래를 취소 (거래 취소)
 	 @RequestMapping(value="/board/tradeCancel")
 	 @ResponseBody

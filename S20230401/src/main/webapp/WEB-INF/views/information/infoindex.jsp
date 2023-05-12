@@ -232,7 +232,7 @@
 		<div class="article">
 		<div>글번호: ${article.art_id }
 		<span>게시판번호: ${article.brd_id }</span></div>
-		<div><span><a href="${pageContext.request.contextPath }/board/information/detail?art_id=${article.art_id }&brd_id=${article.brd_id}&category=${category}">${article.art_title }</span></div>
+		<div><span><a href="${pageContext.request.contextPath }/board/information/${article.art_id}?brd_id=${article.brd_id}&category=${category}">${article.art_title }</span></div>
 		<div><span>작성일: <fmt:formatDate value="${article.art_regdate}" pattern="yyyy-MM-dd :HH:mm"/></span></div>
 		  <span>
 			    <c:if test="${not empty article.art_tag1}">

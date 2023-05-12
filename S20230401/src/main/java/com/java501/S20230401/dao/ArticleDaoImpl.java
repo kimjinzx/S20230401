@@ -724,18 +724,18 @@ public class ArticleDaoImpl implements ArticleDao {
 	// 김찬영
 	// 총리스트
 	@Override
-	public int totalArticle() {
-		int totArticleCount = 0;
+	public int cytotalArticle() {
+		int cytotArticleCount = 0;
 		System.out.println("ArticleImpl Start total...");
 		
 		try {
-			totArticleCount = session.selectOne("ArticleTotal");
-			System.out.println("ArticleImpl totalArticle totArticleCount->" + totArticleCount);
+			cytotArticleCount = session.selectOne("cyArticleTotal");
+			System.out.println("ArticleImpl totalArticle cytotArticleCount->" + cytotArticleCount);
 		} catch (Exception e) {
-			System.out.println("ArticleImpl totalArticle Exception->"+e.getMessage());
+			System.out.println("ArticleImpl cytotalArticle Exception->"+e.getMessage());
 		}
 		
-		return totArticleCount;
+		return cytotArticleCount;
 	}
 	//검색
 //	@Override
@@ -753,15 +753,15 @@ public class ArticleDaoImpl implements ArticleDao {
 	
 	// 리스트조회
 	@Override
-	public List<Article> listArticle(Article article) {
-		List<Article> articleList = null;
+	public List<Article> cylistArticle(Article article) {
+		List<Article> cylistArticle = null;
 		System.out.println("ArticleDaoImpl listArticle Start...");
 		try {
-			articleList = session.selectList("cyArticleListAll", article);
+			cylistArticle = session.selectList("cyArticleListAll", article);
 		} catch (Exception e) {
 			System.out.println("ArticleImpl listArticle e.getMessage()->"+e.getMessage());
 		}
-		return articleList;
+		return cylistArticle;
 	}
 	
 
@@ -779,7 +779,7 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 	// 상세페이지
 	@Override
-	public Article detatilArticle(int art_title) {
+	public Article cydetatilArticle(int art_title) {
 		System.out.println("ArticleDaoImpl detail start..");
 		Article article = new Article();
 		
@@ -843,7 +843,7 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 		//조회수
 		@Override
-		public int updateView(Article article) {
+		public int cyupdateView(Article article) {
 			System.out.println(article);
 			System.out.println("ArticleDaoImpl updateView Start..article");
 			int result = 0;
@@ -856,7 +856,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		//추천
 		@Override
-		public int updateGood(Article article) {
+		public int cyupdateGood(Article article) {
 			System.out.println(article);
 			System.out.println("ArticleDaoImpl updateView Start..article");
 			int result = 0;
@@ -869,7 +869,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		//비추천
 		@Override
-		public int updateBad(Article article) {
+		public int cyupdateBad(Article article) {
 			System.out.println(article);
 			System.out.println("ArticleDaoImpl updateView Start..article");
 			int result = 0;
