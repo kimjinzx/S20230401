@@ -7,6 +7,14 @@ const isUserColorTheme = window.localStorage.getItem('color-theme');
 const isOsColorTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 const getUserTheme = () => isUserColorTheme ? isUserColorTheme : isOsColorTheme;
 
+const getThumbnail = (art_content, justSrc = false, thumbnailIndex = 0) => {
+	let $virtualDiv = $('<div></div>').html(art_content);
+	let imgs = $virtualDiv.find('img');
+	let notFoundSrc = window.location.origin + '/image/ShareGo_Not_Found_Image.png';
+	if (!imgs || imgs.length == 0) return justSrc? notFoundSrc : $('<img src="' + notFoundSrc + '"/>');
+	else return justSrc ? $(imgs[imgs.length - 1 < thumbnailIndex ? imgs.length - 1 : thumbnailIndex]).attr('src') : imgs[imgs.length - 1 < thumbnailIndex ? imgs.length - 1 : thumbnailIndex];
+};
+
 $(() => {
 	const getStyle = (el,styleProp) => {
 	    if (el.currentStyle) return el.currentStyle[styleProp];

@@ -9,12 +9,10 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/initializer.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/layout.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath }/js/index.js"></script>
 <link href="https://unpkg.com/sanitize.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/preference.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/presets.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/layout.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/index.css">
 
 <script type="text/javascript">
 	$(window).scroll(() => {
@@ -258,7 +256,8 @@
 				<!-- 글 시작 -->
 					<div class="article-info" style="display: flex; padding: 10px; flex-grow: 1;">
 						<div class="view-preview" style="display: flex; align-items: center; margin-right: 14px">
-							<img style="width: 80px; height: 80px;" alt="${article.member.mem_image}" src="${pageContext.request.contextPath}/uploads/profile/${article.member.mem_image}">
+							<%-- <img style="width: 80px; height: 80px;" alt="${article.member.mem_image}" src="${pageContext.request.contextPath}/uploads/profile/${article.member.mem_image}"> --%>
+							<img class="article-thumbnail" style="width: 80px; height: 80px;" src="${pageContext.request.contextPath }/image/ShareGo_Img.png" onload="$(this).attr('src', getThumbnail('${article.art_content}', true));">
 						</div>
 						<div class="view-inner" style="display: flex; flex-direction: column; justify-content: center; flex-grow: 1;">
 							<!-- 글의 첫 줄 -->

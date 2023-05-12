@@ -4,6 +4,27 @@
 div{
     padding: 5px;
 }
+
+div.user-profile-image-in-list {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	margin-right: 10px;
+	overflow: hidden;
+	padding: 0;
+	box-shadow: 0 0 2.5px var(--theme-font);
+}
+div.user-profile-image-in-list > img {
+	width: inherit;
+	height: inherit;
+	object-fit: cover;
+}
+
+.only-for-member > button {
+	cursor: pointer;
+	font-size: 14px;
+	padding: 2.5px 5px;
+}
 .article-title{
 	display: flex;
 	align-items: center;
@@ -16,7 +37,7 @@ div{
 .view-content{
     padding: 10% 20%;
     margin: auto;
-    font-size: 13px;
+    font-size: 16px;
 }
 button{
     width: auto;
@@ -38,8 +59,8 @@ button{
 }
 textarea{
 	display: inline-block;
-	width: 100%;
-    height: 200px;
+	/* width: 100%;
+    height: 200px; */
 	resize: none;
 	font-size: 16px;
 	color: #495057;
@@ -48,20 +69,37 @@ textarea{
     border-radius: 10px;
 	transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 	box-sizing: border-box;
-    margin: 30px 0px;
-    padding: 20px 20px;
+    /* margin: 30px 0px; */
+    /* padding: 20px 20px; */
+    padding: 10px;
+}
+textarea.reply-primitive-write {
+	resize: none;
+	outline: none;
+	border: 0;
+	box-shadow: none;
+}
+input.reply-primitive-submit {
+	border: 0;
+	outline: none;
+	background-color: transparent;
+	color: var(--subtheme);
+	font-size: 16px;
+	font-weight: bolder;
+	cursor: pointer;
 }
 textarea:focus {
 	outline: 0;
 	box-shadow: 0 0 0 2px rgba(0, 123, 255, .3);
 }
+textarea:disabled {
+	outline: 0;
+	border: 0;
+}
 /* 참가자 명단 */
 .userList-memberInfo {
 	display: flex;
-	align-items: flex-start;
-}
-.userList-memberInfo h3{
-	margin: 0 0 8px;
+	align-items: center;
 }
 .userList-btns {
 	margin-left: auto;
@@ -89,8 +127,8 @@ textarea:focus {
     padding: 10px;
 }
 .reply-view{
-    border: 1px solid #0193F8;
-    border-radius: 2.5px;
+    border: 1px solid var(--subtheme);
+    border-radius: 5px;
 }
 .reply-member{
     border-bottom: 1px solid #0193F8;
@@ -100,12 +138,20 @@ textarea:focus {
     display: block;
     text-align: center;
 }
-.rep-content{
+div.rep-content{
     border: none;
     resize: none;
-    width: 90%;
-    height: 90%;
+    /* width: 90%;
+    height: 90%; */
+    width: 100%;
+    height: 100%;
     background-color: transparent;
+}
+textarea.rep-content {
+	height: max-content;
+	min-height: 100px;
+	max-height: 150px;
+	background-color: transparent;
 }
 
 /* 펼치기 버튼 */
@@ -122,25 +168,28 @@ textarea:focus {
     background-color: #eeeeee;
     color: black;
     margin: 15px;
+    cursor: pointer;
 }
 
 /* 1번째 부터 2번째 까지 */
 #btns-vote button:nth-child(-n+2):hover {
-    background-color: #0193F8;
+    background-color: var(--subtheme);
     color: white;
 }
 
 /* 3번째 부터 4번째 전까지 */
 #btns-vote button:nth-child(n+3):hover {
-    background-color: red;
+    background-color: var(--warning);
     color: white;
 }
 
 
 .btns-tag{
-padding: 0px 2px;
-background-color: transparent;
-color: #0193F8;
+	margin: 0px 2px;
+	background-color: transparent;
+	color: var(--subtheme);
+	font-weight: bolder;
+	font-size: 14px;
 }
 .btns-tag::before{
     content: '#';
@@ -152,10 +201,11 @@ color: #0193F8;
     height: 30px;
     font-size: 13px;
     border-radius: 10px;
+    cursor: pointer;
 }
-.btns-action:hover{
+/* .btns-action:hover{
     background-color: rgba(1, 147, 248, 0.8);
-}
+} */
 
 
 
