@@ -215,20 +215,21 @@
   		});
 	 	}
 	
-	function goArtGood(p_brd_id, p_art_id) {
+	
+	function goArtGood(p_brd_id, p_art_id, p_mem_id) {
 	   	  
 	   	  $.ajax({
 	   				url:"<%=context%>/dutchpay/artGood",
 	   				data: {brd_id : p_brd_id,
-	   					   art_id : p_art_id},
+	   					   art_id : p_art_id,
+	   					   mem_id : p_mem_id},
 	   				type:'POST',
 	   				dataType:'text',
 	   				success:function(data){
 	   						alert('추천되었습니다.');
-	   						location.href="redirect:/dutchpay/dutchpayDetail?brd_id="+brd_id+"&art_id="+art_id;
 	   				}
 	   	  		});
-	   		  }
+	   		  } 
 	
 	function goArtBad(p_brd_id, p_art_id) {
 	   	  
@@ -240,7 +241,6 @@
 	   				dataType:'text',
 	   				success:function(data){
 	   						alert('비추천되었습니다.');
-	   						location.href="redirect:/dutchpay/dutchpayDetail?brd_id="+brd_id+"&art_id="+art_id;
 	   				}
 	   	  		});
 	   		  }
@@ -256,7 +256,6 @@
 	   				dataType:'text',
 	   				success:function(data){
 	   						alert('추천되었습니다.');
-	   						location.href="redirect:/dutchpay/dutchpayDetail?brd_id="+brd_id+"&art_id="+art_id;
 	   				}
 	   	  		});
 	   		  }
@@ -272,7 +271,6 @@
 	   				dataType:'text',
 	   				success:function(data){
 	   						alert('비추천되었습니다.');
-	   						location.href="redirect:/dutchpay/dutchpayDetail?brd_id="+brd_id+"&art_id="+art_id;
 	   				}
 	   	  		});
 	   		  }
@@ -300,7 +298,7 @@
 	<c:when test="${memberInfo.mem_id != detail.mem_id}"> 
 		<input type="button" value="신고하기" 		onclick="goReport(${detail.brd_id },${detail.art_id },${detail.report_id })">
 		<input type="button" value="관심목록 추가" onclick="goFavorite(${detail.brd_id },${detail.art_id },${memberInfo.mem_id})">
-		<input type="button" value="추천" 		onclick="goArtGood(${detail.brd_id },${detail.art_id })">   	
+ 		<input type="button" value="추천" 		onclick="goArtGood(${detail.brd_id },${detail.art_id },${memberInfo.mem_id})"> 
 		<input type="button" value="비추천" 		onclick="goArtBad(${detail.brd_id },${detail.art_id })">
 	</c:when>
 </c:choose>
@@ -479,7 +477,7 @@
 
 
 <div class ="RepInsert">
-	<input type="text" name="rep_content" required="required" placeholder="댓글을 입력해주세요">
+	<input type="text" name="rep_content"  placeholder="댓글을 입력해주세요">
 	<input type="submit" value="등록" formaction="${pageContext.request.contextPath }/dutchpay/replyInsert"><p>
 </div>	
 	

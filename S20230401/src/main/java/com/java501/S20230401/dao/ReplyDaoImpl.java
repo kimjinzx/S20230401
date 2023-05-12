@@ -322,15 +322,15 @@ public class ReplyDaoImpl implements ReplyDao {
 	
 	// 김진현
 	@Override
-	public int replyInsert2(Article article) {
+	public int JHreplyInsert2(Article article) {
 		return session.insert("JHReplyInsert", article);
 	}
 	@Override
-	public int replyDelete2(Article article) {
+	public int JHreplyDelete2(Article article) {
 		return session.update("JHReplyDelete", article);		
 	}
 	@Override
-	public void replyUpdate2(Article article) {
+	public void JHreplyUpdate2(Article article) {
 		session.update("JHReplyUpdate",article);
 	}	
 }

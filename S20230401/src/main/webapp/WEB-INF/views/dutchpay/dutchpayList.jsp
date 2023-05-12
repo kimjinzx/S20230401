@@ -55,7 +55,7 @@
 		
 		
 		
-		<span>작성자 : ${ATR.mem_image}  ${ATR.mem_nickname } (${ATR.mem_username })</span><p>
+		<span>작성자 : <img src="${pageContext.request.contextPath }/uploads/profile/${ATR.mem_image}" style="width:40px; height:40px; ">  ${ATR.mem_nickname } (${ATR.mem_username })</span><p>
 		<span>${ATR.comm_value }</span>
 		<span><a href="/dutchpay/dutchpayDetail?art_id=${ATR.art_id}&brd_id=${ATR.brd_id}">제목 : ${ATR.art_title }</a>
 		

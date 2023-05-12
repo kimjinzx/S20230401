@@ -42,9 +42,9 @@ public interface ReplyDao {
 	
 	
 	// 김진현
-	int        replyInsert2(Article article);
-	int        replyDelete2(Article article);
-	void       replyUpdate2(Article article);
+	int        JHreplyInsert2(Article article);
+	int        JHreplyDelete2(Article article);
+	void       JHreplyUpdate2(Article article);
 
 	
 	// 김찬영

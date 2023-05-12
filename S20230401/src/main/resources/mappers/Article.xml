@@ -1337,7 +1337,7 @@
 		LEFT JOIN region r ON t.reg_id = r.reg_id
 		LEFT JOIN member m ON a.mem_id = m.mem_id
 		WHERE a.brd_id between 1100 and 1200 and a.isdelete = 0 
-		<!--  ORDER BY a.art.regdate desc -->
+		<!-- ORDER BY a.art.regdate desc  --> 
 	</select>
 	
 	<select id="JHDutchpayFoodList" resultType="Article">

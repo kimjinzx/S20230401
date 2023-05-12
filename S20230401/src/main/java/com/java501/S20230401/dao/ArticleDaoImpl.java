@@ -1020,7 +1020,7 @@ public class ArticleDaoImpl implements ArticleDao {
 	
 	//김진현
 		@Override
-		public List<Article> getDutchpayList(String boardName) {
+		public List<Article> JHgetDutchpayList(String boardName) {
 			List<Article> dutchpayList2 = null;
 			
 			try {
@@ -1031,7 +1031,7 @@ public class ArticleDaoImpl implements ArticleDao {
 			return dutchpayList2;
 		}
 		@Override
-		public Article detail2(Article article) {
+		public Article JHdetail2(Article article) {
 			Article article2 = null;
 			try {				
 				article2 = session.selectOne("JHDutchpayDetail",article);
@@ -1042,7 +1042,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		
 		@Override
-		public List<Article> repList2(Article article) {
+		public List<Article> JHrepList2(Article article) {
 			List<Article> repList = null;
 			try {
 				repList = session.selectList("JHRepList",article);
@@ -1053,7 +1053,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 
 		@Override
-		public List<Comm> payStatus2() {
+		public List<Comm> JHpayStatus2() {
 			List<Comm> payStatus = null;
 			try {
 				payStatus = session.selectList("JHPayStatus");
@@ -1064,7 +1064,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		
 		@Override
-		public Article payStatusPro2(Article article) {
+		public Article JHpayStatusPro2(Article article) {
 			Article payStatusPro = null;
 			try {
 				payStatusPro = session.selectOne("JHPayStatusPro",article);  
@@ -1075,7 +1075,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		
 		@Override
-		public void dutchpayInsert2(Article article) {
+		public void JHdutchpayInsert2(Article article) {
 			try {
 				System.out.println("article Dao -> "+article);
 				session.selectOne("JHInsert",article);
@@ -1085,7 +1085,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		
 		@Override
-		public List<Comm> category2() {
+		public List<Comm> JHcategory2() {
 			List<Comm> cm = null;
 			try {
 				cm = session.selectList("JHCategory");
@@ -1097,7 +1097,7 @@ public class ArticleDaoImpl implements ArticleDao {
 
 
 		@Override
-		public List<Region> loc2() {
+		public List<Region> JHloc2() {
 			List<Region> re = null;
 			try {
 				re = session.selectList("JHLoc");
@@ -1109,7 +1109,7 @@ public class ArticleDaoImpl implements ArticleDao {
 
 		
 		@Override
-		public Article updateForm2(Article article) {
+		public Article JHupdateForm2(Article article) {
 			Article updateForm = null;
 			try {
 				updateForm = session.selectOne("JHUpdateForm",article);
@@ -1120,7 +1120,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 
 		@Override
-		public List<Region> loc_ud2() {
+		public List<Region> JHloc_ud2() {
 			List<Region> re = null;
 			try {
 				re = session.selectList("JHLocUd");
@@ -1131,7 +1131,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		
 		@Override
-		public void dutchpayUpdate2(Article article) {
+		public void JHdutchpayUpdate2(Article article) {
 			try {
 				System.out.println(article);
 				session.selectOne("JHUpdate",article);
@@ -1141,7 +1141,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		
 		@Override
-		public void dutchpayDelete2(Article article) {
+		public void JHdutchpayDelete2(Article article) {
 			try {
 				session.selectOne("JHDelete",article);
 			} catch (Exception e) {
@@ -1150,7 +1150,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		
 		@Override
-		public int DeatilRead2(Article article) {
+		public int JHDeatilRead2(Article article) {
 			int read = 0;
 			try {
 				read = session.update("JHDeatilRead",article);
@@ -1162,7 +1162,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		
 		
 		@Override
-		public int totalArticle2(Article article) {
+		public int JHtotalArticle2(Article article) {
 			int page = 0;
 			System.out.println("ArticleDaoImple Start paging...");
 			System.out.println("Dao pageStart -> "+article.getStart());
@@ -1180,7 +1180,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		
 
 		@Override
-		public void applyInsert2(Article article) {
+		public void JHapplyInsert2(Article article) {
 			try {
 				session.selectOne("JHJoinApply",article);
 			} catch (Exception e) {
@@ -1189,7 +1189,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		
 		@Override
-		public Article applyCancel2(Article article) {
+		public Article JHapplyCancel2(Article article) {
 			Article cancle = null;
 			try {
 				cancle = session.selectOne("JHapplyCancel",article);
@@ -1201,7 +1201,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		
 		@Override
-		public Article joinCancel2(Article article) {
+		public Article JHjoinCancel2(Article article) {
 			Article joinCancel = null;
 			try {
 				joinCancel = session.selectOne("JHJoinCancel",article);
@@ -1212,7 +1212,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 
 		@Override
-		public List<Article> joinList2(Article article) {
+		public List<Article> JHjoinList2(Article article) {
 			List<Article> joinList2 = null;
 			try {
 				joinList2 = session.selectList("JHJoinList",article);
@@ -1222,7 +1222,7 @@ public class ArticleDaoImpl implements ArticleDao {
 			return joinList2;
 		}
 		@Override
-		public List<Article> waitList2(Article article) {
+		public List<Article> JHwaitList2(Article article) {
 			List<Article> waitList2 = null;
 			try {
 				waitList2 = session.selectList("JHWaitList",article);
@@ -1233,7 +1233,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		
 		@Override
-		public Article joinDeny2(Article article) {
+		public Article JHjoinDeny2(Article article) {
 			Article joinDeny2 = null;
 			try {
 				joinDeny2 = session.selectOne("JHJoinDeny",article);
@@ -1244,7 +1244,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		
 		@Override
-		public Article joinAccept2(Article article) {
+		public Article JHjoinAccept2(Article article) {
 			Article joinAccept2 = null;
 			try {
 				joinAccept2 = session.selectOne("JHJoinAccept",article);
@@ -1254,7 +1254,7 @@ public class ArticleDaoImpl implements ArticleDao {
 			return joinAccept2;
 		}
 		@Override
-		public int payCompleted2(int trd_id) {
+		public int JHpayCompleted2(int trd_id) {
 			int payCompleted = 0;
 			try {
 				payCompleted = session.update("JHPayCompleted",trd_id);
@@ -1264,7 +1264,7 @@ public class ArticleDaoImpl implements ArticleDao {
 			return payCompleted;
 		}
 		@Override
-		public List<Article> articleSearch2(Article article) {
+		public List<Article> JHarticleSearch2(Article article) {
 			List<Article> articleSearch = null;
 			try {
 				articleSearch = session.selectList("JHArticleSearch",article);
@@ -1275,7 +1275,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		
 		@Override
-		public void artGood2(Article article) {
+		public void JHartGood2(Article article) {
 			try {
 				session.selectOne("JHArtGood",article);
 			} catch (Exception e) {
@@ -1284,7 +1284,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		
 		@Override
-		public void artBad2(Article article) {
+		public void JHartBad2(Article article) {
 			try {
 				session.selectOne("JHArtBad",article);
 			} catch (Exception e) {
@@ -1293,7 +1293,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		
 		@Override
-		public void repGood2(Article article) {
+		public void JHrepGood2(Article article) {
 			try {
 				session.selectOne("JHRepGood",article);
 			} catch (Exception e) {
@@ -1302,7 +1302,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		
 		@Override
-		public void repBad2(Article article) {
+		public void JHrepBad2(Article article) {
 			try {
 				session.selectOne("JHRepBad",article);
 			} catch (Exception e) {

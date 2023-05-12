@@ -594,199 +594,199 @@ public class ArticleServiceImpl implements ArticleService {
 	
 	
 	@Override//김진현
-	public List<Article> getDutchpayList(String boardName) {
-		List<Article> article = ad.getDutchpayList(boardName);
+	public List<Article> JHgetDutchpayList(String boardName) {
+		List<Article> article = ad.JHgetDutchpayList(boardName);
 		return article;
 	}
 
 	@Override
-	public Article detail1(Article article) {
+	public Article JHdetail1(Article article) {
 		Article article1 = null;
-		article1 = ad.detail2(article);
+		article1 = ad.JHdetail2(article);
 		return article1;
 	}
 	
 	@Override
-	public List<Article> repList1(Article article) {
-		List<Article> repList = ad.repList2(article);
+	public List<Article> JHrepList1(Article article) {
+		List<Article> repList = ad.JHrepList2(article);
 		return repList;
 	}
 
 	@Override
-	public List<Comm> payStatus1() {
+	public List<Comm> JHpayStatus1() {
 		List<Comm> payStatus = null;
-		payStatus = ad.payStatus2();
+		payStatus = ad.JHpayStatus2();
 		return payStatus;
 	}
 	
 
-	public Article payStatusPro1(Article article) {
+	public Article JHpayStatusPro1(Article article) {
 		Article payStatusPro = null;
-		payStatusPro = ad.payStatusPro2(article);
+		payStatusPro = ad.JHpayStatusPro2(article);
 		return payStatusPro;
 	}
 	
 	@Override
-	public void replyInsert1(Article article) {
-		 rpd.replyInsert2(article);
+	public void JHreplyInsert1(Article article) {
+		 rpd.JHreplyInsert2(article);
 	}
 	
 	@Override
-	public void replyDelete1(Article article) {
-		rpd.replyDelete2(article);
+	public void JHreplyDelete1(Article article) {
+		rpd.JHreplyDelete2(article);
 	}
 
 	@Override
-	public List<Comm> category1() {
+	public List<Comm> JHcategory1() {
 		List<Comm> cm = null;
-		cm = ad.category2();
+		cm = ad.JHcategory2();
 		return cm;
 	}
 
 	@Override
-	public List<Region> loc1() {
+	public List<Region> JHloc1() {
 		List<Region> re = null;
-		re = ad.loc2();
+		re = ad.JHloc2();
 		return re;
 	}
 
 	@Override
-	public void dutchpayInsert1(Article article) {
-		ad.dutchpayInsert2(article);
+	public void JHdutchpayInsert1(Article article) {
+		ad.JHdutchpayInsert2(article);
 	}
 	
 	@Override
-	public Article updateForm1(Article article) {
+	public Article JHupdateForm1(Article article) {
 		Article updateForm = null;
-		updateForm = ad.updateForm2(article);
+		updateForm = ad.JHupdateForm2(article);
 		return updateForm;
 	}
 
 	@Override
-	public List<Region> loc_ud1() {
+	public List<Region> JHloc_ud1() {
 		List<Region> re = null;
-		re = ad.loc_ud2();
+		re = ad.JHloc_ud2();
 		return re;
 	}
 
 	@Override
-	public void dutchpayUpdate1(Article article) {
-		ad.dutchpayUpdate2(article);
+	public void JHdutchpayUpdate1(Article article) {
+		ad.JHdutchpayUpdate2(article);
 		
 	}
 
 	@Override
-	public void dutchpayDelete1(Article article) {
-		ad.dutchpayDelete2(article);
+	public void JHdutchpayDelete1(Article article) {
+		ad.JHdutchpayDelete2(article);
 		
 	}
 
 	@Override
-	public int DeatilRead1(Article article) {
+	public int JHDeatilRead1(Article article) {
 		int read = 0;
-		read = ad.DeatilRead2(article);
+		read = ad.JHDeatilRead2(article);
 		return read;
 	}
 	
 	@Override
-	public int totalArticle1(Article article) {
+	public int JHtotalArticle1(Article article) {
 		int page = 0;
-		page = ad.totalArticle2(article);
+		page = ad.JHtotalArticle2(article);
 		return page;
 	}
 	
 	@Override
-	public void applyInsert1(Article article) {
-		ad.applyInsert2(article);
+	public void JHapplyInsert1(Article article) {
+		ad.JHapplyInsert2(article);
 	}
 
 	@Override
-	public Article applyCancel1(Article article) {
+	public Article JHapplyCancel1(Article article) {
 		Article cancel = null;
-		cancel = ad.applyCancel2(article);
+		cancel = ad.JHapplyCancel2(article);
 		return cancel;
 	}
 	
 	@Override
-	public Article joinCancel1(Article article) {
+	public Article JHjoinCancel1(Article article) {
 		Article joinCancel = null;
-		joinCancel = ad.joinCancel2(article);
+		joinCancel = ad.JHjoinCancel2(article);
 		return joinCancel;
 	}
 
 	@Override
-	public List<Article> joinList1(Article article) {
+	public List<Article> JHjoinList1(Article article) {
 		List<Article> joinList = null;
-		joinList = ad.joinList2(article);
+		joinList = ad.JHjoinList2(article);
 		return joinList;
 	}
 	@Override
-	public List<Article> waitList1(Article article) {
+	public List<Article> JHwaitList1(Article article) {
 		List<Article> waitList = null;
-		waitList = ad.waitList2(article);
+		waitList = ad.JHwaitList2(article);
 		return waitList;
 	}
 	@Override
-	public Article joinDeny1(Article article) {
+	public Article JHjoinDeny1(Article article) {
 		Article joinDeny1 = null;
-		joinDeny1 = ad.joinDeny2(article);
+		joinDeny1 = ad.JHjoinDeny2(article);
 		return joinDeny1;
 	}
 	@Override
-	public Article joinAccept1(Article article) {
+	public Article JHjoinAccept1(Article article) {
 		Article joinAccept1 = null;
-		joinAccept1 = ad.joinAccept2(article);
+		joinAccept1 = ad.JHjoinAccept2(article);
 		return joinAccept1;
 	}
 	@Override
-	public int payCompleted1(int trd_id) {
+	public int JHpayCompleted1(int trd_id) {
 		int payCompleted = 0;
-		payCompleted = ad.payCompleted2(trd_id);
+		payCompleted = ad.JHpayCompleted2(trd_id);
 		return payCompleted;
 	}
 	@Override
-	public int jhJoinListYN(Article article) {
-		return jd.jhJoinListYN(article);
+	public int JHJoinListYN(Article article) {
+		return jd.JHJoinListYN(article);
 	}
 	
 	@Override
-	public int jhWaitListYN(Article article) {
-		return wd.jhWaitListYN(article);
+	public int JHWaitListYN(Article article) {
+		return wd.JHWaitListYN(article);
 	}
 	
 	@Override
-	public void favoriteInsert1(Article article) {
-		fd.favoriteInsert2(article);
+	public void JHfavoriteInsert1(Article article) {
+		fd.JHfavoriteInsert2(article);
 	}
 	@Override
-	public int favoriteInsertYN1(Article article) {
-		return fd.favoriteInsertYN2(article);
+	public int JHfavoriteInsertYN1(Article article) {
+		return fd.JHfavoriteInsertYN2(article);
 	}
 	@Override
-	public void replyUpdate1(Article article) {
-		rpd.replyUpdate2(article);
+	public void JHreplyUpdate1(Article article) {
+		rpd.JHreplyUpdate2(article);
 	}
 	@Override
-	public List<Article> articleSearch1(Article article) {
+	public List<Article> JHarticleSearch1(Article article) {
 		List<Article> articleSearch = null;
-		articleSearch = ad.articleSearch2(article);
+		articleSearch = ad.JHarticleSearch2(article);
 		return articleSearch;
 	}
 	@Override
-	public void artGood1(Article article) {
-		ad.artGood2(article);
+	public void JHartGood1(Article article) {
+		ad.JHartGood2(article);
 	}
 	@Override
-	public void artBad1(Article article) {
-		ad.artBad2(article);
+	public void JHartBad1(Article article) {
+		ad.JHartBad2(article);
 	}
 	@Override
-	public void repGood1(Article article) {
-		ad.repGood2(article);
+	public void JHrepGood1(Article article) {
+		ad.JHrepGood2(article);
 	}
 	@Override
-	public void repBad1(Article article) {
-		ad.repBad2(article);
+	public void JHrepBad1(Article article) {
+		ad.JHrepBad2(article);
 	}
 	
 }

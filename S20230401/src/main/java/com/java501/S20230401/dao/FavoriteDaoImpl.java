@@ -63,12 +63,12 @@ public class FavoriteDaoImpl implements FavoriteDao {
 	
 	//김진현
 	@Override
-	public void favoriteInsert2(Article article) {
+	public void JHfavoriteInsert2(Article article) {
 		session.insert("JHFavoriteInsert",article);
 	}
 
 	@Override
-	public int favoriteInsertYN2(Article article) {
+	public int JHfavoriteInsertYN2(Article article) {
 		return session.selectOne("JHFavoriteInsertYN",article);
 	}
 

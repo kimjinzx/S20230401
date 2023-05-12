@@ -13,7 +13,7 @@ public interface FavoriteDao {
 	int dgUserFavorite(Article shareUser);	// 찜목록 조회
 
 	//김진현
-	void       favoriteInsert2(Article article);
-	int        favoriteInsertYN2(Article article);
+	void       JHfavoriteInsert2(Article article);
+	int        JHfavoriteInsertYN2(Article article);
 
 }
