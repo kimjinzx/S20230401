@@ -9,12 +9,10 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/initializer.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/layout.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath }/js/index.js"></script>
 <link href="https://unpkg.com/sanitize.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/preference.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/presets.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/layout.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/index.css">
 
 <script type="text/javascript">
 	$(window).scroll(() => {
@@ -258,7 +256,7 @@
 				<!-- 글 시작 -->
 					<div class="article-info" style="display: flex; padding: 10px; flex-grow: 1;">
 						<div class="view-preview" style="display: flex; align-items: center; margin-right: 14px">
-							<img style="width: 80px; height: 80px;" alt="${article.member.mem_image}" src="${pageContext.request.contextPath}/uploads/profile/${article.member.mem_image}">
+							<img class="article-thumbnail" style="width: 80px; height: 80px; object-fit: cover;" src="${pageContext.request.contextPath }/image/ShareGo_Img.png" onload="$(this).attr('src', getThumbnail('${article.art_content}', true));">
 						</div>
 						<div class="view-inner" style="display: flex; flex-direction: column; justify-content: center; flex-grow: 1;">
 							<!-- 글의 첫 줄 -->
@@ -266,7 +264,8 @@
 								<c:if test="${article.status_name != null}">
 									<button class="btn">${article.status_name}</button>
 								</c:if>
-								<span class="category-name">${article.brd_name}</span>
+								<%-- <span class="category-name">${article.brd_name}</span> --%>
+								<span class="article-title"><a href="${pageContext.request.contextPath}/board/share/${article.art_id}?brd_id=${article.brd_id}&category=${category}">${article.art_title}</a></span>
 								
 								<!-- 태그 출력 및 클릭 시 검색 -->
 								<div class="view-tag" style="display: flex; justify-content: flex-end; flex-grow: 1;">
@@ -285,8 +284,6 @@
 							</div>
 							<!-- 글의 두번째 줄 -->
 							<div class="view-bottom">
-								<%-- <span class="article-title"><a href="${pageContext.request.contextPath}/board/share/article?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category}">${article.art_title}</a></span> --%>
-								<span class="article-title"><a href="${pageContext.request.contextPath}/board/share/${article.art_id}?brd_id=${article.brd_id}&category=${category}">${article.art_title}</a></span>
 									<c:if test="${article.rep_cnt != null && article.rep_cnt != 0}">
 										<span class="article-replycnt">[${article.rep_cnt }]</span>
 									</c:if><br>
@@ -306,9 +303,32 @@
 								<fmt:formatNumber var="date" value="${(sysdate.time-article.art_regdate.time)/1000/60/60/24}" type="number" pattern="0"/>
 								<span><button class="btn" type="button">${date}일 전</button></span>
 								
-								<span>조회 ${article.art_read}</span>
-								<span>추천 ${article.art_good}</span>
-								<span>비추천 ${article.art_bad}</span>
+								<div class="display-flex justify-content-flex-end align-items-center">
+									<div class="display-flex justify-content-flex-start align-items-center margin-hor-2_5px">
+										<!-- https://ionic.io/ionicons -->
+										<svg viewBox="0 0 512 512" style="width: 16px; height: 16px; fill: none; stroke: var(--theme-font); stroke-linecap: round; stroke-linejoin: round; stroke-width: 32px;">
+											<path d="M255.66 112c-77.94 0-157.89 45.11-220.83 135.33a16 16 0 00-.27 17.77C82.92 340.8 161.8 400 255.66 400c92.84 0 173.34-59.38 221.79-135.25a16.14 16.14 0 000-17.47C428.89 172.28 347.8 112 255.66 112z"/>
+											<circle cx="256" cy="256" r="80"/>
+										</svg>
+										<span class="margin-hor-2_5px">${article.art_read}</span>
+									</div>
+									<div class="display-flex justify-content-flex-start align-items-center margin-hor-2_5px">
+										<!-- https://ionic.io/ionicons -->
+										<svg viewBox="0 0 512 512" style="width: 16px; height: 16px; fill: var(--theme-font); stroke: var(--theme-font); stroke-linecap: round; stroke-linejoin: round; stroke-width: 32px;">
+											<path d="M320 458.16S304 464 256 464s-74-16-96-32H96a64 64 0 01-64-64v-48a64 64 0 0164-64h30a32.34 32.34 0 0027.37-15.4S162 221.81 188 176.78 264 64 272 48c29 0 43 22 34 47.71-10.28 29.39-23.71 54.38-27.46 87.09-.54 4.78 3.14 12 7.95 12L416 205"/>
+											<path d="M416 271l-80-2c-20-1.84-32-12.4-32-30h0c0-17.6 14-28.84 32-30l80-4c17.6 0 32 16.4 32 34v.17A32 32 0 01416 271zM448 336l-112-2c-18-.84-32-12.41-32-30h0c0-17.61 14-28.86 32-30l112-2a32.1 32.1 0 0132 32h0a32.1 32.1 0 01-32 32zM400 464l-64-3c-21-1.84-32-11.4-32-29h0c0-17.6 14.4-30 32-30l64-2a32.09 32.09 0 0132 32h0a32.09 32.09 0 01-32 32zM432 400l-96-2c-19-.84-32-12.4-32-30h0c0-17.6 13-28.84 32-30l96-2a32.09 32.09 0 0132 32h0a32.09 32.09 0 01-32 32z"/>
+										</svg>
+										<span class="margin-hor-2_5px">${article.art_good}</span>
+									</div>
+									<div class="display-flex justify-content-flex-start align-items-center margin-hor-2_5px">
+										<!-- https://ionic.io/ionicons -->
+										<svg viewBox="0 0 512 512" style="width: 16px; height: 16px; fill: var(--theme-font); stroke: var(--theme-font); stroke-linecap: round; stroke-linejoin: round; stroke-width: 32px;">
+											<path d="M192 53.84S208 48 256 48s74 16 96 32h64a64 64 0 0164 64v48a64 64 0 01-64 64h-30a32.34 32.34 0 00-27.37 15.4S350 290.19 324 335.22 248 448 240 464c-29 0-43-22-34-47.71 10.28-29.39 23.71-54.38 27.46-87.09.54-4.78-3.14-12-8-12L96 307"/>
+											<path d="M96 241l80 2c20 1.84 32 12.4 32 30h0c0 17.6-14 28.84-32 30l-80 4c-17.6 0-32-16.4-32-34v-.17A32 32 0 0196 241zM64 176l112 2c18 .84 32 12.41 32 30h0c0 17.61-14 28.86-32 30l-112 2a32.1 32.1 0 01-32-32h0a32.1 32.1 0 0132-32zM112 48l64 3c21 1.84 32 11.4 32 29h0c0 17.6-14.4 30-32 30l-64 2a32.09 32.09 0 01-32-32h0a32.09 32.09 0 0132-32zM80 112l96 2c19 .84 32 12.4 32 30h0c0 17.6-13 28.84-32 30l-96 2a32.09 32.09 0 01-32-32h0a32.09 32.09 0 0132-32z"/>
+										</svg>
+										<span class="margin-hor-2_5px">${article.art_bad}</span>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
