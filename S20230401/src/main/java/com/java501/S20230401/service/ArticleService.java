@@ -123,7 +123,8 @@ public interface ArticleService {
 	Integer 			customerViewCount(Article article);
 	List<Article> 		shSearchCustomer(Article article);
 	int 				totalCustomer(Article article);
-
+	int 				customLike(Article article);
+	int 				customDislike(Article article);
 	
 	
 	// 김진현

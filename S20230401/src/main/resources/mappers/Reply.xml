@@ -263,10 +263,33 @@
 	<insert id="shWriteReply" parameterType="Reply">
 		INSERT INTO reply (art_id, brd_id, rep_id, mem_id, rep_content, rep_regdate, rep_good, rep_bad, rep_parent, rep_step, isdelete, report_id) 
     	VALUES (#{art_id}, #{brd_id},
-			    	(SELECT NVL(max(rep_id), 0)+ 1
+			    	(SELECT NVL(MAX(rep_id), 0)+ 1
 				    FROM reply
 				    WHERE art_id = #{art_id} AND brd_id = #{brd_id}),  
-				    #{mem_id}, #{rep_content}, SYSDATE, 0, 0, 1, 1, 0, NULL)
+				    #{mem_id}, #{rep_content}, SYSDATE, 0, 0, 
+				    <choose>
+		        	<when test="rep_parent != null">
+		        		#{rep_parent}, 
+		        	</when>
+		        	<otherwise>
+		        		(SELECT  NVL(MAX(rep_id),0)+1
+				         FROM    reply
+				         WHERE   art_id = #{art_id}
+				         AND     brd_id = #{brd_id}),
+		        	</otherwise>
+		        </choose>
+		        <choose>
+		        	<when test="rep_step != null">
+		        		(SELECT  NVL(MAX(rep_Step),0)+1
+		        		 FROM    REPLY
+		        		 WHERE   art_id = #{art_id}
+		        		 AND     brd_id = #{brd_id}),
+		        	</when>
+		        	<otherwise>
+		        		0,
+		        	</otherwise>
+		        </choose>
+				0, null)
 	</insert>
 	
 	<insert id="shDeleteReply" parameterType="Reply">

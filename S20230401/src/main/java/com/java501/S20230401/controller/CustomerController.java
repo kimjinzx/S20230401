@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.java501.S20230401.model.Article;
@@ -315,8 +316,10 @@ public class CustomerController {
 		return "redirect:/board/customer?category="+category;
 	}
 	
-	@RequestMapping(value = "/board/customer/recomm")
-	public int customRecomm (@AuthenticationPrincipal MemberDetails mD,
+	// 추천
+	@ResponseBody
+	@RequestMapping(value = "/board/customer/shcustomLike")
+	public int customLike(@AuthenticationPrincipal MemberDetails mD,
 							Article article, Integer category, Model model,		
 							RedirectAttributes redirectAttributes,
 							HttpServletRequest request, HttpServletResponse response) {
@@ -324,7 +327,37 @@ public class CustomerController {
 			model.addAttribute("memberInfo", mD.getMemberInfo());
 		}
 		
-		int result=0;
+		System.out.println("CustomerController customLike start");
+		
+		int result = as.customLike(article);
+		
+//		int brd_id = article.getBrd_id();
+//		int art_id = article.getArt_id();
+		model.addAttribute("article", article);
+		model.addAttribute("category", category);
+		
+		return result;
+	}
+	
+	// 비추천
+	@ResponseBody
+	@RequestMapping(value = "/board/customer/shcustomDislike")
+	public int customDislike(@AuthenticationPrincipal MemberDetails mD,
+							Article article, Integer category, Model model,		
+							RedirectAttributes redirectAttributes,
+							HttpServletRequest request, HttpServletResponse response) {
+		if (mD != null) {
+			model.addAttribute("memberInfo", mD.getMemberInfo());
+		}
+		
+		System.out.println("CustomerController customDislike start");
+		
+		int result = as.customDislike(article);
+		
+//		int brd_id = article.getBrd_id();
+//		int art_id = article.getArt_id();
+		model.addAttribute("article", article);
+		model.addAttribute("category", category);
 		
 		return result;
 	}

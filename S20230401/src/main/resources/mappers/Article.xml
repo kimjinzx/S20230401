@@ -1166,6 +1166,8 @@
        	</choose>
 	</select>
 	
+	
+	<!-- 목록 리스트 검색포함-->
 	<select id="shListCustomer" parameterType="Article" resultType="Article">
 		SELECT *
   		FROM 
@@ -1193,12 +1195,17 @@
 	            <when test="search == 'shs_nickname'">
 	                AND M.MEM_NICKNAME LIKE '%' || #{search_keyword} || '%'
 	            </when>
+	            <when test="search == 'articleTag'">
+	       			AND (A.ART_TAG1||A.ART_TAG2||A.ART_TAG3||A.ART_TAG4||A.ART_TAG5) LIKE '%'|| #{search_keyWord} ||'%'
+	       		</when>
 	            <otherwise></otherwise>
         	</choose>
     		ORDER BY A.ART_ID DESC
   			)
   		WHERE RN BETWEEN #{start} AND #{end} AND isdelete=0
 	</select>
+	
+	<!-- 메뉴 -->
 	
 	<select id="shListCustomerMenu" parameterType="Article" resultType="Article">
 		SELECT *
@@ -1219,6 +1226,8 @@
   			)
   		WHERE RN BETWEEN #{start} AND #{end} AND isdelete=0
 	</select>
+	
+	<!-- 게시판 상세보기 -->
 		
 	<select id="shCustomerDetail" parameterType="Article" resultType="Article">
         	 SELECT A.*, M.MEM_NICKNAME, M.MEM_IMAGE, NVL(R.REP_COUNT, 0) REP_COUNT
@@ -1231,10 +1240,14 @@
 			 	 		WHERE A.ART_ID = #{art_id} AND A.BRD_ID = #{brd_id} and A.isdelete=0
 	</select>
 	
+	<!-- 게시판 글쓰기 -->
+	
 	<insert id="shInsertCustomer" parameterType="Article">
     INSERT INTO article (art_id, brd_id, art_title, mem_id, art_content, art_regdate, art_tag1, art_tag2, art_tag3, art_tag4, art_tag5, art_good, art_bad, art_read, art_isnotice, isdelete) 
     VALUES ((Select max(art_id) + 1 from article where brd_id = #{brd_id}), #{brd_id}, #{art_title}, #{mem_id}, #{art_content}, SYSDATE, #{art_tag1}, #{art_tag2}, #{art_tag3}, #{art_tag4}, #{art_tag5}, 0, 0, 0, 0, 0)
 	</insert>
+	
+	<!-- 게시판 수정하기 -->
 	
 	<update id="shCustomerUpdate" parameterType="Article">
 		UPDATE article
@@ -1249,11 +1262,15 @@
 		WHERE brd_id = #{brd_id} AND art_id = #{art_id}
 	</update>
 	
+	<!-- 게시판 글삭제하기 -->
+	
 	<update id="shDeleteCustomer" parameterType="Article">
 		UPDATE article
 		SET isdelete = 1
 		WHERE art_id = #{art_id} AND brd_id = #{brd_id}
 	</update>
+	
+	<!-- 조회수 -->
 	
 	<update id="shViewCount" parameterType="Article">
 		UPDATE article
@@ -1261,57 +1278,17 @@
 		WHERE art_id = #{art_id} AND brd_id = #{brd_id} AND isdelete = 0
 	</update>
 	
-<!-- 	<select id="shCustomerSearch" parameterType="Article" resultType="Article">
-		SELECT *
-		FROM 
-			(
-		    SELECT ROWNUM RN, A.*, M.MEM_NICKNAME, M.MEM_IMAGE, NVL(R.REP_COUNT, 0) REP_COUNT
-		    FROM ARTICLE A
-		    LEFT JOIN MEMBER M ON A.MEM_ID = M.MEM_ID
-		    LEFT JOIN 
-		    (
-		        SELECT ART_ID, BRD_ID, COUNT(*) REP_COUNT
-		        FROM REPLY
-		        GROUP BY ART_ID, BRD_ID
-		    ) R
-	    ON A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID
-	    
-	    WHERE (
-	    	<choose>
-	    		<when test="brd_id == 1500">
-	    			A.BRD_ID between 1500 and 1599
-	    		</when>
-	    		<otherwise>
-	    			A.BRD_ID = #{brd_id}
-	    		</otherwise>
-	    	</choose>
-	    AND A.isdelete = 0 )
+	<!-- 추천 비추천 -->
 	
-	    AND (
-	        <choose>
-	            <when test="search == 'shs_title'">
-	                A.ART_TITLE LIKE '%' || #{search_keyword} || '%'
-	            </when>
-	            <when test="search == 'shs_content'">
-	                A.ART_CONTENT LIKE '%' || #{search_keyword} || '%'
-	            </when>
-	            <when test="search == 'shs_title_content'">
-	                (A.ART_TITLE || ' ' || A.ART_CONTENT) LIKE '%' || #{search_keyword} || '%'
-	            </when>
-	            <when test="search == 'shs_nickname'">
-	                M.MEM_NICKNAME LIKE '%' || #{search_keyword} || '%'
-	            </when>
-	            <otherwise>
-	                1=0
-	            </otherwise>
-	        </choose>
-		    )
-		    ORDER BY A.ART_ID DESC
-		)
-		WHERE RN BETWEEN #{start} AND #{end} AND isdelete = 0 
-	</select> -->
+	<update id="shCustomLike" parameterType="Article">
+		UPDATE article SET art_good = art_good + 1
+		WHERE art_id = #{art_id} AND brd_id = #{brd_id}
+	</update>
 	
-	
+	<update id="shCustomDislike" parameterType="Article">
+		UPDATE article SET art_bad = art_bad + 1
+		WHERE art_id = #{art_id} AND brd_id = #{brd_id}
+	</update>
 	
 	
 	

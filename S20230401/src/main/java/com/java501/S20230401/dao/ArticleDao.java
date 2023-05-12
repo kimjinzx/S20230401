@@ -113,12 +113,14 @@ public interface ArticleDao {
 	Article 		detailCustomer(Article article);
 	List<Article> 	listCustomerMenu(Article article);
 	int 			insertCustomer(Article article);
-	int updateCustomer(Article article);
-	int deleteCustomer(Article article);
-	Integer customerViewCount(Article article);
-	int totalCustomer(Article article);
-	List<Article> shCustomerSearch(Article article);
-
+	int 			updateCustomer(Article article);
+	int 			deleteCustomer(Article article);
+	Integer 		customerViewCount(Article article);
+	int 			totalCustomer(Article article);
+	List<Article> 	shCustomerSearch(Article article);
+	int 			customLike(Article article);
+	int 			customDislike(Article article);
+	
 	
 	
 	// 김진현
@@ -144,6 +146,7 @@ public interface ArticleDao {
 	public Article 			joinDeny2(Article article);
 	public Article          joinAccept2(Article article);
 	public int              payCompleted2(int trd_id);
+
 	
 	
 }

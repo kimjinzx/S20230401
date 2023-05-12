@@ -1013,7 +1013,26 @@ public class ArticleDaoImpl implements ArticleDao {
 		return shCustomerSearch;
 	}
 	
-	
+	@Override
+	public int customLike(Article article) {
+		int result = 0;
+		try {
+			result = session.update("shCustomLike", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	@Override
+	public int customDislike(Article article) {
+		int result = 0;
+		try {
+			result = session.update("shCustomDislike", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 	
 	
@@ -1255,5 +1274,6 @@ public class ArticleDaoImpl implements ArticleDao {
 			}
 			return payCompleted;
 		}
+
 
 }

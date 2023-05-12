@@ -19,6 +19,9 @@ import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Join;
 import com.java501.S20230401.model.Region;
 import com.java501.S20230401.util.SummaryType;
+
+import groovyjarjarantlr4.v4.parse.GrammarTreeVisitor.astOperand_return;
+
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Region;
 import com.java501.S20230401.model.MemberInfo;
@@ -586,7 +589,17 @@ public class ArticleServiceImpl implements ArticleService {
 		return shCustomerSearch;
 	}
 	
+	@Override
+	public int customLike(Article article) {
+		int result = ad.customLike(article);
+		return result;
+	}
 	
+	@Override
+	public int customDislike(Article article) {
+		int result = ad.customDislike(article);
+		return result;
+	}
 	
 	
 	
@@ -750,5 +763,6 @@ public class ArticleServiceImpl implements ArticleService {
 	public int jhWaitListYN(Article article) {
 		return wd.jhWaitListYN(article);
 	}
+
 	
 }
