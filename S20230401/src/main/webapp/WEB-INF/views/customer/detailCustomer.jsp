@@ -179,7 +179,7 @@
 		<tbody>
 			<tr>
 				<th>작성자</th>
-				<td colspan="3"><img src="${pageContext.request.contextPath}/uploads/profile/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">${article.mem_nickname}</td>
+				<td colspan="3"><img src="${pageContext.request.contextPath}/image/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">${article.mem_nickname}</td>
 			</tr>
 			<tr>
 				<th>작성일</th>
@@ -214,14 +214,12 @@
 			</tbody>
 			</table>
   			
-<%-- 			<tr><th>추천</th><td>${article.art_good}</td></tr>
-			<tr><th>비추천수</th><td>${article.art_bad}</td></tr> --%>
+
 		<p align= "right">  			
   		<c:choose>
 			<c:when test="${memberInfo.mem_id != null && memberInfo.mem_id == article.mem_id }">
 				<input type="button" value="글 수정" onclick="location.href='${pageContext.request.contextPath}/board/customer/updateFormC?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category}'">
-				<input type="button" value="글 삭제" onclick="location.href='${pageContext.request.contextPath}/board/customer/deleteCustomer?art_id=${article.art_id }&brd_id=${article.brd_id }&category=${category}'">
-			</c:when>
+				<input type="button" value="글 삭제" onclick="location.href='${pageContext.request.contextPath}/board/customer/deleteCustomer?art_id=${article.art_id }&brd_id=${article.brd_id }&category=${category}'">			</c:when>
 		</c:choose>
   				<input type="button" value="목록" onclick="location.href='${pageContext.request.contextPath}/board/customer?category=${category}'">
 		</p>

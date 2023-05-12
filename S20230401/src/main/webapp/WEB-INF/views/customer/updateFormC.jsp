@@ -176,7 +176,7 @@
 				<input type="hidden" name="art_id" value="${article.art_id}">
 				<input type="hidden" name="category" value="${category}">
 			<table>
-				<tr><th>작성자</th><td><img src="${pageContext.request.contextPath}/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">${article.mem_nickname}</td></tr>
+				<tr><th>작성자</th><td><img src="${pageContext.request.contextPath}/uploads/profile/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">${article.mem_nickname}</td></tr>
 				<tr><th>분류</th><td>
 				<select name="brd_id" id="brd_id">
 		      		<option value="1510" ${article.brd_id == 1510 ? 'selected' : ''}>공지</option>

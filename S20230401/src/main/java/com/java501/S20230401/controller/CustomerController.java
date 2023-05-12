@@ -82,20 +82,21 @@ public class CustomerController {
 	}
 	
 	// 게시글, 댓글
-	@GetMapping(value = "/board/customer/detailCustomer")
-//	@GetMapping(value = "/board/customer/{art_id}")
-//  @PathVariable("art_id") String art_id,
-	public String detailCustomer(@AuthenticationPrincipal MemberDetails mD,
+//	@GetMapping(value = "/board/customer/detailCustomer")
+	@GetMapping(value = "/board/customer/{art_id}")
+	public String detailCustomer(@AuthenticationPrincipal MemberDetails mD, @PathVariable("art_id") String art_id,
 								HttpServletRequest request, HttpServletResponse response,
 								Article article, Integer category, Model model) {
-//		article.setArt_id(Integer.parseInt(art_id));
-		System.out.println("CustomerController Start detailCustomer...");
+		
+		// url
+		article.setArt_id(Integer.parseInt(art_id));
 		
 		// 유저 권한 확인
 		if (mD != null) {
 			model.addAttribute("memberInfo", mD.getMemberInfo());
 		}
 	
+		System.out.println("CustomerController Start detailCustomer...");
 		
 		
 		
@@ -132,17 +133,11 @@ public class CustomerController {
 //		///////
 		
 		
-//		1. ArticleService안에 detailCustomer method 선언
-//		   1) parameter : brd_id
-//		   2) Return      Article
-//
 		as.customerViewCount(article);
 		
 		Article customerDetail = as.detailCustomer(article);
 		
-//		2. ArticleDao   detailCustomer method 선언 
-////		                    mapper ID   ,    Parameter
-//		article = session.selectOne("shCustomerDetail",    brd_id);
+
 		System.out.println("댓글 갯수세기 시작");
 		// 댓글 총갯수세기
 		System.out.println("아티클수"+article);
@@ -163,7 +158,7 @@ public class CustomerController {
 		return "/customer/detailCustomer";
 	}
 	
-	
+	//게시글쓰기
 	
 	@RequestMapping(value = "/board/customer/customerWriteForm")
 	public String customerWriteForm(@AuthenticationPrincipal MemberDetails mD,
@@ -196,6 +191,8 @@ public class CustomerController {
 		}	
 	}
 	
+	//댓글작성
+	
 	@PostMapping(value = "/board/customer/shcustomerWriteReply")
 	public String customerWriteReply(@AuthenticationPrincipal MemberDetails mD,
 									Reply reply, Model model) {
@@ -207,7 +204,7 @@ public class CustomerController {
 		int cReplyWrite = rs.customerWriteReply(reply);
 		model.addAttribute("cReplyW", cReplyWrite);
 		
-		return "redirect:/board/customer/detailCustomer?art_id="+reply.getArt_id()+"&brd_id="+reply.getBrd_id()+"&category="+reply.getBrd_id();   
+		return "redirect:/board/customer/"+reply.getArt_id()+"?brd_id="+reply.getBrd_id()+"&category="+reply.getBrd_id();   
 	}
 	
 	@RequestMapping(value = "board/customer/customerDeleteReply")
@@ -220,7 +217,7 @@ public class CustomerController {
 		int deleteResult = rs.customerDeleteReply(reply);
 		model.addAttribute("deleteResult", deleteResult);
 		
-		return "redirect:/board/customer/detailCustomer?art_id="+reply.getArt_id()+"&brd_id="+reply.getBrd_id()+"&category="+reply.getBrd_id();
+		return "redirect:/board/customer/"+reply.getArt_id()+"?brd_id="+reply.getBrd_id()+"&category="+reply.getBrd_id();
 	}
 	
 	@RequestMapping(value = "board/customer/customerUpdateReply")
@@ -234,7 +231,7 @@ public class CustomerController {
 		int upRResult = rs.customerUpdateReply(reply);
 		model.addAttribute("upRResult", upRResult);
 		
-		return "redirect:/board/customer/detailCustomer?art_id="+article.getArt_id()+"&brd_id="+article.getBrd_id()+"&category="+category;
+		return "redirect:/board/customer/"+article.getArt_id()+"?brd_id="+article.getBrd_id()+"&category="+category;
 	}
 	
 	
@@ -254,10 +251,13 @@ public class CustomerController {
 		return "/customer/updateFormC";
 	}
 	
+	//글 수정
 	
 	@PostMapping(value = "/board/customer/updateCustomer")
-	public String updateCustomer(@AuthenticationPrincipal MemberDetails mD,
+	public String updateCustomer(@AuthenticationPrincipal MemberDetails mD, //@PathVariable("art_id") String art_id,
 								Article article, Integer category, Model model) {
+		
+//		article.setArt_id(Integer.parseInt(art_id));
 		if (mD != null) {
 			model.addAttribute("memberInfo", mD.getMemberInfo());
 		}
@@ -269,8 +269,10 @@ public class CustomerController {
 		model.addAttribute("upCnt", update);
 		
 		
-		return "redirect:/board/customer/detailCustomer?art_id="+article.getArt_id()+"&brd_id="+article.getBrd_id()+"&category="+category;
+		return "redirect:/board/customer/"+article.getArt_id()+"?brd_id="+article.getBrd_id()+"&category="+category;
 	}
+	
+	//글 삭제
 	
 	@RequestMapping(value = "/board/customer/deleteCustomer")
 	public String deleteCustomer(@AuthenticationPrincipal MemberDetails mD,
@@ -286,6 +288,8 @@ public class CustomerController {
 		
 		return "redirect:/board/customer?category="+category;
 	}
+	
+	//글 검색
 	
 	@RequestMapping(value = "/board/customer/shSearch")
 	public String shSearch(@AuthenticationPrincipal MemberDetails mD,
@@ -311,5 +315,46 @@ public class CustomerController {
 		return "redirect:/board/customer?category="+category;
 	}
 	
-	
+	@RequestMapping(value = "/board/customer/recomm")
+	public int customRecomm (@AuthenticationPrincipal MemberDetails mD,
+							Article article, Integer category, Model model,		
+							RedirectAttributes redirectAttributes,
+							HttpServletRequest request, HttpServletResponse response) {
+		if (mD != null) {
+			model.addAttribute("memberInfo", mD.getMemberInfo());
+		}
+		
+		int result=0;
+		
+		return result;
+	}
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
