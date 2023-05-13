@@ -1602,7 +1602,7 @@
 	</select>
 	
 	<select id="JHRepList" parameterType="Article" resultType="Article">
-		SELECT r.*, m.mem_nickname
+		SELECT r.*, m.mem_nickname, m.mem_image
 		FROM reply r
 		LEFT JOIN member m
 		ON r.mem_id = m.mem_id

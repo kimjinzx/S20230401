@@ -76,7 +76,8 @@ public class DutchpayController {
 	@RequestMapping(value ="/board/dutchpay/{art_id}") //상세 게시글    
 	public String dutchpayDetail(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails
 							   , HttpServletRequest request, HttpServletResponse response
-							   , @PathVariable("art_id") String art_id) {
+							   , @PathVariable("art_id") String art_id
+							   ) {
 		
 		article.setArt_id(Integer.parseInt(art_id));
 		
@@ -307,8 +308,9 @@ public class DutchpayController {
 	}
 	
 	//detail에서 쓰던 brd_id,article_id,trd_id들을 가져온 updateForm에서 그것들을 사용해 update
-	@PostMapping(value = "dutchpay/dutchpayUpdatePro") //글내용 수정(update)
-	public String update(Article article, RedirectAttributes ra, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
+	@PostMapping(value = "/dutchpay/dutchpayUpdatePro") //글내용 수정(update)
+	public String update(Article article, RedirectAttributes ra, Model model
+						, @AuthenticationPrincipal MemberDetails memberDetails) {
 		
 		if (memberDetails != null)
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
@@ -323,8 +325,10 @@ public class DutchpayController {
 		ra.addFlashAttribute("article", article);  
 		
 		int brd_id = article.getBrd_id();
+		int art_id = article.getArt_id();
 		return "redirect:/board/dutchpay?category="+brd_id;
 	}
+	
 	@ResponseBody
 	@PostMapping(value = "/dutchpay/dutchpayDelete") //게시글 삭제
 	public String delete(Article article, RedirectAttributes ra, Model model , @AuthenticationPrincipal MemberDetails memberDetails) {

@@ -98,12 +98,11 @@
 	
 	function goJoinAccept(p_trd_id, p_mem_id, p_brd_id, p_art_id) {
 		if (confirm("신청을 수락 하시겠습니까?") == true){    
-			location.href="/dutchpay/JoinDeny?trd_id="+p_trd_id+"&mem_id="+p_mem_id+"&brd_id="+p_brd_id+"&art_id="+p_art_id;
+			location.href="/dutchpay/JoinAccept?trd_id="+p_trd_id+"&mem_id="+p_mem_id+"&brd_id="+p_brd_id+"&art_id="+p_art_id;
 			 }else{   
 			     return false;
 			 }
-		location.href="/dutchpay/JoinAccept?trd_id="+p_trd_id+"&mem_id="+p_mem_id+"&brd_id="+p_brd_id+"&art_id="+p_art_id;
-	}
+	} 
 	
 	function goJoinDeny(p_trd_id, p_mem_id, p_brd_id, p_art_id) {
 		if (confirm("신청을 거절 하시겠습니까?") == true){    
@@ -247,8 +246,8 @@
 	 				}
 	 	  		});
 	 		  }
-
-</script>
+	
+	</script>
 </head>
 <body>
 	<header>
@@ -416,14 +415,17 @@
 						<input type="hidden" name="trd_id" value="${detail.trd_id }">
 						<input type="hidden" name="mem_id" value="${detail.mem_id }">
 						<input type="hidden" name="report_id" value="${detail.report_id }">
+<%--  						<input type="hidden" name="category" value="${category}">
+ --%> 						
+						
 						
 					
 					<!-- 카테고리 표시 -->
 					<div class="article-category display-flex justify-content-space-between align-items-center">
 						<span class="category-name">
-							<a href="${pageContext.request.contextPath}/board/share?category=${detail.brd_id - (detail.brd_id % 100) }"><span style="color: rgba(var(--theme-font-rgb), 0.5);">같이사요</span></a>
+							<a href="${pageContext.request.contextPath}/board/dutchpay?category=${detail.brd_id - (detail.brd_id % 100) }"><span style="color: rgba(var(--theme-font-rgb), 0.5);">같이사요</span></a>
 							<span class="margin-hor-2_5px" style="color: rgba(var(--theme-font-rgb), 0.5);">&gt;</span>
-							<a class="font-weight-bolder" style="color: var(--subtheme)" href="${pageContext.request.contextPath}/board/share?category=${detail.brd_id}">${detail.brd_name}</a>
+							<a class="font-weight-bolder" style="color: var(--subtheme)" href="${pageContext.request.contextPath}/board/dutchpay?category=${detail.brd_id}">${detail.comm_value}</a>
 							
 						</span>
 						<span class="only-for-member display-flex justify-content-flex-end align-items-center">
@@ -432,7 +434,7 @@
 								<button id="btns-artUpdate" class="adv-hover" onclick="location.href='${pageContext.request.contextPath }/dutchpay/dutchpayUpdateForm?art_id=${detail.art_id}&brd_id=${detail.brd_id}'">수정</button>
 								<button id="btns-artDelete" class="adv-hover" onclick="goDelete(${detail.brd_id},${detail.art_id })">삭제</button>
 							</c:if>
-							<button class="adv-hover" onclick="location.href='${pageContext.request.contextPath}/board/share?category=${category}';">목록</button>
+ 							<button class="adv-hover" onclick="location.href='${pageContext.request.contextPath}/board/dutchpay?category=${detail.brd_id}'">목록</button>
 						</span>
 					</div>
 				</div>
@@ -440,7 +442,7 @@
 				<!-- 글 제목 및 상태 -->
 				<div class="article-title" style="border: 2px solid rgba(128, 128, 128, 0.5); border-width: 2px 0;">
 					<div class="title-status">
-						<c:if test="${detail.status_name != null}"><button class="btn font-weight-bold">${detail.status_name}</button></c:if>
+						<c:if test="${detail.comm_value != null}"><button class="btn font-weight-bold">${detail.comm_value}</button></c:if>
 					</div>
 					<div class="title-subject">
 						<span class="font-size-20px font-weight-bold">${detail.art_title}</span>
@@ -615,9 +617,9 @@
 								</div>
 								<div class="btns-trade">
 									<c:choose>
-<%-- 										<c:when test="${memberInfo.mem_id != null }">
- --%>										 <c:when test="${waitListCount == 0 && joinListCount == 0 && joinList.size() < detail.trd_max}"> --%>
-											<button class="btns-action" id="btns-apply"  onclick="goApplyBtn(${memberInfo.mem_id},${detail.trd_id},${detail.brd_id},${detail.art_id},${detail.trd_max})">신청</button>
+ 										<c:when test="${memberInfo.mem_id != null }">
+<%--  										 <c:when test="${waitListCount == 0 && joinListCount == 0 && joinList.size() < detail.trd_max}"> 
+ --%>											<button class="btns-action" id="btns-apply"  onclick="goApplyBtn(${memberInfo.mem_id},${detail.trd_id},${detail.brd_id},${detail.art_id},${detail.trd_max})">신청</button>
 										</c:when>
 										<c:when test="${joinList.size() == detail.trd_max}">
 											<button class="btns-action" id="btns-end">모집 완료</button>
@@ -644,9 +646,9 @@
 				<div class="reply-list padding-hor-0">
 					<div class="list-toggle display-flex justify-content-flex-start align-items-center padding-hor-0" style="padding-bottom: 10px; border-bottom: 1px solid rgba(128, 128, 128, 0.5);">
 						<c:choose>
-							<c:when test="${detail.rep_cnt > 0}">
+							<c:when test="${detail.reply_count > 0}">
 								<span class="font-size-24px font-weight-bolder color-subtheme">댓글</span>
-								<span class="font-size-14px font-weight-bold color-theme-font margin-left-10px" style="color: rgba(var(--theme-font-rgb), 0.5);">(${detail.rep_cnt})</span>
+								<span class="font-size-14px font-weight-bold color-theme-font margin-left-10px" style="color: rgba(var(--theme-font-rgb), 0.5);">(${detail.reply_count})</span>
 								<button id="btns-show" style="display: none;">▶ 펼치기</button>
 								<button id="btns-hide">▼ 접기</button>
 							</c:when>
@@ -681,7 +683,7 @@
 										<button class="btns-repWrite font-weight-bolder">댓글 달기</button>
 										<button class="btns-repUpdate font-weight-bolder">수정</button>
 										<button class="btns-repComplete font-weight-bolder" style="display: none;" onclick="rep_Update(${status.index})">완료</button>
-										<button class="btns-delete font-weight-bolder" onclick="rep_delete(${detail.brd_id},${detail.art_id},${Rep.rep_id})">삭제</button>
+										<button class="btns-delete font-weight-bolder" onclick="goreplyDelete(${detail.brd_id},${detail.art_id },${Rep.rep_id })">삭제</button>
 										<button class="btns-cancel font-weight-bolder" style="display: none;">취소</button>
 									</c:if>
 									<div class="modal-report padding-0" style="width: 24px; height: 24px;">
@@ -702,10 +704,10 @@
 							
 							<!-- 댓글의 댓글 작성 -->
 							<div class="reply-replyWrite" style="display: none; margin-left: 10%">
-								<form action="${pageContext.request.contextPath}/board/dutchpay/replyInsert" method="post">
+								<form action="${pageContext.request.contextPath}" method="post">
 									<div class="form-box display-flex flex-direction-column justify-content-flex-start align-items-stretch" style="border: 2px solid var(--subtheme); border-radius: 5px;">
-										<input type="hidden" id="brd_id${status.index}" name="brd_id"    value="${article.brd_id}">
-										<input type="hidden" id="art_id${status.index}" name="art_id"    value="${article.art_id}">
+										<input type="hidden" id="brd_id${status.index}" name="brd_id"    value="${detail.brd_id}">
+										<input type="hidden" id="art_id${status.index}" name="art_id"    value="${detail.art_id}">
 										<input type="hidden" id="rep_id${status.index}" name="rep_id"    value="${Rep.rep_id}">
 										<input type="hidden" name="category"    value="${category}">
 										<input type="hidden" name="rep_parent"value="${Rep.rep_parent}">
@@ -727,10 +729,10 @@
 					<div class="reply-write">
 						<c:choose>
 							<c:when test="${memberInfo != null}">
-								<form action="${pageContext.request.contextPath}/board/share/replyForm" method="post">
+								<form action="${pageContext.request.contextPath}/board/dutchpay/replyInsert" method="post">
 									<div class="form-box display-flex flex-direction-column justify-content-flex-start align-items-stretch" style="border: 2px solid var(--subtheme); border-radius: 5px;">
-										<span><input type="hidden" name="brd_id"    value="${article.brd_id}"></span>
-										<span><input type="hidden" name="art_id"    value="${article.art_id}"></span>
+										<span><input type="hidden" name="brd_id"    value="${detail.brd_id}"></span>
+										<span><input type="hidden" name="art_id"    value="${detail.art_id}"></span>
 										<span><input type="hidden" name="category"    value="${category}"></span>
 										<div class="display-flex flex-direction-column justify-content-flex-start align-items-stretch">
 											<div class="display-flex justify-content-space-between align-items-center" style="border-bottom: 1px solid rgba(var(--subtheme-rgb), 0.5);">

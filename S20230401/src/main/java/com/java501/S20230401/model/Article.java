@@ -132,5 +132,6 @@ public class Article {
 	//김진현 
 	private Integer		reply_count; // (조회수 오라클 함수)
 	private String 		trd_saveEnddate; // 마감날짜 작업을 위해 string으로 하나 더 만들었습니다.	
+	private int			category;
 
 }
