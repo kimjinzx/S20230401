@@ -61,7 +61,36 @@
 		editor = new Quill('#' + id, option);
 	};
 	var editor;
+	var observers = [];
+	const setObserver = (target, index) => {
+		const config = { attributes: true, childList: false, characterData: false };
+		const tradeFix = (mutationList, observer) => {
+			mutationList.forEach(mutation => {
+				//console.log(mutation);
+				if (mutation.attributeName == 'disabled' && $(mutation.target).attr('disabled') == false) {
+					$(mutation.target).attr('disabled', true);
+				}
+			});
+		};
+		const observer = new MutationObserver(tradeFix);
+		observer.observe(target, config);
+		observers.push({[index]: observer});
+	};
 	$(() => {
+		// disable fix용 코드
+		$('.trade-info-box').find('button, input').each((index, item) => {
+			setObserver(item, index);
+		});
+		// tag loading 코드
+		for (let i = 1; i <= 5; i++) {
+			let tag_value = $('#art_tag' + i).val();
+			if (!tag_value) continue;
+			let elem = '<div class="tag-box-tag"><span class="tag-box-tag-value">' + tag_value + '</span><button class="tag-box-tag-remove adv-hover" type="button"><svg class="tag-box-tag-remove-svg" width="10" height="10" viewBox="0 0 12 12" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M 2 2 L 10 10 M 10 2 L 2 10"/></svg></button></div>';
+			$('#tag-box').append(elem);
+			$('#tag-box').find('div.tag-box-tag:last-child > button.tag-box-tag-remove').click(e => {
+				$(e.target).parent().remove();
+			});
+		}
 		// checkbox 이벤트
 		$('#btns-checkbox').change(()=>{
 			if($('#btns-checkbox').is(':checked')){
@@ -73,6 +102,10 @@
 		});
 		// Load Editor
 		quillInit('articleEditor');
+		
+		// 게시글 컨텐츠 로드
+		let delta = editor.clipboard.convert($('#art_content').val());
+		editor.setContents(delta, 'silent');
 		
 		// input keydown event
 		$('form input').keydown(e => {
@@ -174,10 +207,10 @@
 					<div class="form-group display-flex justify-content-flex-start align-items-center">
 						<label for="category" class="margin-right-5px">카테고리</label>
 						<select name="brd_id" id="brd_id">
-							<option value="1210" ${category == 1210? 'selected':''}>식품</option>
-							<option value="1220" ${category == 1220? 'selected':''}>패션/잡화</option>
-							<option value="1230" ${category == 1230? 'selected':''}>가전/가구</option>
-							<option value="1240" ${category == 1240? 'selected':''}>기타</option>
+							<option value="1210" ${article.brd_id == 1210? 'selected':''}>식품</option>
+							<option value="1220" ${article.brd_id == 1220? 'selected':''}>패션/잡화</option>
+							<option value="1230" ${article.brd_id == 1230? 'selected':''}>가전/가구</option>
+							<option value="1240" ${article.brd_id == 1240? 'selected':''}>기타</option>
 						</select>
 					</div>
 					
@@ -193,15 +226,15 @@
 
 				<div class="form-group display-flex justify-content-flex-start align-items-center">
 					<label for="article-title" class="margin-right-5px width-50px">제목</label>
-					<input type="text" class="flex-grow-1" id="article-title" name="art_title" placeholder="제목" required="required">
+					<input type="text" class="flex-grow-1" id="article-title" name="art_title" placeholder="제목" value="${article.art_title }" required="required">
 				</div>
 				
 				<div class="form-group flex-grow-1 display-flex justify-content-flex-end align-items-center">
-					<input type="hidden" id="art_tag1" name="art_tag1">
-					<input type="hidden" id="art_tag2" name="art_tag2">
-					<input type="hidden" id="art_tag3" name="art_tag3">
-					<input type="hidden" id="art_tag4" name="art_tag4">
-					<input type="hidden" id="art_tag5" name="art_tag5">
+					<input type="hidden" id="art_tag1" name="art_tag1" ${article.art_tag1 != null ? 'value="'.concat(article.art_tag1).concat('"') : '' }>
+					<input type="hidden" id="art_tag2" name="art_tag2" ${article.art_tag2 != null ? 'value="'.concat(article.art_tag2).concat('"') : '' }>
+					<input type="hidden" id="art_tag3" name="art_tag3" ${article.art_tag3 != null ? 'value="'.concat(article.art_tag3).concat('"') : '' }>
+					<input type="hidden" id="art_tag4" name="art_tag4" ${article.art_tag4 != null ? 'value="'.concat(article.art_tag4).concat('"') : '' }>
+					<input type="hidden" id="art_tag5" name="art_tag5" ${article.art_tag5 != null ? 'value="'.concat(article.art_tag5).concat('"') : '' }>
 					<label class="margin-right-5px width-50px">태그</label>
 					<div class="input-box display-flex justify-content-flex-start align-items-center" style="border-bottom: 2.5px solid rgba(128, 128, 128, 0.5); margin: 0; flex-grow: 1;" onclick="$('#tag-input').focus();">
 						<div id="tag-box">
@@ -212,17 +245,17 @@
 				</div>
 				
 				<!-- 글 내용 -->
-				<input type="hidden" id="art_content" name="art_content" required>
+				<input type="hidden" id="art_content" name="art_content" value="<c:out value="${article.art_content }" escapeXml="true"/>" required>
 				<div id="articleEditor"></div>
 				
 				<!-- 거래 정보 -->
-				<div class="trade-info-box padding-10px display-flex flex-direction-column justify-content-flex-start align-items-stretch" style="border: 2px solid var(--subtheme); border-radius: 5px;">
+				<div class="trade-info-box padding-10px display-flex flex-direction-column justify-content-flex-start align-items-stretch" style="border: 2px solid var(--subtheme); border-radius: 5px;${isAnyoneJoined ? ' opacity: 0.5; pointer-events: none;' : ''}">
 					<h2 class="text-align-center color-subtheme font-weight-bolder" style="margin: 10px; padding-bottom: 20px; border-bottom: 1px solid rgba(128, 128, 128, 0.5);">거래 정보</h2>
 					<div class="display-flex justify-content-space-between align-items-center padding-10px">
 						<div class="form-group" style="display: flex;">
 							<div class="popup-group">
 								<label for="reg_id-button">지역 제한</label>
-								<button type="button" id="region" name="reg_id-button" class="togglePopup theme-button" style="border-color: rgba(128, 128, 128, 0.5);"></button>
+								<button type="button" id="region" name="reg_id-button" class="togglePopup theme-button" style="border-color: rgba(128, 128, 128, 0.5);" ${isAnyoneJoined ? 'disabled' : '' }></button>
 								<div id="region-popup" class="popup-window" style="bottom: 32px; right: auto; left: 81.28px; padding: 0;">
 									<div style="position: relative;">
 										<button type="button" class="subitem-header adv-hover" onclick="$('#reg_id').removeAttr('value'); $('#region').text(''); $('#region-popup').toggle();">없음</button>
@@ -246,42 +279,43 @@
 						
 						<div class="form-group flex-grow-1 margin-left-10px display-flex justify-content-flex-end align-items-center">
 							<label for="trade_trd_loc" class="margin-right-5px">상세 지역</label>
-							<input type="text" class="flex-grow-1" name="trade.trd_loc" placeholder="상세한 지역을 기입해주세요">
+							<input type="text" class="flex-grow-1" name="trade.trd_loc" placeholder="상세한 지역을 기입해주세요" value="${article.trade.trd_loc }" ${isAnyoneJoined ? 'disabled' : '' }>
 						</div>
 					</div>
 					
 					<div class="form-group display-flex justify-content-space-between align-items-center padding-10px">
 						<div class="form-group display-flex justify-content-flex-start align-items-center">
 							<label for="deadline" class="margin-right-5px">마감일</label>
-							<input type="datetime-local" name="trade.trd_enddate">
+							<fmt:formatDate var="dateValue" value="${article.trade.trd_enddate }" pattern="yyyy-MM-dd hh:mm:ss"/>
+							<input type="datetime-local" name="trade.trd_enddate" required="required" value="${dateValue }" ${isAnyoneJoined ? 'disabled' : '' }>
 						</div>
 						
 						<div class="form-group display-flex justify-content-space-between align-items-center padding-10px">
 							<label for="trade.trd_cost" class="margin-right-5px">비용</label>
-							<input type="number" class="font-size-18px font-weight-bolder" name="trade.trd_cost" value="0" min="0" required="required">
+							<input type="number" class="font-size-18px font-weight-bolder" name="trade.trd_cost" value="${article.trade.trd_cost == null ? 0 : article.trade.trd_cost }" min="0" required="required" ${isAnyoneJoined ? 'disabled' : '' }>
 						</div>
 					</div>
 					
 					<div class="form-group display-flex justify-content-space-between align-items-center padding-10px">
 						<div class="form-group display-flex justify-content-flex-end align-items-center">
 							<label for="max-people" class="margin-right-5px">최대 인원</label>
-							<input type="number" class="width-50px" name="trade.trd_max" min="2" value="2" required="required">
+							<input type="number" class="width-50px" name="trade.trd_max" min="2" value="${article.trade.trd_max }" required="required" ${isAnyoneJoined ? 'disabled' : '' }>
 						</div>
 						
 						<div class="form-gender display-flex justify-content-flex-start align-items-center">
 							<label for="gender-limit" class="margin-right-5px">성별</label>
-							<select name="trade.trd_gender">
-								<option value="">제한 없음</option>
-								<option value="201">남자</option>
-								<option value="202">여자</option>
+							<select name="trade.trd_gender" ${isAnyoneJoined ? 'disabled' : '' }>
+								<option value="" ${article.trade.trd_gender == null ? 'selected' : '' }>제한 없음</option>
+								<option value="201" ${article.trade.trd_gender == 201 ? 'selected' : '' }>남자</option>
+								<option value="202" ${article.trade.trd_gender == 202 ? 'selected' : '' }>여자</option>
 							</select>
 						</div>
 	
 						<div class="form-age display-flex justify-content-flex-end align-items-center">
 							<label for="age-limit" class="margin-right-5px">나이</label> 
-							<input type="number" class="width-50px" name="trade.trd_minage" min="1" max="100" value="10">
+							<input type="number" class="width-50px" name="trade.trd_minage" min="1" max="100" value="${article.trade.trd_minage }" ${isAnyoneJoined ? 'disabled' : '' }>
 							<span class="margin-hor-5px font-weight-bolder">~</span>
-							<input type="number" class="width-50px" name="trade.trd_maxage" min="1" max="100" value="30">
+							<input type="number" class="width-50px" name="trade.trd_maxage" min="1" max="100" value="${article.trade.trd_maxage }" ${isAnyoneJoined ? 'disabled' : '' }>
 						</div>
 					</div>
 				</div>
