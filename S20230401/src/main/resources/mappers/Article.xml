@@ -999,14 +999,38 @@
 	
 	<!-- 김찬영 -->
 	<!-- 리스트 조회-->
- <select id="cyArticleTotal" resultType="int">
+<!-- 	 <select id="cyArticleTotal" resultType="int">
 		select Count(*) 
 		FROM article
 		where brd_id between 1400 and 1499
-	</select> 
+	</select>  -->
 		
 	<!-- 페이지 불러오기 -->
    	<select id="cyArticleListAll" parameterType="Article" resultType="Article">
+		SELECT *
+		FROM
+		(
+		    SELECT rownum rn, a.*, m.mem_nickname, m.mem_image
+		    FROM
+		        (SELECT *
+		         FROM article
+		         WHERE
+		            <choose>
+		                <when test="brd_id == 1400">
+		                    brd_id BETWEEN 1400 AND 1499
+		                </when>
+		                <otherwise>
+		                    brd_id = #{brd_id}
+		                </otherwise>
+		            </choose>
+		         AND isdelete = 0
+		         ORDER BY art_id) a
+		         JOIN member m ON a.mem_id = m.mem_id
+		)
+		WHERE rn BETWEEN #{start} AND #{end}
+	</select>  
+<!--    	<select id="cyArticleListAll" parameterType="Article" resultType="Article">
+		
 		SELECT *
 		FROM
 		(
@@ -1027,11 +1051,11 @@
 		     ORDER BY art_id) a
 		)
 			WHERE rn between #{start} and #{end}
-	</select>  
+	</select>   -->
 	<!-- 조회 -->
-	<select id="cycount" resultType="int">
+<!-- 	<select id="cycount" resultType="int">
 	 select count(brd_id) from article
-	</select>
+	</select> -->
 	
 	<!-- 검색 -->
 <!--  	<select id="cyArticleKeyword" parameterType="Article" resultType="Article">

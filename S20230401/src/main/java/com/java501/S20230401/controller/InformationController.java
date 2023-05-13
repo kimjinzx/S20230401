@@ -143,8 +143,10 @@ public class InformationController {
 	//댓글 작성
 	@PostMapping(value="/board/information/replyWrite")
 	public String write(@AuthenticationPrincipal MemberDetails memberDetails, Reply reply, Model model, Integer category) throws Exception {
-		if(memberDetails != null)
-		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		if(memberDetails != null) {
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+			reply.setMem_id(memberDetails.getMemberInfo().getMem_id());
+		}
 		System.out.println("reply write Start...");
 		
 		int result = rs.cywriteReply(reply);
