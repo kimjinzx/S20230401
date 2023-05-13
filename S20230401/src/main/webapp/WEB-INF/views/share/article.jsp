@@ -246,6 +246,7 @@
 					<div class="article-member" style="display: flex; align-items: center;">
 						<div class="modal-report display-flex justify-content-flex-start align-items-center padding-0">
 						<span id="member_nickname" class="font-weight-bolder margin-right-10px">${article.member.mem_nickname}</span>
+						<span id="member_username" style="color: rgba(var(--theme-font-rgb), 0.5);">${article.member.mem_username}</span>
 						<c:if test="${not empty memberInfo}">
 							<svg id="member-report" viewBox="0 0 512 512" width="24" height="24" style="fill: none; stroke: var(--warning); stroke-width: 32px; stroke-linecap: round; stroke-linejoin: round; cursor: pointer;"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z" style="stroke: none; fill: var(--warning);"/></svg>
 							<input type="hidden" id="member_id" value="${article.member.mem_id}">
@@ -258,7 +259,7 @@
 						<span>비추천 ${article.art_bad}</span>
 						<span>댓글 ${article.rep_cnt == null ? 0:article.rep_cnt}</span>
 						<span>조회수 ${article.art_read}</span>
-						<span>작성일 <fmt:formatDate value="${article.art_regdate}" pattern="yy.MM.dd HH:mm:ss"/></span>
+						<span>작성일 <fmt:formatDate value="${article.art_regdate}" pattern="yy.MM.dd HH:mm"/></span>
 					</div>
 				</div>
 				
@@ -387,6 +388,7 @@
 						<!-- 거래 신청, 찜 -->
 						<div class="share-btns">
 							<c:if test="${memberInfo != null}">
+							<!-- 찜 버튼 -->
 								<div class="btns-favorite">
 									<c:choose>
 										<c:when test="${userFavorite > 0}">
@@ -397,12 +399,13 @@
 										</c:when>
 									</c:choose>
 								</div>
+							<!-- 거래 버튼 -->
 								<div class="btns-trade">
 									<c:choose>
-										<c:when test="${userWaiting == 0 && userJoin == 0 && joinList.size() < article.trade.trd_max}">
+										<c:when test="${userWaiting == 0 && userJoin == 0 && joinList.size() < article.trade.trd_max && article.trade.trd_status == 401}">
 											<button class="btns-action" id="btns-apply">신청</button>
 										</c:when>
-										<c:when test="${joinList.size() == article.trade.trd_max}">
+										<c:when test="${joinList.size() == article.trade.trd_max || article.trade.trd_status > 401}">
 											<button class="btns-action" id="btns-end">모집 완료</button>
 										</c:when>
 									</c:choose>
