@@ -195,28 +195,28 @@
 					<input type="hidden" id="brd_id"    name="brd_id"    value="${article.brd_id}">
 					<input type="hidden" id="category"    name="category" value="${category}">
 					<input type="hidden" id="mem_id"    name="mem_id"    value="${article.mem_id}">
-					<input type="hidden" id="article_nickname"          value="${article.member.mem_nickname}">
+					<input type="hidden" id="article_nickname"          value="${article.mem_nickname}">
 					<input type="hidden" id="artReport_id"             value="${article.report_id}">
 					<input type="hidden" id="login_member"       name="login_member"    value="${memberInfo.mem_id}">
 					<input type="hidden" id="login_authority"    name="login_authority"    value="${memberInfo.mem_authority}">
+					</div>
 					<!-- 카테고리 표시 -->
 					<div class="article-category display-flex justify-content-space-between align-items-center">
 						<span class="category-name">
-							<a href="${pageContext.request.contextPath}/board/information?category=${article.brd_id - (article.brd_id % 100) }"><span style="color: rgba(var(--theme-font-rgb), 0.5);">나눔해요</span></a>
+							<a href="${pageContext.request.contextPath}/board/information?category=${article.brd_id - (article.brd_id % 100) }"><span style="color: rgba(var(--theme-font-rgb), 0.5);">정보공유</span></a>
 							<span class="margin-hor-2_5px" style="color: rgba(var(--theme-font-rgb), 0.5);">&gt;</span>
 							<a class="font-weight-bolder" style="color: var(--subtheme)" href="${pageContext.request.contextPath}/board/information?category=${article.brd_id}">${article.brd_name}</a>
 						</span>
 						<span class="only-for-member display-flex justify-content-flex-end align-items-center">
 							<!-- 글 수정 삭제 -->
 							<c:if test="${article.mem_id == memberInfo.mem_id || memberInfo.mem_authority >= 108}">
-								<button id="btns-artUpdate" class="adv-hover" onclick="${pageContext.request.contextPath}/board/information/replyWrite">수정</button>
-								<button id="btns-artDelete" class="adv-hover" onclick="location.href='${pageContext.request.contextPath}/board/information/replydelete?art_id=${article.art_id}&brd_id=${article.brd_id}&rep_id=${reply.rep_id}&category=${category}';">삭제</button>
+								<button id="btns-artUpdate" class="adv-hover" onclick="location.href='${pageContext.request.contextPath}/board/information/update?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category }';">수정</button>
+								<button id="btns-artDelete" class="adv-hover" onclick="location.href='${pageContext.request.contextPath}/board/information/delete?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category }';">삭제</button>
 							</c:if>
-							<button class="adv-hover" onclick="location.href='${pageContext.request.contextPath}/board/information?category=${category}';">목록</button>
+							<button class="adv-hover" onclick="location.href='${pageContext.request.contextPath}/board/information?category=${category}'">목록</button>
 						</span>
 					</div>
 				</div>
-	         
 				<!-- 글 제목 및 상태 -->
 				<div class="article-title" style="border: 2px solid rgba(128, 128, 128, 0.5); border-width: 2px 0;">
 					<div class="title-status">
@@ -236,15 +236,15 @@
 				<!-- 작성자 -->
 				<div class="article-memberRow display-flex align-items-center" style="border-bottom: 1px solid rgba(128, 128, 128, 0.5);">
 					<div class="user-profile-image-in-list">
-						<img src="${pageContext.request.contextPath}/uploads/profile/${article.member.mem_image}" onerror="this.onerror=null; this.src='${pageContext.request.contextPath }/image/abstract-user.svg';"></span>
+						<img src="${pageContext.request.contextPath}/uploads/profile/${article.mem_image}" onerror="this.onerror=null; this.src='${pageContext.request.contextPath }/image/abstract-user.svg';"></span>
 					</div>
 					<div class="article-member" style="display: flex; align-items: center;">
 						<div class="modal-report display-flex justify-content-flex-start align-items-center padding-0">
 						<span id="member_nickname" class="font-weight-bolder margin-right-10px">${article.member.mem_nickname}</span>
 						<c:if test="${not empty memberInfo}">
 							<svg id="member-report" viewBox="0 0 512 512" width="24" height="24" style="fill: none; stroke: var(--warning); stroke-width: 32px; stroke-linecap: round; stroke-linejoin: round; cursor: pointer;"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z" style="stroke: none; fill: var(--warning);"/></svg>
-							<input type="hidden" id="member_id" value="${article.member.mem_id}">
-							<input type="hidden" id="memReport_id" value="${article.member.report_id}">
+							<input type="hidden" id="member_id" value="${article.mem_id}">
+							<input type="hidden" id="memReport_id" value="${article.report_id}">
 						</c:if>
 					   </div>
 					</div>
@@ -278,7 +278,7 @@
 						${article.art_content }
 					</div>
 					
-					<!-- 거래 관련 내용 -->
+<%-- 					<!-- 거래 관련 내용 -->
 					<div class="article-trade">
 						<div class="share-trdHeader display-flex justify-content-space-between align-items-center">
 							<span class="color-subtheme font-size-20px font-weight-bolder">${article.trade.trd_cost > 0 ? article.trade.trd_cost : '자유게시글'}</span>
@@ -300,7 +300,7 @@
 								<span><span class="color-subtheme font-weight-bolder margin-right-5px">성별 제한</span>${article.trade.trd_gender==201? '남자만':article.trade.trd_gender==202? '여자만':'제한없음'}</span>
 							</div>
 						</div>
-						
+						</div> --%>
 					<%-- 	 <!-- 참가중인 회원 목록 -->
 						<div class="share-userList">
 							<h2>거래 참가자 명단</h2><hr />
@@ -408,6 +408,7 @@
 					</div>
 				</div>
  				 --%>
+ 				 </div>
 				<div class="article-body" style="border-bottom: 1px solid rgba(128, 128, 128, 0.5);">
 					<!-- 추천 비추천 -->
 					<div class="share-btns" id="btns-vote">
@@ -417,7 +418,6 @@
 						<button class="btns-bad" id="btns-badcancel" style="display: none; background-color: red;">비추천 <span>${article.art_bad}</span></button>
 					</div>
 				</div>
-				
 				<!-- 댓글 부분 -->      
 				<div class="reply-list padding-hor-0">
 					<div class="list-toggle display-flex justify-content-flex-start align-items-center padding-hor-0" style="padding-bottom: 10px; border-bottom: 1px solid rgba(128, 128, 128, 0.5);">
@@ -438,7 +438,7 @@
 					<c:forEach var="reply" items="${replyAll}" varStatus="status">
 						<div class="reply-detail display-flex flex-direction-column justify-content-flex-start align-items-stretch">
 							<input type="hidden" id="reply_id" name="rep_id" value="${reply.rep_id}">
-							<input type="hidden" id="reply_nickname" value="${reply.member.mem_nickname}">
+							<input type="hidden" id="reply_nickname" value="${reply.mem_nickname}">
 							<input type="hidden" id="repReport_id"    value="${reply.report_id}">
 							<div class="reply-view display-flex flex-direction-column justify-content-flex-start align-items-stretch" style="${(reply.rep_id != reply.rep_parent) ? 'margin-left: 32px; background-color: rgba(var(--subtheme-rgb), 0.125);' : ''}">
 								<div class="reply-header display-flex justify-content-flex-start align-items-center">
@@ -449,8 +449,8 @@
 									<span id="member_nickname" class="font-weight-bolder">${article.mem_nickname }</span>
 									<c:if test="${not empty memberInfo}">
 										<svg id="member-report" class="margin-hor-5px" viewBox="0 0 512 512" width="24" height="24" style="fill: none; stroke: var(--warning); stroke-width: 32px; stroke-linecap: round; stroke-linejoin: round; cursor: pointer;"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z" style="stroke: none; fill: var(--warning);"/></svg>
-										<input type="hidden" id="member_id" value="${reply.member.mem_id}">
-										<input type="hidden" id="memReport_id" value="${reply.member.report_id}">
+										<input type="hidden" id="member_id" value="${reply.mem_id}">
+										<input type="hidden" id="memReport_id" value="${reply.report_id}">
 									</c:if>
 									<span class="color-theme-font font-size-14px" style="color: rgba(var(--theme-font-rgb), 0.5);">(<fmt:formatDate value="${reply.rep_regdate}" pattern="yy-MM-dd :HH:mm:ss"/>)</span>
 								</div>
@@ -530,8 +530,6 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		
 		<button id="scrollToTop" class="adv-hover">
 			<svg style="fill: var(--subtheme); stroke: var(--subtheme); stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round;" width="20" height="10" viewBox="0 0 32 16">
 				<path d="M 15 1 L 1 15 31 15 Z"/>

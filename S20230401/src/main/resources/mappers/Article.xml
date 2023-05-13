@@ -999,11 +999,11 @@
 	
 	<!-- 김찬영 -->
 	<!-- 리스트 조회-->
-<!-- 	 <select id="cyArticleTotal" resultType="int">
+ 	 <select id="cyArticleTotal" resultType="int">
 		select Count(*) 
 		FROM article
 		where brd_id between 1400 and 1499
-	</select>  -->
+	</select>  
 		
 	<!-- 페이지 불러오기 -->
    	<select id="cyArticleListAll" parameterType="Article" resultType="Article">
@@ -1053,9 +1053,9 @@
 			WHERE rn between #{start} and #{end}
 	</select>   -->
 	<!-- 조회 -->
-<!-- 	<select id="cycount" resultType="int">
+ 	<select id="cycount" resultType="int">
 	 select count(brd_id) from article
-	</select> -->
+	</select> 
 	
 	<!-- 검색 -->
 <!--  	<select id="cyArticleKeyword" parameterType="Article" resultType="Article">

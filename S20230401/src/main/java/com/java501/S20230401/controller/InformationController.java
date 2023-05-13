@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Favorite;
@@ -142,7 +143,10 @@ public class InformationController {
 	
 	//댓글 작성
 	@PostMapping(value="/board/information/replyWrite")
-	public String write(@AuthenticationPrincipal MemberDetails memberDetails, Reply reply, Model model, Integer category) throws Exception {
+	public String write(@AuthenticationPrincipal MemberDetails memberDetails, Reply reply, Model model, Integer category, RedirectAttributes redirectAttributes) throws Exception {
+		MemberInfo memberInfo = null;
+		redirectAttributes.addFlashAttribute("category", category);
+		
 		if(memberDetails != null) {
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 			reply.setMem_id(memberDetails.getMemberInfo().getMem_id());
@@ -159,6 +163,7 @@ public class InformationController {
 	//댓글 삭제
 	@RequestMapping(value="/board/information/replydelete")
 	public String delete(@AuthenticationPrincipal MemberDetails memberDetails, Reply reply, Model model, Integer category) throws Exception {
+		MemberInfo memberInfo = null;
 		// 유저 정보를 다시 리턴  //memberDetails.getMemberInfo() DB의 유저와 대조 & 권한 확인
 		if(memberDetails != null)
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
@@ -177,6 +182,7 @@ public class InformationController {
 	//댓글 수정
 	@RequestMapping(value="/board/information/updateReply", method = RequestMethod.POST)
 	public String update(@AuthenticationPrincipal MemberDetails memberDetails, Reply reply, Model model, Integer category) throws Exception {
+		MemberInfo memberInfo = null;
 		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		System.out.println("reply update Start...");
@@ -195,6 +201,7 @@ public class InformationController {
 	//댓글 추천(좋아요)
 	@RequestMapping(value="/board/information/replyupdategood")
 	public String replyupdategood(@AuthenticationPrincipal MemberDetails memberDetails, Reply reply, Integer category, Model model) {
+		MemberInfo memberInfo = null;
 		if(memberDetails != null)
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		
@@ -370,7 +377,7 @@ public class InformationController {
 	public String getwrite(@AuthenticationPrincipal MemberDetails memberDetails, Integer category, Model model) throws Exception {
 		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
-		System.out.println("write Start...");
+		System.out.println("작성 겟 Start...");
 		return "information/write";
 	}
 	
@@ -380,7 +387,7 @@ public class InformationController {
 		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		
-		System.out.println("writeform Start...");
+		System.out.println("작성 포스트 Start...");
 		int result = as.cyArticleinsert(article);
 		return "redirect:/board/information?category=1400";
 	}
