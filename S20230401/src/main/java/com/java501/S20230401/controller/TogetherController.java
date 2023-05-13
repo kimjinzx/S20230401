@@ -8,6 +8,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.aspectj.weaver.MemberUtils;
 import org.json.JSONObject;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -26,6 +27,7 @@ import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Join;
 import com.java501.S20230401.model.MemberDetails;
+import com.java501.S20230401.model.MemberInfo;
 import com.java501.S20230401.model.Region;
 import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.service.ArticleService;
@@ -82,8 +84,12 @@ public class TogetherController {
 								 Article article, Join join, 
 								 HttpServletRequest request,
 								 HttpServletResponse response,
-								 Model model) {
+								 Model model,
+								 Integer category) {
+		// url의 글번호 저장
 		article.setArt_id(Integer.parseInt(art_number));
+		
+		// 유저 정보
 		if (memberDetails != null)
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		
@@ -104,7 +110,7 @@ public class TogetherController {
 	      if (oldCookie != null) {	// oldCookie가 있으면 그걸 가져와서 값을 설정해준다.
 	          if (!oldCookie.getValue().contains(String.format("[%s_%s]", art_id, brd_id))) {
 	        	 as.dbReadArticleCnt(article); // 조회수 올리는 메서드
-	             oldCookie.setValue(oldCookie.getValue() + String.format("&[%s_%s]", art_id, brd_id));
+	             oldCookie.setValue(oldCookie.getValue() + String.format("[%s_%s]", art_id, brd_id));
 	             oldCookie.setPath("/");
 	             oldCookie.setMaxAge(60 * 60); // 1시간 (초 * 분 * 시간)
 	             response.addCookie(oldCookie);
@@ -144,7 +150,8 @@ public class TogetherController {
 		// 게시글 별 신청 대기자 리스트
 		List<Article> waitingList =  as.dbTradeWaitingMember(article);
 		model.addAttribute("waitingList", waitingList);
-	
+		
+		model.addAttribute("category", category);
 
 		return "together/detailArticle";
 	}
@@ -314,7 +321,7 @@ public class TogetherController {
 	@RequestMapping(value = "/board/updateReply")
 	@ResponseBody
 	public String updateReply(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
-			@RequestBody Reply reply, Model model, Map<String, Object> data) {
+			@RequestBody Reply reply, Model model) {
 
 		JSONObject jsonObj = new JSONObject();
 
@@ -472,7 +479,7 @@ public class TogetherController {
 	 }
 	 
 	 
-	 // 거래 대기자 -> 거래 신청자 수락 (ajax 사용)
+	 // 거래 대기자 -> 거래 신청자 거절 (ajax 사용)
 	 @RequestMapping(value="/board/joinRefuse")
 	 @ResponseBody
 	 public String TradeJoinRefuse(@AuthenticationPrincipal MemberDetails memberDetails,
@@ -497,9 +504,9 @@ public class TogetherController {
 		 
 		 if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		 
-		  int joinDelete = as.dbJoinDelete(article);
+		 int joinDelete = as.dbJoinDelete(article);
 		 
-		  jsonObj.append("result", joinDelete);
+		 jsonObj.append("result", joinDelete);
 		 
 		 return jsonObj.toString();
 	 }
@@ -516,6 +523,22 @@ public class TogetherController {
 	         int favoriteArticle = as.dbfavoriteArticle(article);
 	         
 	         resultStr =  Integer.toString(favoriteArticle);
+	        
+	     return resultStr;
+	 }
+	 
+	 // 관심목록 삭제
+	 @RequestMapping(value="/board/favoriteArticleDelete")
+	 @ResponseBody
+	 public String favoriteArticleDelete(@AuthenticationPrincipal MemberDetails memberDetails,
+	                                @RequestBody Article article, Model model) {
+	    
+		 String resultStr = "";
+	         if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+
+	         int favoriteArticleDelete = as.dbFavoriteArticleDelete(article);
+	         
+	         resultStr =  Integer.toString(favoriteArticleDelete);
 	        
 	     return resultStr;
 	 }
@@ -728,6 +751,7 @@ public class TogetherController {
 		 return jsonObj.toString();
 	 }
 	 
+	 // 검색
 	 @RequestMapping(value = "board/listSearch")
 		public String listSearch(@AuthenticationPrincipal MemberDetails memberDetails,
 				Article article, int category, String currentPage, Model model) {

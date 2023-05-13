@@ -58,6 +58,8 @@ public interface ArticleDao {
 	Integer 						bjGood(Article article);
 	Integer							bjBad(Article article);
 	
+	
+	
 	// 임동빈
 	int 			dbtotalArticle(Article article);
 	List<Article> 	dbListArticle(Article article);
@@ -76,6 +78,7 @@ public interface ArticleDao {
 	int 			dbTradeDeleteWaiting(Article article);
 	int 			dbJoinDelete(Article article);
 	int 			dbFavoriteArticle(Article article);
+	int 			dbFavoriteArticleDelete(Article article);
 	int 			dbChangeStatus(Article article);
 	int 			dbChangeEndStatus(Article article);
 	int 			dbChangeCancelStatus(Article article);

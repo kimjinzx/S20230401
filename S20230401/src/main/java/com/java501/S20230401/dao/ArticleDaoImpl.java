@@ -643,6 +643,17 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 	
 	@Override
+	public int dbFavoriteArticleDelete(Article article) {
+		int dbFavoriteArticleDelete = 0;
+		try {
+			dbFavoriteArticleDelete = session.delete("dbFavoriteArticleDelete", article);
+		} catch (Exception e) {
+			e.printStackTrace();	
+		}
+		return dbFavoriteArticleDelete;
+	}
+	
+	@Override
 	public int dbChangeStatus(Article article) {
 		int changeStatus = 0;
 		try {

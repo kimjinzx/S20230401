@@ -683,6 +683,7 @@
 		                           LEFT OUTER JOIN MEMBER M ON(A.MEM_ID = M.MEM_ID)
 		                           LEFT OUTER JOIN COMM C1 ON(T.TRD_STATUS = C1.COMM_ID)
 		                           LEFT OUTER JOIN COMM C2 ON(T.TRD_GENDER = C2.COMM_ID)
+		                           LEFT OUTER JOIN COMM C3 ON(A.BRD_ID = C3.COMM_ID)
 		                           LEFT OUTER JOIN REGION R ON(T.REG_ID = R.REG_ID)
 		        	WHERE A.BRD_ID = #{brd_id}
 		            AND A.ISDELETE = 0
@@ -710,12 +711,15 @@
 		           		, C1.COMM_VALUE   						AS C1_COMM_VALUE
 		           		, C2.COMM_ID      						AS C2_COMM_ID
 		           		, C2.COMM_VALUE   						AS C2_COMM_VALUE
+		           		, C3.COMM_ID							AS C3_COMM_ID
+		           		, C3.COMM_VALUE							AS C3_COMM_VALUE
             	   		, to_char(t.trd_enddate, 'YYYY-MM-DD') 	AS trd_finish
             	   		, favorite_count(a.art_id, a.brd_id) 	AS favoriteCount
         FROM    	article a 		LEFT JOIN trade  t 	ON (A.TRD_ID = T.TRD_ID)
                           			LEFT JOIN member m  ON (a.mem_id = m.mem_id)
 		                            LEFT OUTER JOIN COMM C1 ON(T.TRD_STATUS = C1.COMM_ID)
 		                            LEFT OUTER JOIN COMM C2 ON(T.TRD_GENDER = C2.COMM_ID)
+		                            LEFT OUTER JOIN COMM C3 ON(A.BRD_ID = C3.COMM_ID)
                           			LEFT JOIN REGION R  ON(t.reg_id = r.reg_id)
         WHERE 		a.brd_id = #{brd_id}
 		AND 		a.art_id = #{art_id}
@@ -937,6 +941,13 @@
 		Insert into Favorite (art_id, brd_id, mem_id)
 		values				(#{art_id}, #{brd_id}, #{mem_id})
 	</insert>
+	
+	<delete id="dbFavoriteArticleDelete" parameterType="Article">
+		DELETE From favorite
+		WHERE art_id   = #{art_id}
+		AND   brd_id   = #{brd_id}
+        AND   mem_id   = #{mem_id}
+	</delete>
 	
 	<update id="dbChangeStatus" parameterType="Article">
 		UPDATE trade t

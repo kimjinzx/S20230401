@@ -366,6 +366,12 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 	
 	@Override
+	public int dbFavoriteArticleDelete(Article article) {
+		int dbFavoriteArticleDelete = ad.dbFavoriteArticleDelete(article);
+		return dbFavoriteArticleDelete;
+	}
+	
+	@Override
 	public int dbChangeStatus(Article article) {
 		int changeStatus = ad.dbChangeStatus(article);
 		return changeStatus;
