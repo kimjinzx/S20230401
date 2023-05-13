@@ -13,7 +13,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/quill/image-drop.min.js"></script>
 <script type="text/javascript">
 	function writeAction () {
-		if ($('#art_title').val() == '' || $('#art_title').val() == null) {
+		if ($('#article-title').val() == '' || $('#article-title').val() == null) {
 			return false;
 		}
 		if ($('#art_content').val() == '' || $('#art_content').val() == null) {
@@ -310,7 +310,7 @@
 			<h1 class="color-subtheme text-align-center">게시글 작성</h1>
 	
 			<div>
-				<form action="${pageContext.request.contextPath}/board/share/writeArticleForm" method="post">
+				<form action="${pageContext.request.contextPath}/board/share/writeArticleForm" method="post" onsubmit="return writeAction();">
 					<input type="hidden" 	name="category" 		value="${category}">
 					<input type="hidden" 	name="brd_id" 			value="${category}">
 				<!-- 임시 기본값 저장 -->
@@ -373,6 +373,7 @@
 						<div class="display-flex justify-content-space-between align-items-center padding-10px">
 							<div class="form-group" style="display: flex;">
 								<div class="popup-group">
+									<input type="hidden" id="reg_id" name="trade.reg_id">
 									<label for="reg_id-button">지역 제한</label>
 									<button type="button" id="region" name="reg_id-button" class="togglePopup theme-button" style="border-color: rgba(128, 128, 128, 0.5);"></button>
 									<div id="region-popup" class="popup-window" style="bottom: 32px; right: auto; left: 81.28px; padding: 0;">
@@ -405,7 +406,7 @@
 						<div class="form-group display-flex justify-content-space-between align-items-center padding-10px">
 							<div class="form-group display-flex justify-content-flex-start align-items-center">
 								<label for="deadline" class="margin-right-5px">마감일</label>
-								<input type="datetime-local" name="trade.trd_enddate">
+								<input type="datetime-local" name="trd_endDate">
 							</div>
 							
 							<div class="form-group display-flex justify-content-space-between align-items-center padding-10px">
