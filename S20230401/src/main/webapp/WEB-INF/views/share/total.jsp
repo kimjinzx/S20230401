@@ -401,7 +401,7 @@
 									<span class="font-weight-bolder">${article.member.mem_nickname}</span>
 									<div class="display-flex justify-content-flex-end align-items-center">
 									
-<%-- 										<c:if test="${fn:contains(article.status_name, '모집')}"><button>${article.status_name}</button></c:if>
+ 										<%-- <c:if test="${fn:contains(article.status_name, '모집')}"><button>${article.status_name}</button></c:if>
 										<c:if test="${fn:contains(article.status_name, '진행')}"><button>${article.status_name}</button></c:if>
 										<c:if test="${fn:contains(article.status_name, '완료')}"><button>${article.status_name}</button></c:if>
 										<c:if test="${fn:contains(article.status_name, '취소')}"><button>${article.status_name}</button></c:if> --%>

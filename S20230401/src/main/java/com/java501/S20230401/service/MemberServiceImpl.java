@@ -1,11 +1,8 @@
 package com.java501.S20230401.service;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import com.java501.S20230401.dao.MemberDao;
-import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Member;
 import com.java501.S20230401.util.MemberSearchKeyword;
 
@@ -19,6 +16,8 @@ public class MemberServiceImpl implements MemberService {
 	// 양동균
 	@Override
 	public int dgReportMember(Member member) { return md.dgReportMember(member); }
+	@Override
+	public Integer dgCheckUser(String mem_username) { return md.dgCheckUser(mem_username); }
 
 	// 유현규
 	@Override
@@ -47,4 +46,6 @@ public class MemberServiceImpl implements MemberService {
 	public void setAuthority(Integer mem_id, int authority) {
 		md.setAuthority(mem_id, authority);
 	}
+
+
 }

@@ -9,7 +9,6 @@ const memId = sessionStorage.getItem("memId");
 const category = sessionStorage.getItem("category");
 const loginUser = sessionStorage.getItem("loginUser");
 console.info('로그인 유저 : '+loginUser);
-
 // 클릭 이벤트
 $(document).ready(()=>{
     // 찜 찜 취소

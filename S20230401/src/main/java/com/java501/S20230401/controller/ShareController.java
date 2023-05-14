@@ -585,18 +585,15 @@ public class ShareController {
 			if(result > 0) {
 				switch (report.getType()) { // 신고 타입에 따라 실행
 				case "article":
-					System.out.println(" 게시글 신고  게시글 신고  게시글 신고  게시글 신고  게시글 신고  게시글 신고  게시글 신고 ");
 					article.setReport_id(result);
 					result = articleService.dgReportArticle(article);
 					break;
 				case "reply":
-					System.out.println(" 댓글 신고  댓글 신고  댓글 신고  댓글 신고  댓글 신고  댓글 신고  댓글 신고  댓글 신고  ");
 					reply = objectMapper.convertValue(data, Reply.class);
 					reply.setReport_id(result);
 					result = replyService.dgReportReply(reply);
 					break;
 				case "member":
-					System.out.println(" 유저 신고  유저 신고  유저 신고  유저 신고  유저 신고  유저 신고  유저 신고  유저 신고 ");
 					member = objectMapper.convertValue(data, Member.class);
 					member.setMem_id(reportMem_id); 
 					member.setReport_id(result);
