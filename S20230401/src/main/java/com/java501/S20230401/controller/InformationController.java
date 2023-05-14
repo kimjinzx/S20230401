@@ -163,7 +163,6 @@ public class InformationController {
 	//댓글 삭제
 	@RequestMapping(value="/board/information/replydelete")
 	public String delete(@AuthenticationPrincipal MemberDetails memberDetails, Reply reply, Model model, Integer category) throws Exception {
-		MemberInfo memberInfo = null;
 		// 유저 정보를 다시 리턴  //memberDetails.getMemberInfo() DB의 유저와 대조 & 권한 확인
 		if(memberDetails != null)
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
@@ -182,7 +181,6 @@ public class InformationController {
 	//댓글 수정
 	@RequestMapping(value="/board/information/updateReply", method = RequestMethod.POST)
 	public String update(@AuthenticationPrincipal MemberDetails memberDetails, Reply reply, Model model, Integer category) throws Exception {
-		MemberInfo memberInfo = null;
 		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		System.out.println("reply update Start...");
@@ -201,7 +199,6 @@ public class InformationController {
 	//댓글 추천(좋아요)
 	@RequestMapping(value="/board/information/replyupdategood")
 	public String replyupdategood(@AuthenticationPrincipal MemberDetails memberDetails, Reply reply, Integer category, Model model) {
-		MemberInfo memberInfo = null;
 		if(memberDetails != null)
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		
@@ -219,7 +216,6 @@ public class InformationController {
 	// 댓글 비추천(싫어요)
 	@RequestMapping(value="/board/information/replyupdatebad")
 	public String replyupdatebad(@AuthenticationPrincipal MemberDetails memberDetails, Reply reply, Integer category, Model model) {
-		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		
 		int result = rs.replyupdatebad(reply);

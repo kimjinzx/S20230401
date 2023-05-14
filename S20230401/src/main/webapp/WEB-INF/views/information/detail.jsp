@@ -196,7 +196,7 @@
 					<input type="hidden" id="category"    name="category" value="${category}">
 					<input type="hidden" id="mem_id"    name="mem_id"    value="${article.mem_id}">
 					<input type="hidden" id="article_nickname"          value="${article.mem_nickname}">
-					<input type="hidden" id="artReport_id"             value="${article.report_id}">
+					<input type="hidden" id="artReport_id"             value="${report.report_id}">
 					<input type="hidden" id="login_member"       name="login_member"    value="${memberInfo.mem_id}">
 					<input type="hidden" id="login_authority"    name="login_authority"    value="${memberInfo.mem_authority}">
 					</div>
@@ -214,6 +214,7 @@
 								<button id="btns-artDelete" class="adv-hover" onclick="location.href='${pageContext.request.contextPath}/board/information/delete?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category }';">삭제</button>
 							</c:if>
 							<button class="adv-hover" onclick="location.href='${pageContext.request.contextPath}/board/information?category=${category}'">목록</button>
+							<%-- <button id="btns-favorite" class="adv-hover" onclick="location.href='${pageContext.request.contextPath}/board/information/favorite?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category }';">관심</button> --%>
 						</span>
 					</div>
 				</div>
@@ -429,7 +430,7 @@
 								<button id="btns-hide">▼ 접기</button>
 							</c:when>
 							<c:otherwise>
-								<p style="text-align: center; flex-grow: 1;">이 글은 아직 댓글이 없어요<br> 첫 댓글을 남겨주세요</p>
+								<p style="text-align: center; flex-grow: 1;"> 댓글을 남겨주세요</p>
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -439,18 +440,18 @@
 						<div class="reply-detail display-flex flex-direction-column justify-content-flex-start align-items-stretch">
 							<input type="hidden" id="reply_id" name="rep_id" value="${reply.rep_id}">
 							<input type="hidden" id="reply_nickname" value="${reply.mem_nickname}">
-							<input type="hidden" id="repReport_id"    value="${reply.report_id}">
+							<input type="hidden" id="repReport_id"    value="${report.report_id}">
 							<div class="reply-view display-flex flex-direction-column justify-content-flex-start align-items-stretch" style="${(reply.rep_id != reply.rep_parent) ? 'margin-left: 32px; background-color: rgba(var(--subtheme-rgb), 0.125);' : ''}">
 								<div class="reply-header display-flex justify-content-flex-start align-items-center">
 								<div class="user-profile-image-in-list">
-									<img alt="profile" src="${pageContext.request.contextPath}/uploads/profile/${article.mem_image}">
+									<img alt="profile" src="${pageContext.request.contextPath}/uploads/profile/${reply.mem_image}">
 								</div>
 								<div class="reply-header-info modal-report display-flex justify-content-flex-start align-items-center">
-									<span id="member_nickname" class="font-weight-bolder">${article.mem_nickname }</span>
+									<span id="member_nickname" class="font-weight-bolder">${reply.mem_nickname }</span>
 									<c:if test="${not empty memberInfo}">
 										<svg id="member-report" class="margin-hor-5px" viewBox="0 0 512 512" width="24" height="24" style="fill: none; stroke: var(--warning); stroke-width: 32px; stroke-linecap: round; stroke-linejoin: round; cursor: pointer;"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z" style="stroke: none; fill: var(--warning);"/></svg>
 										<input type="hidden" id="member_id" value="${reply.mem_id}">
-										<input type="hidden" id="memReport_id" value="${reply.report_id}">
+										<input type="hidden" id="memReport_id" value="${report.report_id}">
 									</c:if>
 									<span class="color-theme-font font-size-14px" style="color: rgba(var(--theme-font-rgb), 0.5);">(<fmt:formatDate value="${reply.rep_regdate}" pattern="yy-MM-dd :HH:mm:ss"/>)</span>
 								</div>
@@ -509,10 +510,11 @@
 									<div class="form-box display-flex flex-direction-column justify-content-flex-start align-items-stretch" style="border: 2px solid var(--subtheme); border-radius: 5px;">
 										<span><input type="hidden" name="brd_id"    value="${article.brd_id}"></span>
 										<span><input type="hidden" name="art_id"    value="${article.art_id}"></span>
-										<span><input type="hidden" name="category"    value="${category}"></span>
+										 <span><input type="hidden" name="mem_id" value="${memberInfo.mem_id}"></span>
+										<span><input type="hidden" name="category"    value="${category}"></span> 
 										<div class="display-flex flex-direction-column justify-content-flex-start align-items-stretch">
 											<div class="display-flex justify-content-space-between align-items-center" style="border-bottom: 1px solid rgba(var(--subtheme-rgb), 0.5);">
-												<span class="font-size-18px font-weight-bolder">${memberInfo.mem_nickname }</span>
+												<span class="font-size-18px font-weight-bolder">${memberinfo.mem_nickname }</span>
 												<input class="reply-primitive-submit" type="submit" value="등록">
 											</div>
 											<textarea class="reply-primitive-write" style="margin-top: 10px;" placeholder="댓글을 입력하세요" name="rep_content"></textarea>
