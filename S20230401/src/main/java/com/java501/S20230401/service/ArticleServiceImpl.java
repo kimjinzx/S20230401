@@ -742,6 +742,8 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public int JHpayCompleted1(int trd_id) {
 		int payCompleted = 0;
+		System.out.println("service impl trd_id -> "+trd_id);
+
 		payCompleted = ad.JHpayCompleted2(trd_id);
 		return payCompleted;
 	}

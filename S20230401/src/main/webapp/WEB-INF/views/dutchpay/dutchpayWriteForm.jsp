@@ -409,7 +409,7 @@
 						<div class="form-group display-flex justify-content-space-between align-items-center padding-10px">
 							<div class="form-group display-flex justify-content-flex-start align-items-center">
 								<label for="deadline" class="margin-right-5px">마감일</label>
-								<input type="datetime-local" name="trd_saveEnddate">
+								<input type="datetime-local" name="trd_endDate">
 							</div>
 							
 							<div class="form-group display-flex justify-content-space-between align-items-center padding-10px">

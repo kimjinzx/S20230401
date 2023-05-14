@@ -1266,8 +1266,9 @@ public class ArticleDaoImpl implements ArticleDao {
 		@Override
 		public int JHpayCompleted2(int trd_id) {
 			int payCompleted = 0;
+			System.out.println("daoimpl trd_id -> "+trd_id);
 			try {
-				payCompleted = session.update("JHPayCompleted",trd_id);
+				payCompleted = session.selectOne("JHPayCompleted",trd_id);
 			} catch (Exception e) {
 				System.out.println("ArticleDaoImpl payCompleted2 Exception -> "+e.getMessage());
 			}

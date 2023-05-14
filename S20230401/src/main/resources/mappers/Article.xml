@@ -1490,7 +1490,7 @@
 				#{mem_id, 			mode=IN,  jdbcType=NUMERIC},
 				#{art_isnotice, 	mode=IN,  jdbcType=NUMERIC},
 				#{trd_status, 		mode=IN,  jdbcType=NUMERIC},
-				#{trd_saveEnddate, 	mode=IN,  jdbcType=VARCHAR},
+				#{trd_enddate, 		mode=IN,  jdbcType=DATE},
 				#{trd_max, 			mode=IN,  jdbcType=NUMERIC},
 				#{trd_cost, 		mode=IN,  jdbcType=NUMERIC},
 				#{trd_loc, 			mode=IN,  jdbcType=VARCHAR},
@@ -1644,11 +1644,11 @@
 		WHERE trd_id = #{trd_id}
 	</select>
 	
-	<update id="JHPayCompleted" parameterType="int">
+	<select id="JHPayCompleted" parameterType="int" resultType="Article">
 		UPDATE trade 
 		SET trd_status = 403
 		WHERE trd_id = #{trd_id}
-	</update>
+	</select>
 	
 	<select id="JHReportInsert" parameterType="Article" statementType="CALLABLE">
 		 {

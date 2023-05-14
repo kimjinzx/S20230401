@@ -211,7 +211,7 @@ public class DutchpayController {
 		System.out.println("trd_id -> "+article.getTrd_id());
 		int brd_id = article.getBrd_id();
 		int art_id = article.getArt_id(); 
-		return "redirect:/dutchpay/dutchpayDetail?brd_id="+brd_id+"&art_id="+art_id;
+		return "redirect:/board/dutchpay/"+art_id+"?brd_id="+brd_id+"&category="+1100;
 	}
 	
 	@PostMapping(value = "/board/dutchpay/replyInsert") // 댓글 입력
@@ -301,11 +301,11 @@ public class DutchpayController {
 		as.JHdutchpayInsert1(article);
 		ra.addFlashAttribute("article", article);  //model.addAttribute와 다른점은 컨트롤러 내에서 매핑할 시 이렇게 사용하는게 좋음
 		
-		String saveEnddate = "";
-		if( article.getTrd_saveEnddate() != null ) {
-			saveEnddate = article.getTrd_saveEnddate().substring(0,10);
-			article.setTrd_saveEnddate(saveEnddate);
-		}
+//		String saveEnddate = "";
+//		if( article.getTrd_saveEnddate() != null ) {
+//			saveEnddate = article.getTrd_saveEnddate().substring(0,10);
+//			article.setTrd_saveEnddate(saveEnddate);
+//		}
 		
 		int brd_id = article.getBrd_id(); //확인 버튼 누르면 드롭다운(카테고리) 에서 고른 해당카테고리로 이동 
 		return "redirect:/board/dutchpay?category="+brd_id;
@@ -444,18 +444,21 @@ public class DutchpayController {
 	}
 	
 	@PostMapping(value = "/board/dutchpay/payCompleted") // 거래 완료 버튼
-	public String payStatusPro(Model model, Article article , int trd_id, @AuthenticationPrincipal MemberDetails memberDetails) {
+	public String payCompleted(Model model, Article article , int trd_id, @AuthenticationPrincipal MemberDetails memberDetails) {
 		
 		if (memberDetails != null)  
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo()); 
 
 		int payCompleted = as.JHpayCompleted1(trd_id);
 		System.out.println("trd_id -> "+article.getTrd_id());
+		
+		model.addAttribute("payCompleted", payCompleted);
 
 		
 		int brd_id = article.getBrd_id();
 		int art_id = article.getArt_id(); 
-		return "redirect:/dutchpay/dutchpayDetail?brd_id="+brd_id+"&art_id="+art_id;
+		System.out.println("오냐?");
+		return "redirect:/board/dutchpay/"+art_id+"?brd_id="+brd_id+"&category="+1100;
 	}
 	
 	

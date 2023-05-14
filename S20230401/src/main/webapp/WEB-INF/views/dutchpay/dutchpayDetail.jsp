@@ -46,7 +46,7 @@
 	
 	
 	
-	function goApplyBtn(my_mem_id, trd_id, brd_id, art_id) {
+	function goApplyBtn(my_mem_id, trd_id, brd_id, art_id,p_mem_id) {
   	  
   	  $.ajax({
   				url:"<%=context%>/board/dutchpay/dutchpayDetailYN",
@@ -57,19 +57,21 @@
   				type:'POST',
   				dataType:'text',
   				success:function(data){
-  					if(data == '1'){
+  					if(my_mem_id == p_mem_id){
+  						alert('작성자는 신청할 수 없습니다.');
+  					}else if(data == '1'){
   						alert('이미 신청하셨습니다.');
-  					}else{
-  						var popUrl = "/board/joinForm?brd_id=" + brd_id + "&art_id=" + art_id;
-  				        var popOption = "width=700px,height=700px,top=100px,left=400px";
-  				          window.open(popUrl, "신청서", popOption);
-  					}
-  				},
-				error:function(request,status,error){
-			        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-  				}
-  	  		});
-  		  } 
+  						}else{
+	  						var popUrl = "/board/joinForm?brd_id=" + brd_id + "&art_id=" + art_id;
+	  				        var popOption = "width=700px,height=700px,top=100px,left=400px";
+	  				          window.open(popUrl, "신청서", popOption);
+	  					}
+	  				},
+					error:function(request,status,error){
+				        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+	  				}
+	  	  		});
+	  		  } 
 
 	function goDelete(p_brd_id, p_art_id) {
 		  
@@ -99,14 +101,6 @@
 	function goJoinCancel(p_brd_id, p_art_id, p_trd_id, p_mem_id) {
 		 if (confirm("현재 참가중인 활동을 취소하시겠습니까?") == true){    
 				location.href="/board/dutchpay/joinCancel?brd_id="+p_brd_id+"&art_id="+p_art_id+"&trd_id="+p_trd_id+"&mem_id="+p_mem_id;
-		 }else{   
-		     return false;
-		 }
-		}
-	
-	function completed() {
-		 if (confirm("거래를 완료 하시겠습니까?") == true){    
-		     document.dutchpay.submit();
 		 }else{   
 		     return false;
 		 }
@@ -263,7 +257,37 @@
 	 	  		});
 	 		  }
 	
-	</script>
+	
+	function goCompleted(p_trd_id) {
+		
+		$.ajax({
+				url:"<%=context%>/board/dutchpay/payCompleted",
+				data: {trd_id : p_trd_id},
+				type:'POST',
+				dataType:'text',
+				success:function(data){
+					if (confirm("거래를 완료 하시겠습니까?") == true){    
+					 }else{   
+					     return false;
+					 }
+				},
+				error:function(request,status,error){
+			        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+  				}
+	  		});
+		  }
+
+		
+		
+
+	/* function completed() {
+		 if (confirm("거래를 완료 하시겠습니까?") == true){    
+		     document.dutchpay.submit();
+		 }else{   
+		     return false;
+		 }
+		}
+ */	</script>
 </head>
 <body>
 	<header>
@@ -456,6 +480,37 @@
 					</div>
 				</div>
 	         
+	         			<c:choose> 
+							<c:when test="${memberInfo.mem_id == detail.mem_id}"> 
+								<c:choose> 
+									<c:when test="${detail.comm_id == 402}"> <!-- 거래상태가 402(거래진행중)일 때만 나타나는 거래완료하기 버튼 -->
+										<button class="btns-action"  id="btns-completed"	onclick="goCompleted(${detail.trd_id})">거래완료</button><p>
+									</c:when>
+								</c:choose>
+							</c:when>
+						</c:choose>
+	         
+						<%-- <c:choose> 
+							<c:when test="${memberInfo.mem_id == detail.mem_id && detail.comm_id != 403  && detail.comm_id != 404}"> 
+								<div class="CurrentStatus">
+									<p><span>거래 상태 수정하기
+										<select name="comm_id">
+										<c:forEach var="PS" items="${payStatus }">
+											<option value="${PS.comm_id }" ${PS.comm_id == detail.comm_id ? 'selected' : '' }>${PS.comm_value }</option>
+										</c:forEach>
+										</select>
+									</span>
+										<button class="btns-action"  id="btns-completed"	onclick="">거래중지</button><p>
+										<input type="submit" value="확인"  formaction="${pageContext.request.contextPath }/board/dutchpay/payStatusPro"><br>
+								</div>
+							</c:when>
+						</c:choose>   --%>
+	         
+	         
+	         
+	         
+	         
+	         
 				<!-- 글 제목 및 상태 -->
 				<div class="article-title" style="border: 2px solid rgba(128, 128, 128, 0.5); border-width: 2px 0;">
 					<div class="title-status">
@@ -637,7 +692,7 @@
 									<c:choose>
  										 <c:when test="${memberInfo.mem_id != null }"> 
   										 <%-- <c:when test="${waitListCount == 0 && joinListCount == 0 && joinList.size() < detail.trd_max}"> --%> 
-											<button class="btns-action" id="btns-apply"  onclick="goApplyBtn(${memberInfo.mem_id},${detail.trd_id},${detail.brd_id},${detail.art_id})">신청</button>
+											<button class="btns-action" id="btns-apply"  onclick="goApplyBtn(${memberInfo.mem_id},${detail.trd_id},${detail.brd_id},${detail.art_id},${detail.mem_id})">신청</button>
 										</c:when>
 										<c:when test="${joinList.size() == detail.trd_max}">
 											<button class="btns-action" id="btns-end">모집 완료</button>
