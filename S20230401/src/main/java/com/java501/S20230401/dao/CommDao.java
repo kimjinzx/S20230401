@@ -19,4 +19,8 @@ public interface CommDao {
 	// 임동빈
 	List<Comm> boardName();
 	List<Comm> genderName();
+	
+	// 김진현
+	String      JHboardName2(int comm_id);
+	List<Comm>  JHcommList2();
 }

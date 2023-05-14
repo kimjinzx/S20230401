@@ -64,7 +64,7 @@
 					};
 					$.ajax({
 						type: "POST",
-						url: "/dutchpay/ApplyInsert",
+						url: "/board/dutchpay/ApplyInsert",
 						contentType: "application/json; charset=utf-8",
 						data: JSON.stringify(data),
 						dataType: "text",

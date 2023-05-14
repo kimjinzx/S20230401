@@ -37,6 +37,7 @@ public class ArticleServiceImpl implements ArticleService {
 	private final JoinDao       jd;
 	private final WaitingDao    wd;
 	private final FavoriteDao   fd;
+	
 
 
 
@@ -787,6 +788,14 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public void JHrepBad1(Article article) {
 		ad.JHrepBad2(article);
+	}
+	@Override
+	public String JHboardName1(int comm_id) {
+		return cd.JHboardName2(comm_id);
+	}
+	@Override
+	public List<Comm> JHcommList1() {
+		return cd.JHcommList2();
 	}
 	
 }

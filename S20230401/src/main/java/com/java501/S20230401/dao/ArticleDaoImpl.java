@@ -1179,7 +1179,7 @@ public class ArticleDaoImpl implements ArticleDao {
 			System.out.println("ArticleDaoImple Start paging...");
 		      
 			try {
-					page = session.selectOne("JHPaging");
+					page = session.selectOne("JHarticleCnt",article);
 				System.out.println("ArticleDaoImpl totalArticle page-> " + page);
 
 			} catch (Exception e) {

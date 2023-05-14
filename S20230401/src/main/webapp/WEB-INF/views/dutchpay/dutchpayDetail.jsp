@@ -22,12 +22,25 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/share/article.css">
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
 <script type="text/javascript">
+	
 	$(() => {
+		$('.article_content').find('img').error(e => {
+			$(e.target).closest('img').attr('src', `${contextPath}/image/ShareGo_Not_Found_Image.png`);
+		});
 		$('.board-toggle').click(e => {
 			let parent = $(e.target).closest('.board-summary');
 			let children = parent.find('.board-summary-part');
 			children.toggle();
 		});
+	});
+	
+	$(document).ready(()=>{
+	    $('#btns-show, #btns-hide').click(e=>{
+	        $(e.target).closest('.reply-list')
+	        .find('#btns-show').toggle().end()
+	        .find('#btns-hide').toggle().end()
+	        .find('.reply-detail').toggle().end();
+	    });
 	});
 	
 	
@@ -36,7 +49,7 @@
 	function goApplyBtn(my_mem_id, trd_id, brd_id, art_id) {
   	  
   	  $.ajax({
-  				url:"<%=context%>/dutchpay/dutchpayDetailYN",
+  				url:"<%=context%>/board/dutchpay/dutchpayDetailYN",
   				data: {mem_id : my_mem_id,
   					   trd_id : trd_id,
   					   brd_id : brd_id,
@@ -47,10 +60,13 @@
   					if(data == '1'){
   						alert('이미 신청하셨습니다.');
   					}else{
-  						var popUrl = "/joinForm?brd_id=" + brd_id + "&art_id=" + art_id;
+  						var popUrl = "/board/joinForm?brd_id=" + brd_id + "&art_id=" + art_id;
   				        var popOption = "width=700px,height=700px,top=100px,left=400px";
   				          window.open(popUrl, "신청서", popOption);
   					}
+  				},
+				error:function(request,status,error){
+			        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
   				}
   	  		});
   		  } 
@@ -58,7 +74,7 @@
 	function goDelete(p_brd_id, p_art_id) {
 		  
 		  $.ajax({
-					url:"<%=context%>/dutchpay/dutchpayDelete",
+					url:"<%=context%>/board/dutchpay/dutchpayDelete",
 					data: {brd_id : p_brd_id,
 						   art_id : p_art_id},
 					type:'POST',
@@ -74,7 +90,7 @@
 	
 	function goApplyCancel(p_brd_id, p_art_id, p_trd_id, p_mem_id) {
 		 if (confirm("신청을 취소하시겠습니까?") == true){    
-			location.href="/dutchpay/applyCancel?brd_id="+p_brd_id+"&art_id="+p_art_id+"&trd_id="+p_trd_id+"&mem_id="+p_mem_id;
+			location.href="/board/dutchpay/applyCancel?brd_id="+p_brd_id+"&art_id="+p_art_id+"&trd_id="+p_trd_id+"&mem_id="+p_mem_id;
 		 }else{   
 		     return false;
 		 }
@@ -82,7 +98,7 @@
 	
 	function goJoinCancel(p_brd_id, p_art_id, p_trd_id, p_mem_id) {
 		 if (confirm("현재 참가중인 활동을 취소하시겠습니까?") == true){    
-				location.href="/dutchpay/joinCancel?brd_id="+p_brd_id+"&art_id="+p_art_id+"&trd_id="+p_trd_id+"&mem_id="+p_mem_id;
+				location.href="/board/dutchpay/joinCancel?brd_id="+p_brd_id+"&art_id="+p_art_id+"&trd_id="+p_trd_id+"&mem_id="+p_mem_id;
 		 }else{   
 		     return false;
 		 }
@@ -98,7 +114,7 @@
 	
 	function goJoinAccept(p_trd_id, p_mem_id, p_brd_id, p_art_id) {
 		if (confirm("신청을 수락 하시겠습니까?") == true){    
-			location.href="/dutchpay/JoinAccept?trd_id="+p_trd_id+"&mem_id="+p_mem_id+"&brd_id="+p_brd_id+"&art_id="+p_art_id;
+			location.href="/board/dutchpay/JoinAccept?trd_id="+p_trd_id+"&mem_id="+p_mem_id+"&brd_id="+p_brd_id+"&art_id="+p_art_id;
 			 }else{   
 			     return false;
 			 }
@@ -106,7 +122,7 @@
 	
 	function goJoinDeny(p_trd_id, p_mem_id, p_brd_id, p_art_id) {
 		if (confirm("신청을 거절 하시겠습니까?") == true){    
-		location.href="/dutchpay/JoinDeny?trd_id="+p_trd_id+"&mem_id="+p_mem_id+"&brd_id="+p_brd_id+"&art_id="+p_art_id;
+		location.href="/board/dutchpay/JoinDeny?trd_id="+p_trd_id+"&mem_id="+p_mem_id+"&brd_id="+p_brd_id+"&art_id="+p_art_id;
 		 }else{   
 		     return false;
 		 }
@@ -114,7 +130,7 @@
 	
 	function goReport(p_brd_id, p_art_id, p_report_id) {
 		if (confirm("해당 게시글을 신고하시겠습니까?") == true){    
-			window.open("/reportForm?brd_id=" + p_brd_id + "&art_id=" + p_art_id + "&report_id=" + p_report_id, "신고양식", "width=700px,height=500px,top=100px,left=400px");
+			window.open("/board/reportForm?brd_id=" + p_brd_id + "&art_id=" + p_art_id + "&report_id=" + p_report_id, "신고양식", "width=700px,height=500px,top=100px,left=400px");
 		}else{   
 		     return false;
 		 }
@@ -122,7 +138,7 @@
 	
 	function goreplyDelete(p_brd_id, p_art_id, p_rep_id) {
 		if (confirm("댓글을 삭제하시겠습니까?") == true){    
-		location.href="/dutchpay/replyDelete?brd_id="+p_brd_id+"&art_id="+p_art_id+"&rep_id="+p_rep_id;
+		location.href="/board/dutchpay/replyDelete?brd_id="+p_brd_id+"&art_id="+p_art_id+"&rep_id="+p_rep_id;
 		 }else{   
 		     return false;
 		 }
@@ -132,7 +148,7 @@
 	<%-- function goreplyUpdate(p_brd_id, p_art_id, p_rep_id) {
 	  
 	  $.ajax({
-				url:"<%=context%>/dutchpay/replyUpdate",
+				url:"<%=context%>/board/dutchpay/replyUpdate",
 				data: {mem_id : my_mem_id,
 					   trd_id : trd_id,
 					   brd_id : brd_id,
@@ -153,7 +169,7 @@
 	function goFavorite(p_brd_id, p_art_id, p_mem_id) {
 	
 		$.ajax({
-			url:"<%=context%>/dutchpay/favoriteInsertYN",
+			url:"<%=context%>/board/dutchpay/favoriteInsertYN",
 			data: {brd_id : p_brd_id,
 				   art_id : p_art_id,
 				   mem_id : p_mem_id},
@@ -164,17 +180,17 @@
 					
 					alert('이미 등록하셨습니다.');
 					
-				}else if(confirm("해당 게시글을 관심목록에 추가하시겠습니까?")){  
+				}else if(confirm("해당 게시글을 찜 하시겠습니까?")){  
 					
 					$.ajax({
-						url:"<%=context%>/dutchpay/favoriteInsert",
+						url:"<%=context%>/board/dutchpay/favoriteInsert",
 						data: {brd_id : p_brd_id,
 							   art_id : p_art_id,
 							   mem_id : p_mem_id},
 						type:'POST',
 						dataType:'text',
 						success:function(data){
-							alert("추가되었습니다.");	
+							alert("찜 목록 추가되었습니다.");	
 						},
 						error:function(request,status,error){
 					        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -192,7 +208,7 @@
 	function goArtGood(p_brd_id, p_art_id) {
 	 	  
 	 	  $.ajax({
-	 				url:"<%=context%>/dutchpay/artGood",
+	 				url:"<%=context%>/board/dutchpay/artGood",
 	 				data: {brd_id : p_brd_id,
 	 					   art_id : p_art_id},
 	 				type:'POST',
@@ -206,7 +222,7 @@
 	function goArtBad(p_brd_id, p_art_id) {
 	 	  
 	 	  $.ajax({
-	 				url:"<%=context%>/dutchpay/artBad",
+	 				url:"<%=context%>/board/dutchpay/artBad",
 	 				data: {brd_id : p_brd_id,
 	 					   art_id : p_art_id},
 	 				type:'POST',
@@ -220,7 +236,7 @@
 	function goreplyGood(p_brd_id, p_art_id, p_rep_id) {
 	 	  
 	 	  $.ajax({
-	 				url:"<%=context%>/dutchpay/repGood",
+	 				url:"<%=context%>/board/dutchpay/repGood",
 	 				data: {brd_id : p_brd_id,
 	 					   art_id : p_art_id,
 	 					   rep_id : p_rep_id},
@@ -235,7 +251,7 @@
 	function  goreplyBad(p_brd_id, p_art_id, p_rep_id) {
 	 	  
 	 	  $.ajax({
-	 				url:"<%=context%>/dutchpay/repBad",
+	 				url:"<%=context%>/board/dutchpay/repBad",
 	 				data: {brd_id : p_brd_id,
 	 					   art_id : p_art_id,
 	 					   rep_id : p_rep_id},
@@ -415,6 +431,7 @@
 						<input type="hidden" name="trd_id" value="${detail.trd_id }">
 						<input type="hidden" name="mem_id" value="${detail.mem_id }">
 						<input type="hidden" name="report_id" value="${detail.report_id }">
+						<input type="hidden" id="login_authority"    name="login_authority"    value="${memberInfo.mem_authority}">
 <%--  						<input type="hidden" name="category" value="${category}">
  --%> 						
 						
@@ -425,13 +442,13 @@
 						<span class="category-name">
 							<a href="${pageContext.request.contextPath}/board/dutchpay?category=${detail.brd_id - (detail.brd_id % 100) }"><span style="color: rgba(var(--theme-font-rgb), 0.5);">같이사요</span></a>
 							<span class="margin-hor-2_5px" style="color: rgba(var(--theme-font-rgb), 0.5);">&gt;</span>
-							<a class="font-weight-bolder" style="color: var(--subtheme)" href="${pageContext.request.contextPath}/board/dutchpay?category=${detail.brd_id}">${detail.comm_value}</a>
+							<a class="font-weight-bolder" style="color: var(--subtheme)" href="${pageContext.request.contextPath}/board/dutchpay?category=${detail.brd_id}">${detail.brd_name}</a>
 							
 						</span>
 						<span class="only-for-member display-flex justify-content-flex-end align-items-center">
 							<!-- 글 수정 삭제 -->
 							<c:if test="${detail.mem_id == memberInfo.mem_id || memberInfo.mem_authority >= 108}">
-								<button id="btns-artUpdate" class="adv-hover" onclick="location.href='${pageContext.request.contextPath }/dutchpay/dutchpayUpdateForm?art_id=${detail.art_id}&brd_id=${detail.brd_id}'">수정</button>
+								<button id="btns-artUpdate" class="adv-hover" onclick="location.href='${pageContext.request.contextPath }/board/dutchpay/dutchpayUpdateForm?art_id=${detail.art_id}&brd_id=${detail.brd_id}'">수정</button>
 								<button id="btns-artDelete" class="adv-hover" onclick="goDelete(${detail.brd_id},${detail.art_id })">삭제</button>
 							</c:if>
  							<button class="adv-hover" onclick="location.href='${pageContext.request.contextPath}/board/dutchpay?category=${detail.brd_id}'">목록</button>
@@ -548,9 +565,9 @@
 									</div>
 									<div class="userList-btns">
 										<c:choose>
-											<c:when test="${detail.mem_id == memberInfo.mem_id}">
+											<%-- <c:when test="${detail.mem_id == memberInfo.mem_id}">
 												<button class="btns-action adv-hover" id="btns-drop">추방</button>
-											</c:when>
+											</c:when> --%>
 											<c:when test="${JL.mem_id == memberInfo.mem_id}">
 												<button class="btns-action adv-hover" id="btns-joinCancel"  onclick="goJoinCancel(${detail.brd_id},${detail.art_id},${detail.trd_id},${memberInfo.mem_id})">취소</button>
 											</c:when>
@@ -607,19 +624,20 @@
 							<c:if test="${memberInfo != null}">
 								<div class="btns-favorite">
 									<c:choose>
-										<c:when test="${userFavorite > 0}">
+										<c:when test="${favoriteListCount > 0}">
 											<button class="btns-action" id="btns-favoriteDel">찜 취소</button>
 										</c:when>
-										<c:when test="${userFavorite == 0}">
-											<button class="btns-action" id="btns-favorite">찜</button>
+										<c:when test="${memberInfo.mem_id != null }"> 
+										<%-- <c:when test="${favoriteListCount == 0}"> --%>
+											<button class="btns-action" id="btns-favorite" onclick="goFavorite(${detail.brd_id },${detail.art_id },${memberInfo.mem_id})">찜</button>
 										</c:when>
 									</c:choose>
 								</div>
 								<div class="btns-trade">
 									<c:choose>
- 										<c:when test="${memberInfo.mem_id != null }">
-<%--  										 <c:when test="${waitListCount == 0 && joinListCount == 0 && joinList.size() < detail.trd_max}"> 
- --%>											<button class="btns-action" id="btns-apply"  onclick="goApplyBtn(${memberInfo.mem_id},${detail.trd_id},${detail.brd_id},${detail.art_id},${detail.trd_max})">신청</button>
+ 										 <c:when test="${memberInfo.mem_id != null }"> 
+  										 <%-- <c:when test="${waitListCount == 0 && joinListCount == 0 && joinList.size() < detail.trd_max}"> --%> 
+											<button class="btns-action" id="btns-apply"  onclick="goApplyBtn(${memberInfo.mem_id},${detail.trd_id},${detail.brd_id},${detail.art_id})">신청</button>
 										</c:when>
 										<c:when test="${joinList.size() == detail.trd_max}">
 											<button class="btns-action" id="btns-end">모집 완료</button>
@@ -733,8 +751,7 @@
 									<div class="form-box display-flex flex-direction-column justify-content-flex-start align-items-stretch" style="border: 2px solid var(--subtheme); border-radius: 5px;">
 										<span><input type="hidden" name="brd_id"    value="${detail.brd_id}"></span>
 										<span><input type="hidden" name="art_id"    value="${detail.art_id}"></span>
-										<span><input type="hidden" name="category"    value="${category}"></span>
-										<div class="display-flex flex-direction-column justify-content-flex-start align-items-stretch">
+											<div class="display-flex flex-direction-column justify-content-flex-start align-items-stretch">
 											<div class="display-flex justify-content-space-between align-items-center" style="border-bottom: 1px solid rgba(var(--subtheme-rgb), 0.5);">
 												<span class="font-size-18px font-weight-bolder">${memberInfo.mem_nickname }</span>
 												<input class="reply-primitive-submit" type="submit" value="등록">

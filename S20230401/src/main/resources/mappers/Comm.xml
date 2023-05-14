@@ -45,7 +45,7 @@
 	
 	<!-- 임동빈 -->
 	<select id="SelectBoard" resultType="Comm">
-		select * from comm where comm_id between 1010 and 1060
+		select * from comm where comm_id between 1000 and 1060
 	</select>
 	
 	<select id="SelectGender" resultType="Comm">
@@ -68,7 +68,16 @@
 	<select id="JHPayStatus" resultType="Comm">
 		SELECT * FROM comm WHERE comm_id IN (401, 404)
 	</select>
+
+	<select id="JHBoardName" parameterType="int" resultType="java.lang.String">
+		SELECT comm_value
+		FROM comm
+		WHERE comm_id = #{comm_id}
+	</select>
 	
+	<select id="JHcommList" resultType="Comm">
+		SELECT * FROM comm WHERE comm_id BETWEEN 1100 and 1160
+	</select>
 	
 	
 	

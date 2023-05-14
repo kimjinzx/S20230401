@@ -48,6 +48,8 @@ public class Article {
 	
 	private String		bjSearchOption;	
 	private String		bjKeyword;	
+	private Integer		mem_authority;	
+	
 //	private String		bjStitle;	
 //	private String		bjScontent;	
 //	private String		bjStiCon;	
@@ -78,7 +80,6 @@ public class Article {
 	private String 		mem_tel;
 	private Integer 	mem_region1;
 	private Integer 	mem_region2;
-	private Integer 	mem_authority;
 	private Date 		mem_regdate;
 	private Integer 	mem_gender;
 	private String 		mem_name;

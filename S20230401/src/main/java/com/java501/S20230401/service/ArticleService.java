@@ -160,6 +160,8 @@ public interface ArticleService {
 	public void             JHartBad1(Article article);
 	public void             JHrepGood1(Article article);
 	public void             JHrepBad1(Article article);
+	public String           JHboardName1(int comm_id);
+	public List<Comm>       JHcommList1();
 
 	
 	
