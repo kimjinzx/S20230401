@@ -239,7 +239,7 @@ public class ShareController {
 		model.addAttribute("superRegions", superRegions);
 		model.addAttribute("regions", regionHierachy);
 		model.addAttribute("category", category);
-		model.addAttribute("isAnyoneJoined", joinList == null || joinList.size() > 0);
+		model.addAttribute("isAnyoneJoined", joinList.size() > 0);
 		
 		return "share/updateForm";
 	}

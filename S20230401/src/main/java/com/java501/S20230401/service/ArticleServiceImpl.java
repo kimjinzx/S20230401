@@ -92,6 +92,14 @@ public class ArticleServiceImpl implements ArticleService {
 	public List<Article> hgAdminArticleList(Article searcher) {
 		return ad.hgAdminArticleList(searcher);
 	}
+	@Override
+	public int hgGetCountAllArticle() {
+		return ad.hgGetCountAllArticle();
+	}
+	@Override
+	public List<Article> hgGetArticles(Article searcher) {
+		return ad.hgGetArticles(searcher);
+	}
 	
 	
 	// 양동균

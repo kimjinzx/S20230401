@@ -45,4 +45,9 @@ public class CommServiceImpl implements CommService {
 	public List<Comm> getCategoryListBySuper(Integer superId) {
 		return cd.getCategoryListBySuper(superId);
 	}
+	
+	@Override
+	public List<Comm> hgGetCategoryNames() {
+		return cd.hgGetCategoryNames();
+	}
 }

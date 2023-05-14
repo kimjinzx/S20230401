@@ -15,6 +15,7 @@ public interface CommDao {
 	public Comm getCommById(int comm_id);
 	public Comm getCommByName(String comm_value);
 	public List<Comm> getCategoryListBySuper(Integer superId);
+	public List<Comm> hgGetCategoryNames();
 	
 	// 임동빈
 	List<Comm> boardName();

@@ -86,6 +86,20 @@ public class MemberController {
 		return "joinForm";
 	}
 	
+	@RequestMapping(value = "/user/userinfo")
+	public String modifyMemberInformation(@AuthenticationPrincipal MemberDetails memberDetails, Model model) {
+		model.addAttribute("now", new Date());
+		
+		Map<Region, List<Region>> regionHierachy = new HashMap<Region, List<Region>>();
+		List<Region> superRegions = rs.getSuperRegions();
+		for (Region sups : superRegions) regionHierachy.put(sups, rs.getChildRegions(sups.getReg_id()));
+		model.addAttribute("superRegions", superRegions);
+		model.addAttribute("regions", regionHierachy);
+		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		
+		return "user/userInformation";
+	}
+	
 	@PostMapping(value = "/joinProc")
 	public String memberJoinProcess(@RequestParam(value = "image-file", required = false) MultipartFile file, @RequestParam Map<String, String> params, MultipartHttpServletRequest request, RedirectAttributes redirectAttributes) {
 		Member member = new Member();
@@ -136,12 +150,20 @@ public class MemberController {
 	
 	@ResponseBody
 	@PostMapping(value = "/getMember")
-	public Map<String, Object> getMember(@RequestBody Map<String, Object> data){
+	public Map<String, Object> getMember(@AuthenticationPrincipal MemberDetails memberDetails, @RequestBody Map<String, Object> data){
 		Map<String, Object> resp = new HashMap<String, Object>();
 		String type = (String)data.get("type");
 		String value = (String)data.get("value");
+		Boolean except = (Boolean)data.get("except");
 		MemberSearchKeyword searchType = Enum.valueOf(MemberSearchKeyword.class, type.toUpperCase());
-		Member member = ms.getMember(value, searchType);
+		Member member = null;
+		if (!except) member = ms.getMember(value, searchType);
+		else {
+			Map<String, Object> param = new HashMap<String, Object>();
+			param.put("value", value);
+			param.put("except", memberDetails.getMemberInfo().getMem_id());
+			member = ms.hgGetMemberWithExcept(param, searchType);
+		}
 		resp.put("value", member);
 		return resp;
 	}
