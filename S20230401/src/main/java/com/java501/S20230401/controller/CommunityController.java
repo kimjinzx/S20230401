@@ -60,6 +60,8 @@ public class CommunityController {
 	    boardMap.put(1320, "자랑하기");
 	    boardMap.put(1330, "홍보하기");
 	    boardMap.put(1340, "질문/요청");
+	    
+	    
 	    model.addAttribute("boardMap", boardMap);
 	    model.addAttribute("totalArticle", totalArticle);
 	    model.addAttribute("page", page);
