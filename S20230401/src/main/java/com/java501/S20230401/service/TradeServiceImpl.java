@@ -28,7 +28,7 @@ public class TradeServiceImpl implements TradeService {
 	public int updateShare(Article article) {
 		int result = 0;
 		try {
-			result = td.updateShare(article);
+			if (article.getTrade() != null) result = td.updateShare(article);
 			result = ad.updateShare(article);
 		} catch (Exception e) {
 			// 예외 발생시 롤백
