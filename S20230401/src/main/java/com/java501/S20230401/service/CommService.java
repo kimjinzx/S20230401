@@ -15,4 +15,7 @@ public interface CommService {
 	public String getValueById(int comm_id);
 	public List<Comm> getCategoryListBySuper(Integer superId);
 
+	// 최승환
+//	String shcategoryName(int comm_id);
+//	List<Comm> shcommList(int comm_id);
 }

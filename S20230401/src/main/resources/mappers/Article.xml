@@ -1143,75 +1143,78 @@
 	
 	
 	
-	
+
 	<!-- 최승환 -->
+	
+	<!-- 카운트 --> 
 	<select id="shCustomerCount" resultType="int" parameterType="Article">
-		SELECT Count(*)
-		FROM article a join member m using(mem_id)
-		WHERE brd_id BETWEEN #{brd_id} AND #{brd_id}+99
+		SELECT	Count(*)
+		FROM 	article A join member M using(mem_id)
+		WHERE 	brd_id BETWEEN #{brd_id} AND #{brd_id}+99 AND A.isdelete=0
 		<choose>
             <when test="search == 'shs_title'">
-                AND A.ART_TITLE LIKE '%' || #{search_keyword} || '%'
+                AND A.art_title LIKE '%' || #{search_keyword} || '%'
             </when>
             <when test="search == 'shs_content'">
-                AND A.ART_CONTENT LIKE '%' || #{search_keyword} || '%'
+                AND A.art_content LIKE '%' || #{search_keyword} || '%'
             </when>
             <when test="search == 'shs_title_content'">
-                AND (A.ART_TITLE || ' ' || A.ART_CONTENT) LIKE '%' || #{search_keyword} || '%'
+                AND (A.art_title || ' ' || A.art_content) LIKE '%' || #{search_keyword} || '%'
             </when>
             <when test="search == 'shs_nickname'">
-                AND M.MEM_NICKNAME LIKE '%' || #{search_keyword} || '%'
+                AND M.mem_nickname LIKE '%' || #{search_keyword} || '%'
             </when>
+            <when test="search == 'articleTag'">
+	       		AND (A.art_tag1||A.art_tag2||A.art_tag3||A.art_tag4||A.art_tag5) LIKE '%'|| #{search_keyword} ||'%'
+	       	</when>
             <otherwise></otherwise>
        	</choose>
 	</select>
 	
 	
-	<!-- 목록 리스트 검색포함-->
-	<select id="shListCustomer" parameterType="Article" resultType="Article">
+	<!-- 목록 전체  검색포함-->
+		<select id="shListCustomer" parameterType="Article" resultType="Article">
 		SELECT *
-  		FROM 
-  			(
-    		SELECT ROWNUM RN, A.*, M.MEM_NICKNAME, M.MEM_IMAGE, NVL(R.REP_COUNT, 0) REP_COUNT
-    		FROM ARTICLE A
+  		FROM (SELECT	ROWNUM RN, A.*, M.MEM_NICKNAME, M.MEM_IMAGE, NVL(R.REP_COUNT, 0) REP_COUNT, C.COMM_ID, C.COMM_VALUE
+    		FROM 	ARTICLE A
     		LEFT JOIN MEMBER M ON A.MEM_ID = M.MEM_ID
     		LEFT JOIN	(
       					SELECT ART_ID, BRD_ID, COUNT(*) REP_COUNT
       					FROM REPLY
       					GROUP BY ART_ID, BRD_ID
     				 	) R
-    		ON A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID
+    			ON A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID
+    		LEFT JOIN COMM C ON A.MEM_ID = C.COMM_ID
     		WHERE A.BRD_ID BETWEEN 1500 AND 1600 and A.isdelete=0
     		<choose>
 	            <when test="search == 'shs_title'">
-	                AND A.ART_TITLE LIKE '%' || #{search_keyword} || '%'
+                	AND A.art_title LIKE '%' || #{search_keyword} || '%'
 	            </when>
 	            <when test="search == 'shs_content'">
-	                AND A.ART_CONTENT LIKE '%' || #{search_keyword} || '%'
+	                AND A.art_content LIKE '%' || #{search_keyword} || '%'
 	            </when>
 	            <when test="search == 'shs_title_content'">
-	                AND (A.ART_TITLE || ' ' || A.ART_CONTENT) LIKE '%' || #{search_keyword} || '%'
+	                AND (A.art_title || ' ' || A.art_content) LIKE '%' || #{search_keyword} || '%'
 	            </when>
 	            <when test="search == 'shs_nickname'">
-	                AND M.MEM_NICKNAME LIKE '%' || #{search_keyword} || '%'
+	                AND M.mem_nickname LIKE '%' || #{search_keyword} || '%'
 	            </when>
 	            <when test="search == 'articleTag'">
-	       			AND (A.ART_TAG1||A.ART_TAG2||A.ART_TAG3||A.ART_TAG4||A.ART_TAG5) LIKE '%'|| #{search_keyWord} ||'%'
-	       		</when>
+		       		AND (A.art_tag1||A.art_tag2||A.art_tag3||A.art_tag4||A.art_tag5) LIKE '%'|| #{search_keyword} ||'%'
+		       	</when>
 	            <otherwise></otherwise>
         	</choose>
     		ORDER BY A.ART_ID DESC
   			)
-  		WHERE RN BETWEEN #{start} AND #{end} AND isdelete=0
+  		WHERE RN BETWEEN #{start} AND #{end}
 	</select>
 	
-	<!-- 메뉴 -->
-	
+<!-- 	메뉴 ?? 체크해봐야함
 	<select id="shListCustomerMenu" parameterType="Article" resultType="Article">
 		SELECT *
   		FROM 
   			(
-    		SELECT ROWNUM RN, A.*, M.MEM_NICKNAME, M.MEM_IMAGE, NVL(R.REP_COUNT, 0) REP_COUNT
+    		SELECT ROWNUM RN, A.*, M.MEM_NICKNAME, M.MEM_IMAGE, NVL(R.REP_COUNT, 0) REP_COUNT, C.COMM_VALUE
     		FROM ARTICLE A
     		LEFT JOIN MEMBER M ON A.MEM_ID = M.MEM_ID
     		LEFT JOIN 
@@ -1220,16 +1223,47 @@
       			FROM REPLY
       			GROUP BY ART_ID, BRD_ID
     			) R
-    		ON A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID
-    		WHERE A.BRD_ID = #{brd_id} and A.isdelete=0
+    			ON A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID
+     		LEFT JOIN COMM C ON C.COMM_ID = A.COMM_ID
+    		WHERE A.BRD_ID BETWEEN 1500 AND 1600 and A.isdelete=0
+		        <choose>
+		            <when test="search == 'shs_title'">
+	                	AND A.art_title LIKE '%' || #{search_keyword} || '%'
+		            </when>
+		            <when test="search == 'shs_content'">
+		                AND A.art_content LIKE '%' || #{search_keyword} || '%'
+		            </when>
+		            <when test="search == 'shs_title_content'">
+		                AND (A.art_title || ' ' || A.art_content) LIKE '%' || #{search_keyword} || '%'
+		            </when>
+		            <when test="search == 'shs_nickname'">
+		                AND M.mem_nickname LIKE '%' || #{search_keyword} || '%'
+		            </when>
+		            <when test="search == 'articleTag'">
+			       		AND (A.art_tag1||A.art_tag2||A.art_tag3||A.art_tag4||A.art_tag5) LIKE '%'|| #{search_keyword} ||'%'
+			       	</when>
+		            <otherwise></otherwise>
+        		</choose> 
     		ORDER BY A.ART_ID DESC
   			)
-  		WHERE RN BETWEEN #{start} AND #{end} AND isdelete=0
-	</select>
-	
+  		WHERE RN BETWEEN #{start} AND #{end} 
+	</select> -->
+
 	<!-- 게시판 상세보기 -->
+	
+		<select id="shCustomerDetail" parameterType="Article" resultType="Article">
+		  SELECT A.*, M.MEM_NICKNAME, M.MEM_IMAGE, NVL(R.REP_COUNT, 0) REP_COUNT, C.COMM_ID, C.COMM_VALUE
+		  FROM ARTICLE A
+		  LEFT JOIN MEMBER M ON A.MEM_ID = M.MEM_ID
+		  LEFT JOIN (SELECT ART_ID, BRD_ID, COUNT(*) REP_COUNT
+		             FROM REPLY
+		             GROUP BY ART_ID, BRD_ID) R ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID)
+		  LEFT JOIN COMM C ON A.MEM_ID = C.COMM_ID
+		  WHERE A.ART_ID = #{art_id} AND A.BRD_ID = #{brd_id} AND A.isdelete = 0
+		</select>
+
 		
-	<select id="shCustomerDetail" parameterType="Article" resultType="Article">
+<!-- 	<select id="shCustomerDetail" parameterType="Article" resultType="Article">
         	 SELECT A.*, M.MEM_NICKNAME, M.MEM_IMAGE, NVL(R.REP_COUNT, 0) REP_COUNT
 			 FROM ARTICLE A
 			 LEFT JOIN MEMBER M ON A.MEM_ID = M.MEM_ID
@@ -1237,8 +1271,8 @@
 			 	 		FROM REPLY
 			 	 		GROUP BY ART_ID, BRD_ID) R
 			 	 		ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID)
-			 	 		WHERE A.ART_ID = #{art_id} AND A.BRD_ID = #{brd_id} and A.isdelete=0
-	</select>
+			 WHERE A.ART_ID = #{art_id} AND A.BRD_ID = #{brd_id} and A.isdelete=0
+	</select> -->
 	
 	<!-- 게시판 글쓰기 -->
 	

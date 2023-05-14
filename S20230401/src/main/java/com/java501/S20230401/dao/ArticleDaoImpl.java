@@ -889,6 +889,23 @@ public class ArticleDaoImpl implements ArticleDao {
 		
 	
 	// 최승환
+		
+	@Override
+	public int totalCustomer(Article article) {
+		int totCustomerCount = 0;
+		System.out.println("ArticleDaoImpl Start int totalCustomer...");
+		
+		try {
+			totCustomerCount = session.selectOne("shCustomerCount", article);
+			System.out.println("ArticleDaoImpl shCustomerCount int totCustomerCount->" +totCustomerCount);
+			
+		} catch (Exception e) {
+			System.out.println("ArticleDaoImpl int shCustomerCount Exception->"+e.getMessage());
+		}
+		return totCustomerCount;
+	}	
+		
+	// 전체글 조회
 	@Override
 	public List<Article> listCustomer(Article article) {
 		List<Article> customerList = null;
@@ -904,7 +921,7 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 	
 	
-	
+	// 상세페이지
 	@Override
 	public Article detailCustomer(Article article) {
 		System.out.println("ArticleDaoImpl detailCustomer start...");
@@ -917,19 +934,17 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return customerDetail;
 	}
-
-	@Override
-	public List<Article> listCustomerMenu(Article article) {
-		List<Article> listMenu = null;
-		try {
-			listMenu = session.selectList("shListCustomerMenu", article);
-			System.out.println("다오 리스트메뉴"+listMenu);
-		} catch (Exception e) {
-			System.out.println("메뉴에러"+e.getMessage());
-		}
-			
-		return listMenu;
-	}
+	
+	// 넌뭐냐
+	/*
+	 * @Override public List<Article> listCustomerMenu(Article article) {
+	 * List<Article> listMenu = null; try { listMenu =
+	 * session.selectList("shListCustomerMenu", article);
+	 * System.out.println("다오 리스트메뉴"+listMenu); } catch (Exception e) {
+	 * System.out.println("메뉴에러"+e.getMessage()); }
+	 * 
+	 * return listMenu; }
+	 */
 	
 	@Override
 	public int insertCustomer(Article article) {
@@ -985,21 +1000,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return vCount;
 	}
-	
-	@Override
-	public int totalCustomer(Article article) {
-		int totCustomerCount = 0;
-		System.out.println("ArticleDaoImpl Start int totalCustomer...");
-		
-		try {
-			totCustomerCount = session.selectOne("shCustomerCount", article);
-			System.out.println("ArticleDaoImpl shCustomerCount int totCustomerCount->" +totCustomerCount);
-			
-		} catch (Exception e) {
-			System.out.println("ArticleDaoImpl int shCustomerCount Exception->"+e.getMessage());
-		}
-		return totCustomerCount;
-	}
+
 	
 	@Override
 	public List<Article> shCustomerSearch(Article article) {

@@ -146,17 +146,17 @@ public class ReplyDaoImpl implements ReplyDao {
 		return countReply;
 	}
 	@Override
-	public List<Reply> replyList(Reply reply) {
+	public List<Reply> replyList(Article article) {
 		System.out.println("댓글 다오 시작");
 		
 		List<Reply> listReply = null;
 		
 		try {
-			listReply = session.selectList("shlistReply",reply);
+			listReply = session.selectList("shlistReply", article);
 		} catch (Exception e) {
 			System.out.println("댓글에러"+e.getMessage());
 		}
-		System.out.println("댓글다오임플 리플값"+ reply);
+		System.out.println("댓글다오임플 리플값"+ article);
 		return listReply;
 	}
 	

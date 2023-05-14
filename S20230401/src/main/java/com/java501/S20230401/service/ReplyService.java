@@ -24,7 +24,7 @@ public interface ReplyService {
 	
 	// 최승환
 	int 				shReplyCount(Reply reply);
-	List<Reply> 		replyList(Reply reply);
+	List<Reply> 		replyList(Article article);
 	int 				customerWriteReply(Reply reply);
 	int 				customerDeleteReply(Reply reply);
 	int 				customerUpdateReply(Reply reply);

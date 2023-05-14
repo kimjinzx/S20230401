@@ -9,30 +9,36 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/initializer.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/layout.js"></script>
-
-
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/share/article.js"></script>
 <link href="https://unpkg.com/sanitize.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/preference.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/presets.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/layout.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/share/article.css">
-
-
 <script type="text/javascript">
+   
+   // 그 전 페이지의 정보 삭제
+   sessionStorage.clear();
+   // 세션 스토리지에 pageContext 저장 URL용
+   sessionStorage.setItem('contextPath', '${pageContext.request.contextPath}');
+   sessionStorage.setItem('artId', '${article.art_id}');
+   sessionStorage.setItem('brdId', '${article.brd_id}');
+   sessionStorage.setItem('memId', '${article.mem_id}');
+   sessionStorage.setItem('category', '${category}');
+   sessionStorage.setItem('loginUser', '${memberInfo.mem_id}')
+
+</script>
+<script type="text/javascript">
+	
 	$(() => {
+		$('.article_content').find('img').error(e => {
+			$(e.target).closest('img').attr('src', `${contextPath}/image/ShareGo_Not_Found_Image.png`);
+		});
 		$('.board-toggle').click(e => {
 			let parent = $(e.target).closest('.board-summary');
 			let children = parent.find('.board-summary-part');
 			children.toggle();
 		});
-	});
-	$(document).ready(()=>{
-	    $('#btns-show, #btns-hide').click(e=>{
-	        $(e.target).closest('.reply-list')
-	        .find('#btns-show').toggle().end()
-	        .find('#btns-hide').toggle().end()
-	        .find('.reply-detail').toggle().end();
-	    });
 	});
 </script>
 
@@ -65,112 +71,6 @@
 	 	  		});
 	 		  } 
 </script>
-
-
-<!-- <script type="text/javascript">
-    $(function() {
-        // 추천 버튼 클릭 시
-        $("#shLike").click(function(event)) {
-        	event.preventDefault();
-        	// 글 정보
-            var brd_id = ${article.brd_id};
-            var art_id = ${article.art_id};
-            
-            var isshCustomLike = true;
-			
-            // ajax 아작스
-            $.ajax({
-                type: "POST",
-                url: "${pageContext.request.contextPath}/board/customer/customLike",
-                data: {
-                    art_id: art_id,
-                    brd_id: brd_Id,
-                    isshCustomLike: isshCustomLike
-                },
-                success: function(response) {
-                    // 추천 성공 시 버튼 상태 변경
-                    $("#shLike").prop("disabled", true);
-                    $("#shDislike").prop("disabled", true);
-                    $("#shcancelLike").prop("disabled", false);
-                }
-            });
-        });
-
-        // 비추천 버튼 클릭 시
-        $("#shDislike").click(function(event)) {
-        	event.preventDefault();
-        	var brd_id = ${article.brd_id};
-            var art_id = ${article.art_id};
-            
-            var isshCustomDislike = true;
-
-            $.ajax({
-                type: "POST",
-                url: "${pageContext.request.contextPath}/board/customer/customDislike",
-                data: {
-                	art_id: art_id,
-                    brd_id: brd_Id,
-                    isshCustomDislike: isshCustomDislike
-                },
-                success: function(response) {
-                    // 비추천 성공 시 버튼 상태 변경
-                    $("#shLike").prop("disabled", true);
-                    $("#shDislike").prop("disabled", true);
-                    $("#shcancelDislike").prop("disabled", false);
-                }
-            });
-        });
- 
-    
-	    // 추천 취소 버튼 클릭 시
-	    $("#shcancelLike").click(function(event)) {
-        	event.preventDefault();
-	    	var brd_id = ${article.brd_id};
-            var art_id = ${article.art_id};
-	        var isshCustomLike = false;
-	
-	        $.ajax({
-	            type: "POST",
-	            url: "cancelRecommendation",
-	            data: {
-	            	art_id: art_id,
-                    brd_id: brd_Id,
-	                isshCustomLike: isshCustomLike
-	            },
-	            success: function(response) {
-	                // 추천 취소 성공 시 버튼 상태 변경
-	                $("#shLike").prop("disabled", false);
-	                $("#shDislike").prop("disabled", false);
-	                $("#shcancelLike").prop("disabled", true);
-	            }
-	        });
-	    });
-	
-	    // 비추천 취소 버튼 클릭 시
-	    $("#shcancelDislike").click(function(event)) {
-        	event.preventDefault();
-	    	var brd_id = ${article.brd_id};
-            var art_id = ${article.art_id};
-	        var isshCustomDislike = false;
-	
-	        $.ajax({
-	            type: "POST",
-	            url: "cancelRecommendation",
-	            data: {
-	            	art_id: art_id,
-                    brd_id: brd_Id,
-	                isshCustomDislike: isshCustomDislike
-	            },
-	            success: function(response) {
-	                // 비추천 취소 성공 시 버튼 상태 변경
-	                $("#shLike").prop("disabled", false);
-	                $("#shDislike").prop("disabled", false);
-	                $("#shcancelDislike").prop("disabled", true);
-	            }
-	        });
-	    });
-	});
-	</script> -->
 </head>
 <body>
 	<header>
@@ -323,37 +223,6 @@
 	<main>
 		<div class="view-content">
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-			<!-- 바꿔 -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 			<!-- 게시글 -->
 			<div class="view-article">
@@ -369,14 +238,9 @@
 						<span class="only-for-member display-flex justify-content-flex-end align-items-center">
 							<!-- 글 수정 삭제 -->
 							<c:if test="${memberInfo.mem_id != null && memberInfo.mem_id == article.mem_id}">
-								<button id="btns-artUpdate" class="adv-hover" type="button" onclick="location.href='${pageContext.request.contextPath}/board/customer/updateFormC?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category}'">글수정</button>
-								<button id="btns-artDelete" class="adv-hover" type="button" onclick="location.href='${pageContext.request.contextPath}/board/customer/deleteCustomer?art_id=${article.art_id }&brd_id=${article.brd_id }&category=${category}'">글삭제</button>
+								<button id="btns-artUpdate" class="adv-hover" type="button" onclick="location.href='${pageContext.request.contextPath}/board/customer/artUpdate?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category}'">글수정</button>
+								<button id="btns-artDelete" class="adv-hover" type="button" onclick="location.href='${pageContext.request.contextPath}/board/customer/artDelete?art_id=${article.art_id }&brd_id=${article.brd_id }&category=${category}'">글삭제</button>
 							</c:if>
-							
-							
-							
-							
-							<!-- category가 brd_id값이 넘어옴 -->
 							
 							<button class="adv-hover" onclick="location.href='${pageContext.request.contextPath}/board/customer?category=${category}';">목록</button>
 						</span>
@@ -392,11 +256,7 @@
 						<span class="font-size-20px font-weight-bold">${article.art_title}</span>
 					</div>
 					<!-- 게시글 신고 -->
-					
-					
-					
-					
-					
+
 					<!-- 신고 아직 기능구현 안됨 -->
 					
 					<div class="modal-report">
@@ -406,10 +266,7 @@
 					</div>
 					
 					<!-- 신고 아직 기능구현 안됨 -->
-					
-					
-					
-					
+
 				</div>
 				
 				<!-- 작성자 -->
@@ -423,6 +280,8 @@
 						<c:if test="${not empty memberInfo}">
 							<svg id="member-report" viewBox="0 0 512 512" width="24" height="24" style="fill: none; stroke: var(--warning); stroke-width: 32px; stroke-linecap: round; stroke-linejoin: round; cursor: pointer;"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z" style="stroke: none; fill: var(--warning);"/></svg>
 							<input type="hidden" id="member_id" value="${article.mem_id}">
+							<input type="hidden" id="comm_id" value="${comm.comm_id}">
+							<input type="hidden" id="comm_value" value="${comm.comm_value}">
 							<!-- 리포트관련 -->
 							<input type="hidden" id="memReport_id" value="${article.report_id}">
 						</c:if>
@@ -589,24 +448,12 @@
 		</div>
 		
 		
-		
-		
-		
-		
-		
-		
+
 		
 		
 		<!-- 바꿔 -->
 		
-		
-		
-		
-		
-		
-		
-		
-		
+
 		
 		
 		<button id="scrollToTop" class="adv-hover">

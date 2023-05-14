@@ -246,7 +246,7 @@
 
 
 
-	<!-- 최승환 -->
+	<!-- 최승환  커스터머 업데이트 리플라이 -->
 	<select id="shcountReply" parameterType="Reply" resultType="int">
 		SELECT COUNT(*) as rep_cnt
 		FROM reply

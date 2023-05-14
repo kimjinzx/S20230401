@@ -71,6 +71,19 @@
 	
 	
 	
+	<!-- 최승환 -->
+<!-- 	<select id="shCategoryName" parameterType="int" resultType="java.lang.String">
+		SELECT  comm_value
+		FROM    comm
+		WHERE   comm_id = #{comm_id}
+	</select>
+	
+	<select id="shCommList" parameterType="int" resultType="Comm">
+		SELECT  *
+		FROM    comm
+		WHERE   comm_id BETWEEN #{comm_id} AND #{comm_id}+99
+	</select> -->
+	
 	
 	
 </mapper>
