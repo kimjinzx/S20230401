@@ -28,7 +28,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 // 같이사요 페이지 계열 컨트롤러 : 김진현
-@Controller
+//@Controller
 @RequiredArgsConstructor
 @Slf4j
 public class DutchpayController {
