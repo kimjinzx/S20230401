@@ -27,6 +27,8 @@ public interface MemberDao {
 	public Member hgFindByMemberUsername(Map<String, Object> param);
 	public Member hgFindByMemberEmail(Map<String, Object> param);
 	public Member hgFindByMemberNickname(Map<String, Object> param);
+	public int hgUpdateMember(Member member);
+
 
 	
 }

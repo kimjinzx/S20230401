@@ -21,7 +21,7 @@ public interface MemberService {
 	public List<Member> hgGetMembersForAdmin(Member member);
 	public int hgUpdateAuthorityByMember(Member member);
 	public int hgUpdateIsdeleteByMember(Member member);
-
+	public int hgUpdateMember(Member member);
 
 
 

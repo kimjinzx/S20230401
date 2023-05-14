@@ -139,6 +139,40 @@ public class MemberController {
 		return "redirect:/mail/JoinAuthentification";
 	}
 	
+	@PostMapping(value = "/updateMemberProc")
+	public String memberUpdateProcess(@AuthenticationPrincipal MemberDetails memberDetails,@RequestParam(value = "image-file", required = false) MultipartFile file, @RequestParam Map<String, String> params, MultipartHttpServletRequest request, RedirectAttributes redirectAttributes) {
+		Member member = new Member();
+		member.setMem_id(memberDetails.getMemberInfo().getMem_id());
+		member.setMem_nickname(params.get("nickname"));
+		member.setMem_tel(params.get("tel1") + params.get("tel2") + params.get("tel3"));
+		int year = Integer.parseInt(params.get("year"));
+		int month = Integer.parseInt(params.get("month"));
+		int day = Integer.parseInt(params.get("day"));
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(year, month, day);
+		Date birthday = calendar.getTime();
+		member.setMem_birthday(birthday);
+		member.setMem_gender(cs.getCommByName(params.get("gender")).getComm_id());
+		String[] regions = { params.get("region1-value").trim(), params.get("region2-value").trim() };
+		for (String reg : regions) {
+			if (!reg.trim().isEmpty()) {
+				int regionCode = Integer.parseInt(reg);
+				if (member.getMem_region1() == null) member.setMem_region1(regionCode);
+				else member.setMem_region2(regionCode);
+			}
+		}
+		String savedName = file.getOriginalFilename();
+		String realPath = request.getSession().getServletContext().getRealPath("/uploads/profile");
+		try {
+			savedName = uploadFile(realPath, savedName, file.getBytes());
+			member.setMem_image(savedName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		int result = ms.hgUpdateMember(member);
+		return "redirect:/";
+	}
+	
 	private String uploadFile(String realPath, String originalName, byte[] fileData) throws Exception {
 		UUID uuid = UUID.randomUUID();
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("uuuu_MM_dd_HH_mm_ss");

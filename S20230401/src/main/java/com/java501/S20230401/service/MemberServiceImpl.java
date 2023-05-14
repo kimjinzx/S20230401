@@ -80,4 +80,9 @@ public class MemberServiceImpl implements MemberService {
 	public int hgUpdateIsdeleteByMember(Member member) {
 		return md.hgUpdateIsdeleteByMember(member);
 	}
+	
+	@Override
+	public int hgUpdateMember(Member member) {
+		return md.hgUpdateMember(member);
+	}
 }

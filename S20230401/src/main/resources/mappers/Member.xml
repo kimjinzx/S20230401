@@ -85,6 +85,18 @@
 	<update id="hgUpdateIsdeleteByMember" parameterType="Member">
 		UPDATE MEMBER SET ISDELETE = #{isdelete} WHERE MEM_ID = #{mem_id}
 	</update>
+	<update id="hgUpdateMember" parameterType="Member">
+		UPDATE MEMBER SET MEM_NICKNAME = #{mem_nickname},
+									MEM_TEL = #{mem_tel},
+									MEM_BIRTHDAY = #{mem_birthday},
+									MEM_GENDER = #{mem_gender},
+									<if test="mem_image != null">
+										MEM_IMAGE = #{mem_image},
+									</if>
+									MEM_REGION1 = #{mem_region1, jdbcType=NUMERIC},
+									MEM_REGION2 = #{mem_region2, jdbcType=NUMERIC}
+		WHERE MEM_ID = #{mem_id}
+	</update>
 
 
 

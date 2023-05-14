@@ -90,4 +90,8 @@ public class MemberDaoImpl implements MemberDao {
 	public int hgUpdateIsdeleteByMember(Member member) {
 		return session.update("hgUpdateIsdeleteByMember", member);
 	}
+	@Override
+	public int hgUpdateMember(Member member) {
+		return session.update("hgUpdateMember", member);
+	}
 }
