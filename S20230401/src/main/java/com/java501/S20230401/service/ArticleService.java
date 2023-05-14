@@ -60,7 +60,8 @@ public interface ArticleService {
 	List<Article>		bjArtSearch(Article article);
 	Integer				bjGood(Article article);
 	Integer				bjBad(Article article);
-	
+	List<Comm> 			bjcommList(int comm_id);
+	String 				bjCategoryName(int comm_id);
 	
 	
 	
@@ -153,6 +154,8 @@ public interface ArticleService {
 	public int              payCompleted1(int trd_id);
 	public int              jhJoinListYN(Article article);
 	public int              jhWaitListYN(Article article);
+	
+	
 
 	
 	

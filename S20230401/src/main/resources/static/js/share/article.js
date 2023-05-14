@@ -75,7 +75,7 @@ function rep_Update(pIndex){
 
 // 댓글 기능 - 댓글 삭제
 function rep_delete(brd_id, art_id, rep_id) {
-    location.href = contextPath+'/board/share/repDelete?art_id='+art_id+'&brd_id='+brd_id+'&rep_id='+rep_id;
+    location.href = contextPath+'/board/community/bjReplyDelete?art_id='+art_id+'&brd_id='+brd_id+'&rep_id='+rep_id;
 }
 
 // 댓글 기능 - 대댓글 작성 토글
@@ -96,14 +96,14 @@ function art_Delete(){
         return false;
     }
     if(confirm('삭제 하시겠습니까?')){
-        location.href=contextPath+'/board/share/artDelete/'+artId+'?brd_id='+brdId+'&category='+category;
+        location.href=contextPath+'/board/community/bjDelete/'+artId+'?brd_id='+brdId+'&category='+category;
         alert("삭제 되었습니다.");
     }
 }
 // 게시글 기능 -게시글 수정
 function art_Update(){
     if(confirm('수정 하시겠습니까?')){
-        location.href=contextPath+'/board/share/artUpdate?art_id='+artId+'&brd_id='+brdId+'&category='+category;
+        location.href=contextPath+'/board/community/bjUpdateForm?art_id='+artId+'&brd_id='+brdId+'&category='+category;
     }
 }
 

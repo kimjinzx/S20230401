@@ -57,6 +57,8 @@ public interface ArticleDao {
 	List<Article>					bjArtSearch(Article article);
 	Integer 						bjGood(Article article);
 	Integer							bjBad(Article article);
+	List<Comm> 						bjcommList(int comm_id);
+	String 							bjCategoryName(int comm_id);
 	
 	// 임동빈
 	int 			dbtotalArticle(Article article);
@@ -144,6 +146,8 @@ public interface ArticleDao {
 	public Article 			joinDeny2(Article article);
 	public Article          joinAccept2(Article article);
 	public int              payCompleted2(int trd_id);
+	
+	
 	
 	
 }

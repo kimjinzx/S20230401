@@ -423,6 +423,29 @@ public class ArticleDaoImpl implements ArticleDao {
 		return bad;
 	}
 	
+	@Override
+	public List<Comm> bjcommList(int comm_id) {
+		List<Comm> commList = null;
+		try {
+			commList = session.selectList("dgCommList", comm_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return commList;
+	}
+	
+	@Override
+	public String bjCategoryName(int comm_id) {
+		String categoryName = "";
+		try {
+			categoryName = session.selectOne("dgCategoryName", comm_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return categoryName;
+	}
+	
+	
 	//=================================================================================================
 	
 	
@@ -1255,5 +1278,7 @@ public class ArticleDaoImpl implements ArticleDao {
 			}
 			return payCompleted;
 		}
+		
+		
 
 }

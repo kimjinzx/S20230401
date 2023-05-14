@@ -205,9 +205,15 @@ public class ArticleServiceImpl implements ArticleService {
 		return ad.bjBad(article);
 	}
 	
+	@Override
+	public List<Comm> bjcommList(int comm_id) {
+		return ad.bjcommList(comm_id);
+	}
 	
-	
-	
+	@Override
+	public String bjCategoryName(int comm_id) {
+		return ad.bjCategoryName(comm_id);
+	}
 	
 	
 	// 임동빈
@@ -750,5 +756,7 @@ public class ArticleServiceImpl implements ArticleService {
 	public int jhWaitListYN(Article article) {
 		return wd.jhWaitListYN(article);
 	}
+	
+	
 	
 }

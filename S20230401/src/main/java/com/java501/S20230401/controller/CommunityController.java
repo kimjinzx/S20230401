@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.java501.S20230401.model.Article;
+import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.MemberDetails;
 import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.service.ArticleService;
@@ -48,7 +50,7 @@ public class CommunityController {
 		System.out.println("CommunityController 시작");
 		int totalArticle = as.totalArticle(category);
 		System.out.println("CommunityController totalArticle->"+totalArticle);
-		
+		List<Comm> commList = as.bjcommList((category / 100 * 100));
 		model.addAttribute("totalArticle", totalArticle);
 		Paging page = new Paging(totalArticle, currentPage);
 		System.out.println("page"+page);
@@ -61,12 +63,16 @@ public class CommunityController {
 	    boardMap.put(1330, "홍보하기");
 	    boardMap.put(1340, "질문/요청");
 	    
-	    
+	    String boardName = as.bjCategoryName(category);
+	    String categoryName = as.bjCategoryName(article.getBrd_id());
 	    model.addAttribute("boardMap", boardMap);
+	    model.addAttribute("boardName", boardName);
+	    model.addAttribute("categoryName", categoryName);
 	    model.addAttribute("totalArticle", totalArticle);
 	    model.addAttribute("page", page);
 	    model.addAttribute("brd_id", brd_id);
 	    model.addAttribute("category", category);
+	    model.addAttribute("commList", commList);
 	    
 	    article.setBrd_id(brd_id);
 		if(brd_id == 1300) {
@@ -79,6 +85,16 @@ public class CommunityController {
 		
 		
 		return "community/communityIndex";
+	}
+	
+	@RequestMapping(value = "board/share/bjSearchForm")
+	public String shareSearch(Article article, Integer category, RedirectAttributes redirectAttributes){
+		redirectAttributes.addFlashAttribute("article", article);
+		return getRedirectShare(category);
+	}
+	
+	public String getRedirectShare(Integer category) {
+		return String.format("redirect:/board/share?category=%s", category);
 	}
 	
 	@RequestMapping(value = "board/community/bjSearch")
@@ -103,7 +119,7 @@ public class CommunityController {
 	    boardMap.put(1340, "질문/요청");
 	    model.addAttribute("boardMap", boardMap);
 	    
-		List<Article> bjSearch = as.bjArtSearch(article);
+	    List<Article> bjSearch = as.bjArtSearch(article);
 	    model.addAttribute("listArticle", bjSearch);
 	    model.addAttribute("article", article);
 	    model.addAttribute("page", page);
@@ -120,7 +136,9 @@ public class CommunityController {
 										Article article, int category, Model model, HttpServletResponse response) 
 	{
 		article.setArt_id(Integer.parseInt(art_id));
-	    if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+	    if (memberDetails != null) {
+	    	model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+	    }
 	    System.out.println("CommunityController detail 시작");
 	    System.out.println("아티클정보"+article);
 //	    Integer readCount = as.upreadCount(article);
@@ -209,13 +227,15 @@ public class CommunityController {
 		}
 	}
 	
-	@GetMapping(value = "board/community/updateForm")
+	@GetMapping(value = "board/community/bjUpdateForm")
 	public String updateForm(@AuthenticationPrincipal MemberDetails memberDetails,int category ,Article article, Model model) {
 		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		System.out.println("업데이트 폼 시작");
 		
 		Article formUpdate = as.detailContent(article);
+		List<Comm> categoryList = as.bjcommList((category / 100 * 100));
 		
+		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("article", formUpdate);
 		model.addAttribute("category", category);
 		System.out.println("업데이트폼 아티클값"+formUpdate);
@@ -224,7 +244,7 @@ public class CommunityController {
 	}
 	
 	@PostMapping(value = "board/community/bjUpdate")
-	public String update(@AuthenticationPrincipal MemberDetails memberDetails,int category, Article article , Model model) {
+	public String update(@AuthenticationPrincipal MemberDetails memberDetails,int category, Article article , Model model ) {
 		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		System.out.println("업데이트 시작");
 		
@@ -238,12 +258,12 @@ public class CommunityController {
 	
 	
 	@RequestMapping(value = "board/community/bjDelte")
-	public String delete(Article article, int category, Model model) {
+	public String delete(@PathVariable("art_id")String art_id,Article article, int category, Model model) {
 		System.out.println("삭제 업데이트 시작");
 		int delResult = as.delete(article);
 		model.addAttribute("category", category);
 		
-		return "redirect:/board/community?category="+category;
+		return "redirect:/board/community?brd_id="+article.getBrd_id()+"category="+category;
 	}
 	
 	@PostMapping(value = "board/community/bjReplyWrite")
