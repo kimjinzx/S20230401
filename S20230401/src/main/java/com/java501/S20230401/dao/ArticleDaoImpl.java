@@ -434,7 +434,7 @@ public class ArticleDaoImpl implements ArticleDao {
 
 		try {
 			if (article.getBrd_id() == 1000) {
-				totArticleCount = session.selectOne("dbArticleTotalCnt");
+				totArticleCount = session.selectOne("dbArticleTotalCnt", article);
 			} else {
 				totArticleCount = session.selectOne("dbArticleBoardCnt", article);
 			}
@@ -756,8 +756,7 @@ public class ArticleDaoImpl implements ArticleDao {
 	
 	
 	
-	
-	
+
 	
 	// 김찬영
 	// 총리스트

@@ -191,10 +191,10 @@
 														BETWEEN #{brd_id} and #{brd_id}+600
 													</when>
 													<when test="brd_id % 100 != 0">
-														= #{brd_id}
+														= #{brd_id}						
 													</when>
 													<otherwise>
-														BETWEEN #{brd_id} and #{brd_id}+99
+														BETWEEN #{brd_id} and #{brd_id}+99		
 													</otherwise>
 												</choose>
 		                       )
@@ -542,18 +542,46 @@
 	
 	
 	<!-- 임동빈 -->
-	<select id="dbArticleTotalCnt" resultType="int">
-		select 	Count(*) 
-		FROM   	article 
-		WHERE  	brd_id between 1010 and 1060
-		AND    	isdelete = 0
+	<select id="dbArticleTotalCnt" parameterType="Article" resultType="int">
+		SELECT Count(*) FROM article a 
+		LEFT JOIN member m ON a.mem_id = m.mem_id
+			<choose>
+				<when test="search == 's_art_title'">
+					WHERE a.art_title like '%' || #{keyword} || '%'
+				</when>
+				<when test="search == 's_mem_nickname'">
+					WHERE m.mem_nickname like '%' || #{keyword} || '%'
+				</when>
+				<when test="search == 's_art_tag'">
+		            WHERE (a.ART_TAG1||a.ART_TAG2||a.ART_TAG3||a.ART_TAG4||a.ART_TAG5) LIKE '%'|| #{keyword} ||'%'
+		        </when>
+				<otherwise>
+					WHERE a.art_title like '%'
+				</otherwise>
+			</choose>
+		AND a.brd_id between #{brd_id} and #{brd_id} + 60
+		AND a.isdelete = 0
 	</select>
 
 	<select id="dbArticleBoardCnt" parameterType="Article" resultType="int">
-		SELECT 	Count(*) 
-		FROM 	article 
-		WHERE 	brd_id=#{brd_id}
-		AND 	isdelete = 0
+		SELECT Count(*) FROM article a 
+		LEFT JOIN member m ON a.mem_id = m.mem_id	
+			<choose>
+				<when test="search == 's_art_title'">
+					WHERE a.art_title like '%' || #{keyword} || '%'
+				</when>
+				<when test="search == 's_mem_nickname'">
+					WHERE m.mem_nickname like '%' || #{keyword} || '%'
+				</when>
+				<when test="search == 's_art_tag'">
+		            WHERE (a.ART_TAG1||a.ART_TAG2||a.ART_TAG3||a.ART_TAG4||a.ART_TAG5) LIKE '%'|| #{keyword} ||'%'
+		        </when>
+				<otherwise>
+					WHERE a.art_title like '%'
+				</otherwise>
+			</choose>
+		AND		a.brd_id=#{brd_id}
+		AND 	a.isdelete = 0
 	</select>
 
 
@@ -597,6 +625,8 @@
 		           		  , C1.COMM_VALUE   as C1_COMM_VALUE
 		           		  , C2.COMM_ID      as C2_COMM_ID
 		           		  , C2.COMM_VALUE   as C2_COMM_VALUE
+		           		  , C3.COMM_ID		AS C3_COMM_ID
+		           		  , C3.COMM_VALUE	AS C3_COMM_VALUE
 		           		  , R.REG_ID
 		           		  , R.REG_NAME
 		           		  , R.REG_PARENT
@@ -616,8 +646,23 @@
 		                           LEFT OUTER JOIN MEMBER M ON(A.MEM_ID = M.MEM_ID)
 		                           LEFT OUTER JOIN COMM C1 ON(T.TRD_STATUS = C1.COMM_ID)
 		                           LEFT OUTER JOIN COMM C2 ON(T.TRD_GENDER = C2.COMM_ID)
-		                           LEFT OUTER JOIN REGION R ON(T.REG_ID = R.REG_ID)
-		        	WHERE A.BRD_ID BETWEEN 1010 AND 1060
+		                           LEFT OUTER JOIN COMM C3 ON(A.BRD_ID = C3.COMM_ID)
+		                           LEFT OUTER JOIN REGION R ON(T.REG_ID = R.REG_ID)              	
+			<choose>
+				<when test="search == 's_art_title'">
+					WHERE a.art_title like '%' || #{keyword} || '%'
+				</when>
+				<when test="search == 's_mem_nickname'">
+					WHERE m.mem_nickname like '%' || #{keyword} || '%'
+				</when>
+				<when test="search == 's_art_tag'">
+		            WHERE (a.ART_TAG1||a.ART_TAG2||a.ART_TAG3||a.ART_TAG4||a.ART_TAG5) LIKE '%'|| #{keyword} ||'%'
+		        </when>
+				<otherwise>
+					WHERE a.art_title like '%'
+				</otherwise>
+			</choose>
+		        	AND a.brd_id between #{brd_id} and #{brd_id}+60
 		            AND A.ISDELETE = 0
 		        	ORDER BY A.ART_REGDATE DESC) TT)
 		WHERE RN BETWEEN #{start} AND #{end}
@@ -664,6 +709,8 @@
 		           		  , C1.COMM_VALUE   as C1_COMM_VALUE
 		           		  , C2.COMM_ID      as C2_COMM_ID
 		           		  , C2.COMM_VALUE   as C2_COMM_VALUE
+		           		  , C3.COMM_ID		AS C3_COMM_ID
+		           		  , C3.COMM_VALUE	AS C3_COMM_VALUE		           		  
 		           		  , R.REG_ID
 		           		  , R.REG_NAME
 		           		  , R.REG_PARENT
@@ -685,7 +732,21 @@
 		                           LEFT OUTER JOIN COMM C2 ON(T.TRD_GENDER = C2.COMM_ID)
 		                           LEFT OUTER JOIN COMM C3 ON(A.BRD_ID = C3.COMM_ID)
 		                           LEFT OUTER JOIN REGION R ON(T.REG_ID = R.REG_ID)
-		        	WHERE A.BRD_ID = #{brd_id}
+			<choose>
+				<when test="search == 's_art_title'">
+					WHERE a.art_title like '%' || #{keyword} || '%'
+				</when>
+				<when test="search == 's_mem_nickname'">
+					WHERE m.mem_nickname like '%' || #{keyword} || '%'
+				</when>
+				<when test="search == 's_art_tag'">
+		            WHERE (a.ART_TAG1||a.ART_TAG2||a.ART_TAG3||a.ART_TAG4||a.ART_TAG5) LIKE '%'|| #{keyword} ||'%'
+		        </when>
+				<otherwise>
+					WHERE a.art_title like '%'
+				</otherwise>
+			</choose>
+		        	AND A.BRD_ID = #{brd_id}
 		            AND A.ISDELETE = 0
 		        	ORDER BY A.ART_REGDATE DESC) TT)
 		WHERE RN BETWEEN #{start} AND #{end}
@@ -999,7 +1060,7 @@
 		and		rep_id = #{rep_id}
 	</update>
 	
-		<select id="dbCondArticleCnt" parameterType="Article" resultType="int">
+<!-- 		<select id="dbCondArticleCnt" parameterType="Article" resultType="int">
 	SELECT Count(*) FROM article a 
 	LEFT JOIN member m ON a.mem_id = m.mem_id
 	WHERE
@@ -1016,10 +1077,10 @@
 		</choose>
 	AND a.brd_id between 1010 and 1060	
 	AND a.isdelete = 0	
-	</select>	
+	</select>	 -->
 	
 	
-	<select id ="dbListSearchArticle" parameterType="Article" resultType="Article">
+	<!-- <select id ="dbListSearchArticle" parameterType="Article" resultType="Article">
 			SELECT * FROM (
 		    SELECT ROWNUM RN, TT.*
 		    FROM (
@@ -1095,7 +1156,7 @@
 		        	ORDER BY A.ART_REGDATE DESC) TT)
 		WHERE RN BETWEEN #{start} AND #{end}
 	
-	</select>
+	</select> -->
 	
 	
 	

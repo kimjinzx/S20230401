@@ -45,7 +45,7 @@
 	
 	<!-- 임동빈 -->
 	<select id="SelectBoard" resultType="Comm">
-		select * from comm where comm_id between 1010 and 1060
+		select * from comm where comm_id between 1000 and 1060
 	</select>
 	
 	<select id="SelectGender" resultType="Comm">

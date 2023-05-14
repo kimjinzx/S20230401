@@ -14,6 +14,14 @@ public class Article {
 	}
 	
 	
+	public String getKeyWord() {
+		return keyWord;
+	}
+	public void setKeyWord(String keyWord) {
+		this.keyWord = keyWord;
+	}
+
+
 	private Integer art_id;			// PK
 	private Integer brd_id;			// PK
 	private Integer mem_id;			// FK

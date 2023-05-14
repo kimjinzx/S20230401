@@ -128,6 +128,7 @@
 		});
 		
 		
+		
 		// 게시글 추천 수 UP
 		$(() => {
 			$('.btns-good').click(e => {
@@ -135,7 +136,6 @@
 				if(confirm('정말 추천하시겠습니까 ?') == true) {
 				
 				let rawData = { art_id : ${detailArticle.art_id}, brd_id : ${detailArticle.brd_id} }
-			
 				let sendData = JSON.stringify(rawData);
 		
 				$.ajax({
@@ -148,6 +148,10 @@
 						  console.log(data.result);
 					  if(data.result == 1) {
 						  alert('추천 완료');
+						  let goodCount = parseInt($('#btns-goodcancel span').text());
+	                        $('#btns-goodcancel span').text(goodCount + 1); // 추천 수 업데이트
+	                        $('#btns-good').hide(); // 추천 버튼 숨기기
+	                        $('#btns-goodcancel').show(); // 추천 취소 버튼 보이기
 						  
 					  } else {
 						  alert('한 시간에 한번씩만 가능합니다.');
@@ -168,7 +172,6 @@
 				if(confirm('정말 비추천하시겠습니까 ?') == true) {
 				
 				let rawData = { art_id : ${detailArticle.art_id}, brd_id : ${detailArticle.brd_id} }
-			
 				let sendData = JSON.stringify(rawData);
 		
 				$.ajax({
@@ -181,6 +184,10 @@
 						  console.log(data.result);
 					  if(data.result == 1) {
 						  alert('비추천 완료');
+						  let badCount = parseInt($('#btns-badcancel span').text());
+	                       $('#btns-badcancel span').text(badCount + 1); // 추천 수 업데이트
+	                       $('#btns-bad').hide(); // 추천 버튼 숨기기
+	                       $('#btns-badcancel').show(); // 추천 취소 버튼 보이기
 						  
 					  } else {
 						  alert('한 시간에 한번씩만 가능합니다.');
@@ -701,28 +708,16 @@
 					<!-- 카테고리 표시 -->
 					<div class="article-category display-flex justify-content-space-between align-items-center">
 						<span class="category-name">
-							<a href="${pageContext.request.contextPath}/board/together?category=${detailArticle.brd_id }"><span style="color: rgba(var(--theme-font-rgb), 0.5);">함께해요</span></a>
-							<span class="margin-hor-2_5px" style="color: rgba(var(--theme-font-rgb), 0.5);">&gt;</span>
-							
-							
-							
-							
-							
-							
-							<!-- 카테고리 이름 뜨도록 해야함!! -->
+							<a href="${pageContext.request.contextPath}/board/together?category=1000"><span style="color: rgba(var(--theme-font-rgb), 0.5);">함께해요</span></a>
+							<span class="margin-hor-2_5px" style="color: rgba(var(--theme-font-rgb), 0.5);">&gt;</span>				
 							<a class="font-weight-bolder" style="color: var(--subtheme)" href="${pageContext.request.contextPath}/board/together?category=${detailArticle.brd_id}">${detailArticle.c3_comm_value}</a>
 						</span>
-						
-						
-						
-						
-						
-						
+
 						<span class="only-for-member display-flex justify-content-flex-end align-items-center">
 							<!-- 글 수정 삭제 -->
 							<c:if test="${detailArticle.mem_id == memberInfo.mem_id || memberInfo.mem_authority >= 108}">
-								<button id="btns-artUpdate" class="adv-hover" onclick="${pageContext.request.contextPath }location.href='/board/updateFormArticle?brd_id=${detailArticle.brd_id }&art_id=${detailArticle.art_id }';">수정</button>
-								<button id="btns-artDelete" class="adv-hover" onclick="${pageContext.request.contextPath }location.href='/board/deleteArticle?brd_id=${detailArticle.brd_id }&art_id=${detailArticle.art_id }';">삭제</button>
+								<button id="btns-artUpdate" class="adv-hover" onclick="${pageContext.request.contextPath }location.href='/board/together/updateFormArticle?art_id=${detailArticle.art_id }&brd_id=${detailArticle.brd_id }&category=${category }';">수정</button>
+								<button id="btns-artDelete" class="adv-hover" onclick="${pageContext.request.contextPath }location.href='/board/together/deleteArticle?art_id=${detailArticle.art_id }&brd_id=${detailArticle.brd_id }&category=${category }';">삭제</button>
 							</c:if>
 							<button class="adv-hover" onclick="location.href='${pageContext.request.contextPath}/board/together?category=${detailArticle.brd_id }';">목록</button>
 						</span>
@@ -782,26 +777,17 @@
 				<div class="article-info">
 					<div class="view-tag padding-0">
 						<!-- 태그검색기능 -->
-<%-- 						<form action="${pageContext.request.contextPath}/board/share/searchForm">
+						<form action="${pageContext.request.contextPath}/board/together/listSearch">
 							<input type="hidden" name="category" value="${category}">
 							<input type="hidden" name="brd_id" value="${detailArticle.brd_id}">
-							<input type="hidden" name="search" value="articleTag">
+							<input type="hidden" name="search" value="s_art_tag">
 							<c:forEach begin="1" end="5" varStatus="status">
 								<c:set var="art_tag" value="art_tag${status.index}"/>
 									<c:if test="${detailArticle[art_tag] != null}">
-										<button class="btns-tag" name="keyWord" value="${detailArticle[art_tag]}">${detailArticle[art_tag]}</button>
+										<button class="btns-tag" name="keyword" value="${detailArticle[art_tag]}">${detailArticle[art_tag]}</button>
 									</c:if>
 							</c:forEach>
-						</form> --%>
-							<input type="hidden" name="category" value="${category}">
-							<input type="hidden" name="brd_id" value="${detailArticle.brd_id}">
-							<input type="hidden" name="search" value="articleTag">
-							<c:forEach begin="1" end="5" varStatus="status">
-								<c:set var="art_tag" value="art_tag${status.index}"/>
-									<c:if test="${detailArticle[art_tag] != null}">
-										<button class="btns-tag" name="keyWord" value="${detailArticle[art_tag]}">${detailArticle[art_tag]}</button>
-									</c:if>
-							</c:forEach>
+						</form>
 					</div>
 					
 					<!-- 본문 내용 -->
@@ -812,7 +798,8 @@
 					<!-- 거래 관련 내용 -->
 					<div class="article-trade">
 						<div class="share-trdHeader display-flex justify-content-space-between align-items-center">
-							<span class="color-subtheme font-size-20px font-weight-bolder">${detailArticle.trd_cost > 0 ? detailArticle.trd_cost : '함께해요'}</span>
+							<%-- <span class="color-subtheme font-size-20px font-weight-bolder">${detailArticle.trd_cost > 0 ? detailArticle.trd_cost : '함께해요'}</span> --%>
+							<span class="color-subtheme font-size-20px font-weight-bolder">${detailArticle.trd_cost > 0 ? detailArticle.trd_cost : ''}</span>
 							<div class="display-flex justify-content-flex-end align-items-center">
 								<button class="btn" type="button">개시일 : <fmt:formatDate value="${detailArticle.art_regdate}" pattern="yy-MM-dd"/></button>
 								<span class="color-theme-font font-weight-bold margin-hor-2_5px" style="color: rgba(var(--theme-font-rgb), 0.5);">~</span>
@@ -826,7 +813,7 @@
 							</div>
 							<div class="display-flex justify-content-space-between align-items-center">
 								<span><span class="color-subtheme font-weight-bolder margin-right-5px">최대 인원</span>${detailArticle.trd_max}명</span>
-								<span><span class="color-subtheme font-weight-bolder margin-right-5px">최소 나이</span>${detailArticlee.trd_minage>0? detailArticle.trd_minage:'제한없음' }</span>
+								<span><span class="color-subtheme font-weight-bolder margin-right-5px">최소 나이</span>${detailArticle.trd_minage>0? detailArticle.trd_minage:'제한없음' }</span>
 								<span><span class="color-subtheme font-weight-bolder margin-right-5px">최대 나이</span>${detailArticle.trd_maxage>0? detailArticle.trd_maxage:'제한없음'}</span>
 								<span><span class="color-subtheme font-weight-bolder margin-right-5px">성별 제한</span>${detailArticle.trd_gender==201? '남자만':detailArticle.trd_gender==202? '여자만':'제한없음'}</span>
 							</div>

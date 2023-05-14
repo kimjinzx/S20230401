@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class Paging {
 	private int currentPage = 1;
-	private int pageRow = 10;		// 한 페이지의 게시글 수
+	private int pageRow = 5;		// 한 페이지의 게시글 수
 	private int pageBlock = 10;		// 한번에 보여 줄 페이지
 	private int start;
 	private int startPage;

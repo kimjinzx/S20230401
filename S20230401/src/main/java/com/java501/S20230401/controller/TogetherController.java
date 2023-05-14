@@ -1,5 +1,7 @@
 package com.java501.S20230401.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -27,10 +29,10 @@ import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Join;
 import com.java501.S20230401.model.MemberDetails;
-import com.java501.S20230401.model.MemberInfo;
 import com.java501.S20230401.model.Region;
 import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.service.ArticleService;
+import com.java501.S20230401.service.CommService;
 import com.java501.S20230401.service.Paging;
 import com.java501.S20230401.service.ReplyService;
 
@@ -43,6 +45,7 @@ public class TogetherController {
 
 	private final ArticleService as;
 	private final ReplyService rs;
+	private final CommService cs;
 
 	@RequestMapping(value = "/board/together")
 	public String articleList(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
@@ -54,7 +57,6 @@ public class TogetherController {
 
 		// category 값을 brd_id에 할당.
 		article.setBrd_id(category);
-		int number = article.getBrd_id();
 
 		// 전체 게시글 개수 Count
 		int totalArticle = as.dbtotalArticle(article);
@@ -63,14 +65,22 @@ public class TogetherController {
 		Paging page = new Paging(totalArticle, currentPage);
 		article.setStart(page.getStart()); // 시작시 1
 		article.setEnd(page.getEnd());
+		
+		// 카테고리 리스트
+		List<Comm> categoryList = as.categoryName();
+		model.addAttribute("categories", categoryList);
+		
+		// 카테고리 이름
+		String categoryName = cs.categoryName(category);
 
 		// 게시글 리스트 작업
 		List<Article> listArticle = as.dbListArticle(article);
-
+		
 		model.addAttribute("article", article);
 		model.addAttribute("totalArticle", totalArticle);
 		model.addAttribute("listArticle", listArticle);
-		model.addAttribute("category", number);
+		model.addAttribute("category", category);
+		model.addAttribute("categoryName", categoryName);
 		model.addAttribute("page", page);
 
 		return "together/listArticle";
@@ -151,6 +161,7 @@ public class TogetherController {
 		List<Article> waitingList =  as.dbTradeWaitingMember(article);
 		model.addAttribute("waitingList", waitingList);
 		
+		
 		model.addAttribute("category", category);
 
 		return "together/detailArticle";
@@ -158,11 +169,14 @@ public class TogetherController {
 
 	
 	
-	@RequestMapping(value = "/board/writeFormArticle")
-	public String writeFormArticle(@AuthenticationPrincipal MemberDetails memberDetails, Model model) {
+	
+	@RequestMapping(value = "/board/together/writeFormArticle")
+	public String writeFormArticle(@AuthenticationPrincipal MemberDetails memberDetails,
+									Article article, Integer category, Model model) {
 		if (memberDetails != null)
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
-
+		
+		
 		// 카테고리별 콤보박스
 		List<Comm> categoryList = as.categoryName();
 		model.addAttribute("categories", categoryList);
@@ -179,16 +193,21 @@ public class TogetherController {
 		List<Region> parentRegionList = as.parentRegionName();
 		model.addAttribute("parentRegions", parentRegionList);
 
+		
+		model.addAttribute("category", category);
+		
 		return "together/writeFormArticle";
 	}
 
-	@RequestMapping(value = "/board/writeArticle")
+	
+	
+	@RequestMapping(value = "/board/together/writeArticle")
 	public String writeArticle(@AuthenticationPrincipal MemberDetails memberDetails, Article article, Model model,
-			@RequestParam("trd_enddate1") @DateTimeFormat(pattern = "yyyy-MM-dd") Date trd_enddate) {
+			@RequestParam("trd_endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date trd_endDate) {
 		if (memberDetails != null)
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 
-		article.setTrd_enddate(trd_enddate);
+		article.setTrd_enddate(trd_endDate);
 		article.setMem_id(memberDetails.getMemberInfo().getMem_id());
 
 		// 프로시저 Insert_Article 이용 => 게시글 작성
@@ -203,29 +222,31 @@ public class TogetherController {
 			return "redirect:/board/together?category=" + brd_id;
 		} else {
 			model.addAttribute("msg", "입력실패");
-			return "forward:/board/writeFormArticle";
+			return "forward:/board/together/writeFormArticle";
 		}
 
 	}
 
-	@RequestMapping(value = "/board/deleteArticle")
+	@RequestMapping(value = "/board/together/deleteArticle")
 	public String deleteArticle(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
 			Article article, Model model) {
 
 		if (memberDetails != null)
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		
+		int brd_id = article.getBrd_id();
 
 		// 게시글 삭제 (isdelete = 0 => 1)
 		int deleteresult = as.dbdeleteArticle(article);
 		model.addAttribute("result", deleteresult);
 
-		return "redirect:/board/together?category=1000";
+		return "redirect:/board/together?category="+brd_id;
 	}
 
 	
-	@RequestMapping(value = "/board/updateFormArticle")
+	@RequestMapping(value = "/board/together/updateFormArticle")
 	public String updateFormArticle(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
-			Article article, Model model) {
+			Article article, Integer category, Model model) {
 
 		if (memberDetails != null)
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
@@ -249,19 +270,21 @@ public class TogetherController {
 		// 지역별 부모 콤보박스
 		List<Region> parentRegionList = as.parentRegionName();
 		model.addAttribute("parentRegions", parentRegionList);
+		
+		model.addAttribute("category", category);
 
 		return "together/updateFormArticle";
 	}
 
-	@RequestMapping(value = "/board/updateArticle")
+	@RequestMapping(value = "/board/together/updateArticle")
 	public String updateArticle(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
-								Article article, Model model,
-								@RequestParam("trd_enddate1") @DateTimeFormat(pattern = "yyyy-MM-dd") Date trd_enddate) {
+								Article article, Model model, Integer category,
+								@RequestParam("trd_endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date trd_endDate) {
 
 		if (memberDetails != null)
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 
-		article.setTrd_enddate(trd_enddate);
+		article.setTrd_enddate(trd_endDate);
 		
 		// 게시글 수정 (프로시저 사용 => Update_Article)
 		as.dbUpdateArticle(article);
@@ -586,6 +609,7 @@ public class TogetherController {
 		         }
 		      }
 		    
+		    
 		      if (oldCookie != null) {				// oldCookie가 있으면 그걸 가져와서 값을 설정해준다.
 		          if (!oldCookie.getValue().contains(String.format("[%s_%s_%s]", art_id, brd_id, mem_id))) {
 		        	  int ArticleGoodUp = as.dbArticleGoodUp(article); // 추천수 올리는 메서드
@@ -752,38 +776,39 @@ public class TogetherController {
 	 }
 	 
 	 // 검색
-	 @RequestMapping(value = "board/listSearch")
+	 @RequestMapping(value = "board/together/listSearch")
 		public String listSearch(@AuthenticationPrincipal MemberDetails memberDetails,
 				Article article, int category, String currentPage, Model model) {
 			
-         System.out.println("board/listSearch start...");
-			if (memberDetails != null)
-				model.addAttribute("memberInfo", memberDetails.getMemberInfo());
-			
-			// category 값을 brd_id에 할당.
-			article.setBrd_id(category);
-			int number = article.getBrd_id();
-			
-	        System.out.println("board/listSearch number->"+number);
-			// Article 전체 Count
-			int condArticleCnt = as.dbCondArticleCnt(article);
-	        System.out.println("board/listSearch condArticleCnt->"+condArticleCnt);
-			// Paging 작업
-			Paging page = new Paging(condArticleCnt, currentPage);
-			// Parameter Article --> Page만 추가 Setting
-			article.setStart(page.getStart()); // 시작시 1
-			article.setEnd(page.getEnd()); // 시작시 10
-
-			List<Article> listSearchArticle = as.dbListSearchArticle(article);
-	        
-	        
-			model.addAttribute("article", article);
-			model.addAttribute("totalArticle", condArticleCnt);
-			model.addAttribute("listArticle", listSearchArticle);
-			model.addAttribute("category", number);
-			model.addAttribute("page", page);
-
-			return "together/listArticle";
+			/*
+			 * if (memberDetails != null) model.addAttribute("memberInfo",
+			 * memberDetails.getMemberInfo());
+			 * 
+			 * // category 값을 brd_id에 할당. article.setBrd_id(category); int number =
+			 * article.getBrd_id();
+			 * 
+			 * System.out.println("board/listSearch number->"+number); // Article 전체 Count
+			 * int condArticleCnt = as.dbCondArticleCnt(article);
+			 * System.out.println("board/listSearch condArticleCnt->"+condArticleCnt); //
+			 * Paging 작업 Paging page = new Paging(condArticleCnt, currentPage); // Parameter
+			 * Article --> Page만 추가 Setting article.setStart(page.getStart()); // 시작시 1
+			 * article.setEnd(page.getEnd()); // 시작시 10
+			 * 
+			 * List<Article> listSearchArticle = as.dbListSearchArticle(article);
+			 * 
+			 * 
+			 * model.addAttribute("article", article); model.addAttribute("totalArticle",
+			 * condArticleCnt); model.addAttribute("listArticle", listSearchArticle);
+			 * model.addAttribute("category", number); model.addAttribute("page", page);
+			 */
+		 
+		 
+			try {
+				return String.format("redirect:/board/together?category=%s&search=%s&keyword=%s", category, article.getSearch(), URLEncoder.encode(article.getKeyword(), "UTF-8"));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				return "redirect:/board/together?category="+category;
+			}
 		}
 	 
 }
