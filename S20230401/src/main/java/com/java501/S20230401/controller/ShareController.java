@@ -239,7 +239,7 @@ public class ShareController {
 		model.addAttribute("superRegions", superRegions);
 		model.addAttribute("regions", regionHierachy);
 		model.addAttribute("category", category);
-		model.addAttribute("isAnyoneJoined", joinList == null || joinList.size() > 0);
+		model.addAttribute("isAnyoneJoined", (joinList.size() > 0)); // 수정
 		
 		return "share/updateForm";
 	}
@@ -629,6 +629,7 @@ public class ShareController {
 	public String indexPage() {
 		return "redirect:/board/share?category=999";
 	}
+*/
 	// Share외의 다른 카테고리 연결
 	@RequestMapping(value = "board/{categoryConnect}")
 	public String togetherPage(	@PathVariable("categoryConnect")
@@ -643,7 +644,7 @@ public class ShareController {
 		redirectAttributes.addFlashAttribute("currentPage", currentPage);
 		return "redirect:/board/share?category="+category;
 	}
-*/
+
 	// 쿠키용 체크
 	public boolean dgCheck(	HttpServletRequest request,
 							HttpServletResponse response,

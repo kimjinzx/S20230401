@@ -400,11 +400,19 @@
 								<div class="view-middle display-flex justify-content-space-between align-items-center padding-5px padding-hor-0">
 									<span class="font-weight-bolder">${article.member.mem_nickname}</span>
 									<div class="display-flex justify-content-flex-end align-items-center">
+									
+<%-- 										<c:if test="${fn:contains(article.status_name, '모집')}"><button>${article.status_name}</button></c:if>
+										<c:if test="${fn:contains(article.status_name, '진행')}"><button>${article.status_name}</button></c:if>
+										<c:if test="${fn:contains(article.status_name, '완료')}"><button>${article.status_name}</button></c:if>
+										<c:if test="${fn:contains(article.status_name, '취소')}"><button>${article.status_name}</button></c:if> --%>
+										
 										<c:if test="${article.status_name != null}">
-											<button class="btn margin-right-5px font-weight-bolder" ${article.trade.trd_status == 401 ? 'style="background-color: var(--subtheme);"' : '' }>${article.status_name}</button>
+											<button class="btn margin-right-5px font-weight-bolder" ${article.trade.trd_status == 401 || article.trade.trd_status == 402 ? 'style="background-color: var(--subtheme);"' : '' }>${article.status_name}</button>
 										</c:if>
+										
+										
 										<c:choose>
-											<c:when test="${article.trade.trd_cost == null || article.trade.trd_cost == 0}">
+											<c:when test="${article.trade.trd_cost == 0}">
 												<span class="font-size-20px font-weight-bolder color-subtheme">무료</span>
 											</c:when>
 											<c:when test="${article.trade.trd_cost != null && article.trade.trd_cost != 0}">

@@ -278,7 +278,8 @@
 							</c:forEach>
 						</form>
 					</div>
-					
+				</div>
+				<c:if test="${not empty article.trade.trd_id}">
 					<!-- 본문 내용 -->
 					<div class="article_content" style="padding: 20px 10px;">
 						${article.art_content }
@@ -414,7 +415,7 @@
 							<c:if test="${memberInfo == null}"><div class="login display-flex justify-content-center align-items-center"><a href="${pageContext.request.contextPath}/login"><h3 class="color-subtheme">로그인</h3></a><span> 후 이용 가능합니다</span></div></c:if>
 						</div>
 					</div>
-				</div>
+				</c:if>
 				
 				<div class="article-body" style="border-bottom: 1px solid rgba(128, 128, 128, 0.5);">
 					<!-- 추천 비추천 -->
