@@ -443,7 +443,7 @@
 					</div>
 	
 					<div class="button-group">
-						<button type="submit" class="btns-submit" formaction="${pageContext.request.contextPath }/board/dutchpay/dutchpayWritePro">작성</button>
+						<button type="submit" class="btns-submit" >작성</button>
  						<button type="button" class="btns-cancel" onclick="location.href='${pageContext.request.contextPath}/board/dutchpay?category='+1100;">취소</button>
 					</div>
 				</form>

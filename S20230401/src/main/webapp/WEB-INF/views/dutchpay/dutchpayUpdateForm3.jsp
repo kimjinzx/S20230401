@@ -18,7 +18,7 @@
 <body>
 <body>
 <!-- 확인 버튼 구현  -->
-<form action="${pageContext.request.contextPath }/dutchpay/dutchpayUpdatePro" method="post"> 
+<form action="${pageContext.request.contextPath }/board/dutchpay/dutchpayUpdatePro" method="post"> 
 	<div class="container">
 	<input type="hidden" name="art_id" value="${updateForm.art_id }" >
 	<input type="hidden" name="brd_id" value="${updateForm.brd_id }" > 

@@ -345,11 +345,11 @@
 			<h1 class="color-subtheme text-align-center">게시글 수정</h1>
 	
 			<div>
-				<form action="${pageContext.request.contextPath}/board/share/updateArticleForm" method="post" onsubmit="return updateAction();">
-					<input type="hidden" 	name="category" 		value="${category}">
-					<input type="hidden" 	name="art_id" 			value="${article.art_id}">
+				<form action="${pageContext.request.contextPath}/board/dutchpay/dutchpayUpdatePro" method="post" onsubmit="return updateAction();">
+					<%-- <input type="hidden" 	name="category" 		value="${category}"> --%>
+					<input type="hidden" 	name="art_id" 			value="${updateForm.art_id}">
 				<!-- 임시 기본값 저장 -->
-					<input type="hidden" 	name="trade.trd_id" value="${article.trade.trd_id }">
+					<input type="hidden" 	name="trade.trd_id" value="${updateForm.trd_id }">
 					<input type="hidden" 	name="trade.trd_status" value="401">
 					<input type="hidden" 	name="trade.trd_cost" 	value="0">
 					<input type="hidden" 	name="art_good" 		value="0">
@@ -359,7 +359,7 @@
 					
 					
 					<div class="display-flex justify-content-space-between align-items-center">
-						<div class="form-group display-flex justify-content-flex-start align-items-center">
+						<%-- <div class="form-group display-flex justify-content-flex-start align-items-center">
 							<label for="category" class="margin-right-5px">카테고리</label>
 							<select name="brd_id" id="brd_id">
 								<option value="1210" ${article.brd_id == 1210? 'selected':''}>식품</option>
@@ -367,7 +367,7 @@
 								<option value="1230" ${article.brd_id == 1230? 'selected':''}>가전/가구</option>
 								<option value="1240" ${article.brd_id == 1240? 'selected':''}>기타</option>
 							</select>
-						</div>
+						</div> --%>
 						
 						<!-- 매니저 이상의 권한만 공지 설정 가능 -->
 						<c:if test="${memberInfo.mem_authority >= 108}">
@@ -381,15 +381,15 @@
 	
 					<div class="form-group display-flex justify-content-flex-start align-items-center">
 						<label for="article-title" class="margin-right-5px width-50px">제목</label>
-						<input type="text" class="flex-grow-1" id="article-title" name="art_title" placeholder="제목" value="${article.art_title }" required="required">
+						<input type="text" class="flex-grow-1" id="article-title" name="art_title" placeholder="제목" value="${updateForm.art_title }" required="required">
 					</div>
 					
 					<div class="form-group flex-grow-1 display-flex justify-content-flex-end align-items-center">
-						<input type="hidden" id="art_tag1" name="art_tag1" value="${article.art_tag1 }">
-						<input type="hidden" id="art_tag2" name="art_tag2" value="${article.art_tag2 }">
-						<input type="hidden" id="art_tag3" name="art_tag3" value="${article.art_tag3 }">
-						<input type="hidden" id="art_tag4" name="art_tag4" value="${article.art_tag4 }">
-						<input type="hidden" id="art_tag5" name="art_tag5" value="${article.art_tag5 }">
+						<input type="hidden" id="art_tag1" name="art_tag1" value="${updateForm.art_tag1 }">
+						<input type="hidden" id="art_tag2" name="art_tag2" value="${updateForm.art_tag2 }">
+						<input type="hidden" id="art_tag3" name="art_tag3" value="${updateForm.art_tag3 }">
+						<input type="hidden" id="art_tag4" name="art_tag4" value="${updateForm.art_tag4 }">
+						<input type="hidden" id="art_tag5" name="art_tag5" value="${updateForm.art_tag5 }">
 						<label class="margin-right-5px width-50px">태그</label>
 						<div class="input-box display-flex justify-content-flex-start align-items-center" style="border-bottom: 2.5px solid rgba(128, 128, 128, 0.5); margin: 0; flex-grow: 1;" onclick="$('#tag-input').focus();">
 							<div id="tag-box">
@@ -400,7 +400,7 @@
 					</div>
 					
 					<!-- 글 내용 -->
-					<input type="hidden" id="art_content" name="art_content" value="<c:out value="${article.art_content }" escapeXml="true"/>" required>
+					<input type="hidden" id="art_content" name="art_content" value="<c:out value="${updateForm.art_content }" escapeXml="true"/>" required>
 					<div id="articleEditor"></div>
 					
 					<!-- 참가자 있을 시 수정 불가 안내 메시지 -->
@@ -414,15 +414,23 @@
 						<div class="display-flex justify-content-space-between align-items-center padding-10px">
 							<div class="form-group" style="display: flex;">
 								<div class="popup-group">
-									<input type="hidden" id="reg_id" name="trade.reg_id" value="${article.trade.reg_id }">
+										
+									<input type="hidden" id="reg_id" name="reg_id" value="${updateForm.reg_id }">
 									<label for="reg_id-button">지역 제한</label>
-									<c:set var="selectedRegion" value=""/>
+									
+										<select name="reg_id">
+											<c:forEach var="L_ud" items="${loc_ud }">
+												<option value="${L_ud.reg_id }" ${L_ud.reg_id == updateForm.reg_id ? 'selected' : '' }>${L_ud.reg_name }</option>
+											</c:forEach>
+										</select>
+									
+									<%-- <c:set var="selectedRegion" value=""/>
 									<c:forEach var="region" items="${superRegions }">
-										<c:if test="${region.reg_id == article.trade.reg_id }">
+										<c:if test="${region.reg_id == updateForm.reg_id }">
 											<c:set var="selectedRegion" value="${region.reg_name }"/>
 										</c:if>
 										<c:forEach var="subRegion" items="${regions[region] }">
-											<c:if test="${subRegion.reg_id == article.trade.reg_id }">
+											<c:if test="${subRegion.reg_id == updateForm.reg_id }">
 												<c:set var="selectedRegion" value="${subRegion.reg_name }"/>
 											</c:if>
 										</c:forEach>
@@ -445,36 +453,36 @@
 												</c:if>
 											</div>
 										</c:forEach>
-									</div>
+									</div> --%>
 								</div>
 							</div>
 							
 							<div class="form-group flex-grow-1 margin-left-10px display-flex justify-content-flex-end align-items-center">
 								<label for="trade_trd_loc" class="margin-right-5px">상세 지역</label>
-								<input type="text" class="flex-grow-1" name="trade.trd_loc" placeholder="상세한 지역을 기입해주세요" value="${article.trade.trd_loc }" ${isAnyoneJoined ? 'readonly' : '' }>
+								<input type="text" class="flex-grow-1" name="trd_loc" placeholder="상세한 지역을 기입해주세요" value="${updateForm.trd_loc }" ${isAnyoneJoined ? 'readonly' : '' }>
 							</div>
 						</div>
 						
 						<div class="form-group display-flex justify-content-space-between align-items-center padding-10px">
 							<div class="form-group display-flex justify-content-flex-start align-items-center">
 								<label for="deadline" class="margin-right-5px">마감일</label>
-								<fmt:formatDate var="dateValue" value="${article.trade.trd_enddate }" pattern="yyyy-MM-dd hh:mm:ss"/>
+								<fmt:formatDate var="dateValue" value="${updateForm.trd_enddate }" pattern="yyyy-MM-dd hh:mm:ss"/>
 								<input type="datetime-local" name="trd_endDate" required="required" value="${dateValue }" ${isAnyoneJoined ? 'readonly' : '' }>
 							</div>
 							
 							<div class="form-group display-flex justify-content-space-between align-items-center padding-10px">
 								<label for="trade.trd_cost" class="margin-right-5px">비용</label>
-								<input type="number" class="font-size-18px font-weight-bolder" name="trade.trd_cost" value="${article.trade.trd_cost == null ? 0 : article.trade.trd_cost }" min="0" required="required" ${isAnyoneJoined ? 'readonly' : '' }>
+								<input type="number" class="font-size-18px font-weight-bolder" name="trd_cost" value="${updateForm.trd_cost == null ? 0 : updateForm.trd_cost }" min="0" required="required" ${isAnyoneJoined ? 'readonly' : '' }>
 							</div>
 						</div>
 						
 						<div class="form-group display-flex justify-content-space-between align-items-center padding-10px">
 							<div class="form-group display-flex justify-content-flex-end align-items-center">
 								<label for="max-people" class="margin-right-5px">최대 인원</label>
-								<input type="number" class="width-50px" name="trade.trd_max" min="2" value="${article.trade.trd_max }" required="required" ${isAnyoneJoined ? 'readonly' : '' }>
+								<input type="number" class="width-50px" name="trd_max" min="2" value="${updateForm.trd_max }" required="required" ${isAnyoneJoined ? 'readonly' : '' }>
 							</div>
 							
-							<div class="form-gender display-flex justify-content-flex-start align-items-center">
+							<%-- <div class="form-gender display-flex justify-content-flex-start align-items-center">
 								<label for="gender-limit" class="margin-right-5px">성별</label>
 								<select name="trade.trd_gender" ${isAnyoneJoined ? 'disabled' : '' }>
 									<option value="" ${article.trade.trd_gender == null ? 'selected' : '' }>제한 없음</option>
@@ -488,13 +496,13 @@
 								<input type="number" class="width-50px" name="trade.trd_minage" min="1" max="100" value="${article.trade.trd_minage }" ${isAnyoneJoined ? 'readonly' : '' }>
 								<span class="margin-hor-5px font-weight-bolder">~</span>
 								<input type="number" class="width-50px" name="trade.trd_maxage" min="1" max="100" value="${article.trade.trd_maxage }" ${isAnyoneJoined ? 'readonly' : '' }>
-							</div>
+							</div> --%>
 						</div>
 					</div>
 	
 					<div class="button-group">
 						<button type="submit" class="btns-submit">작성</button>
-						<button type="button" class="btns-cancel" onclick="location.href='${pageContext.request.contextPath}/board/share?category='+${category};">취소</button>
+						<button type="button" class="btns-cancel" onclick="location.href='${pageContext.request.contextPath}/board/dutchpay?category='+1100;">취소</button>
 					</div>
 				</form>
 			</div>
