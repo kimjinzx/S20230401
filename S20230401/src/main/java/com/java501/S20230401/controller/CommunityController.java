@@ -167,23 +167,19 @@ public class CommunityController {
 	
 	//글쓰기
 	@PostMapping(value = "board/community/bjcommunitywrite")
-	public String communityWrite(@AuthenticationPrincipal MemberDetails memberDetails,int category, Article article, Model model) {
+	public String communityWrite(@AuthenticationPrincipal MemberDetails memberDetails,int category, Article article, Model model,RedirectAttributes redirectAttributes) {
 		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		System.out.println("커뮤니티 라이트 시작");
 
 		System.out.println("커뮤니티 아티클"+article);
+		article.setMem_id(memberDetails.getMemberInfo().getMem_id());
 		
 		int writeResult = as.bjWriteArticle(article);
 		model.addAttribute("category", category);
 		System.out.println("라이트리절트"+writeResult);
-		if(writeResult > 0 ) {
-			System.out.println("라이트리절트값"+writeResult);
-			return "redirect:/board/community?category="+category;
-		}
-		else {
-			model.addAttribute("msg", "입력 실패 확인하세요");
-			return "forward:/board/community/communityWrite";
-		}
+
+		redirectAttributes.addFlashAttribute("article", article);
+		return getRedirectCommunity(category);
 	}
 	
 	@GetMapping(value = "board/community/bjUpdateForm")

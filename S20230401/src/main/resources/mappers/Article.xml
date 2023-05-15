@@ -462,10 +462,35 @@
 	</select>
 
 	<select id="bjdetailContent"  parameterType="Article" resultType="Article">
-		SELECT a.*, m.mem_nickname, m.mem_image
+		<!-- SELECT a.*, m.mem_nickname, m.mem_image
 			FROM article a
 			INNER JOIN member m ON a.mem_id = m.mem_id
-		WHERE a.art_id = #{art_id} AND a.brd_id = #{brd_id}	AND a.isdelete = 0
+		WHERE a.art_id = #{art_id} AND a.brd_id = #{brd_id}	AND a.isdelete = 0 -->
+		SELECT  *
+		FROM   (SELECT *
+		        FROM    ARTICLE A
+                JOIN    (   SELECT  C1.COMM_VALUE AS BRD_NAME, B.*
+                            FROM    BOARD B JOIN COMM C1
+                            ON      BRD_ID IN COMM_ID
+                        )USING(BRD_ID)
+                JOIN	(   SELECT  C2.COMM_VALUE AS GEN_NAME, M.MEM_ID, M.MEM_USERNAME, M.MEM_NICKNAME, M.MEM_EMAIL, M.MEM_TEL, M.MEM_REGION1, M.MEM_REGION2, M.MEM_REGDATE, M.MEM_AUTHORITY, M.MEM_IMAGE, M.MEM_LATEST, M.REPORT_ID AS memReport_id
+                            FROM    MEMBER M JOIN COMM C2
+                            ON      MEM_GENDER IN COMM_ID
+                        )USING(MEM_ID)
+                LEFT OUTER JOIN 	(   SELECT  C3.COMM_VALUE AS STATUS_NAME, T.*, R.REG_NAME
+                                        FROM    TRADE T LEFT OUTER JOIN COMM C3
+                                        ON      T.TRD_STATUS = C3.COMM_ID
+                                        LEFT OUTER JOIN REGION R
+                                        ON      T.REG_ID = R.REG_ID
+                         )USING(TRD_ID)
+                LEFT OUTER JOIN    (    SELECT 	COUNT(*) AS REP_CNT, ART_ID, BRD_ID
+                                        FROM 	REPLY
+                                        WHERE 	ISDELETE = 0
+                                        GROUP BY(ART_ID, BRD_ID)
+                                    )USING(BRD_ID, ART_ID)
+                WHERE 	A.ISDELETE = 0
+		        )
+		WHERE   ART_ID = #{art_id} AND BRD_ID = #{brd_id}
 	</select>
 	
 	<update id="bjreadCount" parameterType="Article" >
@@ -496,7 +521,7 @@
 				REPORT_ID
 							)
 		VALUES 
-				((SELECT MAX(ART_ID) + 1 FROM ARTICLE WHERE BRD_ID = #{brd_id}), 
+				((SELECT NVL(MAX(ART_ID), 0) + 1 FROM ARTICLE WHERE BRD_ID = #{brd_id}), 
 				#{brd_id},
 				#{art_title, jdbcType=VARCHAR}, 
 				#{mem_id}, 

@@ -202,9 +202,9 @@
 					<!-- 카테고리 표시 -->
 					<div class="article-category display-flex justify-content-space-between align-items-center">
 						<span class="category-name">
-							<a href="${pageContext.request.contextPath}/board/community?category=${article.brd_id - (article.brd_id % 100) }"><span style="color: rgba(var(--theme-font-rgb), 0.5);">나눔해요</span></a>
+							<a href="${pageContext.request.contextPath}/board/community?category=${article.brd_id - (article.brd_id % 100) }"><span style="color: rgba(var(--theme-font-rgb), 0.5);">커뮤니티</span></a>
 							<span class="margin-hor-2_5px" style="color: rgba(var(--theme-font-rgb), 0.5);">&gt;</span>
-							<a class="font-weight-bolder" style="color: var(--subtheme)" href="${pageContext.request.contextPath}/board/share?category=${article.brd_id}">${article.brd_name}</a>
+							<a class="font-weight-bolder" style="color: var(--subtheme)" href="${pageContext.request.contextPath}/board/community?category=${article.brd_id}">${article.brd_name}</a>
 						</span>
 						<span class="only-for-member display-flex justify-content-flex-end align-items-center">
 					<!-- 글 수정 삭제 -->

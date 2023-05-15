@@ -310,12 +310,10 @@
 			<h1 class="color-subtheme text-align-center">게시글 작성</h1>
 	
 			<div>
-				<form action="${pageContext.request.contextPath}/board/share/writeArticleForm" method="post" onsubmit="return writeAction();">
+				<form action="${pageContext.request.contextPath}/board/community/bjcommunitywrite" method="post" onsubmit="return writeAction();">
 					<input type="hidden" 	name="category" 		value="${category}">
 					<input type="hidden" 	name="brd_id" 			value="${category}">
 				<!-- 임시 기본값 저장 -->
-					<input type="hidden" 	name="trade.trd_status" value="401">
-					<input type="hidden" 	name="trade.trd_cost" 	value="0">
 					<input type="hidden" 	name="art_good" 		value="0">
 					<input type="hidden" 	name="art_bad" 			value="0">
 					<input type="hidden" 	name="art_read" 		value="0">
@@ -326,10 +324,10 @@
 						<div class="form-group display-flex justify-content-flex-start align-items-center">
 							<label for="category" class="margin-right-5px">카테고리</label>
 							<select name="brd_id" id="brd_id">
-								<option value="1210" ${category == 1210? 'selected':''}>식품</option>
-								<option value="1220" ${category == 1220? 'selected':''}>패션/잡화</option>
-								<option value="1230" ${category == 1230? 'selected':''}>가전/가구</option>
-								<option value="1240" ${category == 1240? 'selected':''}>기타</option>
+								<option value="1310" ${category == 1310? 'selected':''}>일상수다</option>
+								<option value="1320" ${category == 1320? 'selected':''}>자랑하기</option>
+								<option value="1330" ${category == 1330? 'selected':''}>홍보하기</option>
+								<option value="1340" ${category == 1340? 'selected':''}>질문/요청</option>
 							</select>
 						</div>
 						
@@ -367,77 +365,6 @@
 					<input type="hidden" id="art_content" name="art_content" required>
 					<div id="articleEditor"></div>
 					
-					<!-- 거래 정보 -->
-					<div class="trade-info-box padding-10px display-flex flex-direction-column justify-content-flex-start align-items-stretch" style="border: 2px solid var(--subtheme); border-radius: 5px;">
-						<h2 class="text-align-center color-subtheme font-weight-bolder" style="margin: 10px; padding-bottom: 20px; border-bottom: 1px solid rgba(128, 128, 128, 0.5);">거래 정보</h2>
-						<div class="display-flex justify-content-space-between align-items-center padding-10px">
-							<div class="form-group" style="display: flex;">
-								<div class="popup-group">
-									<input type="hidden" id="reg_id" name="trade.reg_id">
-									<label for="reg_id-button">지역 제한</label>
-									<button type="button" id="region" name="reg_id-button" class="togglePopup theme-button" style="border-color: rgba(128, 128, 128, 0.5);"></button>
-									<div id="region-popup" class="popup-window" style="bottom: 32px; right: auto; left: 81.28px; padding: 0;">
-										<div style="position: relative;">
-											<button type="button" class="subitem-header adv-hover" onclick="$('#reg_id').removeAttr('value'); $('#region').text(''); $('#region-popup').toggle();">없음</button>
-										</div>
-										<c:forEach var="region" items="${superRegions }">
-											<div style="position: relative;">
-												<button type="button" class="subitem-header adv-hover" onclick="$('#region-value').val(${region.reg_id}); $('#region').text('${region.reg_name }'); $('#region-popup').toggle();">${region.reg_name }</button>
-												<c:if test="${not empty regions[region] }">
-													<div class="subitem-list">
-														<button type="button" class="adv-hover" onclick="$('#reg_id').removeAttr('value'); $('#region').text(''); $('#region-popup').toggle();">없음</button>
-														<c:forEach var="subRegion" items="${regions[region] }">
-															<button type="button" class="adv-hover" onclick="$('#reg_id').val(${subRegion.reg_id}); $('#region').text('${subRegion.reg_name }'); $('#region-popup').toggle();">${subRegion.reg_name }</button>
-														</c:forEach>
-													</div>
-												</c:if>
-											</div>
-										</c:forEach>
-									</div>
-								</div>
-							</div>
-							
-							<div class="form-group flex-grow-1 margin-left-10px display-flex justify-content-flex-end align-items-center">
-								<label for="trade_trd_loc" class="margin-right-5px">상세 지역</label>
-								<input type="text" class="flex-grow-1" name="trade.trd_loc" placeholder="상세한 지역을 기입해주세요">
-							</div>
-						</div>
-						
-						<div class="form-group display-flex justify-content-space-between align-items-center padding-10px">
-							<div class="form-group display-flex justify-content-flex-start align-items-center">
-								<label for="deadline" class="margin-right-5px">마감일</label>
-								<input type="datetime-local" name="trd_endDate">
-							</div>
-							
-							<div class="form-group display-flex justify-content-space-between align-items-center padding-10px">
-								<label for="trade.trd_cost" class="margin-right-5px">비용</label>
-								<input type="number" class="font-size-18px font-weight-bolder" name="trade.trd_cost" value="0" min="0" required="required">
-							</div>
-						</div>
-						
-						<div class="form-group display-flex justify-content-space-between align-items-center padding-10px">
-							<div class="form-group display-flex justify-content-flex-end align-items-center">
-								<label for="max-people" class="margin-right-5px">최대 인원</label>
-								<input type="number" class="width-50px" name="trade.trd_max" min="2" value="2" required="required">
-							</div>
-							
-							<div class="form-gender display-flex justify-content-flex-start align-items-center">
-								<label for="gender-limit" class="margin-right-5px">성별</label>
-								<select name="trade.trd_gender">
-									<option value="">제한 없음</option>
-									<option value="201">남자</option>
-									<option value="202">여자</option>
-								</select>
-							</div>
-		
-							<div class="form-age display-flex justify-content-flex-end align-items-center">
-								<label for="age-limit" class="margin-right-5px">나이</label> 
-								<input type="number" class="width-50px" name="trade.trd_minage" min="1" max="100" value="10">
-								<span class="margin-hor-5px font-weight-bolder">~</span>
-								<input type="number" class="width-50px" name="trade.trd_maxage" min="1" max="100" value="30">
-							</div>
-						</div>
-					</div>
 	
 					<div class="button-group">
 						<button type="submit" class="btns-submit">작성</button>
