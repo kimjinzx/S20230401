@@ -25,6 +25,8 @@
 	}
 });
 $(() => {
+	//$('#scrollToTop').click(e => $(window).animate({scrollTop : '0'}, 500));
 	$('#scrollToTop').click(e => $(window).scrollTop(0));
+	//$('#scrollToBottom').click(e => $(window).animate({scrollTop : ($('body').height() - $(window).height()) + 'px'}, 500));
 	$('#scrollToBottom').click(e => $(window).scrollTop($('body').height() - $(window).height()));
 });

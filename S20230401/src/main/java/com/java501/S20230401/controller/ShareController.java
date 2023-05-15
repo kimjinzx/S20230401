@@ -1,6 +1,9 @@
 package com.java501.S20230401.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -191,9 +194,16 @@ public class ShareController {
 		if(memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		
 		// 지역 제한 조회
-		List<Region> regionList = regionService.dgRegionList();
+		// 이 아래는 꼭 들고 다녀야함!!!
+		Map<Region, List<Region>> regionHierachy = new HashMap<Region, List<Region>>();
+		List<Region> superRegions = regionService.getSuperRegions();
+		for (Region sups : superRegions) regionHierachy.put(sups, regionService.getChildRegions(sups.getReg_id()));
+		model.addAttribute("superRegions", superRegions);
+		model.addAttribute("regions", regionHierachy);
+		// 여기까지는 꼭 들고 다녀야함!!!
+		//List<Region> regionList = regionService.dgRegionList();
+		//model.addAttribute("regionList", regionList);
 		
-		model.addAttribute("regionList", regionList);
 		model.addAttribute("category", category);
 		
 		return "share/writeForm";
@@ -209,7 +219,14 @@ public class ShareController {
 		// 글 정보 저장
 		Article detailArticle = articleService.detailShareArticle(article);
 		// 지역 제한 조회
-		List<Region> regionList = regionService.dgRegionList();
+		//List<Region> regionList = regionService.dgRegionList();
+		// 이 아래는 꼭 들고 다녀야함!!!
+		Map<Region, List<Region>> regionHierachy = new HashMap<Region, List<Region>>();
+		List<Region> superRegions = regionService.getSuperRegions();
+		for (Region sups : superRegions) regionHierachy.put(sups, regionService.getChildRegions(sups.getReg_id()));
+		// 여기까지는 꼭 들고 다녀야함!!!
+		// 거래 참가자 목록 저장
+		List<Join> joinList = joinService.shareJoinList(detailArticle.getTrade().getTrd_id());
 		// 거래 상태
 		List<Comm> statusList = commService.commList(400);
 		// 카테고리 변경
@@ -218,8 +235,11 @@ public class ShareController {
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("statusList", statusList);
 		model.addAttribute("article", detailArticle);
-		model.addAttribute("regionList", regionList);
+		//model.addAttribute("regionList", regionList);
+		model.addAttribute("superRegions", superRegions);
+		model.addAttribute("regions", regionHierachy);
 		model.addAttribute("category", category);
+		model.addAttribute("isAnyoneJoined", joinList == null || joinList.size() > 0);
 		
 		return "share/updateForm";
 	}
@@ -269,6 +289,11 @@ public class ShareController {
 		// trd_endDate 저장 (model 이슈 변수명 endDate로)
 		article.getTrade().setTrd_enddate(trd_endDate);
 		System.out.println(article.getArt_isnotice());
+		
+		// 거래 참가자 목록 저장
+		List<Join> joinList = joinService.shareJoinList(article.getTrade().getTrd_id());
+		article.setTrd_id(article.getTrade().getTrd_id());
+		if (joinList == null || joinList.size() > 0) article.setTrade(null);
 		
 		int result = tradeService.updateShare(article);
 		System.out.println("최종 결과 : "+result);
@@ -476,7 +501,7 @@ public class ShareController {
 //		System.out.println(articleList);
 		//log.info("\n카테고리 : {} \n키워드 : {} \n검색 내용 : {} \n널임? {}", category, article.getKeyWord(), article.getSearch());
 		redirectAttributes.addFlashAttribute("article", article);
-		return getRedirectShare(category);
+		return getRedirectSearch(article, category);
 	}
 
 	 // 찜 기능
@@ -660,6 +685,14 @@ public class ShareController {
 	// 카테고리로 돌아가기
 	public String getRedirectShare(Integer category) {
 		return String.format("redirect:/board/share?category=%s", category);
+	}
+	// 검색한 카테고리로 돌아가기
+	public String getRedirectSearch(Article article, Integer category) { 
+		try {
+			return String.format("redirect:/board/share?category=%s&search=%s&keyWord=%s", category, article.getSearch(), URLEncoder.encode(article.getKeyWord(), "UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			return getRedirectShare(category);
+		}
 	}
 	// 게시글로 돌아가기
 	public String getRedirectArticle(Article article, Integer category) {
