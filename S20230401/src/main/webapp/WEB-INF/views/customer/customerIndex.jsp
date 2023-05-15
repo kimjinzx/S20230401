@@ -449,7 +449,7 @@
 				</div>
 				<!-- 검색 -->
 				<div class="board-search" align="center" style="height: 20px; margin: 15px;">
-					<form action="${pageContext.request.contextPath}/board/customer/searchForm">
+					<form action="${pageContext.request.contextPath}/board/customer/shSearch">
 						<input type="hidden" name="category" value="${category}">
 						<input type="hidden" name="brd_id" value="${category}">
 						<svg viewBox="0 0 512 512">

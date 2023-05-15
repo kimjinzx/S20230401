@@ -345,7 +345,7 @@
 			<h1 class="color-subtheme text-align-center">게시글 수정</h1>
 	
 			<div>
-				<form action="${pageContext.request.contextPath}/board/customer/updateArticleForm" method="post" onsubmit="return updateAction();">
+				<form action="${pageContext.request.contextPath}/board/customer/updateCustomer" method="post" onsubmit="return updateAction();">
 					<input type="hidden" 	name="category" 		value="${category}">
 					<input type="hidden" 	name="art_id" 			value="${article.art_id}">
 				<!-- 임시 기본값 저장 -->
@@ -359,10 +359,10 @@
 						<div class="form-group display-flex justify-content-flex-start align-items-center">
 							<label for="category" class="margin-right-5px">카테고리</label>
 							<select name="brd_id" id="brd_id">
-								<option value="1210" ${article.brd_id == 1510? 'selected':''}>공지</option>
-								<option value="1220" ${article.brd_id == 15220? 'selected':''}>Q&A</option>
-								<option value="1230" ${article.brd_id == 1530? 'selected':''}>이벤트</option>
-								<option value="1240" ${article.brd_id == 1540? 'selected':''}>문의/건의</option>
+								<option value="1510" ${article.brd_id == 1510? 'selected':''}>공지</option>
+								<option value="1520" ${article.brd_id == 1520? 'selected':''}>Q&A</option>
+								<option value="1530" ${article.brd_id == 1530? 'selected':''}>이벤트</option>
+								<option value="1540" ${article.brd_id == 1540? 'selected':''}>문의/건의</option>
 							</select>
 						</div>
 						
@@ -401,12 +401,12 @@
 					<div id="articleEditor"></div>
 					
 					<!-- 참가자 있을 시 수정 불가 안내 메시지 -->
-					<c:if test="${isAnyoneJoined }">
+<%-- 					<c:if test="${isAnyoneJoined }">
 						<p class="color-warning font-size-18px font-weight-bolder text-align-center">참가자가 있어 거래정보를 수정할 수 없습니다</p>
-					</c:if>
+					</c:if> --%>
 					
 					<!-- 거래 정보 -->
-					<div class="trade-info-box padding-10px display-flex flex-direction-column justify-content-flex-start align-items-stretch" style="border: 2px solid var(--subtheme); border-radius: 5px;${isAnyoneJoined ? ' opacity: 0.5; pointer-events: none;' : ''}">
+					<%-- <div class="trade-info-box padding-10px display-flex flex-direction-column justify-content-flex-start align-items-stretch" style="border: 2px solid var(--subtheme); border-radius: 5px;${isAnyoneJoined ? ' opacity: 0.5; pointer-events: none;' : ''}">
 						<h2 class="text-align-center color-subtheme font-weight-bolder" style="margin: 10px; padding-bottom: 20px; border-bottom: 1px solid rgba(128, 128, 128, 0.5);">거래 정보</h2>
 						<div class="display-flex justify-content-space-between align-items-center padding-10px">
 							<div class="form-group" style="display: flex;">
@@ -444,7 +444,7 @@
 										</c:forEach>
 									</div>
 								</div>
-							</div>
+							</div> --%>
 
 	
 					<div class="button-group">

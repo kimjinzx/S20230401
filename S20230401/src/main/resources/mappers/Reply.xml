@@ -246,7 +246,7 @@
 
 
 
-	<!-- 최승환  커스터머 업데이트 리플라이 -->
+	<!-- 최승환  -->
 	<select id="shcountReply" parameterType="Reply" resultType="int">
 		SELECT COUNT(*) as rep_cnt
 		FROM reply
@@ -299,9 +299,9 @@
 	</insert>
 	
 	<update id="shUpdateReply" parameterType="Reply">
-		UPDATE reply
-		SET	rep_content = #{rep_content}
-		WHERE art_id = #{art_id} AND brd_id = #{brd_id} AND rep_id = #{rep_id}
+		update reply 
+		set rep_content = #{rep_content, jdbcType=CLOB}
+		where art_id = #{art_id} and brd_id = #{brd_id} and rep_id = #{rep_id}
 	</update>
 	
 	

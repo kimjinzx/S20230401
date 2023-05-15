@@ -221,14 +221,14 @@ public class CustomerController {
 		int result = rs.customerWriteReply(reply);
 		System.out.println(result >  0? "댓글성공" : "댓글실패");
 		
-		return "redirect:/board/customer/"+reply.getArt_id()+"?brd_id="+reply.getBrd_id()+"&category="+reply.getBrd_id();   
+		return "redirect:/board/customer/"+reply.getArt_id()+"?brd_id="+reply.getBrd_id()+"&category="+category;   
 	}
 	
 	// 댓글 삭제
-	@RequestMapping(value = "board/customer/repDelete")
+	@RequestMapping(value = "/board/customer/customerDeleteReply")
 	public String customerDeleteReply(@AuthenticationPrincipal MemberDetails mD,
 									RedirectAttributes redirectAttributes,
-									Reply reply, Model model) {
+									Reply reply, Model model, Integer category) {
 		MemberInfo memberInfo = null;
 		if (mD != null) {
 			memberInfo = mD.getMemberInfo(); 	
@@ -236,41 +236,38 @@ public class CustomerController {
 			reply.setMem_id(memberInfo.getMem_id());
 		}else {
 			System.err.println("로그인 확인하세요");
-			return "redirect:/board/customer/"+reply.getArt_id()+"?brd_id="+reply.getBrd_id()+"&category="+reply.getBrd_id();
+			return "redirect:/board/customer/"+reply.getArt_id()+"?brd_id="+reply.getBrd_id()+"&category="+category;
 		}	
 		System.out.println("customerDeleteReply start");
 		int deleteResult = rs.customerDeleteReply(reply);
 		model.addAttribute("deleteResult", deleteResult);
 		System.out.println(deleteResult >  0? "댓삭성공" : "댓삭실패");
 		
-		return "redirect:/board/customer/"+reply.getArt_id()+"?brd_id="+reply.getBrd_id()+"&category="+reply.getBrd_id();
+		return "redirect:/board/customer/"+reply.getArt_id()+"?brd_id="+reply.getBrd_id()+"&category="+category;
 	}
 	
 	// 댓글 수정
-	@ResponseBody
-	@RequestMapping(value = "board/customer/update")
-	public List<Reply> customerUpdateReply(@AuthenticationPrincipal MemberDetails mD,
-									  RedirectAttributes redirectAttributes,
-									  Reply reply) {
+	
+	@RequestMapping(value = "/board/customer/customerUpdateReply")
+	public String customerUpdateReply(@AuthenticationPrincipal MemberDetails mD,
+									  Integer category, Model model, Reply reply) {
+		
+		if (mD != null) {
+			model.addAttribute("memberInfo", mD.getMemberInfo());
+		}
+		model.addAttribute("category", category);
+		model.addAttribute("reply", reply);
+		
 		// 업데이트
 		int result = rs.customerUpdateReply(reply);
 
-		// 댓글 조회
-		List<Reply> replyList = null;
-		if(result != 0) {
-			Article article = new Article();
-			article.setArt_id(reply.getArt_id());
-			article.setBrd_id(reply.getBrd_id());
-			replyList = rs.replyList(article);
-			
-			log.info("리스트 {}",replyList);
-		}
-				
-		return replyList;
+		return "redirect:/board/customer/"+ reply.getArt_id()+ "?brd_id=" +reply.getBrd_id()+ "&category=" + category;
+	
+		
 	}
 	
-	// 글수정 폼
-	@GetMapping(value = "/board/customer/artUpdate")
+	// 게시글 수정 폼
+	@GetMapping(value = "/board/customer/updateFormC")
 	public String updateFormC(@AuthenticationPrincipal MemberDetails mD,
 							  Article article, Integer category, Model model) {
 		if (mD != null) {
@@ -278,27 +275,20 @@ public class CustomerController {
 		}
 		System.out.println("CustomerController updateFormC start");
 		
-		Article detailCustomer = as.detailCustomer(article);
-		
-		// 거래 상태
-//		List<Comm> statusList = commService.commList(400);
-//		
-//		List<Comm> categoryList = commService.commList((category / 100 * 100));
-		
+	
 		Article customFormUpdate = as.detailCustomer(article);
 		
 		
-		model.addAttribute("article", detailCustomer);
+		model.addAttribute("article", customFormUpdate);
 		/* model.addAttribute("categoryList", categoryList); */
 		model.addAttribute("category", category);
-		model.addAttribute("article", customFormUpdate);
 		
 		return "/customer/updateFormC";
 	}
 	
 	//글 수정
 	
-	@PostMapping(value = "/board/customer/updateArticleForm")
+	@PostMapping(value = "/board/customer/updateCustomer")
 	public String updateCustomer(@AuthenticationPrincipal MemberDetails mD, //@PathVariable("art_id") String art_id,
 								Article article, Integer category, Model model) {
 		
@@ -319,18 +309,21 @@ public class CustomerController {
 	
 	//글 삭제
 	
-	@RequestMapping(value = "/board/customer/artDelete/{art_id}")
+	@RequestMapping(value = "/board/customer/deleteCustomer")
 	public String deleteCustomer(@AuthenticationPrincipal MemberDetails mD,
-								 @PathVariable("art_id") String art_id,
 								 Article article, Integer category, Model model) {
-		
-		article.setArt_id(Integer.parseInt(art_id));
 		
 		System.out.println("CustomerController deleteCustomer start");
 		int dresult = as.deleteCustomer(article);
+		model.addAttribute("category", category);
+		model.addAttribute("result", dresult);
 		
-		return "redirect:/board/customer/"+article.getArt_id()+"?brd_id="+article.getBrd_id()+"&category="+category;
-		/* return "redirect:/board/customer?category="+category; */
+		/*
+		 * return
+		 * "redirect:/board/customer/"+article.getArt_id()+"?brd_id="+article.getBrd_id(
+		 * )+"&category="+category;
+		 */
+		return "redirect:/board/customer?category="+category;
 	}
 	
 	//글 검색

@@ -324,10 +324,10 @@
 						<div class="form-group display-flex justify-content-flex-start align-items-center">
 							<label for="category" class="margin-right-5px">카테고리</label>
 							<select name="brd_id" id="brd_id">
-								<option value="1210" ${category == 1510? 'selected':''}>공지</option>
-								<option value="1220" ${category == 1520? 'selected':''}>Q&A</option>
-								<option value="1230" ${category == 1530? 'selected':''}>이벤트</option>
-								<option value="1240" ${category == 1540? 'selected':''}>문의/건의</option>
+								<option value="1510" ${category == 1510? 'selected':''}>공지</option>
+								<option value="1520" ${category == 1520? 'selected':''}>Q&A</option>
+								<option value="1530" ${category == 1530? 'selected':''}>이벤트</option>
+								<option value="1540" ${category == 1540? 'selected':''}>문의/건의</option>
 							</select>
 						</div>
 						
