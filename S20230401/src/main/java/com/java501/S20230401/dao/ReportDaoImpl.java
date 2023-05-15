@@ -48,11 +48,27 @@ public class ReportDaoImpl implements ReportDao {
 	public int shareReport(Report report) {
 		int result = 0;
 		try {
+			System.out.println("삽입"+report);
 			result = session.insert("dgShareReport", report);
+			if(result > 0)
+				result = report.getReport_id();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return result;
 	}
+	// 신고 체크
+	@Override
+	public boolean shareIsReport(Report report) {
+		boolean isReport = false;
+		try {
+			isReport = session.selectOne("dgshareIsReport", report);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return isReport;
+	}
+
+
 
 }

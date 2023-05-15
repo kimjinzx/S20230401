@@ -65,5 +65,11 @@
 			WHERE	mem_id = #{mem_id}
 		</selectKey>
 	</insert>
+	<select id="dgshareIsReport" parameterType="Report" resultType="Boolean">
+		SELECT	COUNT(REPORT_ID)
+		FROM 	REPORT
+		WHERE 	REPORT_ID = #{report_id, jdbcType=INTEGER}
+		AND		MEM_ID = #{mem_id, jdbcType=INTEGER}
+	</select>
 	
 </mapper>

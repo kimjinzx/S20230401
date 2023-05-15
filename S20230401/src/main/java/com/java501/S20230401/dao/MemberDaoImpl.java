@@ -1,11 +1,8 @@
 package com.java501.S20230401.dao;
 
-import java.util.List;
-
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
-import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Member;
 import com.java501.S20230401.model.MemberInfo;
 
@@ -28,7 +25,17 @@ public class MemberDaoImpl implements MemberDao {
 		}
 		return result;
 	}
-
+	// 유저 체크
+	@Override
+	public Integer dgCheckUser(String mem_username) {
+		Integer result = 0;
+		try {
+			result = session.selectOne("dgCheckUser", mem_username);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 	// 유현규
 	@Override
@@ -63,4 +70,7 @@ public class MemberDaoImpl implements MemberDao {
 		member.setMem_authority(authority);
 		session.update("hgSetAuthority", member);
 	}
+
+
+
 }

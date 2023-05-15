@@ -61,6 +61,11 @@
 		SET		REPORT_ID = #{report_id}
 		WHERE	MEM_ID = #{mem_id}
 	</update>
+	<select id="dgCheckUser" parameterType="java.lang.String" resultType="int">
+		SELECT	MEM_ID
+		FROM	MEMBER
+		WHERE 	MEM_USERNAME = #{mem_username}
+	</select>
 	
 	<!-- 게시글의 유저 전체 조회 -->
 <!-- 	<select id="ist" resultType="Article" parameterType="Member">

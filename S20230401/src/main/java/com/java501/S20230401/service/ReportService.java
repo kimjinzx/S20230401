@@ -17,5 +17,6 @@ public interface ReportService {
 	// 양동균
 	// 신고
 	int shareReport(Report report);
+	boolean shareIsReport(Report report);
 
 }
