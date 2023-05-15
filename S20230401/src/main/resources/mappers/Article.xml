@@ -1239,7 +1239,7 @@
 		SELECT *
 		FROM
 		(
-		    SELECT rownum rn, a.*, m.mem_nickname, m.mem_image
+		    SELECT rownum rn, a.*, m.mem_nickname, m.mem_image, C.COMM_VALUE BRD_NAME
 		    FROM
 		        (SELECT *
 		         FROM article
@@ -1255,6 +1255,7 @@
 		         AND isdelete = 0
 		         ORDER BY art_regdate desc) a
 		         JOIN member m ON a.mem_id = m.mem_id
+		         LEFT OUTER JOIN COMM C ON (a.brd_id = C.COMM_ID)
 		)
 		WHERE rn BETWEEN #{start} AND #{end}
 	</select>  

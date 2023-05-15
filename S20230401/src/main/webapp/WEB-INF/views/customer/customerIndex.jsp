@@ -315,7 +315,7 @@
 				<div class="board-btns display-flex flex-grow-1" style="margin: 5px 0px;">
 					<div class="btns-right" style="display: flex; justify-content: flex-end; flex-grow: 1;">
 						<span>
-							<c:if test="${category % 100 != 0 && memberInfo.mem_authority >= 108}">
+							<c:if test="${memberInfo.mem_authority >= 108}">
 								<button class="btn-write adv-hover" onclick="location.href='${pageContext.request.contextPath}/board/customer/write?category=${category}';">글쓰기</button>
 							</c:if>
 						</span>
