@@ -42,7 +42,7 @@ public interface ArticleDao {
 
 	
 	// 백준
-	Integer 						totalArticle(int brd_id);
+	Integer 						bjTotalArticle(Article article);
 	List<Article> 					articleTotal(Article article);
 	Article 						detailContent(Article article);
 	Integer							replyCount(int art_id);
@@ -57,6 +57,8 @@ public interface ArticleDao {
 	List<Article>					bjArtSearch(Article article);
 	Integer 						bjGood(Article article);
 	Integer							bjBad(Article article);
+	List<Comm> 						bjcommList(int comm_id);
+	String 							bjCategoryName(int comm_id);
 	
 	// 임동빈
 	int 			dbtotalArticle(Article article);
@@ -152,6 +154,8 @@ public interface ArticleDao {
 	public void 			JHrepGood2(Article article);
 	public void 			JHrepBad2(Article article);
 
+	
+	
 	
 	
 	

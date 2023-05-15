@@ -238,11 +238,10 @@ public class ArticleDaoImpl implements ArticleDao {
 	
 	// 백준
 	@Override
-	public Integer totalArticle(int brd_id) {
+	public Integer bjTotalArticle(Article article) {
 		int totArticleCount = 0;
 		try {
-			if (brd_id % 100 == 0) totArticleCount = session.selectOne("bjarticleIndex", brd_id);
-			else totArticleCount = session.selectOne("bjarticlePart", brd_id);
+			totArticleCount = session.selectOne("bjarticleCnt", article);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -422,6 +421,29 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		return bad;
 	}
+	
+	@Override
+	public List<Comm> bjcommList(int comm_id) {
+		List<Comm> commList = null;
+		try {
+			commList = session.selectList("dgCommList", comm_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return commList;
+	}
+	
+	@Override
+	public String bjCategoryName(int comm_id) {
+		String categoryName = "";
+		try {
+			categoryName = session.selectOne("dgCategoryName", comm_id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return categoryName;
+	}
+	
 	
 	//=================================================================================================
 	

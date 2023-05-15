@@ -301,12 +301,12 @@
 					<h1 class="color-subtheme">${boardName} 게시판</h1>
 				</div>
 				
-				<div class="display-flex justify-content-flex-end align-items-center"><span class="font-size-14px" style="color: rgba(var(--theme-font-rgb), 0.5);">총 ${totalArticle }개의 게시글이 있습니다</span></div>
+				<div class="display-flex justify-content-flex-end align-items-center"><span class="font-size-14px" style="color: rgba(var(--theme-font-rgb), 0.5);">총 ${totalArt }개의 게시글이 있습니다</span></div>
 				<!-- 게시판 목록 출력 -->
 				<div class="board-category display-flex justify-content-flex-start font-size-16px font-weight-bolder" align="center">
 					<c:forEach var="comm" items="${commList}">
 						<div class="item full-width" style="border-bottom: 2px solid var(--subtheme); ${comm.comm_id == category? 'border: 2px solid var(--subtheme); border-bottom: 0px;':''}">
-							<a href="${pageContext.request.contextPath}/board/community?category=${comm.comm_id}" ${comm.comm_id != category ? 'style="color: rgba(var(--theme-font-rgb), 0.5);"' : '' } class="active full-width full-height display-block padding-5px padding-hor-0">${comm.comm_id == commList.get(0).comm_id ? '전체' : comm.comm_value}</a>
+							<a href="${pageContext.request.contextPath}/board/share?category=${comm.comm_id}" ${comm.comm_id != category ? 'style="color: rgba(var(--theme-font-rgb), 0.5);"' : '' } class="active full-width full-height display-block padding-5px padding-hor-0">${comm.comm_id == commList.get(0).comm_id ? '전체' : comm.comm_value}</a>
 						</div>
 					</c:forEach>
 				</div>
@@ -315,8 +315,8 @@
 				<div class="board-btns display-flex flex-grow-1" style="margin: 5px 0px;">
 					<div class="btns-right" style="display: flex; justify-content: flex-end; flex-grow: 1;">
 						<span>
-							<c:if test="${memberInfo != null}">
-								<button class="btn-write adv-hover" onclick="location.href='${pageContext.request.contextPath}/board/community/communityWrite?category=${category}';">글쓰기</button>
+							<c:if test="${category % 100 != 0 && memberInfo != null}">
+								<button class="btn-write adv-hover" onclick="location.href='${pageContext.request.contextPath}/board/scommunity/communityWrite?category=${category}';">글쓰기</button>
 							</c:if>
 						</span>
 					</div>
@@ -374,7 +374,7 @@
 									</div>
 								</div>
 								<div class="view-middle display-flex justify-content-space-between align-items-center padding-5px padding-hor-0">
-									<span class="font-weight-bolder">${article.mem_nickname}</span>
+									<span class="font-weight-bolder">${article.member.mem_nickname}</span>
 									<div class="display-flex justify-content-flex-end align-items-center">
 										<%-- <c:if test="${article.status_name != null}">
 											<button class="btn margin-right-5px font-weight-bolder" ${article.trade.trd_status == 401 ? 'style="background-color: var(--subtheme);"' : '' }>${article.status_name}</button>

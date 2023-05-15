@@ -341,85 +341,103 @@
 	
 	
 	<!-- 백준 -->
-	<select id="bjarticleIndex" parameterType="int" resultType="int">
-		SELECT COUNT(*) FROM ARTICLE
-		WHERE
-		<![CDATA[
-			brd_id >= #{brd_id} AND brd_id < #{brd_id} + 100
-		]]>
-		AND isdelete = 0 AND art_isnotice = 0
-	</select>
-	<select id="bjarticlePart" parameterType="int" resultType="int">
-		SELECT COUNT(*) FROM ARTICLE
-		WHERE brd_id = #{brd_id}
+	<select id="bjarticleCnt" parameterType="int" resultType="int">
+		SELECT 	COUNT(*)
+		FROM 	ARTICLE
+		WHERE 	BRD_ID 
+		<choose>
+			<when test="brd_id == 999">
+				BETWEEN #{brd_id} and #{brd_id}+600
+			</when>
+			<when test="brd_id % 100 != 0">
+				= #{brd_id}
+			</when>
+			<otherwise>
+				BETWEEN #{brd_id} and #{brd_id}+99
+			</otherwise>
+		</choose>
+		AND		ISDELETE = 0
+		<choose>
+	       	<when test="search == 'article'">
+	       		AND (ART_TITLE || ART_CONTENT) LIKE '%'|| #{keyWord} ||'%'
+	       	</when>
+	       	<when test="search == 'title'">
+	       		AND ART_TITLE LIKE '%'|| #{keyWord} ||'%'
+	       	</when>
+	       	<when test="search == 'content'">
+	       		AND ART_CONTENT LIKE '%'|| #{keyWord} ||'%'
+	       	</when>
+	       	<when test="search == 'nickname'">
+	       		AND MEM_NICKNAME LIKE '%'|| #{keyWord} ||'%'
+	       	</when>
+	       	<when test="search == 'articleTag'">
+	       		AND (ART_TAG1||ART_TAG2||ART_TAG3||ART_TAG4||ART_TAG5) LIKE '%'|| #{keyWord} ||'%'
+	       	</when>
+	       	<otherwise></otherwise>
+       </choose>
 	</select>
 	
 	<select id="bjarticleIndexAll" parameterType="Article" resultType="Article">
-		SELECT *
-		FROM (
-		    SELECT ROWNUM RN, TEMP.*, M.mem_nickname, M.mem_image
-		    FROM (
-		        SELECT A.*, NVL(R.REP_CNT, 0) AS REP_CNT
-		        FROM ARTICLE A
-		        LEFT OUTER JOIN (
-		            SELECT ART_ID, BRD_ID, COUNT(*) REP_CNT 
-		            FROM REPLY 
-		            WHERE BRD_ID BETWEEN 1300 AND 1399
-		            GROUP BY ART_ID, BRD_ID
-		        ) R ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID) 
-		        WHERE A.BRD_ID BETWEEN 1300 AND 1399
-		        AND A.isdelete = 0 
-		        ORDER BY A.ART_REGDATE DESC
-		    ) TEMP
-		    INNER JOIN member M ON TEMP.mem_id = M.mem_id
-		)
-		WHERE RN BETWEEN #{start} AND #{end}
+		SELECT  *
+		FROM    (SELECT ROWNUM AS RN, J.*
+		         FROM   (SELECT *
+		                 FROM ( SELECT  *
+		                        FROM    ARTICLE A
+		                        JOIN    (   SELECT  C1.COMM_VALUE AS BRD_NAME, B.*
+		                                    FROM    BOARD B JOIN COMM C1
+		                                    ON      BRD_ID IN COMM_ID
+		                                 )USING(BRD_ID)
+		                        JOIN	(   SELECT  C2.COMM_VALUE AS GEN_NAME, M.*
+		                                    FROM    MEMBER M JOIN COMM C2
+		                                    ON      MEM_GENDER IN COMM_ID
+		                                 )USING(MEM_ID)
+				                LEFT OUTER JOIN 	(   SELECT  C3.COMM_VALUE AS STATUS_NAME, T.*, R.REG_NAME
+				                                        FROM    TRADE T LEFT OUTER JOIN COMM C3
+				                                        ON      T.TRD_STATUS = C3.COMM_ID
+				                                        LEFT OUTER JOIN REGION R
+				                                        ON      T.REG_ID = R.REG_ID
+				                         )USING(TRD_ID)
+		                        LEFT OUTER JOIN    (    SELECT 	COUNT(*) AS REP_CNT, ART_ID, BRD_ID
+		                                                FROM 	REPLY
+		                                                WHERE 	ISDELETE = 0
+		                                                GROUP BY(ART_ID, BRD_ID)
+		                                            )USING(BRD_ID, ART_ID)
+                                WHERE 	A.ISDELETE = 0
+				                AND     BRD_ID <choose>
+			                 						<when test="brd_id == 999">
+														BETWEEN #{brd_id} and #{brd_id}+600
+													</when>
+													<when test="brd_id % 100 != 0">
+														= #{brd_id}
+													</when>
+													<otherwise>
+														BETWEEN #{brd_id} and #{brd_id}+99
+													</otherwise>
+												</choose>
+		                       )
+		                 <choose>
+		                 	<when test="search == 'article'">
+		                 		WHERE (ART_TITLE || ART_CONTENT) LIKE '%'|| #{keyWord} ||'%'
+		                 	</when>
+		                 	<when test="search == 'title'">
+		                 		WHERE ART_TITLE LIKE '%'|| #{keyWord} ||'%'
+		                 	</when>
+		                 	<when test="search == 'content'">
+		                 		WHERE ART_CONTENT LIKE '%'|| #{keyWord} ||'%'
+		                 	</when>
+		                 	<when test="search == 'nickname'">
+		                 		WHERE MEM_NICKNAME LIKE '%'|| #{keyWord} ||'%'
+		                 	</when>
+		                 	<when test="search == 'articleTag'">
+		                 		WHERE (ART_TAG1||ART_TAG2||ART_TAG3||ART_TAG4||ART_TAG5) LIKE '%'|| #{keyWord} ||'%'
+		                 	</when>
+		                 	<otherwise></otherwise>
+		                 </choose>
+		                 ORDER BY   ART_REGDATE DESC) J)
+		WHERE 	RN BETWEEN #{start} and #{end}
 	</select>
+		
 	
-	<select id="bjSearch" parameterType="Article" resultType="Article">
-	  SELECT *
-	  FROM (
-	    SELECT ROWNUM RN, TEMP.*, M.mem_nickname, M.mem_image
-	    FROM (
-	      SELECT A.*, NVL(R.REP_CNT, 0) AS REP_CNT
-	      FROM ARTICLE A
-	      LEFT OUTER JOIN (
-	        SELECT ART_ID, BRD_ID, COUNT(*) REP_CNT
-	        FROM REPLY
-	        GROUP BY ART_ID, BRD_ID
-	      ) R ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID)
-	      WHERE
-	      <choose>
-	      	<when test="brd_id == 1300">
-	      		(A.BRD_ID - MOD(A.BRD_ID, 100)) = #{brd_id}
-	      	</when>
-	      	<otherwise>
-	      		A.BRD_ID = #{brd_id}
-	      	</otherwise>
-	      </choose>
-	      AND A.isdelete = 0
-	      <choose>
-	          <when test="bjSearchOption == 'bjStitle'">
-	            AND A.art_title LIKE '%' || #{bjKeyword} || '%'
-	          </when>
-	          <when test="bjSearchOption == 'bjScontent'">
-	            AND A.art_content LIKE '%' || #{bjKeyword} || '%'
-	          </when>
-	          <when test="bjSearchOption == 'bjStiCon'">
-	            AND (A.art_title LIKE '%' || #{bjKeyword} || '%' OR A.art_content LIKE '%' || #{bjKeyword} || '%')
-	          </when>
-	        </choose>
-	      ORDER BY A.ART_REGDATE DESC
-	    ) TEMP
-	    INNER JOIN member M ON TEMP.mem_id = M.mem_id
-	    <choose>
-		   	<when test="bjSearchOption == 'bjSnick'">
-	           AND M.mem_nickname LIKE '%' || #{bjKeyword} || '%'
-		    </when>
-	    </choose>
-	  )
-	  WHERE RN BETWEEN #{start} AND #{end}
-	</select>
 
 	
 	<select id="bjArticleMenu" parameterType="Article" resultType="Article">
@@ -445,10 +463,35 @@
 	</select>
 
 	<select id="bjdetailContent"  parameterType="Article" resultType="Article">
-		SELECT a.*, m.mem_nickname, m.mem_image
+		<!-- SELECT a.*, m.mem_nickname, m.mem_image
 			FROM article a
 			INNER JOIN member m ON a.mem_id = m.mem_id
-		WHERE a.art_id = #{art_id} AND a.brd_id = #{brd_id}	AND a.isdelete = 0
+		WHERE a.art_id = #{art_id} AND a.brd_id = #{brd_id}	AND a.isdelete = 0 -->
+		SELECT  *
+		FROM   (SELECT *
+		        FROM    ARTICLE A
+                JOIN    (   SELECT  C1.COMM_VALUE AS BRD_NAME, B.*
+                            FROM    BOARD B JOIN COMM C1
+                            ON      BRD_ID IN COMM_ID
+                        )USING(BRD_ID)
+                JOIN	(   SELECT  C2.COMM_VALUE AS GEN_NAME, M.MEM_ID, M.MEM_USERNAME, M.MEM_NICKNAME, M.MEM_EMAIL, M.MEM_TEL, M.MEM_REGION1, M.MEM_REGION2, M.MEM_REGDATE, M.MEM_AUTHORITY, M.MEM_IMAGE, M.MEM_LATEST, M.REPORT_ID AS memReport_id
+                            FROM    MEMBER M JOIN COMM C2
+                            ON      MEM_GENDER IN COMM_ID
+                        )USING(MEM_ID)
+                LEFT OUTER JOIN 	(   SELECT  C3.COMM_VALUE AS STATUS_NAME, T.*, R.REG_NAME
+                                        FROM    TRADE T LEFT OUTER JOIN COMM C3
+                                        ON      T.TRD_STATUS = C3.COMM_ID
+                                        LEFT OUTER JOIN REGION R
+                                        ON      T.REG_ID = R.REG_ID
+                         )USING(TRD_ID)
+                LEFT OUTER JOIN    (    SELECT 	COUNT(*) AS REP_CNT, ART_ID, BRD_ID
+                                        FROM 	REPLY
+                                        WHERE 	ISDELETE = 0
+                                        GROUP BY(ART_ID, BRD_ID)
+                                    )USING(BRD_ID, ART_ID)
+                WHERE 	A.ISDELETE = 0
+		        )
+		WHERE   ART_ID = #{art_id} AND BRD_ID = #{brd_id}
 	</select>
 	
 	<update id="bjreadCount" parameterType="Article" >
@@ -479,7 +522,7 @@
 				REPORT_ID
 							)
 		VALUES 
-				((SELECT MAX(ART_ID) + 1 FROM ARTICLE WHERE BRD_ID = #{brd_id}), 
+				((SELECT NVL(MAX(ART_ID), 0) + 1 FROM ARTICLE WHERE BRD_ID = #{brd_id}), 
 				#{brd_id},
 				#{art_title, jdbcType=VARCHAR}, 
 				#{mem_id}, 
