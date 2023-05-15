@@ -15,7 +15,11 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,6 +44,7 @@ import com.java501.S20230401.model.Trade;
 import com.java501.S20230401.model.TradeInfo;
 import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.CommService;
+import com.java501.S20230401.service.MemberDetailsService;
 import com.java501.S20230401.service.MemberService;
 import com.java501.S20230401.service.RegionService;
 import com.java501.S20230401.service.ReplyService;
@@ -60,6 +65,7 @@ public class MemberController {
 	private final ReplyService reps;
 	private final TradeService ts;
 	private final CommService cs;
+	private final MemberDetailsService mds;
 	
 	@RequestMapping(value = "/login")
 	public String memberLogin(@AuthenticationPrincipal MemberDetails memberDetails,
@@ -170,7 +176,19 @@ public class MemberController {
 			e.printStackTrace();
 		}
 		int result = ms.hgUpdateMember(member);
+		// 아래 세션 인증 정보 변경
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		MemberDetails newMemberDetails = (MemberDetails)authentication.getPrincipal();
+		SecurityContextHolder.getContext().setAuthentication(createNewAuthentication(authentication, newMemberDetails.getUsername()));
+		
 		return "redirect:/";
+	}
+	// 새로운 인증 정보 생성
+	protected Authentication createNewAuthentication(Authentication currentAuth, String username) {
+		UserDetails newPrincipal = mds.loadUserByUsername(username);
+		UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(newPrincipal, currentAuth.getCredentials(), newPrincipal.getAuthorities());
+		newAuth.setDetails(currentAuth.getDetails());
+		return newAuth;
 	}
 	
 	private String uploadFile(String realPath, String originalName, byte[] fileData) throws Exception {
@@ -251,5 +269,23 @@ public class MemberController {
 		model.addAttribute("trades", trades);
 		
 		return "user/myPage";
+	}
+	
+	@RequestMapping(value="/user/passwordCheck")
+	public String reAuth(@AuthenticationPrincipal MemberDetails memberDetails, @RequestParam String go,
+						 Model model) {
+		if (memberDetails == null) return "redirect:/";
+		model.addAttribute("go", go);
+		return "user/reAuth";
+	}
+	
+	@RequestMapping(value="/user/comparePW")
+	public String reAuthProcess(@AuthenticationPrincipal MemberDetails memberDetails, @RequestParam String go,
+								@RequestParam String password) {
+		if (memberDetails == null) return "redirect:/";
+		//if (memberDetails.getPassword().equals(new BCryptPasswordEncoder().encode(password)))
+		if (new BCryptPasswordEncoder().matches(password, memberDetails.getPassword()))
+			return "redirect:/user/" + go;
+		else return "redirect:/user/passwordCheck?go=" + go;
 	}
 }
