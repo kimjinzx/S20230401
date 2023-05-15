@@ -74,7 +74,6 @@ public class ReplyDaoImpl implements ReplyDao {
 	}
 	
 	
-
 	
 	
 	// 백준
@@ -207,7 +206,6 @@ public class ReplyDaoImpl implements ReplyDao {
 	public int hgInsertReply(Reply reply) {
 		return session.insert("hgInsertReply", reply);
 	}
-	
 	@Override
 	public List<ReplyMember> hgGetRepliesOfMember(int mem_id) {
 		return session.selectList("hgGetRepliesOfMember", mem_id);
@@ -324,11 +322,15 @@ public class ReplyDaoImpl implements ReplyDao {
 	
 	// 김진현
 	@Override
-	public int replyInsert2(Article article) {
+	public int JHreplyInsert2(Article article) {
 		return session.insert("JHReplyInsert", article);
 	}
 	@Override
-	public int replyDelete2(Article article) {
-		return session.update("JHReplyUpdate", article);		
+	public int JHreplyDelete2(Article article) {
+		return session.update("JHReplyDelete", article);		
 	}
+	@Override
+	public void JHreplyUpdate2(Article article) {
+		session.update("JHReplyUpdate",article);
+	}	
 }

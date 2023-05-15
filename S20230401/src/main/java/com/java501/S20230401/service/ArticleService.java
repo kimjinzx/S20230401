@@ -3,12 +3,11 @@ package com.java501.S20230401.service;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
-
-import com.java501.S20230401.model.Comm;
-import com.java501.S20230401.model.Region;
 import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.model.Waiting;
 import com.java501.S20230401.model.Article;
+import com.java501.S20230401.model.Comm;
+import com.java501.S20230401.model.Region;
 import com.java501.S20230401.model.ArticleMember;
 import com.java501.S20230401.model.MemberInfo;
 import com.java501.S20230401.util.SummaryType;
@@ -128,32 +127,42 @@ public interface ArticleService {
 	
 	
 	// 김진현
-	List<Article> 			getDutchpayList(String boardName);//진현
-	Article                 detail1(Article article);
-	public List<Article> 	repList1(Article article);
-	public List<Comm>		payStatus1();
-	public Article 			payStatusPro1(Article article);
-	public void	            replyInsert1(Article article);
-	public void             replyDelete1(Article article);
-	List<Comm> 				category1();
-	List<Region>         	loc1();
-	void 					dutchpayInsert1(Article article);
-	Article		 			updateForm1(Article article);
-	List<Region> 			loc_ud1();
-	public void 			dutchpayUpdate1(Article article);
-	public void 			dutchpayDelete1(Article article);
-	public int 				DeatilRead1(Article article);
-	public int 				totalArticle1();
-	void 			        applyInsert1(Article article);
-	public Article 			applyCancel1(Article article);
-	public Article			joinCancel1(Article article);
-	public List<Article>    joinList1(Article article);
-	public List<Article>    waitList1(Article article);
-	public Article 			joinDeny1(Article article);
-	public Article          joinAccept1(Article article);
-	public int              payCompleted1(int trd_id);
-	public int              jhJoinListYN(Article article);
-	public int              jhWaitListYN(Article article);
+	List<Article> 			JHgetDutchpayList(Article article);//진현
+	Article                 JHdetail1(Article article);
+	public List<Article> 	JHrepList1(Article article);
+	public List<Comm>		JHpayStatus1();
+	public Article 			JHpayStatusPro1(Article article);
+	public void	            JHreplyInsert1(Article article);
+	public void             JHreplyDelete1(Article article);
+	List<Comm> 				JHcategory1();
+	List<Region>         	JHloc1();
+	void 					JHdutchpayInsert1(Article article);
+	Article		 			JHupdateForm1(Article article);
+	List<Region> 			JHloc_ud1();
+	public void 			JHdutchpayUpdate1(Article article);
+	public void 			JHdutchpayDelete1(Article article);
+	public int 				JHDeatilRead1(Article article);
+	public int 				JHtotalArticle1(Article article);
+	void 			        JHapplyInsert1(Article article);
+	public Article 			JHapplyCancel1(Article article);
+	public Article			JHjoinCancel1(Article article);
+	public List<Article>    JHjoinList1(Article article);
+	public List<Article>    JHwaitList1(Article article);
+	public Article 			JHjoinDeny1(Article article);
+	public Article          JHjoinAccept1(Article article);
+	public int              JHpayCompleted1(int trd_id);
+	public int              JHJoinListYN(Article article);
+	public int              JHWaitListYN(Article article);
+	public void             JHfavoriteInsert1(Article article);
+	public int              JHfavoriteInsertYN1(Article article);
+	public void             JHreplyUpdate1(Article article);
+	public List<Article>    JHarticleSearch1(Article article);
+	public void             JHartGood1(Article article);
+	public void             JHartBad1(Article article);
+	public void             JHrepGood1(Article article);
+	public void             JHrepBad1(Article article);
+	public String           JHboardName1(int comm_id);
+	public List<Comm>       JHcommList1();
 
 	
 	

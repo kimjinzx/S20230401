@@ -124,28 +124,33 @@ public interface ArticleDao {
 	
 	
 	// 김진현
-	List<Article> 			getDutchpayList(String boardName);
-	Article                 detail2(Article article);
-	public List<Article> 	repList2(Article article);
-	public List<Comm>       payStatus2();
-	public Article 			payStatusPro2(Article article);
-	List<Comm>           	category2();
-	List<Region>    		loc2();
-	public void 			dutchpayInsert2(Article article);
-	Article 				updateForm2(Article article);
-	List<Region> 			loc_ud2();
-	void 					dutchpayUpdate2(Article article);
-	void 					dutchpayDelete2(Article article);
-	public int 				DeatilRead2(Article article);
-	public int 				totalArticle2();
-	void                    applyInsert2(Article article);
-	public Article 			applyCancel2(Article article);
-	public Article 			joinCancel2(Article article);
-	public List<Article>    joinList2(Article article);
-	public List<Article>    waitList2(Article article);
-	public Article 			joinDeny2(Article article);
-	public Article          joinAccept2(Article article);
-	public int              payCompleted2(int trd_id);
+	List<Article> 			JHgetDutchpayList(Article article);
+	Article                 JHdetail2(Article article);
+	public List<Article> 	JHrepList2(Article article);
+	public List<Comm>       JHpayStatus2();
+	public Article 			JHpayStatusPro2(Article article);
+	List<Comm>           	JHcategory2();
+	List<Region>    		JHloc2();
+	public void 			JHdutchpayInsert2(Article article);
+	Article 				JHupdateForm2(Article article);
+	List<Region> 			JHloc_ud2();
+	void 					JHdutchpayUpdate2(Article article);
+	void 					JHdutchpayDelete2(Article article);
+	public int 				JHDeatilRead2(Article article);
+	public int 				JHtotalArticle2(Article article);
+	void                    JHapplyInsert2(Article article);
+	public Article 			JHapplyCancel2(Article article);
+	public Article 			JHjoinCancel2(Article article);
+	public List<Article>    JHjoinList2(Article article);
+	public List<Article>    JHwaitList2(Article article);
+	public Article 			JHjoinDeny2(Article article);
+	public Article          JHjoinAccept2(Article article);
+	public int              JHpayCompleted2(int trd_id);
+	public List<Article>    JHarticleSearch2(Article article);
+	public void             JHartGood2(Article article);
+	public void             JHartBad2(Article article);
+	public void 			JHrepGood2(Article article);
+	public void 			JHrepBad2(Article article);
 
 	
 	

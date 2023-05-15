@@ -23,4 +23,8 @@ public interface CommDao {
 	// 최승환
 //	String shcategoryName(int comm_id);
 //	List<Comm> shcommList(int comm_id);
+	
+	// 김진현
+	String      JHboardName2(int comm_id);
+	List<Comm>  JHcommList2();
 }

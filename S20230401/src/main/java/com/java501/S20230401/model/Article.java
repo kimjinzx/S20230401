@@ -48,6 +48,8 @@ public class Article {
 	
 	private String		bjSearchOption;	
 	private String		bjKeyword;	
+	private Integer		mem_authority;	
+	
 //	private String		bjStitle;	
 //	private String		bjScontent;	
 //	private String		bjStiCon;	
@@ -78,7 +80,6 @@ public class Article {
 	private String 		mem_tel;
 	private Integer 	mem_region1;
 	private Integer 	mem_region2;
-	private Integer 	mem_authority;
 	private Date 		mem_regdate;
 	private Integer 	mem_gender;
 	private String 		mem_name;
@@ -132,5 +133,6 @@ public class Article {
 	//김진현 
 	private Integer		reply_count; // (조회수 오라클 함수)
 	private String 		trd_saveEnddate; // 마감날짜 작업을 위해 string으로 하나 더 만들었습니다.	
+	private int			category;
 
 }

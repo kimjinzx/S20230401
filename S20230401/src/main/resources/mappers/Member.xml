@@ -52,7 +52,7 @@
 		<result column="mem_birthday"	property="mem_birthday"/>
 		<result column="mem_latest"		property="mem_latest"/>
 		<result column="isdelete"		property="isdelete"/>
-		<result column="memReport_id"		property="report_id"/>
+		<result column="report_id"		property="report_id"/>
 		<collection property="comm" 	resultMap="com.java501.S20230401.model.CommMapper.dgCommMap"/>
 	</resultMap>
 	

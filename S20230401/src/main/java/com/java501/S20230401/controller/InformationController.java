@@ -47,12 +47,14 @@ public class InformationController {
 	private final ReportService ps;
 	private final CommService 		commService;
 	
+	
 	// 리스트 조회 
 	@RequestMapping(value="/board/information")
 	public String articleList(@AuthenticationPrincipal MemberDetails memberDetails, Article article, Integer category, String currentPage, Model model) {
 		// 유저 정보를 다시 리턴  //memberDetails.getMemberInfo() DB의 유저와 대조 & 권한 확인
 		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		
 		String viewName = "infoindex";
 		System.out.println("ArticleController Start listArticle...");
 		article.setBrd_id(category);
@@ -395,6 +397,7 @@ public class InformationController {
 		}
 		System.out.println("작성 포스트 Start...");
 		System.out.println("Article =" + article);
+
 		int result = as.cyArticleinsert(article);
 		return "redirect:/board/information?category=1400";
 	}
