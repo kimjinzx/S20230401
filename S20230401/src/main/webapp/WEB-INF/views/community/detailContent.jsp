@@ -207,7 +207,7 @@
 							<a class="font-weight-bolder" style="color: var(--subtheme)" href="${pageContext.request.contextPath}/board/share?category=${article.brd_id}">${article.brd_name}</a>
 						</span>
 						<span class="only-for-member display-flex justify-content-flex-end align-items-center">
-							<!-- 글 수정 삭제 -->
+					<!-- 글 수정 삭제 -->
 							<c:if test="${article.mem_id == memberInfo.mem_id || memberInfo.mem_authority >= 108}">
 								<button id="btns-artUpdate" class="adv-hover" onclick="art_Update()">수정</button>
 								<button id="btns-artDelete" class="adv-hover" onclick="art_Delete()">삭제</button>

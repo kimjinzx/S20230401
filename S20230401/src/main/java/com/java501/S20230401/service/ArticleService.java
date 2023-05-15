@@ -46,7 +46,7 @@ public interface ArticleService {
 	
 
 	// 백준
-	Integer 			totalArticle(int brd_id);
+	Integer 			bjTotalArticle(Article article);
 	List<Article> 		articleTotal(Article article);
 	Article 			detailContent(Article article);
 	List<Article>		articleMenu(Article article);

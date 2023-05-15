@@ -340,17 +340,41 @@
 	
 	
 	<!-- 백준 -->
-	<select id="bjarticleIndex" parameterType="int" resultType="int">
-		SELECT COUNT(*) FROM ARTICLE
-		WHERE
-		<![CDATA[
-			brd_id >= #{brd_id} AND brd_id < #{brd_id} + 100
-		]]>
-		AND isdelete = 0 AND art_isnotice = 0
-	</select>
-	<select id="bjarticlePart" parameterType="int" resultType="int">
-		SELECT COUNT(*) FROM ARTICLE
-		WHERE brd_id = #{brd_id}
+	<select id="bjarticleCnt" parameterType="int" resultType="int">
+		SELECT COUNT(*)
+		FROM ARTICLE
+		JOIN MEMBER ON ARTICLE.MEM_ID = MEMBER.MEM_ID
+		WHERE BRD_ID
+	    <choose>
+	        <when test="brd_id == 999">
+	            BETWEEN #{brd_id} AND #{brd_id} + 600
+	        </when>
+	        <when test="brd_id % 100 != 0">
+	            = #{brd_id}
+	        </when>
+	        <otherwise>
+	            BETWEEN #{brd_id} AND #{brd_id} + 99
+	        </otherwise>
+	    </choose>
+	    AND ISDELETE = 0
+	    <choose>
+	        <when test="search == 'article'">
+	            AND (ART_TITLE || ART_CONTENT) LIKE '%' || #{keyWord} || '%'
+	        </when>
+	        <when test="search == 'title'">
+	            AND ART_TITLE LIKE '%' || #{keyWord} || '%'
+	        </when>
+	        <when test="search == 'content'">
+	            AND ART_CONTENT LIKE '%' || #{keyWord} || '%'
+	        </when>
+	        <when test="search == 'nickname'">
+	            AND MEMBER.MEM_NICKNAME LIKE '%' || #{keyWord} || '%'
+	        </when>
+	        <when test="search == 'articleTag'">
+	            AND (ART_TAG1 || ART_TAG2 || ART_TAG3 || ART_TAG4 || ART_TAG5) LIKE '%' || #{keyWord} || '%'
+	        </when>
+        <otherwise></otherwise>
+   		</choose>
 	</select>
 	
 	<select id="bjarticleIndexAll" parameterType="Article" resultType="Article">
@@ -414,50 +438,6 @@
 	</select>
 		
 	
-	<select id="bjSearch" parameterType="Article" resultType="Article">
-	  SELECT *
-	  FROM (
-	    SELECT ROWNUM RN, TEMP.*, M.mem_nickname, M.mem_image
-	    FROM (
-	      SELECT A.*, NVL(R.REP_CNT, 0) AS REP_CNT
-	      FROM ARTICLE A
-	      LEFT OUTER JOIN (
-	        SELECT ART_ID, BRD_ID, COUNT(*) REP_CNT
-	        FROM REPLY
-	        GROUP BY ART_ID, BRD_ID
-	      ) R ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID)
-	      WHERE
-	      <choose>
-	      	<when test="brd_id == 1300">
-	      		(A.BRD_ID - MOD(A.BRD_ID, 100)) = #{brd_id}
-	      	</when>
-	      	<otherwise>
-	      		A.BRD_ID = #{brd_id}
-	      	</otherwise>
-	      </choose>
-	      AND A.isdelete = 0
-	      <choose>
-	          <when test="bjSearchOption == 'bjStitle'">
-	            AND A.art_title LIKE '%' || #{bjKeyword} || '%'
-	          </when>
-	          <when test="bjSearchOption == 'bjScontent'">
-	            AND A.art_content LIKE '%' || #{bjKeyword} || '%'
-	          </when>
-	          <when test="bjSearchOption == 'bjStiCon'">
-	            AND (A.art_title LIKE '%' || #{bjKeyword} || '%' OR A.art_content LIKE '%' || #{bjKeyword} || '%')
-	          </when>
-	        </choose>
-	      ORDER BY A.ART_REGDATE DESC
-	    ) TEMP
-	    INNER JOIN member M ON TEMP.mem_id = M.mem_id
-	    <choose>
-		   	<when test="bjSearchOption == 'bjSnick'">
-	           AND M.mem_nickname LIKE '%' || #{bjKeyword} || '%'
-		    </when>
-	    </choose>
-	  )
-	  WHERE RN BETWEEN #{start} AND #{end}
-	</select>
 
 	
 	<select id="bjArticleMenu" parameterType="Article" resultType="Article">

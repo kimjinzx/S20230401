@@ -1,13 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ include file="../preset.jsp" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ include file="/WEB-INF/views/preset.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>메인 페이지 ▒ ShareGo</title>
+<title>메인 페이지 ▒ ShareGo</title>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/initializer.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/initializer.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath }/js/layout.js"></script>
+<link href="https://unpkg.com/sanitize.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/preference.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/presets.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/layout.css">
+
 <script type="text/javascript">
 	$(window).scroll(() => {
 		let scrollTop = $(window).scrollTop();
@@ -26,278 +32,48 @@
 		$('#scrollToBottom').click(e => $(window).scrollTop($(document).height() - 1120));
 	});
 </script>
-<link href="https://unpkg.com/sanitize.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/preference.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/presets.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/css/layout.css">
 <style type="text/css">
-	body {
-		width: 100%;
-		display: grid;
-		grid-template-columns: 200px 1fr 200px;
-		grid-template-rows: 100px 1fr 200px;
-		grid-template-areas:
-			"header header header"
-			"leftside main rightside"
-			"footer footer footer";
-	}
-	header {
-		grid-area: header;
-		height: 100px;
-		background-color: var(--theme);
-		border-bottom: 0.5px solid #CCCCCC;
-		z-index: 99;
-	}
-	aside {
-		background-color: var(--backtheme);
-	}
-	aside#leftside {
-		grid-area: leftside;
-		/* TEST */
-		height: 5000px;
-	}
-	main {
-		grid-area: main;
-		background-color: var(--theme);
-		/* TEST */
-		height: 5000px;
-	}
-	aside#rightside {
-		grid-area: rightside;
-		/* TEST */
-		height: 5000px;
-	}
-	footer {
-		grid-area: footer;
-		height: 200px;
-		border-top: 0.5px solid #CCCCCC;
-		background-color: var(--theme);
-	}
-	
-	header > div#usernav {
-		width: 100%;
-		display: flex;
-		justify-content: flex-end;
-		align-items: center;
-		background-color: var(--backtheme);
-	}
-	header > div#usernav > a {
-		font-size: 14px;
-		color: var(--subtheme);
-		font-weight: bold;
-		margin: 0 5px;
-	}
-	header > div#topbar > div#logo-div, header > div#topbar > div#top-right { width: 200px; }
-	header > div#topbar > div#top-right {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-	}
-	header > div#topbar {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		height: calc(100% - 21px);
-	}
-	header > div#topbar > div#topmenu {
-		display: flex;
-		height: 100%;
-		justify-content: flex-start;
-		align-items: stretch;
-	}
-	header > div#topbar > div#topmenu > div.menu-separator {
-		width: 0;
-		height: 20px;
-		border: 1px solid #888888;
-		opacity: 0.25;
-		margin: 29.5px 0;
-	}
-	header > div#topbar > div#topmenu > a.menuitem {
-		display: block;
-		font-size: 18px;
-		background-color: var(--theme);
-		padding: 0 10px;
-		line-height: 79px;
-		font-weight: bold;
-		width: 120px;
+	button{
+		width: auto;
+		height: 25px;
+		font-size:12px;
+		font-family: 'Nanum Gothic';
+		color: white;
 		text-align: center;
+		background: gray;
+		border: none;
+		border-radius: 14px;
 	}
-	div#dropdown {
-		display: flex;
-		justify-content: space-between;
-		align-items: flex-start;
-		position: absolute;
-		top: 100px;
-		left: 0;
-		width: 100%;
-		height: 0px;
-		background-color: var(--theme);
-		border-bottom: 0.5px solid #CCCCCC;
-		transition: height .125s cubic-bezier(.5,1,.5,1);
-		overflow: hidden;
-	}
-	header > div#topbar > div#topmenu > a.menuitem:hover ~ div#dropdown,
-	header > div#topbar > div#topmenu > div.menu-separator:hover ~ div#dropdown,
-	header > div#topbar > div#topmenu > div#dropdown:hover {
-		height: 192.5px;
-	}
-	header > div#topbar > div#topmenu > div#dropdown > div.submenu-items {
-		display: flex;
-		justify-content: flex-start;
-		align-items: stretch;
-	}
-	header > div#topbar > div#topmenu > div#dropdown > div.submenu-items > div.submenu {
-		display: flex;
-		flex-direction: column;
-		justify-content: flex-start;
-		align-items: stretch;
-		width: 120px;
-		margin: 0 1px;
-	}
-	header > div#topbar > div#topmenu > div#dropdown > div.submenu-items > div.submenu > a.submenuitem {
-		display: block;
-		width: 100%;
-		height: 32px;
-		line-height: 32px;
-		font-size: 16px;
-		background-color: var(--theme);
+	.btn-cost{
+		width: auto;
+		height: 25px;
+		font-size:15px;
+		font-family: 'Nanum Gothic';
+		color: white;
 		text-align: center;
+		background: red;
+		border: none;
+		border-radius: 8px;
 	}
-	.fix-header {
-		top: -21px;
-		position: fixed;
-		grid-area: none;
-		width: 100%;
+	.btns-tag{
+		padding: 0px 2px;
+		background-color: transparent;
+		color: #0193F8;
 	}
-	
-	/* Dark And Light Mode Switcher */
-	#viewMode {
-		border: 2px solid var(--subtheme-font);
-		border-radius: 14.5px;
-		width: 54px;
-		height: 29px;
-		background-color: var(--subtheme);
-		position: relative;
-	}
-	#viewModeButton {
-		border: 0;
-		background-color: var(--subtheme-font);
-		width: 20px;
-		height: 20px;
-		border-radius: 10px;
-		position: absolute;
-		top: 2.5px;
-		left: 2.5px;
-		transition: left .25s cubic-bezier(.5, 1, .5, 1);
-	}
-	#viewMode[data-toggle="true"] > #viewModeButton {
-		left: 27.5px;
-	}
-	
-	/* User Info Popup */
-	div.popup-group {
-		position: relative;
-	}
-	div.popup-group > button.togglePopup {
-		width: 50px;
-		height: 50px;
-		/*border-radius: 25px;
-		background-color: var(--subtheme);*/
-		overflow: hidden;
-	}
-	div.popup-group > div.popup-window {
-		position: absolute;
-		padding: 10px 20px;
-		border-radius: 5px;
-		background-color: var(--theme);
-		/* border: 2px solid var(--theme-font); */
-		border: 2px solid #CCCCCC;
-		top: 64.5px;
-		right: 0px;
-	}
-	
-	/* Buttons */
-	button.theme-button {
-		background-color: var(--theme);
-		color: var(--theme-font);
-		font-weight: bold;
-		padding: 0;
-		border-radius: 5px;
-		outline: none;
-		border: 2px solid var(--subtheme);
-		cursor: pointer;
-	}
-	button.subtheme-button {
-		background-color: var(--subtheme);
-		color: var(--subtheme-font);
-		font-weight: bold;
-		padding: 0;
-		border-radius: 5px;
-		outline: none;
-		border: 0;
-		cursor: pointer;
-	}
-	button#login-button {
-		width: 100px;
-		height: 32px;
-		line-height: 32px;
-		text-align: center;
-		font-size: 16px;
-	}
-	button.init-button {
-		border: 0;
-		background-color: var(--theme);
-		padding: 0;
-		margin: 0;
-		outline: none;
-		cursor: pointer;
-	}
-	button > svg {
-		pointer-events: none;
-	}
-	button#scrollToTop, button#scrollToBottom {
-		position: fixed;
-		width: 40px;
-		height: 40px;
-		outline: none;
-		border: 0.5px solid var(--subtheme);
-		border-radius: 10px;
-		background-color: var(--theme);
-		cursor: pointer;
-		opacity: 0.5;
-		box-shadow: 0 5px 5px var(--theme-font);
-	}
-	button#scrollToTop {
-		bottom: 60px;
-		right: 10px;
-	}
-	button#scrollToBottom {
-		bottom: 10px;
-		right: 10px;
-	}
-	
-	
-	/* Footer */
-	#footer-info {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
+	.btns-tag::before{
+		content: '#';
 	}
 </style>
 </head>
 <body>
 	<header>
-		<div id="usernav">
-			<!-- <a href="">로그인</a>
-			<a href="">회원가입</a>
-			<a href="">마이페이지</a> -->
+<div id="usernav">
 			<a href="">이용 약관</a>
 			<a href="">개인정보 취급 방침</a>
 		</div>
 		<div id="topbar">
 			<div id="logo-div" class="full-height" style="display: flex; justify-content: flex-start; align-items: center; padding: 0 10px;">
-				<a id="logo" class="full-height" href="/">
-					<!-- <img class="full-height" src="image/ShareGo_forLight.png"/> -->
+				<a id="logo" class="full-height" href="${pageContext.request.contextPath}/">
 					<div style="width: auto; display: flex; flex-direction: column; justify-content: center; align-items: flex-end;">
 						<img src="${pageContext.request.contextPath}/image/ShareGo_Img.png" style="height: 30px;">
 						<span style="font-size: 24px; font-weight: 900; margin: -5px 0 0 0;">ShareGo</span>
@@ -437,141 +213,158 @@
 	<aside id="leftside">
 		
 	</aside>
-	<main  >
-		<p>
+	<main>
 	
-		<div class="container" align="center">
-		<%-- <c:set var="num" value="${page.total-page.start+1 }"></c:set> --%>
-		<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1300'">전체목록</button>
-		<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1310'">일상수다</button>
-		<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1320'">자랑하기</button>
-		<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1330'">홍보하기</button>
-		<button onclick="location.href='${pageContext.request.contextPath}/board/community?category=1340'">질문/요청</button>
-		<c:choose>
-		<c:when test="${memberInfo != null || memberInfo.mem_authority == '109'}">
-		<button onclick="location.href='${pageContext.request.contextPath}/board/community/communityWrite?category=${category }'">글쓰기</button>
-		</c:when>
-		</c:choose>
-		<table border="1" >
-			<tr>
-			<th style="width: 50px;">글번호</th>
-			<th style="width: 80px;">카테고리</th>
-			<th style="width: 200px;">프로필</th>
-			<th style="width: 400px;">제목</th>
-			<th style="width: 400px;">태그</th>
-			<th style="width: 50px;">댓글수</th>
-			<th style="width: 50px;">조회수</th>
-			<th style="width: 50px;">추천</th>
-			<th style="width: 50px;">비추</th>
-			<th style="width: 50px;">작성일</th>
-			</tr>
-			<c:forEach var="article" items="${listArticle }">
-				<c:choose>
-					<c:when test="${article.art_isnotice == '1' }">
-					<td>${article.art_id }</td>
-					<td>${boardMap[article.brd_id]}</td>
-					<td><img src="${pageContext.request.contextPath}/uploads/profile/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
-						${article.mem_nickname }</td>
-					<td><a href="${pageContext.request.contextPath}/board/community/${article.art_id}?brd_id=${article.brd_id }&category=${category }">${article.art_title}</a></td>
-					<td>
-				    <c:if test="${not empty article.art_tag1}">
-				        #${article.art_tag1}
-				    </c:if>
-				    <c:if test="${not empty article.art_tag2}">
-				        #${article.art_tag2}
-				    </c:if>
-				    <c:if test="${not empty article.art_tag3}">
-				        #${article.art_tag3}
-				    </c:if>
-				    <c:if test="${not empty article.art_tag4}">
-				        #${article.art_tag4}
-				    </c:if>
-				    <c:if test="${not empty article.art_tag5}">
-				        #${article.art_tag5}
-				    </c:if>
-				</td>	
-					<td>${article.rep_cnt }</td>
-					<td>${article.art_read }</td>
-					<td>${article.art_good }</td>
-					<td>${article.art_bad }</td>
-					<fmt:formatDate value="${article.art_regdate}" pattern="MM.dd" var="regdate" />
-					<fmt:formatDate value="${article.art_regdate}" pattern="hh:mm" var="regtime" />
-					<td style="font-size : 10px">${regdate }<br>${regtime}</td>
-					</c:when>
-				</c:choose>
+	<div class="container">
+		<div class="article-view">
+			<div class="board-title" align="center">
+				<h1>${boardName} 게시판</h1>
+			</div>
+			
+			총 글 : ${totalArticle }
+			<!-- 게시판 목록 출력 -->
+			<div class="board-category" align="center" style="font-size: 22px; padding: 15px; display: flex; justify-content: center;">
+				<c:forEach var="comm" items="${commList}">
+					<div class="item" style="border-bottom: 2px solid #eeeeee; ${comm.comm_id == category? 'border: 2px solid #eeeeee; border-bottom: 0px;':''} padding: 0px 20px;">
+						<a href="${pageContext.request.contextPath}/board/community?category=${comm.comm_id}" class="active">${comm.comm_id == commList.get(0).comm_id ? '전체' : comm.comm_value}</a>
+					</div>
 				</c:forEach>
-				</table>
-		<table border="1" style="width: 1400px;">
-			<tr><th style="width: 50px;">글번호</th>
-			<th style="width: 80px;">카테고리</th>
-			<th style="width: 200px;">프로필</th>
-			<th style="width: 400px;">제목</th>
-			<th style="width: 400px;">태그</th>
-			<th style="width: 50px;">댓글수</th>
-			<th style="width: 50px;">조회수</th>
-			<th style="width: 50px;">추천</th>
-			<th style="width: 50px;">비추</th>
-			<th style="width: 50px;">작성일</th></tr>
-			<c:forEach var="article" items="${listArticle }">
-				<tr>
-				<td>${article.art_id }</td>
-				<td>${boardMap[article.brd_id]}</td>
-				<td><img src="${pageContext.request.contextPath}/uploads/profile/${article.mem_image }" alt="예시" style="max-height: 30px; max-width: 30px;">
-						${article.mem_nickname }</td>
-				<td><a href="${pageContext.request.contextPath}/board/community/${article.art_id }?brd_id=${article.brd_id }&category=${category }">${article.art_title}</a></td>
-				<td>
-				    <c:if test="${not empty article.art_tag1}">
-				        #${article.art_tag1}
-				    </c:if>
-				    <c:if test="${not empty article.art_tag2}">
-				        #${article.art_tag2}
-				    </c:if>
-				    <c:if test="${not empty article.art_tag3}">
-				        #${article.art_tag3}
-				    </c:if>
-				    <c:if test="${not empty article.art_tag4}">
-				        #${article.art_tag4}
-				    </c:if>
-				    <c:if test="${not empty article.art_tag5}">
-				        #${article.art_tag5}
-				    </c:if>
-				</td>
-				<td>${article.rep_cnt }</td>
-				<td>${article.art_read }</td>
-				<td>${article.art_good }</td>
-				<td>${article.art_bad }</td>
-				<%-- <td><fmt:formatDate value="${article.art_regdate}" pattern="MM.dd HH:mm" /></td> --%>
-				<fmt:formatDate value="${article.art_regdate}" pattern="MM.dd" var="regdate" />
-				<fmt:formatDate value="${article.art_regdate}" pattern="hh:mm" var="regtime" />
-				<td style="font-size : 10px">${regdate }<br>${regtime}</td>
-				</tr>
-			</c:forEach>
-		</table>
-		<div style="margin: 10px;">
-		<c:if test ="${page.startPage > page.pageBlock }">
-			<a href="${pageContext.request.contextPath}/board/community?currentpage=${page.startPage-page.pageBlock }&category=${category}">[이전]</a>
-		</c:if>
-		<c:forEach var="i" begin="${page.startPage }" end="${page.endPage }">
-			<a href="${pageContext.request.contextPath}/board/community?currentPage=${i }&category=${category}"	>[${i }]</a>
-		</c:forEach>
-		<c:if test="${page.endPage < page.totalPage }">
-			<a href="${pageContext.request.contextPath}/board/community?currentPage=${page.startPage+page.pageBlock }&category=${category}">[다음]</a>
-		</c:if>
+			</div>
+			
+			<!-- 왼쪽 오른쪽(글쓰기) 버튼 -->
+			<div class="board-btns" style="display: flex; flex-grow:1; margin: 15px 0px;">
+				<!-- <div class="btns-left">
+					<button>거래 모집 중</button>
+					<button>거래 완료</button>
+					<button>거래 취소</button>
+				</div> -->
+				<div class="btns-right" style="display: flex; justify-content: flex-end; flex-grow: 1;">
+					<span>
+						<c:if test="${ memberInfo != null}">
+							<button class="btn-write" onclick="location.href='${pageContext.request.contextPath}/board/community/communityWrite?category=${category}'">글쓰기</button>
+						</c:if>
+					</span>
+				</div>
+			</div>
+			<!-- 공지사항 -->
+			<div class="notice-customer"></div>
+			<div class="notice-board"></div>
+			
+			<!-- 글 출력 -->
+			<div class="board-articleList" style="display: flex; flex-direction: column;">
+				<c:forEach var="article" items="${listArticle}">
+				<!-- 글 시작 -->
+					<div class="article-info" style="display: flex; padding: 10px; flex-grow: 1;">
+						<div class="view-preview" style="display: flex; align-items: center; margin-right: 14px">
+							<img class="article-thumbnail" style="width: 80px; height: 80px; object-fit: cover;" src="${pageContext.request.contextPath }/image/ShareGo_Img.png" onload="$(this).attr('src', getThumbnail('${article.art_content}', true));">
+						</div>
+						<div class="view-inner" style="display: flex; flex-direction: column; justify-content: center; flex-grow: 1;">
+							<!-- 글의 첫 줄 -->
+							<div class="view-top" style="display: flex; flex-grow: 1;">
+								<c:if test="${article.status_name != null}">
+									<button class="btn">${article.status_name}</button>
+								</c:if>
+								<%-- <span class="category-name">${article.brd_name}</span> --%>
+								<span class="article-title"><a href="${pageContext.request.contextPath}/board/community/${article.art_id}?brd_id=${article.brd_id}&category=${category}">${article.art_title}</a></span>
+								
+								<!-- 태그 출력 및 클릭 시 검색 -->
+								<div class="view-tag" style="display: flex; justify-content: flex-end; flex-grow: 1;">
+									<form action="${pageContext.request.contextPath}/board/community/bjSearchForm">
+										<input type="hidden" name="category" value="${category}">
+										<input type="hidden" name="brd_id" value="${article.brd_id}">
+										<input type="hidden" name="search" value="articleTag">
+										<c:forEach begin="1" end="5" varStatus="status">
+											<c:set var="art_tag" value="art_tag${status.index}"/>
+												<c:if test="${article[art_tag] != null}">
+													<button class="btns-tag" name="keyWord" value="${article[art_tag]}">${article[art_tag]}</button>
+												</c:if>
+										</c:forEach>
+									</form>
+								</div>
+							</div>
+							<!-- 글의 두번째 줄 -->
+							<div class="view-bottom">
+									<c:if test="${article.rep_cnt != null && article.rep_cnt != 0}">
+										<span class="article-replycnt">[${article.rep_cnt }]</span>
+									</c:if><br>
+									
+									<c:choose>
+										<c:when test="${article.trade.trd_cost == 0}">
+											<span><button class="btn-cost">무료나눔</button></span>
+										</c:when>
+										<c:when test="${article.trade.trd_cost != null && article.trade.trd_cost != 0}">
+											<span><button class="btn-cost">${article.trade.trd_cost}원</button></span>
+										</c:when>
+									</c:choose>
+										
+								<span>${article.mem_nickname}</span>
+								<span>${article.gen_name}</span>
+								<c:set var="sysdate" value="<%=new java.util.Date() %>"/>
+								<fmt:formatNumber var="date" value="${(sysdate.time-article.art_regdate.time)/1000/60/60/24}" type="number" pattern="0"/>
+								<span><button class="btn" type="button">${date}일 전</button></span>
+								
+								<div class="display-flex justify-content-flex-end align-items-center">
+									<div class="display-flex justify-content-flex-start align-items-center margin-hor-2_5px">
+										<!-- https://ionic.io/ionicons -->
+										<svg viewBox="0 0 512 512" style="width: 16px; height: 16px; fill: none; stroke: var(--theme-font); stroke-linecap: round; stroke-linejoin: round; stroke-width: 32px;">
+											<path d="M255.66 112c-77.94 0-157.89 45.11-220.83 135.33a16 16 0 00-.27 17.77C82.92 340.8 161.8 400 255.66 400c92.84 0 173.34-59.38 221.79-135.25a16.14 16.14 0 000-17.47C428.89 172.28 347.8 112 255.66 112z"/>
+											<circle cx="256" cy="256" r="80"/>
+										</svg>
+										<span class="margin-hor-2_5px">${article.art_read}</span>
+									</div>
+									<div class="display-flex justify-content-flex-start align-items-center margin-hor-2_5px">
+										<!-- https://ionic.io/ionicons -->
+										<svg viewBox="0 0 512 512" style="width: 16px; height: 16px; fill: var(--theme-font); stroke: var(--theme-font); stroke-linecap: round; stroke-linejoin: round; stroke-width: 32px;">
+											<path d="M320 458.16S304 464 256 464s-74-16-96-32H96a64 64 0 01-64-64v-48a64 64 0 0164-64h30a32.34 32.34 0 0027.37-15.4S162 221.81 188 176.78 264 64 272 48c29 0 43 22 34 47.71-10.28 29.39-23.71 54.38-27.46 87.09-.54 4.78 3.14 12 7.95 12L416 205"/>
+											<path d="M416 271l-80-2c-20-1.84-32-12.4-32-30h0c0-17.6 14-28.84 32-30l80-4c17.6 0 32 16.4 32 34v.17A32 32 0 01416 271zM448 336l-112-2c-18-.84-32-12.41-32-30h0c0-17.61 14-28.86 32-30l112-2a32.1 32.1 0 0132 32h0a32.1 32.1 0 01-32 32zM400 464l-64-3c-21-1.84-32-11.4-32-29h0c0-17.6 14.4-30 32-30l64-2a32.09 32.09 0 0132 32h0a32.09 32.09 0 01-32 32zM432 400l-96-2c-19-.84-32-12.4-32-30h0c0-17.6 13-28.84 32-30l96-2a32.09 32.09 0 0132 32h0a32.09 32.09 0 01-32 32z"/>
+										</svg>
+										<span class="margin-hor-2_5px">${article.art_good}</span>
+									</div>
+									<div class="display-flex justify-content-flex-start align-items-center margin-hor-2_5px">
+										<!-- https://ionic.io/ionicons -->
+										<svg viewBox="0 0 512 512" style="width: 16px; height: 16px; fill: var(--theme-font); stroke: var(--theme-font); stroke-linecap: round; stroke-linejoin: round; stroke-width: 32px;">
+											<path d="M192 53.84S208 48 256 48s74 16 96 32h64a64 64 0 0164 64v48a64 64 0 01-64 64h-30a32.34 32.34 0 00-27.37 15.4S350 290.19 324 335.22 248 448 240 464c-29 0-43-22-34-47.71 10.28-29.39 23.71-54.38 27.46-87.09.54-4.78-3.14-12-8-12L96 307"/>
+											<path d="M96 241l80 2c20 1.84 32 12.4 32 30h0c0 17.6-14 28.84-32 30l-80 4c-17.6 0-32-16.4-32-34v-.17A32 32 0 0196 241zM64 176l112 2c18 .84 32 12.41 32 30h0c0 17.61-14 28.86-32 30l-112 2a32.1 32.1 0 01-32-32h0a32.1 32.1 0 0132-32zM112 48l64 3c21 1.84 32 11.4 32 29h0c0 17.6-14.4 30-32 30l-64 2a32.09 32.09 0 01-32-32h0a32.09 32.09 0 0132-32zM80 112l96 2c19 .84 32 12.4 32 30h0c0 17.6-13 28.84-32 30l-96 2a32.09 32.09 0 01-32-32h0a32.09 32.09 0 0132-32z"/>
+										</svg>
+										<span class="margin-hor-2_5px">${article.art_bad}</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</c:forEach>
+			</div>
+			<!-- 검색 -->
+			<div class="board-search" align="center" style="height: 20px; margin: 15px;">
+				<form action="${pageContext.request.contextPath}/board/community/bjSearch">
+					<input type="hidden" name="category" value="${category}">
+					<input type="hidden" name="brd_id" value="${category}">
+					<select name="search">
+						<option value="article">제목+내용</option>
+						<option value="title">제목</option>
+						<option value="content">내용</option>
+						<option value="nickname">닉네임</option>
+						<option value="articleTag">태그</option>
+					</select>
+					<input type="text" name="keyWord" placeholder="검색어 입력" required="required">
+					<button type="submit">검색</button>
+				</form>
+			</div>
+			<!-- 페이징 -->
+			<div class="board_paging" align="center" style="font-size: 18px; clear: both;">
+				<c:if test="${page.startPage > page.pageBlock }">
+					<a href="community?currentPage=${page.startPage-page.pageBlock }&category=${category}">[이전]</a>
+				</c:if>
+				<c:forEach var="i" begin="${page.startPage }" end="${page.endPage }">
+					<a href="community?currentPage=${i }&category=${category}">[${i }]</a>
+				</c:forEach>
+				<c:if test="${page.endPage < page.totalPage }">
+					<a href="community?currentPage=${page.startPage+page.pageBlock }&category=${category}">[다음]</a>
+				</c:if>
+			</div>
 		</div>
-		
-		<form action="${pageContext.request.contextPath}/board/community/bjSearch?brd_id=${category }&category=${category }" method="post" name="bjSearch">
-		<select name="bjSearchOption">
-			<option value="bjStitle">제목</option>
-			<option value="bjScontent">내용</option>
-			<option value="bjStiCon">제목+내용</option>
-			<option value="bjSnick">작성자</option>
-		</select>
-		<input type="text" name="bjKeyword" placeholder="검색어를 입력하세요." >
-		<input type="submit" value="검색">
-		</form>
 	</div>
-	
-	
+		
 		<button id="scrollToTop" class="adv-hover">
 			<svg style="fill: var(--subtheme); stroke: var(--subtheme); stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round;" width="20" height="10" viewBox="0 0 32 16">
 				<path d="M 15 1 L 1 15 31 15 Z"/>
@@ -583,6 +376,9 @@
 			</svg>
 		</button>
 	</main>
+	
+	
+	
 	<aside id="rightside">
 		
 	</aside>

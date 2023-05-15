@@ -1,5 +1,7 @@
 package com.java501.S20230401.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,9 +25,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.MemberDetails;
+import com.java501.S20230401.model.Region;
 import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.Paging;
+import com.java501.S20230401.service.RegionService;
 import com.java501.S20230401.service.ReplyService;
 import com.sun.net.httpserver.Authenticator.Result;
 
@@ -37,97 +41,52 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class CommunityController {
-	private final ArticleService as;
-	private final ReplyService rs;
+	private final ArticleService	as;
+	private final ReplyService 		rs;
+	private final RegionService 	regionService;
 	
 	@RequestMapping(value = "board/community")
 	public String communityList(@AuthenticationPrincipal MemberDetails memberDetails, Article article, 
 														int category, String currentPage, Model model) 
-	{
+	{	
 		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		
 		article.setBrd_id(category);
-		int brd_id = category;
-		System.out.println("CommunityController 시작");
-		int totalArticle = as.totalArticle(category);
-		System.out.println("CommunityController totalArticle->"+totalArticle);
-		List<Comm> commList = as.bjcommList((category / 100 * 100));
-		model.addAttribute("totalArticle", totalArticle);
+		int totalArticle = 0;
+		
+		
+		totalArticle = as.bjTotalArticle(article);
+		
 		Paging page = new Paging(totalArticle, currentPage);
-		System.out.println("page"+page);
+
 		article.setStart(page.getStart());
 		article.setEnd(page.getEnd());
 		
-		Map<Integer, String> boardMap = new HashMap<>();
-	    boardMap.put(1310, "일상수다");
-	    boardMap.put(1320, "자랑하기");
-	    boardMap.put(1330, "홍보하기");
-	    boardMap.put(1340, "질문/요청");
 	    
+		List<Article> listArticle = as.articleTotal(article);
+		List<Comm> commList = as.bjcommList((category / 100 * 100));
 	    String boardName = as.bjCategoryName(category);
 	    String categoryName = as.bjCategoryName(article.getBrd_id());
-	    model.addAttribute("boardMap", boardMap);
+
 	    model.addAttribute("boardName", boardName);
 	    model.addAttribute("categoryName", categoryName);
 	    model.addAttribute("totalArticle", totalArticle);
 	    model.addAttribute("page", page);
-	    model.addAttribute("brd_id", brd_id);
 	    model.addAttribute("category", category);
 	    model.addAttribute("commList", commList);
-	    
-	    article.setBrd_id(brd_id);
-		if(brd_id == 1300) {
-			List<Article> listArticle = as.articleTotal(article);
-			model.addAttribute("listArticle", listArticle);
-		}else {
-			List<Article> menuArticle = as.articleMenu(article);
-		    model.addAttribute("listArticle", menuArticle);
-		}
+		model.addAttribute("listArticle", listArticle);
 		
 		
 		return "community/communityIndex";
 	}
 	
-	@RequestMapping(value = "board/share/bjSearchForm")
-	public String shareSearch(Article article, Integer category, RedirectAttributes redirectAttributes){
+	@RequestMapping(value = "board/community/bjSearchForm")
+	public String communitySearch(Article article, Integer category, RedirectAttributes redirectAttributes){
 		redirectAttributes.addFlashAttribute("article", article);
-		return getRedirectShare(category);
+		return getRedirectSearch(article, category);
 	}
 	
-	public String getRedirectShare(Integer category) {
-		return String.format("redirect:/board/share?category=%s", category);
-	}
 	
-	@RequestMapping(value = "board/community/bjSearch")
-	public String bjSearch(@AuthenticationPrincipal MemberDetails memberDetails, Article article,
-													int category, String currentPage, Model model) 
-	{
-		if (memberDetails != null) model.addAttribute("memberInfo", memberDetails.getMemberInfo());
-		System.out.println("검색 컨트롤러 시작");
-		
-		int totalArticle = as.totalArticle(article.getBrd_id());
-		model.addAttribute("totalArticle", totalArticle);
-		
-		Paging page = new Paging(totalArticle, currentPage);
-		System.out.println("page"+page);
-		article.setStart(page.getStart());
-		article.setEnd(page.getEnd());
-		
-		Map<Integer, String> boardMap = new HashMap<>();
-	    boardMap.put(1310, "일상수다");
-	    boardMap.put(1320, "자랑하기");
-	    boardMap.put(1330, "홍보하기");
-	    boardMap.put(1340, "질문/요청");
-	    model.addAttribute("boardMap", boardMap);
-	    
-	    List<Article> bjSearch = as.bjArtSearch(article);
-	    model.addAttribute("listArticle", bjSearch);
-	    model.addAttribute("article", article);
-	    model.addAttribute("page", page);
-	    model.addAttribute("category", category);
-	    
-		
-		return "community/communityIndex";
-	}
 	
 	//디테일 상세보기
 	@GetMapping(value = "board/community/{art_id}")
@@ -234,7 +193,12 @@ public class CommunityController {
 		
 		Article formUpdate = as.detailContent(article);
 		List<Comm> categoryList = as.bjcommList((category / 100 * 100));
+		Map<Region, List<Region>> regionHierachy = new HashMap<Region, List<Region>>();
+		List<Region> superRegions = regionService.getSuperRegions();
+		for (Region sups : superRegions) regionHierachy.put(sups, regionService.getChildRegions(sups.getReg_id()));
 		
+		model.addAttribute("regions", regionHierachy);
+		model.addAttribute("superRegions", superRegions);
 		model.addAttribute("categoryList", categoryList);
 		model.addAttribute("article", formUpdate);
 		model.addAttribute("category", category);
@@ -253,17 +217,23 @@ public class CommunityController {
 		model.addAttribute("uptCnt", updateCount);
 		model.addAttribute("category", category);
 		
-		return "redirect:/board/community/"+article.getArt_id()+"?brd_id="+article.getBrd_id()+"&category="+category;
+		return getRedirectArticle(article, category);
 	}
 	
 	
-	@RequestMapping(value = "board/community/bjDelte")
-	public String delete(@PathVariable("art_id")String art_id,Article article, int category, Model model) {
+	@RequestMapping(value = "board/community/bjDelete/{art_id}")
+	public String delete(		@PathVariable("art_id")
+								String art_id,
+								@AuthenticationPrincipal
+								MemberDetails memberDetails,
+								Article article, 
+								Integer category,
+								RedirectAttributes redirectAttributes ) 
+	{
 		System.out.println("삭제 업데이트 시작");
 		int delResult = as.delete(article);
-		model.addAttribute("category", category);
-		
-		return "redirect:/board/community?brd_id="+article.getBrd_id()+"category="+category;
+			
+		return getRedirectCommunity(category);
 	}
 	
 	@PostMapping(value = "board/community/bjReplyWrite")
@@ -490,8 +460,21 @@ public class CommunityController {
 	}
 	
 	
+	public String getRedirectSearch(Article article, Integer category) { 
+		try {
+			return String.format("redirect:/board/community?category=%s&search=%s&keyWord=%s", category, article.getSearch(), URLEncoder.encode(article.getKeyWord(), "UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			return getRedirectCommunity(category);
+		}
+	}
+
+	public String getRedirectCommunity(Integer category) {
+		return String.format("redirect:/board/community?category=%s", category);
+	}
 	
-	
+	public String getRedirectArticle(Article article, Integer category) {
+		return String.format("redirect:/board/community/%s?brd_id=%s&category=%s", article.getArt_id(), article.getBrd_id(), category);
+	}
 	
 	
 //	@RequestMapping(value = "bjReport")

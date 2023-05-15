@@ -185,6 +185,7 @@ public class ShareController {
 		return "share/article";
 	}
 	
+
 	
 	
 	// 게시글 작성 페이지 이동

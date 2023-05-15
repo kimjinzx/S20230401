@@ -122,8 +122,8 @@ public class ArticleServiceImpl implements ArticleService {
 	
 	// 백준
 	@Override
-	public Integer totalArticle(int brd_id) {
-		Integer totalArticleCnt = ad.totalArticle(brd_id);
+	public Integer bjTotalArticle(Article article) {
+		Integer totalArticleCnt = ad.bjTotalArticle(article);
 		return totalArticleCnt;
 	}
 	@Override
@@ -756,6 +756,7 @@ public class ArticleServiceImpl implements ArticleService {
 	public int jhWaitListYN(Article article) {
 		return wd.jhWaitListYN(article);
 	}
+	
 	
 	
 	
