@@ -40,8 +40,12 @@
 		UPDATE ARTICLE SET ISDELETE = 0 WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
 	</update>
 	<select id="hgGetArticleById" parameterType="Article" resultType="Article">
-		SELECT * FROM ARTICLE
-		WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
+		SELECT A.*, M.MEM_NICKNAME, M.MEM_USERNAME, M.MEM_IMAGE, NVL(R.REP_COUNT, 0) REP_COUNT
+		FROM ARTICLE A LEFT OUTER JOIN (SELECT ART_ID, BRD_ID, COUNT(*) REP_COUNT
+													  FROM REPLY
+													  GROUP BY ART_ID, BRD_ID) R ON (A.ART_ID = R.ART_ID AND A.BRD_ID = R.BRD_ID)
+							  LEFT OUTER JOIN MEMBER M ON (A.MEM_ID = M.MEM_ID)
+		WHERE A.ART_ID = #{art_id} AND A.BRD_ID = #{brd_id}
 	</select>
 	
 		<select id="hgAdminArticleList" parameterType="Article" resultType="Article">
@@ -93,6 +97,15 @@
 						   ART_BAD = ART_BAD + #{art_bad}
 		WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
 	</update>
+	<select id="hgGetCountAllArticle" resultType="int">
+		SELECT COUNT(*) FROM ARTICLE
+	</select>
+	<select id="hgGetArticles" parameterType="Article" resultType="Article">
+		SELECT *
+		FROM (SELECT ROWNUM RN, A.*
+				 FROM (SELECT * FROM ARTICLE ORDER BY ART_REGDATE) A)
+		WHERE RN BETWEEN #{start} AND #{end}
+	</select>
 	
 	<!-- 양동균 -->
 	<resultMap type="Article" id="dgArticleMap">

@@ -60,8 +60,11 @@ public class CommDaoImpl implements CommDao {
 	public List<Comm> getCategoryListBySuper(Integer superId) {
 		return session.selectList("hgGetCategoryListBySuper", superId);
 	}
-
-
+	
+	@Override
+	public List<Comm> hgGetCategoryNames() {
+		return session.selectList("hgGetCategoryNames");
+	}
 
 
 

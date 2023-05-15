@@ -211,6 +211,26 @@ public class ReplyDaoImpl implements ReplyDao {
 		return session.selectList("hgGetRepliesOfMember", mem_id);
 	}
 	
+	@Override
+	public List<Reply> hgGetRepliesOfArticle(Article searcher) {
+		return session.selectList("hgGetRepliesOfArticle", searcher);
+	}
+	
+	@Override
+	public int hgDeleteReply(Reply reply) {
+		return session.update("hgDeleteReply", reply);
+	}
+	
+	@Override
+	public Reply hgGetReplyById(Reply reply) {
+		return session.selectOne("hgGetReplyById", reply);
+	}
+	
+	@Override
+	public int hgRealDeleteReply(Reply reply) {
+		return session.delete("hgRealDeleteReply", reply);
+	}
+	
 	
 	// 임동빈
 	@Override

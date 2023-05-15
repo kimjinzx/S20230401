@@ -423,6 +423,22 @@
 			WHERE ROWNUM <= 10
 		]]>
 	</select>
+	<select id="hgGetRepliesOfArticle" parameterType="Article" resultType="Reply">
+		SELECT R.*, M.MEM_NICKNAME, M.MEM_USERNAME, M.MEM_IMAGE
+		FROM REPLY R LEFT OUTER JOIN MEMBER M ON (R.MEM_ID = M.MEM_ID)
+		WHERE R.ART_ID = #{art_id} AND R.BRD_ID = #{brd_id}
+		ORDER BY R.REP_PARENT, R.REP_STEP
+	</select>
+	<update id="hgDeleteReply" parameterType="Reply">
+		UPDATE REPLY SET ISDELETE = #{isdelete} WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id} AND REP_ID = #{rep_id}
+	</update>
+	<select id="hgGetReplyById" parameterType="Reply" resultType="Reply">
+		SELECT * FROM REPLY
+		WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id} AND REP_ID = #{rep_id}
+	</select>
+	<delete id="hgRealDeleteReply" parameterType="Reply">
+		DELETE FROM REPLY WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id} AND REP_ID = #{rep_id}
+	</delete>
 	
 	
 	<!-- 임동빈 -->

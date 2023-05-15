@@ -235,6 +235,16 @@ public class ArticleDaoImpl implements ArticleDao {
 		return session.selectList("hgAdminArticleList", searcher);
 	}
 	
+	@Override
+	public int hgGetCountAllArticle() {
+		return session.selectOne("hgGetCountAllArticle");
+	}
+	
+	@Override
+	public List<Article> hgGetArticles(Article searcher) {
+		return session.selectList("hgGetArticles", searcher);
+	}
+	
 	
 	// 백준
 	@Override
