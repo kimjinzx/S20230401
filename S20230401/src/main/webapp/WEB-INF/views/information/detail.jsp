@@ -36,7 +36,7 @@
 		});
 	});
 </script>
-<script type="text/javascript">
+ <script type="text/javascript">
 function favorite(art_id, brd_id) {
 	  $.ajax({
 	    url: "/board/information/favorite",
@@ -59,7 +59,7 @@ function copyUrl() {
 	    .then(() => alert("URL이 클립보드에 복사되었습니다."))
 	    .catch((error) => alert(`클립보드 복사 중 오류가 발생했습니다: ${error}`));
 	}
-</script>
+</script> 
 </head>
 <body>
 	<header>
@@ -239,7 +239,7 @@ function copyUrl() {
 							</c:if>
 							<button class="adv-hover" onclick="location.href='${pageContext.request.contextPath}/board/information?category=${category}'">목록</button>
 							<button class="adv-hover" onclick="favorite(${article.art_id}, ${article.brd_id})">관심</button>
-							<button class="adv-hover" onclick="copyUrl()">URL</button>
+							<button class="adv-hover" onclick="copyUrl()">URL</button> 
 						</span>
 					</div>
 				</div>
@@ -481,8 +481,8 @@ function copyUrl() {
 									<span class="color-theme-font font-size-14px" style="color: rgba(var(--theme-font-rgb), 0.5);">(<fmt:formatDate value="${reply.rep_regdate}" pattern="yy-MM-dd :HH:mm:ss"/>)</span>
 								</div>
 								<div class="flex-grow-1 display-flex justify-content-flex-end align-items-center">
-									<c:if test="${reply.mem_id == memberInfo.mem_id || memberInfo.mem_authority > 108}">
 										<button class="btns-repWrite font-weight-bolder" onclick="${pageContext.request.contextPath}/board/information/replyWrite" method="post">댓글 달기</button>
+									<c:if test="${reply.mem_id == memberInfo.mem_id || memberInfo.mem_authority > 108}">
 										<button class="btns-repUpdate font-weight-bolder">수정</button>
 										<button class="btns-repComplete font-weight-bolder" style="display: none;" onclick="rep_Update(${status.index})">완료</button>
 										<button class="btns-delete font-weight-bolder" onclick="location.href='${pageContext.request.contextPath}/board/information/replydelete?art_id=${article.art_id}&brd_id=${article.brd_id}&rep_id=${reply.rep_id}&category=${category}';">삭제</button>
