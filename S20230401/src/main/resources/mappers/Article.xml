@@ -341,40 +341,39 @@
 	
 	<!-- 백준 -->
 	<select id="bjarticleCnt" parameterType="int" resultType="int">
-		SELECT COUNT(*)
-		FROM ARTICLE
-		JOIN MEMBER ON ARTICLE.MEM_ID = MEMBER.MEM_ID
-		WHERE BRD_ID
-	    <choose>
-	        <when test="brd_id == 999">
-	            BETWEEN #{brd_id} AND #{brd_id} + 600
-	        </when>
-	        <when test="brd_id % 100 != 0">
-	            = #{brd_id}
-	        </when>
-	        <otherwise>
-	            BETWEEN #{brd_id} AND #{brd_id} + 99
-	        </otherwise>
-	    </choose>
-	    AND ISDELETE = 0
-	    <choose>
-	        <when test="search == 'article'">
-	            AND (ART_TITLE || ART_CONTENT) LIKE '%' || #{keyWord} || '%'
-	        </when>
-	        <when test="search == 'title'">
-	            AND ART_TITLE LIKE '%' || #{keyWord} || '%'
-	        </when>
-	        <when test="search == 'content'">
-	            AND ART_CONTENT LIKE '%' || #{keyWord} || '%'
-	        </when>
-	        <when test="search == 'nickname'">
-	            AND MEMBER.MEM_NICKNAME LIKE '%' || #{keyWord} || '%'
-	        </when>
-	        <when test="search == 'articleTag'">
-	            AND (ART_TAG1 || ART_TAG2 || ART_TAG3 || ART_TAG4 || ART_TAG5) LIKE '%' || #{keyWord} || '%'
-	        </when>
-        <otherwise></otherwise>
-   		</choose>
+		SELECT 	COUNT(*)
+		FROM 	ARTICLE
+		WHERE 	BRD_ID 
+		<choose>
+			<when test="brd_id == 999">
+				BETWEEN #{brd_id} and #{brd_id}+600
+			</when>
+			<when test="brd_id % 100 != 0">
+				= #{brd_id}
+			</when>
+			<otherwise>
+				BETWEEN #{brd_id} and #{brd_id}+99
+			</otherwise>
+		</choose>
+		AND		ISDELETE = 0
+		<choose>
+	       	<when test="search == 'article'">
+	       		AND (ART_TITLE || ART_CONTENT) LIKE '%'|| #{keyWord} ||'%'
+	       	</when>
+	       	<when test="search == 'title'">
+	       		AND ART_TITLE LIKE '%'|| #{keyWord} ||'%'
+	       	</when>
+	       	<when test="search == 'content'">
+	       		AND ART_CONTENT LIKE '%'|| #{keyWord} ||'%'
+	       	</when>
+	       	<when test="search == 'nickname'">
+	       		AND MEM_NICKNAME LIKE '%'|| #{keyWord} ||'%'
+	       	</when>
+	       	<when test="search == 'articleTag'">
+	       		AND (ART_TAG1||ART_TAG2||ART_TAG3||ART_TAG4||ART_TAG5) LIKE '%'|| #{keyWord} ||'%'
+	       	</when>
+	       	<otherwise></otherwise>
+       </choose>
 	</select>
 	
 	<select id="bjarticleIndexAll" parameterType="Article" resultType="Article">

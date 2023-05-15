@@ -195,7 +195,7 @@
 					<input type="hidden" id="brd_id"    name="brd_id"    value="${article.brd_id}">
 					<input type="hidden" id="category"    name="category" value="${category}">
 					<input type="hidden" id="mem_id"    name="mem_id"    value="${article.mem_id}">
-					<input type="hidden" id="article_nickname"          value="${article.member.mem_nickname}">
+					<input type="hidden" id="article_nickname"          value="${article.mem_nickname}">
 					<input type="hidden" id="artReport_id"             value="${article.report_id}">
 					<input type="hidden" id="login_member"       name="login_member"    value="${memberInfo.mem_id}">
 					<input type="hidden" id="login_authority"    name="login_authority"    value="${memberInfo.mem_authority}">
@@ -236,11 +236,11 @@
 				<!-- 작성자 -->
 				<div class="article-memberRow display-flex align-items-center" style="border-bottom: 1px solid rgba(128, 128, 128, 0.5);">
 					<div class="user-profile-image-in-list">
-						<img src="${pageContext.request.contextPath}/uploads/profile/${article.member.mem_image}" onerror="this.onerror=null; this.src='${pageContext.request.contextPath }/image/abstract-user.svg';"></span>
+						<img src="${pageContext.request.contextPath}/uploads/profile/${article.mem_image}" onerror="this.onerror=null; this.src='${pageContext.request.contextPath }/image/abstract-user.svg';"></span>
 					</div>
 					<div class="article-member" style="display: flex; align-items: center;">
 						<div class="modal-report display-flex justify-content-flex-start align-items-center padding-0">
-						<span id="member_nickname" class="font-weight-bolder margin-right-10px">${article.member.mem_nickname}</span>
+						<span id="member_nickname" class="font-weight-bolder margin-right-10px">${article.mem_nickname}</span>
 						<c:if test="${not empty memberInfo}">
 							<svg id="member-report" viewBox="0 0 512 512" width="24" height="24" style="fill: none; stroke: var(--warning); stroke-width: 32px; stroke-linecap: round; stroke-linejoin: round; cursor: pointer;"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z" style="stroke: none; fill: var(--warning);"/></svg>
 							<input type="hidden" id="member_id" value="${article.member.mem_id}">
