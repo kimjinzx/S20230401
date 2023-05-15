@@ -19,12 +19,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.java501.S20230401.model.Article;
+import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Favorite;
 import com.java501.S20230401.model.MemberDetails;
 import com.java501.S20230401.model.MemberInfo;
 import com.java501.S20230401.model.Reply;
 import com.java501.S20230401.model.Report;
 import com.java501.S20230401.service.ArticleService;
+import com.java501.S20230401.service.CommService;
 import com.java501.S20230401.service.FavoriteService;
 import com.java501.S20230401.service.Paging;
 import com.java501.S20230401.service.ReplyService;
@@ -43,6 +45,7 @@ public class InformationController {
 	private final ReplyService rs;
 	private final FavoriteService fs;
 	private final ReportService ps;
+	private final CommService 		commService;
 	
 	// 리스트 조회 
 	@RequestMapping(value="/board/information")
@@ -56,6 +59,11 @@ public class InformationController {
 		//전체 게시글
 		int cytotalArticle = as.cytotalArticle();
 		System.out.println("ArticleController totalArticle=>" + cytotalArticle);
+		
+		List<Comm> commList = commService.commList((category / 100 * 100));
+		// 접속한 게시판과 카테고리 식별
+		String boardName = commService.categoryName(category);
+		String categoryName = commService.categoryName(article.getBrd_id());
 		
 		//페이징
 		Paging page = new Paging(cytotalArticle, currentPage);		//전통방식
@@ -71,6 +79,7 @@ public class InformationController {
 		model.addAttribute("listArticle", listArticle);
 		model.addAttribute("page", page);
 		model.addAttribute("category", category);
+		model.addAttribute("commList", commList);
 		//검색 폼 추가
 		model.addAttribute("searchForm", true);
 
@@ -364,13 +373,13 @@ public class InformationController {
 		int result = as.cyArticlemodify(article);
 		
 		
-		return "/information/detail"; 
+		return "redirect:/board/information/"+article.getArt_id()+ "?brd_id=" +article.getBrd_id()+ "&category=" + category;
 	}
 	
 	
 	//게시물 작성 GET
 	@RequestMapping(value = "/board/information/write", method = RequestMethod.GET)
-	public String getwrite(@AuthenticationPrincipal MemberDetails memberDetails, Integer category, Model model) throws Exception {
+	public String getwrite(@AuthenticationPrincipal MemberDetails memberDetails, Article article,Integer category, Model model) throws Exception {
 		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		System.out.println("작성 겟 Start...");
@@ -380,10 +389,12 @@ public class InformationController {
 	//게시물 작성POST
 	@RequestMapping(value = "/board/information/insert", method = RequestMethod.POST)
 	public String insert(@AuthenticationPrincipal MemberDetails memberDetails, Article article, Integer category, Model model) throws Exception {
-		if(memberDetails != null)
-		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
-		
+		if(memberDetails != null) {
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+			article.setMem_id(memberDetails.getMemberInfo().getMem_id());
+		}
 		System.out.println("작성 포스트 Start...");
+		System.out.println("Article =" + article);
 		int result = as.cyArticleinsert(article);
 		return "redirect:/board/information?category=1400";
 	}

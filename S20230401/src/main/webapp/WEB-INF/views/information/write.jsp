@@ -312,10 +312,7 @@
 			<div>
 				<form action="${pageContext.request.contextPath}/board/information/insert" id="write" method="post" onsubmit="return writeAction();">
 					<input type="hidden" 	name="category" 		value="${category}">
-					<input type="hidden" 	name="brd_id" 			value="${category}">
 				<!-- 임시 기본값 저장 -->
-					<input type="hidden" 	name="trade.trd_status" value="401">
-					<input type="hidden" 	name="trade.trd_cost" 	value="0">
 					<input type="hidden" 	name="art_good" 		value="0">
 					<input type="hidden" 	name="art_bad" 			value="0">
 					<input type="hidden" 	name="art_read" 		value="0">
@@ -367,7 +364,7 @@
 					<input type="hidden" id="art_content" name="art_content" required>
 					<div id="articleEditor"></div>
 					
-					<!-- 거래 정보 -->
+					<%-- <!-- 거래 정보 -->
 					<div class="trade-info-box padding-10px display-flex flex-direction-column justify-content-flex-start align-items-stretch" style="border: 2px solid var(--subtheme); border-radius: 5px;">
 						<h2 class="text-align-center color-subtheme font-weight-bolder" style="margin: 10px; padding-bottom: 20px; border-bottom: 1px solid rgba(128, 128, 128, 0.5);">거래 정보</h2>
 						<div class="display-flex justify-content-space-between align-items-center padding-10px">
@@ -396,8 +393,8 @@
 									</div>
 								</div>
 							</div>
-							
-							<div class="form-group flex-grow-1 margin-left-10px display-flex justify-content-flex-end align-items-center">
+					 --%>		
+						<!-- 	<div class="form-group flex-grow-1 margin-left-10px display-flex justify-content-flex-end align-items-center">
 								<label for="trade_trd_loc" class="margin-right-5px">상세 지역</label>
 								<input type="text" class="flex-grow-1" name="trade.trd_loc" placeholder="상세한 지역을 기입해주세요">
 							</div>
@@ -438,7 +435,7 @@
 							</div>
 						</div>
 					</div>
-	
+	 -->
 					<div class="button-group">
 						<button type="submit" form = "write" class="btns-submit">작성</button>
 						<button type="button" class="btns-cancel" onclick="location.href='${pageContext.request.contextPath}/board/information?category='+${category};">취소</button>

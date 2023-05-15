@@ -302,22 +302,22 @@
 					<h1 class="color-subtheme">${boardName} 정보공유 게시판</h1>
 				</div>
 				
-				<div class="display-flex justify-content-flex-end align-items-center"><span class="font-size-14px" style="color: rgba(var(--theme-font-rgb), 0.5);">총 ${totalArt }개의 게시글이 있습니다</span></div>
+				<div class="display-flex justify-content-flex-end align-items-center"><span class="font-size-14px" style="color: rgba(var(--theme-font-rgb), 0.5);">총 ${cytotalArticle }개의 게시글이 있습니다</span></div>
 				<!-- 게시판 목록 출력 -->
-				<%-- <div class="board-category display-flex justify-content-flex-start font-size-16px font-weight-bolder" align="center">
+				 <div class="board-category display-flex justify-content-flex-start font-size-16px font-weight-bolder" align="center">
 					<c:forEach var="comm" items="${commList}">
 						<div class="item full-width" style="border-bottom: 2px solid var(--subtheme); ${comm.comm_id == category? 'border: 2px solid var(--subtheme); border-bottom: 0px;':''}">
-							<a href="${pageContext.request.contextPath}/board/share?category=${comm.comm_id}" ${comm.comm_id != category ? 'style="color: rgba(var(--theme-font-rgb), 0.5);"' : '' } class="active full-width full-height display-block padding-5px padding-hor-0">${comm.comm_id == commList.get(0).comm_id ? '전체' : comm.comm_value}</a>
+							<a href="${pageContext.request.contextPath}/board/information?category=${comm.comm_id}" ${comm.comm_id != category ? 'style="color: rgba(var(--theme-font-rgb), 0.5);"' : '' } class="active full-width full-height display-block padding-5px padding-hor-0">${comm.comm_id == commList.get(0).comm_id ? '전체' : comm.comm_value}</a>
 						</div>
 					</c:forEach>
-				</div> --%>
-				<div class="board-category display-flex justify-content-flex-start font-size-16px font-weight-bolder" align="center">
+				</div> 
+				<%-- <div class="board-category display-flex justify-content-flex-start font-size-16px font-weight-bolder" align="center">
 					<span><a href="${pageContext.request.contextPath }/board/information?category=1400">정보공유</a></span><a>&nbsp;</a>
 					<span><a href="${pageContext.request.contextPath }/board/information?category=1410">동네정보</a></span><a>&nbsp;</a>
 					<span><a href="${pageContext.request.contextPath }/board/information?category=1420">구매정보</a></span><a>&nbsp;</a>
 					<span><a href="${pageContext.request.contextPath }/board/information?category=1430">신규점포</a></span><a>&nbsp;</a>
 					<span><a href="${pageContext.request.contextPath }/board/information?category=1440">지역활동</a></span><a>&nbsp;</a>
-				</div>			
+				</div>	 --%>		
 	 			<!-- 글 작성하기 -->	
 				<!-- 왼쪽 오른쪽(글쓰기) 버튼 -->
 	 			<div class="board-btns display-flex flex-grow-1" style="margin: 5px 0px;">

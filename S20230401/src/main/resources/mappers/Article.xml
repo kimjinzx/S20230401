@@ -1024,7 +1024,7 @@
 		                </otherwise>
 		            </choose>
 		         AND isdelete = 0
-		         ORDER BY art_id) a
+		         ORDER BY art_regdate desc) a
 		         JOIN member m ON a.mem_id = m.mem_id
 		)
 		WHERE rn BETWEEN #{start} AND #{end}
@@ -1074,18 +1074,21 @@
 			from article a
 			left join member m 
 			on a.mem_id = m.mem_id
-			where a.art_id=#{art_id} and a.brd_id = #{brd_id}
+			where a.art_id=#{art_id} and a.brd_id = #{brd_id} 
 	</select>
 	
 	
 		<!-- 게시글 작성 -->
  	<insert id="cyArticleinsert" parameterType="Article">
 		insert into 
-			article(art_id, brd_id, art_title, mem_id, art_regdate, art_tag1, art_tag2, art_tag3, art_tag4, art_tag5, 
-			art_content, trd_id, art_good, art_bad, art_read, isdelete, report_id)
-			values((Select max(art_id) + 1 from article
-			where brd_id = #{brd_id}), #{brd_id}, #{art_title}, #{mem_id}, SYSDATE, #{art_tag1, jdbcType=VARCHAR}, #{art_tag2, jdbcType=VARCHAR},
-			#{art_tag3, jdbcType=VARCHAR}, #{art_tag4, jdbcType=VARCHAR}, #{art_tag5, jdbcType=VARCHAR},  #{art_content}, NULL, 0, 0, 0, 0, NULL)
+			article
+            (art_id,
+            brd_id, art_title, mem_id, art_regdate, art_tag1, art_tag2, art_tag3, art_tag4, art_tag5, 
+			art_content, art_good, art_bad, art_read, isdelete, report_id)
+			values
+            ((Select max(art_id) + 1 from article),
+            #{brd_id}, #{art_title}, #{mem_id}, SYSDATE, #{art_tag1}, #{art_tag2},
+			#{art_tag3}, #{art_tag4}, #{art_tag5},  #{art_content}, 0, 0, 0, 0, NULL)
 	</insert> 
 	
 		<!-- 게시글 작성 -->

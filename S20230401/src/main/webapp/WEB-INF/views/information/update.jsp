@@ -405,89 +405,6 @@
 						<p class="color-warning font-size-18px font-weight-bolder text-align-center">참가자가 있어 거래정보를 수정할 수 없습니다</p>
 					</c:if>
 					
-					<!-- 거래 정보 -->
-					<div class="trade-info-box padding-10px display-flex flex-direction-column justify-content-flex-start align-items-stretch" style="border: 2px solid var(--subtheme); border-radius: 5px;${isAnyoneJoined ? ' opacity: 0.5; pointer-events: none;' : ''}">
-						<h2 class="text-align-center color-subtheme font-weight-bolder" style="margin: 10px; padding-bottom: 20px; border-bottom: 1px solid rgba(128, 128, 128, 0.5);">거래 정보</h2>
-						<div class="display-flex justify-content-space-between align-items-center padding-10px">
-							<div class="form-group" style="display: flex;">
-								<div class="popup-group">
-									<input type="hidden" id="reg_id" name="trade.reg_id" value="${article.trade.reg_id }">
-									<label for="reg_id-button">지역 제한</label>
-									<c:set var="selectedRegion" value=""/>
-									<c:forEach var="region" items="${superRegions }">
-										<c:if test="${region.reg_id == article.trade.reg_id }">
-											<c:set var="selectedRegion" value="${region.reg_name }"/>
-										</c:if>
-										<c:forEach var="subRegion" items="${regions[region] }">
-											<c:if test="${subRegion.reg_id == article.trade.reg_id }">
-												<c:set var="selectedRegion" value="${subRegion.reg_name }"/>
-											</c:if>
-										</c:forEach>
-									</c:forEach>
-									<button type="button" id="region" name="reg_id-button" class="togglePopup theme-button" style="border-color: rgba(128, 128, 128, 0.5);" ${isAnyoneJoined ? 'disabled' : '' }>${selectedRegion }</button>
-									<div id="region-popup" class="popup-window" style="bottom: 32px; right: auto; left: 81.28px; padding: 0;">
-										<div style="position: relative;">
-											<button type="button" class="subitem-header adv-hover" onclick="$('#reg_id').removeAttr('value'); $('#region').text(''); $('#region-popup').toggle();">없음</button>
-										</div>
-										<c:forEach var="region" items="${superRegions }">
-											<div style="position: relative;">
-												<button type="button" class="subitem-header adv-hover" onclick="$('#region-value').val(${region.reg_id}); $('#region').text('${region.reg_name }'); $('#region-popup').toggle();">${region.reg_name }</button>
-												<c:if test="${not empty regions[region] }">
-													<div class="subitem-list">
-														<button type="button" class="adv-hover" onclick="$('#reg_id').removeAttr('value'); $('#region').text(''); $('#region-popup').toggle();">없음</button>
-														<c:forEach var="subRegion" items="${regions[region] }">
-															<button type="button" class="adv-hover" onclick="$('#reg_id').val(${subRegion.reg_id}); $('#region').text('${subRegion.reg_name }'); $('#region-popup').toggle();">${subRegion.reg_name }</button>
-														</c:forEach>
-													</div>
-												</c:if>
-											</div>
-										</c:forEach>
-									</div>
-								</div>
-							</div>
-							
-							<div class="form-group flex-grow-1 margin-left-10px display-flex justify-content-flex-end align-items-center">
-								<label for="trade_trd_loc" class="margin-right-5px">상세 지역</label>
-								<input type="text" class="flex-grow-1" name="trade.trd_loc" placeholder="상세한 지역을 기입해주세요" value="${article.trade.trd_loc }" ${isAnyoneJoined ? 'readonly' : '' }>
-							</div>
-						</div>
-						
-						<div class="form-group display-flex justify-content-space-between align-items-center padding-10px">
-							<div class="form-group display-flex justify-content-flex-start align-items-center">
-								<label for="deadline" class="margin-right-5px">마감일</label>
-								<fmt:formatDate var="dateValue" value="${article.trade.trd_enddate }" pattern="yyyy-MM-dd hh:mm:ss"/>
-								<input type="datetime-local" name="trd_endDate" required="required" value="${dateValue }" ${isAnyoneJoined ? 'readonly' : '' }>
-							</div>
-							
-							<div class="form-group display-flex justify-content-space-between align-items-center padding-10px">
-								<label for="trade.trd_cost" class="margin-right-5px">비용</label>
-								<input type="number" class="font-size-18px font-weight-bolder" name="trade.trd_cost" value="${article.trade.trd_cost == null ? 0 : article.trade.trd_cost }" min="0" required="required" ${isAnyoneJoined ? 'readonly' : '' }>
-							</div>
-						</div>
-						
-						<div class="form-group display-flex justify-content-space-between align-items-center padding-10px">
-							<div class="form-group display-flex justify-content-flex-end align-items-center">
-								<label for="max-people" class="margin-right-5px">최대 인원</label>
-								<input type="number" class="width-50px" name="trade.trd_max" min="2" value="${article.trade.trd_max }" required="required" ${isAnyoneJoined ? 'readonly' : '' }>
-							</div>
-							
-							<div class="form-gender display-flex justify-content-flex-start align-items-center">
-								<label for="gender-limit" class="margin-right-5px">성별</label>
-								<select name="trade.trd_gender" ${isAnyoneJoined ? 'disabled' : '' }>
-									<option value="" ${article.trade.trd_gender == null ? 'selected' : '' }>제한 없음</option>
-									<option value="201" ${article.trade.trd_gender == 201 ? 'selected' : '' }>남자</option>
-									<option value="202" ${article.trade.trd_gender == 202 ? 'selected' : '' }>여자</option>
-								</select>
-							</div>
-		
-							<div class="form-age display-flex justify-content-flex-end align-items-center">
-								<label for="age-limit" class="margin-right-5px">나이</label> 
-								<input type="number" class="width-50px" name="trade.trd_minage" min="1" max="100" value="${article.trade.trd_minage }" ${isAnyoneJoined ? 'readonly' : '' }>
-								<span class="margin-hor-5px font-weight-bolder">~</span>
-								<input type="number" class="width-50px" name="trade.trd_maxage" min="1" max="100" value="${article.trade.trd_maxage }" ${isAnyoneJoined ? 'readonly' : '' }>
-							</div>
-						</div>
-					</div>
 	
 					<div class="button-group">
 						<button type="submit" class="btns-submit">작성</button>
@@ -504,7 +421,7 @@
 		</button>
 		<button id="scrollToBottom" class="adv-hover">
 			<svg style="fill: var(--subtheme); stroke: var(--subtheme); stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round;" width="20" height="10" viewBox="0 0 32 16">
-				<path d="M 15 15 L 1 1 31 1 Z"/>
+				<path d="M 15 15 L 1 1 31 1 Z"/>'
 			</svg>
 		</button>
 	</main>

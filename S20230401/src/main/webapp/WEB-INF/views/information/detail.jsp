@@ -36,6 +36,30 @@
 		});
 	});
 </script>
+<script type="text/javascript">
+function favorite(art_id, brd_id) {
+	  $.ajax({
+	    url: "/board/information/favorite",
+	    type: "POST",
+	    data: JSON.stringify({ 'favorite': true, 'art_id': art_id, 'brd_id': brd_id }),
+	    dataType: 'json',
+	    contentType: 'application/json',
+	    success: function(data) {
+	      if (data.result == 1) alert("관심 등록 되었습니다");
+	      else alert("관심 등록 실패");
+	    },
+	    error: function(e) {
+	      alert("요청 실패");
+	    }
+	  });
+	}
+function copyUrl() {
+	  const url = window.location.href;
+	  navigator.clipboard.writeText(url)
+	    .then(() => alert("URL이 클립보드에 복사되었습니다."))
+	    .catch((error) => alert(`클립보드 복사 중 오류가 발생했습니다: ${error}`));
+	}
+</script>
 </head>
 <body>
 	<header>
@@ -214,7 +238,8 @@
 								<button id="btns-artDelete" class="adv-hover" onclick="location.href='${pageContext.request.contextPath}/board/information/delete?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category }';">삭제</button>
 							</c:if>
 							<button class="adv-hover" onclick="location.href='${pageContext.request.contextPath}/board/information?category=${category}'">목록</button>
-							<%-- <button id="btns-favorite" class="adv-hover" onclick="location.href='${pageContext.request.contextPath}/board/information/favorite?art_id=${article.art_id}&brd_id=${article.brd_id}&category=${category }';">관심</button> --%>
+							<button class="adv-hover" onclick="favorite(${article.art_id}, ${article.brd_id})">관심</button>
+							<button class="adv-hover" onclick="copyUrl()">URL</button>
 						</span>
 					</div>
 				</div>
