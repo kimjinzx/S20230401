@@ -361,14 +361,10 @@
 					<div class="display-flex justify-content-space-between align-items-center">
 						<div class="form-group display-flex justify-content-flex-start align-items-center">
 							<label for="category" class="margin-right-5px">카테고리</label>
-							<select name="brd_id" id="brd_id">
+							<select name="brd_id" id="brd_id" disabled="disabled">
 								<c:forEach var="comm" items="${categoryList}">
 									<option value="${comm.comm_id}" ${article.brd_id == comm.comm_id? 'selected':''}>${comm.comm_value }</option>
 								</c:forEach>
-								<%-- <option value="1210" ${article.brd_id == 1210? 'selected':''}>식품</option>
-								<option value="1220" ${article.brd_id == 1220? 'selected':''}>패션/잡화</option>
-								<option value="1230" ${article.brd_id == 1230? 'selected':''}>가전/가구</option>
-								<option value="1240" ${article.brd_id == 1240? 'selected':''}>기타</option> --%>
 							</select>
 						</div>
 						
