@@ -190,7 +190,7 @@
 	<!-- 김찬영  -->
 	<!-- 댓글조회 -->
 	<select id="cyReply" parameterType="Reply" resultType="Reply">
-	select r.rep_id, m.mem_nickname, r.rep_content, r.rep_regdate, r.rep_parent, r.rep_step, m.mem_image, r.rep_good, r.rep_bad
+	select r.rep_id, m.mem_nickname, r.rep_content, r.rep_regdate, r.rep_parent, r.rep_step, m.mem_image, r.rep_good, r.rep_bad, r.mem_id, m.mem_id
 	from reply r
 	left join member m 
 	on r.mem_id = m.mem_id
@@ -200,10 +200,48 @@
 			
 	<!-- 댓글작성 -->
 	<insert id="cywriteReply" parameterType="Reply">
-	insert into reply(rep_id, art_id, brd_id, mem_id, rep_content, rep_regdate, rep_good, rep_bad, rep_parent, rep_step, isdelete)
-	values(#{art_id},#{brd_id},(Select NVL(max(rep_id),0) + 1 
-	from reply
-	where art_id = #{art_id} and brd_id=#{brd_id}), #{mem_id}, #{rep_content}, SYSDATE, #{rep_good}, #{rep_bad}, #{rep_parent}, #{rep_step},0)
+     INSERT 
+      INTO REPLY (  ART_ID
+               , BRD_ID
+               , REP_ID
+               , MEM_ID
+               , REP_CONTENT
+               , REP_REGDATE
+               , REP_GOOD
+               , REP_BAD
+               , REP_PARENT
+               , REP_STEP
+               , ISDELETE)
+      VALUES       (  #{art_id}
+               , #{brd_id}
+               , (SELECT NVL(MAX(REP_ID), 0) + 1 FROM REPLY
+                  WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id})
+               , #{mem_id}
+               , #{rep_content, jdbcType=VARCHAR}
+               , SYSDATE
+               , 0
+               , 0
+               , <choose>
+                  <when test="rep_parent == null">
+                     (SELECT NVL(MAX(REP_ID), 0) + 1 FROM REPLY
+                      WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}),
+                  </when>
+                  <otherwise>
+                     #{rep_parent},
+                  </otherwise>
+                 </choose>
+                    
+                 <choose>
+                  <when test="rep_parent == null">
+                     1,
+                  </when>
+                  <otherwise>
+                  (SELECT NVL(MAX(REP_STEP), 0) + 1 FROM REPLY
+                   WHERE ART_ID = #{art_id} AND BRD_ID = #{brd_id}
+                         AND REP_PARENT = #{rep_parent}),
+                  </otherwise>
+                 </choose>
+                 0)
 	</insert>
 	
 	<!-- 댓글 삭제 -->

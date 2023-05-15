@@ -55,10 +55,10 @@ public class DutchpayController {
 	      model.addAttribute("dutchpayList", dutchpayList);
 	      
 	      // 페이징
-	      int totalAticle = as.totalArticle();
-	      System.out.println("컨트롤러 페이징 totalArticle -> "+totalAticle);
+	      int totalArticle = as.totalArticle1();
+	      System.out.println("컨트롤러 페이징 totalArticle -> "+totalArticle);
 	      
-	      Paging page = new Paging(totalAticle, currentPage);
+	      Paging page = new Paging(totalArticle, currentPage);
 	      article.setStart(page.getStart());
 	      article.setEnd(page.getEnd());
 	      

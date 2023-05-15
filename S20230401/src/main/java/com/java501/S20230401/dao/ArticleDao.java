@@ -94,19 +94,19 @@ public interface ArticleDao {
 	
 	
 	// 김찬영
-	int				totalArticle();								
-	List<Article> 	listArticle(Article article);				
-//	List<Article> 	listReply(Article article);				
+	int				cytotalArticle();								
+	List<Article> 	cylistArticle(Article article);				
+//	List<Article> 	cylistReply(Article article);				
 	Article			cyArticlereadDetail(Article article);		
 	Article 		cyArticlereadupdate(Article article);		
-	Article 		detatilArticle(int art_title);				
+	Article 		cydetatilArticle(int art_title);				
 	int				cyArticleinsert(Article article);			
 	int				cyArticlemodify(Article article);			
 	public int 		cyArticledelete(Article article);			
-	int				updateView(Article article);
-	int				updateGood(Article article);
-	int				updateBad(Article article);
-//	public int 		totalArticleSearch(Article article);
+	int				cyupdateView(Article article);
+	int				cyupdateGood(Article article);
+	int				cyupdateBad(Article article);
+//	public int 		cytotalArticleSearch(Article article);
 	
 	// 최승환
 	int 			totalCustomer(Article article);
@@ -147,6 +147,7 @@ public interface ArticleDao {
 	public Article          joinAccept2(Article article);
 	public int              payCompleted2(int trd_id);
 
+	
 	
 	
 }
