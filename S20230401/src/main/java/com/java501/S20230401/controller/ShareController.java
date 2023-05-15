@@ -256,7 +256,7 @@ public class ShareController {
 									Date trd_endDate,
 									Article article, 
 									RedirectAttributes redirectAttributes, 
-			Integer category) {
+									Integer category) {
 		int result = 0;
 		MemberInfo memberInfo = null;
 		redirectAttributes.addFlashAttribute("category", category);

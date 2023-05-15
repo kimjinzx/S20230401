@@ -86,6 +86,7 @@ public interface ArticleService {
 	int 			dbTradeJoinRefuse(Article article);
 	int 			dbJoinDelete(Article article);
 	int 			dbfavoriteArticle(Article article);
+	int 			dbFavoriteArticleDelete(Article article);
 	int				dbChangeStatus(Article article);
 	int 			dbChangeEndStatus(Article article);
 	int 			dbChangeCancelStatus(Article article);
@@ -93,6 +94,8 @@ public interface ArticleService {
 	int 			dbArticleBadUp(Article article);
 	int 			dbReplyGoodUp(Article article);
 	int 			dbReplyBadUp(Article article);
+	int 			dbCondArticleCnt(Article article);
+	List<Article>	dbListSearchArticle(Article article);
 	
 	
 	

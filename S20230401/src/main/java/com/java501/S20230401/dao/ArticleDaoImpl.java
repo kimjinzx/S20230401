@@ -456,7 +456,7 @@ public class ArticleDaoImpl implements ArticleDao {
 
 		try {
 			if (article.getBrd_id() == 1000) {
-				totArticleCount = session.selectOne("dbArticleTotalCnt");
+				totArticleCount = session.selectOne("dbArticleTotalCnt", article);
 			} else {
 				totArticleCount = session.selectOne("dbArticleBoardCnt", article);
 			}
@@ -511,11 +511,6 @@ public class ArticleDaoImpl implements ArticleDao {
 	@Override
 	public void dbWriteArticle(Article article) {
 		try {
-			if (article.getReg_id2() == null) {
-				article.setReg_id(article.getReg_id1());
-			} else {
-				article.setReg_id(article.getReg_id2());
-			}
 			session.selectOne("dbInsertArticle", article);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -535,11 +530,6 @@ public class ArticleDaoImpl implements ArticleDao {
 	@Override
 	public void dbUpdateArticle(Article article) {
 		try {
-			if (article.getReg_id2() == null) {
-				article.setReg_id(article.getReg_id1());
-			} else {
-				article.setReg_id(article.getReg_id2());
-			}
 			session.selectOne("dbUpdateArticle", article);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -665,6 +655,17 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 	
 	@Override
+	public int dbFavoriteArticleDelete(Article article) {
+		int dbFavoriteArticleDelete = 0;
+		try {
+			dbFavoriteArticleDelete = session.delete("dbFavoriteArticleDelete", article);
+		} catch (Exception e) {
+			e.printStackTrace();	
+		}
+		return dbFavoriteArticleDelete;
+	}
+	
+	@Override
 	public int dbChangeStatus(Article article) {
 		int changeStatus = 0;
 		try {
@@ -741,7 +742,33 @@ public class ArticleDaoImpl implements ArticleDao {
 		return dbReplyBadUp;
 	}
 	
+	@Override
+	public int dbCondArticleCnt(Article article) {
+		int dbCondArticleCnt = 0;
+		try {
+			dbCondArticleCnt = session.selectOne("dbCondArticleCnt", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dbCondArticleCnt;
+	}
 	
+	
+	@Override
+	public List<Article> dbListSearchArticle(Article article) {
+		List<Article> dbListSearchArticle = null;
+		try {
+			dbListSearchArticle = session.selectList("dbListSearchArticle", article);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return dbListSearchArticle;
+	}
+	
+	
+	
+	
+
 	
 	// 김찬영
 	// 총리스트

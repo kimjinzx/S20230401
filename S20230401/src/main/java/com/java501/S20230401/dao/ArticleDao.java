@@ -60,6 +60,8 @@ public interface ArticleDao {
 	List<Comm> 						bjcommList(int comm_id);
 	String 							bjCategoryName(int comm_id);
 	
+	
+	
 	// 임동빈
 	int 			dbtotalArticle(Article article);
 	List<Article> 	dbListArticle(Article article);
@@ -78,6 +80,7 @@ public interface ArticleDao {
 	int 			dbTradeDeleteWaiting(Article article);
 	int 			dbJoinDelete(Article article);
 	int 			dbFavoriteArticle(Article article);
+	int 			dbFavoriteArticleDelete(Article article);
 	int 			dbChangeStatus(Article article);
 	int 			dbChangeEndStatus(Article article);
 	int 			dbChangeCancelStatus(Article article);
@@ -85,6 +88,8 @@ public interface ArticleDao {
 	int 			dbArticleBadUp(Article article);
 	int             dbReplyGoodUp(Article article);
 	int				dbReplyBadUp(Article article);
+	int 			dbCondArticleCnt(Article article);
+	List<Article>   dbListSearchArticle(Article article);
 	
 	
 	

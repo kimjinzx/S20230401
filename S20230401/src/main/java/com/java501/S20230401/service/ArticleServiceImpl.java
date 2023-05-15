@@ -376,6 +376,12 @@ public class ArticleServiceImpl implements ArticleService {
 	}
 	
 	@Override
+	public int dbFavoriteArticleDelete(Article article) {
+		int dbFavoriteArticleDelete = ad.dbFavoriteArticleDelete(article);
+		return dbFavoriteArticleDelete;
+	}
+	
+	@Override
 	public int dbChangeStatus(Article article) {
 		int changeStatus = ad.dbChangeStatus(article);
 		return changeStatus;
@@ -415,6 +421,18 @@ public class ArticleServiceImpl implements ArticleService {
 	public int dbReplyBadUp(Article article) {
 		int dbReplyBadUp = ad.dbReplyBadUp(article);
 		return dbReplyBadUp;
+	}
+	
+	@Override
+	public int dbCondArticleCnt(Article article) {
+		int dbCondArticleCnt = ad.dbCondArticleCnt(article);
+		return dbCondArticleCnt;
+	}
+	@Override
+	public List<Article> dbListSearchArticle(Article article) {
+		List<Article> dbListSearchArticle = null;
+		dbListSearchArticle = ad.dbListSearchArticle(article);
+		return dbListSearchArticle;
 	}
 
 	
