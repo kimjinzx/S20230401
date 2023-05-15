@@ -233,15 +233,15 @@
 			
 			<!-- 왼쪽 오른쪽(글쓰기) 버튼 -->
 			<div class="board-btns" style="display: flex; flex-grow:1; margin: 15px 0px;">
-				<div class="btns-left">
+				<!-- <div class="btns-left">
 					<button>거래 모집 중</button>
 					<button>거래 완료</button>
 					<button>거래 취소</button>
-				</div>
+				</div> -->
 				<div class="btns-right" style="display: flex; justify-content: flex-end; flex-grow: 1;">
 					<span>
-						<c:if test="${category % 100 != 0 && memberInfo != null}">
-							<button class="btn-write" onclick="location.href='${pageContext.request.contextPath}/board/community/communityWrite?category=${category}';">글쓰기</button>
+						<c:if test="${ memberInfo != null}">
+							<button class="btn-write" onclick="location.href='${pageContext.request.contextPath}/board/community/communityWrite?category=${category}'">글쓰기</button>
 						</c:if>
 					</span>
 				</div>
