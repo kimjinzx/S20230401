@@ -380,7 +380,8 @@
 					<div class="display-flex justify-content-space-between align-items-center">
 						<div class="form-group display-flex justify-content-flex-start align-items-center">
 							<label for="category" class="margin-right-5px">카테고리</label>
-							<select name="brd_id" id="brd_id">
+							<input type="hidden" name="brd_id" id="brd_id" value="${article.brd_id }">
+							<select name="brd_id2" id="brd_id2" disabled="disabled">
 								<option value="1010" ${article.brd_id == 1010 ? 'selected' : ''}>밥/카페</option>
 								<option value="1020" ${article.brd_id == 1020 ? 'selected' : ''}>스포츠/운동</option>
 								<option value="1030" ${article.brd_id == 1030 ? 'selected' : ''}>쇼핑</option>
@@ -425,7 +426,7 @@
 					<div id="articleEditor"></div>
 					
 					<!-- 참가자 있을 시 수정 불가 안내 메시지 -->
-					<c:if test="${isAnyoneJoined }">
+					<c:if test="${isAnyoneJoined}">
 						<p class="color-warning font-size-18px font-weight-bolder text-align-center">참가자가 있어 거래정보를 수정할 수 없습니다</p>
 					</c:if>
 					
@@ -444,11 +445,11 @@
 									<label for="reg_id-button">지역 제한</label>
 									<c:set var="selectedRegion" value=""/>
 									<c:forEach var="region" items="${superRegions }">
-										<c:if test="${region.reg_id == article.trade.reg_id }">
+										<c:if test="${region.reg_id == article.reg_id }">
 											<c:set var="selectedRegion" value="${region.reg_name }"/>
 										</c:if>
 										<c:forEach var="subRegion" items="${regions[region] }">
-											<c:if test="${subRegion.reg_id == article.trade.reg_id }">
+											<c:if test="${subRegion.reg_id == article.reg_id }">
 												<c:set var="selectedRegion" value="${subRegion.reg_name }"/>
 											</c:if>
 										</c:forEach>
@@ -460,7 +461,7 @@
 										</div>
 										<c:forEach var="region" items="${superRegions }">
 											<div style="position: relative;">
-												<button type="button" class="subitem-header adv-hover" onclick="$('#region-value').val(${region.reg_id}); $('#region').text('${region.reg_name }'); $('#region-popup').toggle();">${region.reg_name }</button>
+												<button type="button" class="subitem-header adv-hover" onclick="$('#reg_id').val(${region.reg_id}); $('#region').text('${region.reg_name }'); $('#region-popup').toggle();">${region.reg_name }</button>
 												<c:if test="${not empty regions[region] }">
 													<div class="subitem-list">
 														<button type="button" class="adv-hover" onclick="$('#reg_id').removeAttr('value'); $('#region').text(''); $('#region-popup').toggle();">없음</button>

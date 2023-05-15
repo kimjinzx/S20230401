@@ -63,7 +63,7 @@
 	
 	
 	
-		// 신고 기능
+/* 		// 신고 기능
 		$(()=>{
 			let loginUser = ${memberInfo.mem_id};
 		    let reply_id, member_id, member_nickname, report_id, nickname, action;
@@ -125,7 +125,7 @@
 		            $('#report').css('display', 'none');
 		        }
 		    });
-		});
+		}); */
 		
 		
 		
@@ -430,6 +430,40 @@
 				}
 			});
 		});	
+		
+		
+		// 거래 기능 - 거래 게시자가 거래 취소 (404)
+		$(() => {
+			$('#btns-cancel').click(e => {
+				
+				if(confirm('정말 취소하시겠습니까 ?') == true) {
+				
+				let rawData = { mem_id : ${memberInfo.mem_id == null ? 'null' : memberInfo.mem_id},
+								trd_id : ${detailArticle.trd_id} }
+			
+				let sendData = JSON.stringify(rawData);
+		
+				$.ajax({
+				  url : "/board/tradeCancel",
+				  type : 'post',
+				  data : sendData,
+				  dataType :'json',
+				  contentType : 'application/json',
+				  success : data => {
+						  console.log(data);
+					  if(data == 1) {
+						  alert('취소 완료'); 
+					  } else {
+						  alert('취소 실패');
+					  }
+		  			
+		  			}
+				});
+				} else {
+					return;
+				}
+			});
+		});
 			
 		
 		// 관심목록 등록
@@ -813,7 +847,7 @@
 							</div>
 							<div class="display-flex justify-content-space-between align-items-center">
 								<span><span class="color-subtheme font-weight-bolder margin-right-5px">최대 인원</span>${detailArticle.trd_max}명</span>
-								<span><span class="color-subtheme font-weight-bolder margin-right-5px">최소 나이</span>${detailArticle.trd_minage>0? detailArticle.trd_minage:'제한없음' }</span>
+								<span><span class="color-subtheme font-weight-bolder margin-right-5px">최소 나이</span>${detailArticle.trd_minage>0? detailArticle.trd_minage:'제한없음'}</span>
 								<span><span class="color-subtheme font-weight-bolder margin-right-5px">최대 나이</span>${detailArticle.trd_maxage>0? detailArticle.trd_maxage:'제한없음'}</span>
 								<span><span class="color-subtheme font-weight-bolder margin-right-5px">성별 제한</span>${detailArticle.trd_gender==201? '남자만':detailArticle.trd_gender==202? '여자만':'제한없음'}</span>
 							</div>
@@ -823,6 +857,7 @@
 						<div class="share-userList">
 							<h2>거래 참가자 명단</h2><hr />
 							<c:forEach var="join" items="${joinList}">
+							<input type="hidden" id="member_id" name="mem_id" value="${join.mem_id}">
 								<div class="userList-memberInfo">
 									<div class="user-profile-image-in-list">
 										<%-- 원래경로 <img src="${pageContext.request.contextPath}/uploads/profile/${join.mem_image}" onerror="this.onerror=null; this.src='${pageContext.request.contextPath }/image/abstract-user.svg';"> --%>
@@ -850,12 +885,12 @@
 									<!--  추방!!  -->
 									<div class="userList-btns">
 										<c:choose>
-											<c:when test="${join.mem_id == memberInfo.mem_id}">
+											<c:when test="${join.mem_id == memberInfo.mem_id && detailArticle.mem_id != memberInfo.mem_id}" >
 												<button class="btns-action adv-hover" id="btns-joinCancel">취소</button>
 											</c:when>										
-											<c:when test="${detailArticle.mem_id == memberInfo.mem_id}">
+				<%-- 						<c:when test="${detailArticle.mem_id == memberInfo.mem_id}">
 												<button class="btns-action adv-hover" id="btns-drop">추방</button>
-											</c:when>
+											</c:when> --%>
 										</c:choose>
 									</div>
 								</div>
@@ -868,6 +903,7 @@
 						<div class="share-userList">
 							<h2>거래 신청자 명단</h2><hr />
 							<c:forEach var="waiting" items="${waitingList}" varStatus="status">
+							<input type="hidden" id="member_id" name="mem_id" value="${waiting.mem_id}">
 								<div class="userList-memberInfo">
 									<div class="user-profile-image-in-list">
 										<%-- 원래경로 <img src="${pageContext.request.contextPath}/uploads/profile/${join.mem_image}" onerror="this.onerror=null; this.src='${pageContext.request.contextPath }/image/abstract-user.svg';"> --%>
@@ -886,7 +922,6 @@
 											<c:if test="${not empty memberInfo}">
 												<svg id="member-report" viewBox="0 0 512 512" width="24" height="24" style="fill: none; stroke: var(--warning); stroke-width: 32px; stroke-linecap: round; stroke-linejoin: round; cursor: pointer;"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z" style="stroke: none; fill: var(--warning);"/></svg>
 											</c:if>
-											<input type="hidden" id="member_id" name="mem_id" value="${waiting.mem_id}">
 											<input type="hidden" id="memReport_id" value="${waiting.report_id}">
 										</div>
 										
@@ -908,7 +943,15 @@
 									</div>
 								</div><hr />
 							</c:forEach>
-							<c:if test="${empty waitingList}"><p style="text-align: center;">아직 신청자가 없어요</p></c:if>
+							<c:choose>
+							<c:when test="${detailArticle.trd_status != 401}">
+								<p style="text-align: center;">신청이 마감되었습니다</p>
+							</c:when>
+							<c:when test="${empty waitingList && detailArticle.trd_status == 401}">
+								<p style="text-align: center;">아직 신청자가 없어요</p>
+							</c:when>
+							</c:choose>
+							<%-- <c:if test="${empty waitingList}"><p style="text-align: center;">아직 신청자가 없어요</p></c:if> --%>
 						</div>
 						
 						<!-- 거래 신청, 찜 -->
@@ -919,21 +962,24 @@
 						<div class="share-btns">
 							<c:if test="${memberInfo != null}">
 								<div class="btns-favorite">
-	 							<%--<c:choose>
-										<c:when test="${userFavorite > 0}">
-											<button class="btns-action" id="btns-favoriteDel">찜 취소</button>
-										</c:when>
-										<c:when test="${userFavorite == 0}">
-											<button class="btns-action" id="btns-favorite">찜</button>
-										</c:when>
-									</c:choose> --%>
-									<button class="btns-action" id="btns-favoriteDel">찜 취소</button>
-									<button class="btns-action" id="btns-favorite">찜</button>
+	 							<c:choose>
+									<c:when test="${userFavorite > 0}">
+										<button class="btns-action" id="btns-favoriteDel">찜 취소</button>
+									</c:when>
+									<c:when test="${userFavorite == 0}">
+										<button class="btns-action" id="btns-favorite">찜</button>
+									</c:when>
+								</c:choose>
+<!-- 									<button class="btns-action" id="btns-favoriteDel" style="display: none">찜 취소</button>
+									<button class="btns-action" id="btns-favorite" style="display: inline;">찜</button> -->
 								</div>
 								<div class="btns-trade">
 									<c:choose>
-										<%-- <c:when test="${userWaiting == 0 && userJoin == 0 && joinList.size() < detailArticle.trd_max}"> --%>
-										<c:when test="${joinList.size() < detailArticle.trd_max}">
+										<c:when test="${memberInfo.mem_id == detailArticle.mem_id && detailArtilce.trd_status == 401}">
+											<button class="btns-action" id="btns-cancel">거래 취소</button>
+										</c:when>
+										<c:when test="${userWaiting == 0 && userJoin == 0 && joinList.size() < detailArticle.trd_max && detailArticle.trd_status == 401}">
+										<%-- <c:when test="${joinList.size() < detailArticle.trd_max}"> --%>
 											<button class="btns-action" id="btns-apply">신청</button>
 										</c:when>
 										<c:when test="${joinList.size() == detailArticle.trd_max}">
@@ -1019,7 +1065,14 @@
 							   <div class="reply-inner padding-0" style="flex-grow: 1">
 									<!-- 댓글 수정 -->
 									<div class="reply-content padding-0">
-										<textarea class="rep-content full-width full-height" id="rep-content" disabled="disabled">${reply.rep_content}</textarea>
+										<c:choose>
+											<c:when test="${reply.isdelete == 1 }">
+												<span>삭제된 댓글입니다.</span>
+											</c:when>
+											<c:otherwise>
+												<textarea class="rep-content full-width full-height" id="rep-content" disabled="disabled">${reply.rep_content}</textarea>											
+											</c:otherwise>
+										</c:choose>
 									</div>
 							   </div>
 							</div>

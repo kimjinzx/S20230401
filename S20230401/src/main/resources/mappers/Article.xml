@@ -806,7 +806,8 @@
 		LEFT JOIN     member m ON (r.mem_id = m.mem_id)
 		WHERE         a.brd_id = #{brd_id}
 		AND           a.art_id = #{art_id}
-		AND           (r.isdelete = 0 OR (r.isdelete = 1 AND r.rep_parent = r.rep_id))
+ 		AND           (r.isdelete = 0 OR (r.isdelete = 1 AND r.rep_parent = r.rep_id))
+		AND			  r.isdelete = 0
 		ORDER BY      r.rep_parent, r.rep_step
 	</select>
 	

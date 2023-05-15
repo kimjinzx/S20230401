@@ -3,6 +3,7 @@ package com.java501.S20230401.controller;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,18 +11,14 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.aspectj.weaver.MemberUtils;
 import org.json.JSONObject;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -29,12 +26,18 @@ import com.java501.S20230401.model.Article;
 import com.java501.S20230401.model.Comm;
 import com.java501.S20230401.model.Join;
 import com.java501.S20230401.model.MemberDetails;
+import com.java501.S20230401.model.MemberInfo;
 import com.java501.S20230401.model.Region;
 import com.java501.S20230401.model.Reply;
+import com.java501.S20230401.model.Trade;
 import com.java501.S20230401.service.ArticleService;
 import com.java501.S20230401.service.CommService;
+import com.java501.S20230401.service.FavoriteService;
+import com.java501.S20230401.service.JoinService;
 import com.java501.S20230401.service.Paging;
+import com.java501.S20230401.service.RegionService;
 import com.java501.S20230401.service.ReplyService;
+import com.java501.S20230401.service.WaitingService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -46,6 +49,10 @@ public class TogetherController {
 	private final ArticleService as;
 	private final ReplyService rs;
 	private final CommService cs;
+	private final FavoriteService fs;
+	private final JoinService js;
+	private final WaitingService ws;
+	private final RegionService rgs;	
 
 	@RequestMapping(value = "/board/together")
 	public String articleList(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
@@ -99,9 +106,7 @@ public class TogetherController {
 		// url의 글번호 저장
 		article.setArt_id(Integer.parseInt(art_number));
 		
-		// 유저 정보
-		if (memberDetails != null)
-			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		
 		
 		int art_id = article.getArt_id();
 		int brd_id = article.getBrd_id();
@@ -139,6 +144,7 @@ public class TogetherController {
 
 		article.setTrd_max(detailArticle.getTrd_max());
 		article.setTrd_id(detailArticle.getTrd_id());
+		System.out.println(detailArticle.getReg_id());
 		
 		if (detailArticle.getTrd_status() != 404) {
 			// 인원 다 차면 게시글 상태 변경 (진행중)
@@ -162,6 +168,27 @@ public class TogetherController {
 		model.addAttribute("waitingList", waitingList);
 		
 		
+		MemberInfo memberInfo = null;
+		if (memberDetails != null) {
+				memberInfo = memberDetails.getMemberInfo();
+			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		// 로그인 유저의 정보
+		Article shareUser = new Article();
+		shareUser.setArt_id(article.getArt_id());
+		shareUser.setBrd_id(article.getBrd_id());
+		shareUser.setMem_id(memberInfo.getMem_id());
+		// 찜 목록 확인
+		int userFavorite = fs.dgUserFavorite(shareUser);
+		// 대기열 확인
+		int userWaiting = ws.dgUserWaiting(shareUser);
+		// 거래 목록 확인
+		int userJoin = js.shareUserJoin(shareUser);
+		
+		model.addAttribute("userJoin", userJoin);
+		model.addAttribute("userFavorite", userFavorite);
+		model.addAttribute("userWaiting", userWaiting);
+		}
+		
 		model.addAttribute("category", category);
 
 		return "together/detailArticle";
@@ -177,6 +204,10 @@ public class TogetherController {
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
 		
 		
+		Map<Region, List<Region>> regionHierachy = new HashMap<Region, List<Region>>();
+		List<Region> superRegions = rgs.getSuperRegions();
+		for (Region sups : superRegions) regionHierachy.put(sups, rgs.getChildRegions(sups.getReg_id()));
+		
 		// 카테고리별 콤보박스
 		List<Comm> categoryList = as.categoryName();
 		model.addAttribute("categories", categoryList);
@@ -186,14 +217,15 @@ public class TogetherController {
 		model.addAttribute("genders", genderList);
 
 		// 지역별 콤보박스
-		List<Region> regionList = as.regionName();
-		model.addAttribute("regions", regionList);
+//		List<Region> regionList = as.regionName();
+//		model.addAttribute("regions", regionList);
 
-		// 지역별 부모 콤보박스
-		List<Region> parentRegionList = as.parentRegionName();
-		model.addAttribute("parentRegions", parentRegionList);
+//		// 지역별 부모 콤보박스
+//		List<Region> parentRegionList = as.parentRegionName();
+//		model.addAttribute("parentRegions", parentRegionList);
 
-		
+		model.addAttribute("superRegions", superRegions);
+		model.addAttribute("regions", regionHierachy);
 		model.addAttribute("category", category);
 		
 		return "together/writeFormArticle";
@@ -250,10 +282,15 @@ public class TogetherController {
 
 		if (memberDetails != null)
 			model.addAttribute("memberInfo", memberDetails.getMemberInfo());
-
+		
 		// 게시글 수정 양식 (상세 게시글 값 가져오기)
 		Article updateFormArticle = as.dbdetailArticle(article);
+		System.out.println(updateFormArticle.getReg_id());
 		model.addAttribute("article", updateFormArticle);
+		
+		Map<Region, List<Region>> regionHierachy = new HashMap<Region, List<Region>>();
+		List<Region> superRegions = rgs.getSuperRegions();
+		for (Region sups : superRegions) regionHierachy.put(sups, rgs.getChildRegions(sups.getReg_id()));
 
 		// 카테고리별 콤보박스
 		List<Comm> categoryList = as.categoryName();
@@ -264,13 +301,20 @@ public class TogetherController {
 		model.addAttribute("genders", genderList);
 
 		// 지역별 콤보박스
-		List<Region> regionList = as.regionName();
-		model.addAttribute("regions", regionList);
+		//List<Region> regionList = as.regionName();
+		//model.addAttribute("regions", regionList);
 
 		// 지역별 부모 콤보박스
 		List<Region> parentRegionList = as.parentRegionName();
 		model.addAttribute("parentRegions", parentRegionList);
 		
+		// 조인리스트
+		List<Article> joinList =  as.dbTradeJoinMember(updateFormArticle);
+		model.addAttribute("joinList", joinList);
+		
+		model.addAttribute("isAnyoneJoined", joinList.size()>1 ? true:false);
+		model.addAttribute("superRegions", superRegions);
+		model.addAttribute("regions", regionHierachy);
 		model.addAttribute("category", category);
 
 		return "together/updateFormArticle";
@@ -278,7 +322,7 @@ public class TogetherController {
 
 	@RequestMapping(value = "/board/together/updateArticle")
 	public String updateArticle(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
-								Article article, Model model, Integer category,
+								Article article, Trade trade, Model model, Integer category,
 								@RequestParam("trd_endDate") @DateTimeFormat(pattern = "yyyy-MM-dd") Date trd_endDate) {
 
 		if (memberDetails != null)
@@ -288,7 +332,6 @@ public class TogetherController {
 		
 		// 게시글 수정 (프로시저 사용 => Update_Article)
 		as.dbUpdateArticle(article);
-		System.out.println(article.getTrd_max());
 		
 		int updateArticle = article.getInsert_result();
 		int brd_id = article.getBrd_id();

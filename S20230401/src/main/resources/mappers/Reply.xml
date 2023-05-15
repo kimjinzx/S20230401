@@ -397,13 +397,13 @@
 		SET     	ISDELETE = 1
 		WHERE   	BRD_ID = #{brd_id}
 		AND     	ART_ID = #{art_id}
-		AND     	REP_ID = #{rep_id}
+		AND     	REP_id = #{rep_id}
 	</update>
 	
 	<update id="dbUpdateReply" parameterType="Reply">
 		UPDATE 		REPLY
-		SET			REP_CONTENT = #{rep_content}
-				  , REP_REGDATE = sysdate
+		SET			REP_CONTENT = #{rep_content},
+				    REP_REGDATE = sysdate
 		WHERE   	BRD_ID = #{brd_id}
 		AND     	ART_ID = #{art_id}
 		AND     	REP_ID = #{rep_id}

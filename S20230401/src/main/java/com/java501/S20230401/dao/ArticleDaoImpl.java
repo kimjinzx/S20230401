@@ -489,11 +489,6 @@ public class ArticleDaoImpl implements ArticleDao {
 	@Override
 	public void dbWriteArticle(Article article) {
 		try {
-			if (article.getReg_id2() == null) {
-				article.setReg_id(article.getReg_id1());
-			} else {
-				article.setReg_id(article.getReg_id2());
-			}
 			session.selectOne("dbInsertArticle", article);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -513,11 +508,6 @@ public class ArticleDaoImpl implements ArticleDao {
 	@Override
 	public void dbUpdateArticle(Article article) {
 		try {
-			if (article.getReg_id2() == null) {
-				article.setReg_id(article.getReg_id1());
-			} else {
-				article.setReg_id(article.getReg_id2());
-			}
 			session.selectOne("dbUpdateArticle", article);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
