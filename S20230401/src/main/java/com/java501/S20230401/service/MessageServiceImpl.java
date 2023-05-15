@@ -21,6 +21,11 @@ public class MessageServiceImpl implements MessageService {
 	public List<Message> dgMessageListSen(Integer mem_id) { return md.dgMessageListSen(mem_id); }
 	@Override
 	public void dgMessageWrite(Message message) { md.dgMessageWrite(message); }
-
+	@Override
+	public boolean dgMessageAction(Message message) { return md.dgMessageAction(message); }
+	@Override
+	public boolean dgMessageDelete(Message message) { return md.dgMessageDelete(message); }
+	@Override
+	public boolean dgMessageRead(Message message) { return md.dgMessageRead(message); }
 
 }

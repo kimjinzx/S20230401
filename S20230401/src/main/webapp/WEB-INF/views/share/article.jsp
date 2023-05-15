@@ -464,8 +464,8 @@
 									<span class="color-theme-font font-size-14px" style="color: rgba(var(--theme-font-rgb), 0.5);">(<fmt:formatDate value="${reply.rep_regdate}" pattern="yy-MM-dd :HH:mm:ss"/>)</span>
 								</div>
 								<div class="flex-grow-1 display-flex justify-content-flex-end align-items-center">
-									<c:if test="${reply.mem_id == memberInfo.mem_id || memberInfo.mem_authority > 108}">
 										<button class="btns-repWrite font-weight-bolder">댓글 달기</button>
+									<c:if test="${reply.mem_id == memberInfo.mem_id || memberInfo.mem_authority > 108}">
 										<button class="btns-repUpdate font-weight-bolder">수정</button>
 										<button class="btns-repComplete font-weight-bolder" style="display: none;" onclick="rep_Update(${status.index})">완료</button>
 										<button class="btns-delete font-weight-bolder" onclick="rep_delete(${article.brd_id},${article.art_id},${reply.rep_id})">삭제</button>
@@ -524,7 +524,7 @@
 												<span class="font-size-18px font-weight-bolder">${memberInfo.mem_nickname }</span>
 												<input class="reply-primitive-submit" type="submit" value="등록">
 											</div>
-											<textarea class="reply-primitive-write" style="margin-top: 10px;" placeholder="댓글을 입력하세요" name="rep_content"></textarea>
+											<textarea class="reply-primitive-write" style="margin-top: 10px;" placeholder="댓글을 입력하세요" name="rep_content" required="required"></textarea>
 										</div>
 									</div>
 								</form>

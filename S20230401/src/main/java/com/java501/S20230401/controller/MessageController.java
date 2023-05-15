@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -60,10 +61,32 @@ public class MessageController {
 	@PostMapping(value = "message/checkUser")
 	@ResponseBody
 	public int checkUser(String mem_username) {
-		log.info("값 : {}",mem_username);
 		Integer result = memberService.dgCheckUser(mem_username);
 		
 		return result==null? 0:result; 
 	}
+	
+	// 보관 , 휴지통, 삭제, 읽음 처리
+	@PostMapping(value = "message/{action}")
+	@ResponseBody
+	public boolean messageAction(@PathVariable("action")String action, Message message) {
+		boolean result = false;
+		log.info("값 :{} {}", action, message);
+		
+		if(action.equals("storage")) {
+			message.setMes_status(302);
+			result = messageService.dgMessageAction(message);
+		}else if(action.equals("recycle")) {
+			message.setMes_status(303);
+			result = messageService.dgMessageAction(message);
+		}else if(action.equals("delete")) {
+			result = messageService.dgMessageDelete(message);
+		}else if(action.equals("read")) {
+			result = messageService.dgMessageRead(message);
+		}
+		return result;
+	}
+	
+	
 	
 }

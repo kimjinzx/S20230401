@@ -50,8 +50,8 @@
 					<div class="write-group">
 						<button>보내기</button>
 					</div>
-				</div>
-			</form>
+				</form>
+			</div>
 		
 		<!--받은 쪽지함 -->
 			<div class="content-receiver">
@@ -59,7 +59,7 @@
 				<div class="content-message">
 					<c:forEach var="message" items="${messageListRec}">
 						<c:if test="${message.mes_status == 301}">
-							<div class="message-list">
+							<div class="message-list" id="list-receiver" ${message.mes_isread == 1? 'style="background-color: rgba(0, 0, 0, 0.1);"':''}>
 								<input type="hidden" name="mes_id" value="${message.mes_id}"> <!-- 쪽지번호 -->
 								<input type="hidden" name="mem_sender_id" value="${message.mem_sender_id}"> <!-- 발신자 고유번호 -->
 								<input type="hidden" name="mem_receiver_id" value="${message.mem_receiver_id}"> <!-- 수신자 고유번호 -->
@@ -71,6 +71,8 @@
 								<div class="list-content">
 									<span>${message.mes_content}</span>
 									<button onclick="messageReply('${message.member.mem_id}','${message.member.mem_username}')">답장</button>
+									<button onclick="messageAction('storage','${message.mes_id}','${message.mem_sender_id}','${message.mem_receiver_id}')">보관</button>
+									<button onclick="messageAction('recycle','${message.mes_id}','${message.mem_sender_id}','${message.mem_receiver_id}')">휴지통</button>
 								</div>
 							</div>
 						</c:if>
@@ -84,7 +86,7 @@
 				<div class="content-message">
 					<c:forEach var="message" items="${messageListRec}">
 						<c:if test="${message.mes_status == 302}">
-							<div class="message-list">
+							<div class="message-list" ${message.mes_isread == 1? 'style="background-color: rgba(0, 0, 0, 0.1);"':''}>
 								<input type="hidden" name="mes_id" value="${message.mes_id}"> <!-- 쪽지번호 -->
 								<input type="hidden" name="mem_receiver_id" value="${message.mem_sender_id}"> <!-- 발신자 고유번호 -->
 								<input type="hidden" name="mem_receiver_id" value="${message.mem_receiver_id}"> <!-- 수신자 고유번호 -->
@@ -95,6 +97,7 @@
 								</div>
 								<div class="list-content">
 									<span>${message.mes_content}</span>
+									<button onclick="messageAction('recycle','${message.mes_id}','${message.mem_sender_id}','${message.mem_receiver_id}')">휴지통</button>
 								</div>
 							</div>
 						</c:if>
@@ -108,7 +111,7 @@
 				<div class="content-message">
 					<c:forEach var="message" items="${messageListRec}">
 						<c:if test="${message.mes_status == 303}">
-							<div class="message-list">
+							<div class="message-list" ${message.mes_isread == 1? 'style="background-color: rgba(0, 0, 0, 0.1);"':''}>
 								<input type="hidden" name="mes_id" value="${message.mes_id}"> <!-- 쪽지번호 -->
 								<input type="hidden" name="mem_receiver_id" value="${message.mem_sender_id}"> <!-- 발신자 고유번호 -->
 								<input type="hidden" name="mem_receiver_id" value="${message.mem_receiver_id}"> <!-- 수신자 고유번호 -->
@@ -119,6 +122,7 @@
 								</div>
 								<div class="list-content">
 									<span>${message.mes_content}</span>
+									<button onclick="messageAction('delete','${message.mes_id}','${message.mem_sender_id}','${message.mem_receiver_id}')">삭제</button>
 								</div>
 							</div>
 						</c:if>
@@ -131,7 +135,7 @@
 				<h2>보낸 쪽지함</h2>
 				<div class="content-message">
 					<c:forEach var="message" items="${messageListSen}">
-						<div class="message-list">
+						<div class="message-list" ${message.mes_isread == 1? 'style="background-color: rgba(0, 0, 0, 0.1);"':''}>
 							<input type="hidden" name="mes_id" value="${message.mes_id}"> <!-- 쪽지번호 -->
 							<input type="hidden" name="mem_receiver_id" value="${message.mem_sender_id}"> <!-- 발신자 고유번호 -->
 							<input type="hidden" name="mem_receiver_id" value="${message.mem_receiver_id}"> <!-- 수신자 고유번호 -->

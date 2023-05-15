@@ -37,6 +37,7 @@ public class MessageDaoImpl implements MessageDao {
 		}
 		return messageList;
 	}
+	// 쪽지 작성
 	@Override
 	public void dgMessageWrite(Message message) {
 		try {
@@ -44,5 +45,41 @@ public class MessageDaoImpl implements MessageDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	// 쪽지 보관, 휴지통
+	@Override
+	public boolean dgMessageAction(Message message) {
+		boolean result = false;
+		try {
+			Integer updateResult = session.update("dgMessageAction", message);
+			result = updateResult > 0? true : false;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	// 쪽지 삭제
+	@Override
+	public boolean dgMessageDelete(Message message) {
+		boolean result = false;
+		try {
+			Integer updateResult = session.update("dgMessageDelete", message);
+			result = updateResult > 0? true : false;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+	// 쪽지 읽음 처리
+	@Override
+	public boolean dgMessageRead(Message message) {
+		boolean result = false;
+		try {
+			Integer updateResult = session.update("dgMessageRead", message);
+			result = updateResult > 0? true : false;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 }

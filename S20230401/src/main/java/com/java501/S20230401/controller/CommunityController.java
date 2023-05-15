@@ -30,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 // 커뮤니티 페이지 계열 컨트롤러 : 백준
-//@Controller
+@Controller
 @RequiredArgsConstructor
 @Slf4j
 public class CommunityController {

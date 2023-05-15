@@ -52,7 +52,30 @@
 				 301,
 				 0)
 	</insert>
-
+	<!-- 쪽지 보관, 휴지통 이동 -->
+	<update id="dgMessageAction" parameterType="Message">
+		UPDATE	MESSAGE
+		SET		MES_STATUS = #{mes_status}
+		WHERE	MES_ID = #{mes_id}
+		AND 	MEM_SENDER_ID = #{mem_sender_id}
+		AND		MEM_RECEIVER_ID = #{mem_receiver_id}
+	</update>
+	<!-- 쪽지 삭제 -->
+	<update id="dgMessageDelete" parameterType="Message">
+		UPDATE	MESSAGE
+		SET		ISDELETE = 1
+		WHERE	MES_ID = #{mes_id}
+		AND 	MEM_SENDER_ID = #{mem_sender_id}
+		AND		MEM_RECEIVER_ID = #{mem_receiver_id}
+	</update>
+	<!-- 쪽지 읽음 -->
+	<update id="dgMessageRead" parameterType="Message">
+		UPDATE	MESSAGE
+		SET		MES_ISREAD = 1
+		WHERE	MES_ID = #{mes_id}
+		AND 	MEM_SENDER_ID = #{mem_sender_id}
+		AND		MEM_RECEIVER_ID = #{mem_receiver_id}
+	</update>
 
 	
 	
