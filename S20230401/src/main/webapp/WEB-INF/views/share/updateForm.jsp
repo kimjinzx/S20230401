@@ -366,6 +366,7 @@
 					<div class="display-flex justify-content-space-between align-items-center">
 						<div class="form-group display-flex justify-content-flex-start align-items-center">
 							<label for="category" class="margin-right-5px">카테고리</label>
+							<input name="brd_id" type="hidden" value="${article.brd_id }">
 							<select name="brd_id" id="brd_id" disabled="disabled">
 								<c:forEach var="comm" items="${categoryList}">
 									<option value="${comm.comm_id}" ${article.brd_id == comm.comm_id? 'selected':''}>${comm.comm_value }</option>
