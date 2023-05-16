@@ -384,6 +384,7 @@ public class InformationController {
 	public String getwrite(@AuthenticationPrincipal MemberDetails memberDetails, Article article,Integer category, Model model) throws Exception {
 		if(memberDetails != null)
 		model.addAttribute("memberInfo", memberDetails.getMemberInfo());
+		model.addAttribute("category", category);
 		System.out.println("작성 겟 Start...");
 		return "information/write";
 	}

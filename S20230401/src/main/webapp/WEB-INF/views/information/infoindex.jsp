@@ -324,7 +324,7 @@
 					<div class="btns-right" style="display: flex; justify-content: flex-end; flex-grow: 1;">
 						<span>
 							<c:if test="${memberInfo != null}">
-								<button class="btn-write adv-hover" onclick="location.href='${pageContext.request.contextPath }/board/information/write';">글쓰기</button>
+								<button class="btn-write adv-hover" onclick="location.href='${pageContext.request.contextPath }/board/information/write?category=${category }';">글쓰기</button>
 							</c:if>
 						</span>
 					</div>
