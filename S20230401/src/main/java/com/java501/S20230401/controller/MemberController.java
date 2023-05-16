@@ -254,7 +254,7 @@ public class MemberController {
 		Boolean except = (Boolean)data.get("except");
 		MemberSearchKeyword searchType = Enum.valueOf(MemberSearchKeyword.class, type.toUpperCase());
 		Member member = null;
-		if (!except) member = ms.getMember(value, searchType);
+		if (except == null || !except) member = ms.getMember(value, searchType);
 		else {
 			Map<String, Object> param = new HashMap<String, Object>();
 			param.put("value", value);
