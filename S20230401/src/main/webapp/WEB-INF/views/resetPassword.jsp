@@ -129,6 +129,12 @@
 				</div>
 			</div>
 			<div id="top-right">
+				<c:if test="${memberInfo != null }">
+					<!-- 메세지 추가 -->
+					<div class="userMessage" onclick="userMessage()">
+						<svg class="userMessage-popup" viewBox="0 0 512 512" style="width: 30; height: 30;"><rect x="48" y="96" width="416" height="320" rx="40" ry="40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M112 160l144 112 144-112"/></svg>
+					</div>
+				</c:if>
 				<!-- <button id="viewMode">
 					<div id="viewModeButton"></div>
 				</button> -->
@@ -220,7 +226,7 @@
 							<label for="passwordCheck" class="font-size-16px font-weight-bolder margin-right-10px text-align-center">비밀번호<br/>확인</label>
 							<input id="passwordCheck" type="password" class="font-size-16px" name="passwordCheck" style="min-width: 0; max-width: none; width: 240px;" required>
 						</div>
-						<span class="translucent-color font-size-12px">
+						<span class="translucent-color font-size-12px" style="color: var(--subtheme);">
 							비밀번호 규칙은 다음과 같습니다.<br/>
 							1. 하나 이상의 숫자, 영문자, 특수문자가 있어야합니다.<br/>
 							2. 8글자 이상 20글자 이하의 길이여야합니다.

@@ -70,7 +70,7 @@ public class EmailController {
 	}
 	
 	@GetMapping(value = "/MemberAuthentication")
-	public String authentication(@RequestParam String v, RedirectAttributes redirectAttributes) {
+	public String authentication(@AuthenticationPrincipal MemberDetails memberDetails, @RequestParam String v, RedirectAttributes redirectAttributes) {
 		Authentications auth = as.getAuthentication(v);
 		// 아래에 링크 만료 여부에 따른 액션 넣기...
 		if (auth != null) {
@@ -82,9 +82,11 @@ public class EmailController {
 			}
 			ms.setAuthority(auth.getMem_id(), 103);
 			// 아래 세션 인증 정보 변경
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			MemberDetails newMemberDetails = (MemberDetails)authentication.getPrincipal();
-			SecurityContextHolder.getContext().setAuthentication(createNewAuthentication(authentication, newMemberDetails.getUsername()));
+			if (memberDetails != null) {
+				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+				MemberDetails newMemberDetails = (MemberDetails)authentication.getPrincipal();
+				SecurityContextHolder.getContext().setAuthentication(createNewAuthentication(authentication, newMemberDetails.getUsername()));
+			}
 		} else {
 			redirectAttributes.addFlashAttribute("msg", "인증 정보가 없습니다");
 			return "redirect:/justPopup";
