@@ -289,6 +289,11 @@
 									<button style="width: 240px; height: 32px; font-size: 16px; font-weight: bold; border-radius: 5px; margin: 5px 10px;" class="theme-button" onclick="location.href = '${pageContext.request.contextPath }/user/mypage';">
 										마이 페이지
 									</button>
+									<c:if test="${memberInfo.mem_authority >= 108 }">
+										<button style="width: 240px; height: 32px; font-size: 16px; font-weight: bold; border-radius: 5px; margin: 5px 10px;" class="theme-button" onclick="location.href = '${pageContext.request.contextPath }/admin';">
+											관리자 페이지
+										</button>
+									</c:if>
 									<button style="width: 240px; height: 32px; font-size: 16px; font-weight: bold; border-radius: 5px; margin: 5px 10px; margin-bottom: 10px;" class="subtheme-button" onclick="location.href = '${pageContext.request.contextPath }/logout';">
 										로그아웃
 									</button>
