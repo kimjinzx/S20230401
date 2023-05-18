@@ -275,19 +275,18 @@
 			        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
   				}
 	  		});
-		  }
+		  } 
 
-		
-		
-
-	/* function completed() {
-		 if (confirm("거래를 완료 하시겠습니까?") == true){    
+/* 	function completed() {
+		 if (confirm("거래를 완료 하시겠습니까?")){    
 		     document.dutchpay.submit();
 		 }else{   
 		     return false;
 		 }
 		}
- */	</script>
+ */		
+
+</script>
 </head>
 <body>
 	<header>
@@ -363,12 +362,6 @@
 				</div>
 			</div>
 			<div id="top-right">
-				<c:if test="${memberInfo != null }">
-					<!-- 메세지 추가 -->
-					<div class="userMessage" onclick="userMessage()">
-						<svg class="userMessage-popup" viewBox="0 0 512 512" style="width: 30; height: 30;"><rect x="48" y="96" width="416" height="320" rx="40" ry="40" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M112 160l144 112 144-112"/></svg>
-					</div>
-				</c:if>
 				<!-- <button id="viewMode">
 					<div id="viewModeButton"></div>
 				</button> -->
@@ -381,7 +374,7 @@
 									<path d="M258.9 48C141.92 46.42 46.42 141.92 48 258.9c1.56 112.19 92.91 203.54 205.1 205.1 117 1.6 212.48-93.9 210.88-210.88C462.44 140.91 371.09 49.56 258.9 48zm126.42 327.25a4 4 0 01-6.14-.32 124.27 124.27 0 00-32.35-29.59C321.37 329 289.11 320 256 320s-65.37 9-90.83 25.34a124.24 124.24 0 00-32.35 29.58 4 4 0 01-6.14.32A175.32 175.32 0 0180 259c-1.63-97.31 78.22-178.76 175.57-179S432 158.81 432 256a175.32 175.32 0 01-46.68 119.25z"/>
 									<path d="M256 144c-19.72 0-37.55 7.39-50.22 20.82s-19 32-17.57 51.93C191.11 256 221.52 288 256 288s64.83-32 67.79-71.24c1.48-19.74-4.8-38.14-17.68-51.82C293.39 151.44 275.59 144 256 144z"/>
 								</svg>
-							</button>
+							</button> <!--  1 -->
 							<div id="login-popup" class="popup-window">
 								<button id="login-button" class="subtheme-button adv-hover" onclick="location.href = '${pageContext.request.contextPath }/login';">
 									로그인
@@ -429,11 +422,6 @@
 									<button style="width: 240px; height: 32px; font-size: 16px; font-weight: bold; border-radius: 5px; margin: 5px 10px;" class="theme-button" onclick="location.href = '${pageContext.request.contextPath }/user/mypage';">
 										마이 페이지
 									</button>
-									<c:if test="${memberInfo.mem_authority >= 108 }">
-										<button style="width: 240px; height: 32px; font-size: 16px; font-weight: bold; border-radius: 5px; margin: 5px 10px;" class="theme-button" onclick="location.href = '${pageContext.request.contextPath }/admin';">
-											관리자 페이지
-										</button>
-									</c:if>
 									<button style="width: 240px; height: 32px; font-size: 16px; font-weight: bold; border-radius: 5px; margin: 5px 10px; margin-bottom: 10px;" class="subtheme-button" onclick="location.href = '${pageContext.request.contextPath }/logout';">
 										로그아웃
 									</button>
@@ -490,16 +478,18 @@
 						</span>
 					</div>
 				</div>
-	         
+	         <!-- <form method="post"> -->
 	         			<c:choose> 
 							<c:when test="${memberInfo.mem_id == detail.mem_id}"> 
 								<c:choose> 
 									<c:when test="${detail.comm_id == 402}"> <!-- 거래상태가 402(거래진행중)일 때만 나타나는 거래완료하기 버튼 -->
-										<button class="btns-action"  id="btns-completed"	onclick="goCompleted(${detail.trd_id})">거래완료</button><p>
-									</c:when>
+										<button class="btns-action"  id="btns-completed"	onclick="goCompleted(${detail.trd_id})">거래완료</button><p> 				
+									 		<%-- <input type="submit" value="거래완료" formaction="${pageContext.request.contextPath }/board/dutchpay/payCompleted"  	onclick="return completed()"> --%>
+									 </c:when>
 								</c:choose>
 							</c:when>
 						</c:choose>
+			<!-- </form> -->
 	         
 						<%-- <c:choose> 
 							<c:when test="${memberInfo.mem_id == detail.mem_id && detail.comm_id != 403  && detail.comm_id != 404}"> 
@@ -533,7 +523,7 @@
 					<!-- 게시글 신고 -->
 					<div class="modal-report">
 						<c:if test="${not empty memberInfo}">
-							<svg id="article-report" viewBox="0 0 512 512" width="30" height="30" style="fill: none; stroke: var(--warning); stroke-width: 32px; stroke-linecap: round; stroke-linejoin: round; cursor: pointer;"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z" style="stroke: none; fill: var(--warning);"/></svg>
+							<svg onclick="goReport(${detail.brd_id },${detail.art_id },${detail.report_id })" id="article-report" viewBox="0 0 512 512" width="30" height="30" style="fill: none; stroke: var(--warning); stroke-width: 32px; stroke-linecap: round; stroke-linejoin: round; cursor: pointer;"><path d="M448 256c0-106-86-192-192-192S64 150 64 256s86 192 192 192 192-86 192-192z"/><path d="M250.26 166.05L256 288l5.73-121.95a5.74 5.74 0 00-5.79-6h0a5.74 5.74 0 00-5.68 6z"/><path d="M256 367.91a20 20 0 1120-20 20 20 0 01-20 20z" style="stroke: none; fill: var(--warning);"/></svg>
 						</c:if>
 					</div>
 				</div>
@@ -586,7 +576,7 @@
 					<!-- 거래 관련 내용 -->
 					<div class="article-trade">
 						<div class="share-trdHeader display-flex justify-content-space-between align-items-center">
-							<span class="color-subtheme font-size-20px font-weight-bolder">${detail.trd_cost}원 [배송비 포함]</span>
+							<span class="color-subtheme font-size-20px font-weight-bolder">${detail.trd_cost} 원 [배송비 포함]</span>
 							<div class="display-flex justify-content-flex-end align-items-center">
 								<button class="btn" type="button">개시일 : <fmt:formatDate value="${detail.art_regdate}" pattern="yy-MM-dd"/></button>
 								<span class="color-theme-font font-weight-bold margin-hor-2_5px" style="color: rgba(var(--theme-font-rgb), 0.5);">~</span>
@@ -595,15 +585,11 @@
 						</div>
 						<div class="share-trdContent display-flex flex-direction-column justify-content-flex-start" style="border-bottom: 1px solid rgba(128, 128, 128, 0.5);">
 							<div class="display-flex justify-content-space-between align-items-center">
-								<span><span class="color-subtheme font-weight-bolder margin-right-5px">지역제한</span>${detail.reg_name == null ? '제한없음' : detail.reg_name}</span>
+								<span><span class="color-subtheme font-weight-bolder margin-right-5px">지역제한</span>${detail.reg_name}</span>
 								<span><span class="color-subtheme font-weight-bolder">상세장소</span>${detail.trd_loc}</span>
 							</div>
 							<div class="display-flex justify-content-space-between align-items-center">
 								<span><span class="color-subtheme font-weight-bolder margin-right-5px">최대 인원</span>${detail.trd_max}명</span>
-								<%-- <span><span class="color-subtheme font-weight-bolder margin-right-5px">최소 나이</span>${article.trade.trd_minage>0? article.trade.trd_minage:'제한없음' }</span>
-								<span><span class="color-subtheme font-weight-bolder margin-right-5px">최대 나이</span>${article.trade.trd_maxage>0? article.trade.trd_maxage:'제한없음'}</span>
-								<span><span class="color-subtheme font-weight-bolder margin-right-5px">성별 제한</span>${article.trade.trd_gender==201? '남자만':article.trade.trd_gender==202? '여자만':'제한없음'}</span>
-							 --%>
 							</div>
 						</div>
 						
