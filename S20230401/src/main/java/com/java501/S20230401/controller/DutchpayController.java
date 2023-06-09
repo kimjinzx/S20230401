@@ -43,7 +43,7 @@ public class DutchpayController {
 	private final ArticleService as;
 	private final RegionService rs;
 	
-	@RequestMapping(value = "/board/dutchpay")
+	@GetMapping(value = "/board/dutchpay")
 	public String articleList(@AuthenticationPrincipal MemberDetails memberDetails, // 세션의 로그인 유저 정보
 			Article article, Integer category, String currentPage, Model model) {
 
@@ -86,7 +86,7 @@ public class DutchpayController {
 	}	
 	
 	
-	@RequestMapping(value ="/board/dutchpay/{art_id}") //상세 게시글    
+	@GetMapping(value ="/board/dutchpay/{art_id}") //상세 게시글    
 	public String dutchpayDetail(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails
 							   , HttpServletRequest request, HttpServletResponse response
 							   , @PathVariable("art_id") String art_id
@@ -170,7 +170,7 @@ public class DutchpayController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value ="/board/dutchpay/dutchpayDetailYN") // 신청하기 버튼을 눌렀을 때 유저의 신청유무 확인
+	@GetMapping(value ="/board/dutchpay/dutchpayDetailYN") // 신청하기 버튼을 눌렀을 때 유저의 신청유무 확인
 	public String dutchpayDetailYN(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
 		 
 		// 일단 없다는 가정하에 진행	
@@ -204,6 +204,7 @@ public class DutchpayController {
 		return resultStr;
 	}
 	
+	
 	@PostMapping(value = "/board/dutchpay/payStatusPro") // 거래상태 변경하기 (거래모집중 or 거래취소)
 	public String payStatusPro(Model model, Article article , @AuthenticationPrincipal MemberDetails memberDetails) {
 		
@@ -233,7 +234,8 @@ public class DutchpayController {
 		return "redirect:/board/dutchpay/"+art_id+"?brd_id="+brd_id+"&category="+1100;
 	}
 	
-	@GetMapping(value = "/board/dutchpay/replyDelete") // 댓글 삭제
+	@ResponseBody
+	@PostMapping(value = "/board/dutchpay/replyDelete") // 댓글 삭제
 	public String replyDelete(Article article, RedirectAttributes ra, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
 		
 		if (memberDetails != null)  
@@ -243,9 +245,7 @@ public class DutchpayController {
 		as.JHreplyDelete1(article);
 		ra.addFlashAttribute("article",article);
 		
-		int brd_id = article.getBrd_id();
-		int art_id = article.getArt_id(); 
-		return "redirect:/board/dutchpay/"+art_id+"?brd_id="+brd_id+"&category="+brd_id;
+		return "";
 	}
 	
 	@GetMapping(value = "/board/dutchpay/dutchpayWriteForm") //글쓰기 폼 
@@ -279,7 +279,7 @@ public class DutchpayController {
 	
 	
 
-	@RequestMapping(value = "/board/dutchpay/dutchpayUpdateForm") //업데이트(수정) 폼 + 드롭다운 
+	@GetMapping(value = "/board/dutchpay/dutchpayUpdateForm") //업데이트(수정) 폼 + 드롭다운 
 	public String dutchpayUpdateForm(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
 		
 		if (memberDetails != null)
@@ -370,7 +370,7 @@ public class DutchpayController {
 		return "";
 	}
 
-	@RequestMapping(value = "/board/joinForm") // 상세게시글의 신청하기 버튼 (동의서 새창 띄우기)
+	@GetMapping(value = "/board/joinForm") // 상세게시글의 신청하기 버튼 (동의서 새창 띄우기)
 	public String joinForm(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
 		
 		if (memberDetails != null) {
@@ -386,8 +386,8 @@ public class DutchpayController {
 	    return "dutchpay/JoinForm";
 	}
 	
-	@PostMapping("/board/dutchpay/ApplyInsert") // 신청서의 신청하기 버튼 (waiting테이블에 insert)
 	@ResponseBody
+	@PostMapping("/board/dutchpay/ApplyInsert") // 신청서의 신청하기 버튼 (waiting테이블에 insert)
 	public String Apply(@RequestBody Article article, Model model,  @AuthenticationPrincipal MemberDetails memberDetails) {
 		
 		
@@ -402,7 +402,8 @@ public class DutchpayController {
 		return "";
 	}
 	
-	@GetMapping(value = "/board/dutchpay/applyCancel") // 신청취소하기 버튼 (참가대기열에 대기중인 개인의 참가취소버튼)
+	@ResponseBody
+	@PostMapping(value = "/board/dutchpay/applyCancel") // 신청취소하기 버튼 (참가대기열에 대기중인 개인의 참가취소버튼)
 	public String applyCancel(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
 		
 		if (memberDetails != null)
@@ -412,12 +413,11 @@ public class DutchpayController {
 		
 		Article applyCancel = as.JHapplyCancel1(article);
 		
-		int brd_id = article.getBrd_id();
-		int art_id = article.getArt_id(); 
-		return "redirect:/board/dutchpay/"+art_id+"?brd_id="+brd_id+"&category="+1100;
+		return "";
 	}
 	
-	@GetMapping(value = "/board/dutchpay/joinCancel") // 참가취소 버튼 (참가자가 확정 된 개인의 참가취소버튼)
+	@ResponseBody
+	@PostMapping(value = "/board/dutchpay/joinCancel") // 참가취소 버튼 (참가자가 확정 된 개인의 참가취소버튼)
 	public String joinCancel(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
 		
 		if (memberDetails != null)
@@ -426,13 +426,12 @@ public class DutchpayController {
 		
 		
 		Article joinCancel = as.JHjoinCancel1(article);
-		
-		int brd_id = article.getBrd_id();
-		int art_id = article.getArt_id(); 
-		return "redirect:/board/dutchpay/"+art_id+"?brd_id="+brd_id+"&category="+1100;
+
+		return "";
 	}
 	
-	@GetMapping(value = "/board/dutchpay/JoinDeny") // 거절 버튼 (mem_id)가 따라다니도록 Detail.jsp에서 function설정
+	@ResponseBody
+	@PostMapping(value = "/board/dutchpay/JoinDeny") // 거절 버튼 (mem_id)가 따라다니도록 Detail.jsp에서 function설정
 	public String joinDeny(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
 		
 		if (memberDetails != null)
@@ -442,12 +441,10 @@ public class DutchpayController {
 		Article joinDeny = as.JHjoinDeny1(article);
 		model.addAttribute("waitList",joinDeny);
 		
-		int brd_id = article.getBrd_id();
-		int art_id = article.getArt_id(); 
-		return "redirect:/board/dutchpay/"+art_id+"?brd_id="+brd_id+"&category="+1100;
+		return "";
 	}
-	
-	@GetMapping(value = "/board/dutchpay/JoinAccept") // 수락 버튼 (mem_id)가 따라다니도록 Detail.jsp에서 function설정
+	@ResponseBody
+	@PostMapping(value = "/board/dutchpay/JoinAccept") // 수락 버튼 (mem_id)가 따라다니도록 Detail.jsp에서 function설정
 	public String joinAccept(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
 		
 		if (memberDetails != null)
@@ -458,9 +455,7 @@ public class DutchpayController {
 		Article joinAccept = as.JHjoinAccept1(article);
 		model.addAttribute("waitList",joinAccept);
 		
-		int brd_id = article.getBrd_id();
-		int art_id = article.getArt_id(); 
-		return "redirect:/board/dutchpay/"+art_id+"?brd_id="+brd_id+"&category="+1100;
+		return "";
 	}
 	
 	@PostMapping(value = "/board/dutchpay/payCompleted") // 거래 완료 버튼
@@ -497,8 +492,35 @@ public class DutchpayController {
 		return "dutchpay/reportForm";
 	}
 	
-    
-	@RequestMapping (value = "/board/dutchpay/favoriteInsert", method = {RequestMethod.POST}) // 관심목록에 추가
+	@ResponseBody
+	@GetMapping(value ="/board/dutchpay/favoriteInsertYN") // 관심등록 버튼을 눌렀을 때 유저의 목록유무 확인
+	public String favoriteInsertYN(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
+		
+		// 일단 없다는 가정하에 진행	
+		String resultStr = "0";
+		
+		System.out.println("controller article favoriteYNPara brd_id -> "+article.getBrd_id());
+		System.out.println("controller article favoriteYNPara art_id -> "+article.getArt_id());
+		System.out.println("controller article favoriteYNPara mem_id -> "+article.getMem_id());
+		
+		// 조건은 article에 mem_id,brd_id,art_id끼리 매칭되는 
+//		// favorite 테이블에 올라간 사람들의	count 가져오기
+		int favoriteListCount = as.JHfavoriteInsertYN1(article); 
+		System.out.println("favoriteListCount -> "+favoriteListCount);
+		model.addAttribute("favoriteListCount", favoriteListCount);
+		
+//		 직접 검증을 해서 1,0을 리턴
+		if(favoriteListCount > 0 ) {
+			resultStr = "1";
+		} else {
+			resultStr = "0"; 
+		}
+		
+		return resultStr;
+	}
+	
+	@ResponseBody
+	@PostMapping (value = "/board/dutchpay/favoriteInsert") // 관심목록에 추가
 	public String favoriteInsert(Article article, Model model, RedirectAttributes ra, @AuthenticationPrincipal MemberDetails memberDetails) {
 		
 		if (memberDetails != null)
@@ -508,39 +530,10 @@ public class DutchpayController {
 		as.JHfavoriteInsert1(article);
 		ra.addFlashAttribute("article", article);
 		
-		int brd_id = article.getBrd_id();
-		int art_id = article.getArt_id(); 
-		return "redirect:/board/dutchpay/"+art_id+"?brd_id="+brd_id+"&category="+1100;
+		return "";
 	}
 	
-	@ResponseBody
-	@PostMapping(value ="/board/dutchpay/favoriteInsertYN") // 관심등록 버튼을 눌렀을 때 유저의 목록유무 확인
-	public String favoriteInsertYN(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
-		 
-		// 일단 없다는 가정하에 진행	
-		String resultStr = "0";
-		
-		System.out.println("controller article favoriteYNPara brd_id -> "+article.getBrd_id());
-		System.out.println("controller article favoriteYNPara art_id -> "+article.getArt_id());
-		System.out.println("controller article favoriteYNPara mem_id -> "+article.getMem_id());
-		 
-		// 조건은 article에 mem_id,brd_id,art_id끼리 매칭되는 
-//		// favorite 테이블에 올라간 사람들의	count 가져오기
-		int favoriteListCount = as.JHfavoriteInsertYN1(article); 
-		System.out.println("favoriteListCount -> "+favoriteListCount);
-		model.addAttribute("favoriteListCount", favoriteListCount);
-		
-//		 직접 검증을 해서 1,0을 리턴
-		 if(favoriteListCount > 0 ) {
-			 resultStr = "1";
-		 } else {
-			 resultStr = "0"; 
-		 }
-		
-		return resultStr;
-	}
-	
-	@RequestMapping(value = "/board/dutchpay/articleSearch") // 게시글 검색
+	@GetMapping(value = "/board/dutchpay/articleSearch") // 게시글 검색
 	public String articleSearch(Article article, Model model, @AuthenticationPrincipal MemberDetails memberDetails) {
 		
 		List<Article> articleSearch = as.JHarticleSearch1(article);
@@ -560,10 +553,6 @@ public class DutchpayController {
 		System.out.println("controller Good brd_id -> "+article.getBrd_id());
 		System.out.println("controller Good art_id -> "+article.getArt_id());
 		as.JHartGood1(article);
-		
-		int brd_id = article.getBrd_id();
-		int art_id = article.getArt_id();
-		int category = article.getCategory();
 		
 		return "";
 

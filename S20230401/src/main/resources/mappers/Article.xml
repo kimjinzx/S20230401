@@ -1731,7 +1731,7 @@
        		   r.reg_name,
        		   t.trd_loc, 
        		   t.trd_enddate , a.art_good, a.art_bad, a.art_read,
-       		   a.art_content,
+       		   a.art_content, 
                REP_CNT(brd_id, art_id) AS reply_count
 		FROM Article a
 		LEFT JOIN trade t  ON a.trd_id = t.trd_id

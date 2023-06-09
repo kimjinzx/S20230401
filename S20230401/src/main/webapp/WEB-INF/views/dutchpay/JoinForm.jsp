@@ -24,31 +24,6 @@
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
 <script defer type="text/javascript">
-
-	/* function goApplyInsert(p_brd_id, p_art_id, p_mem_id) {
-		console.log(p_brd_id);
-		console.log(p_art_id);
-		console.log(p_mem_id);
-		
-		if ($("input:checkbox[id='agree']").is(":checked")){
-			if (confirm("신청을 하시겠습니까?")){    
-				console.log("1"+p_brd_id);
-				console.log("1"+p_art_id);
-				console.log("1"+p_mem_id);
-				alert("신청이 완료되었습니다. 작성자의 신청수락을 기다려주세요."); 
-				location.href="/dutchpay/ApplyInsert?brd_id="+p_brd_id+"&art_id="+p_art_id+"&mem_id="+p_mem_id;
-				window.close();
-		 		return true;
-		    } 
-			  else {
-		      return false;
-		    }
-		  } 
-		else {
-		    alert("약관내용 동의가 필요합니다.");
-		    return false;
-		  }
-		} */
 		
 		function goApplyInsert(p_brd_id, p_art_id, p_mem_id) {
 			console.log(p_brd_id);
@@ -77,11 +52,10 @@
 						        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 					      }
 					});
-				}
-		   } else {
-				    alert("약관내용 동의가 필요합니다.");
-				    return false;
-		   }
+				}else {
+					  window.close();
+					}
+		   } 
 		}
 	
 </script>    
@@ -105,7 +79,7 @@
     
     <div class="box2">
     	<strong>상품 확인</strong><br>
-    	작성자 : ${detail.mem_image} ${detail.mem_nickname }(${detail.mem_username })<br>
+    	작성자 : ${detail.mem_nickname }(${detail.mem_username })<br>
     	가격 : ${detail.trd_cost }원<br>
     	지역 : ${detail.reg_name } ${detail.trd_loc }<br>   <!-- + 상품사진 -->
     	인원 : ${detail.trd_max }명 (작성자 제외)<br>
@@ -114,7 +88,7 @@
 	<div>
 <form name="agreeForm" id="applyForm" method="post">
 		<span>위 내용에 모두 동의하십니까?</span>
-		<input type="checkbox" id="agree" >
+		<input type="checkbox" id="agree" required="required">
 		
  	<input type="hidden" name="trd_id" value="${article.trd_id }">
 	<input type="hidden" name="brd_id" value="${article.brd_id }">

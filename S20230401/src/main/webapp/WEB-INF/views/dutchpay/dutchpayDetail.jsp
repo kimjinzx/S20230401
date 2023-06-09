@@ -54,7 +54,7 @@
   					   trd_id : trd_id,
   					   brd_id : brd_id,
   					   art_id : art_id},
-  				type:'POST',
+  				type:'GET',
   				dataType:'text',
   				success:function(data){
   					if(my_mem_id == p_mem_id){
@@ -90,37 +90,87 @@
 		  		});
 			  }
 	
+	
+	
 	function goApplyCancel(p_brd_id, p_art_id, p_trd_id, p_mem_id) {
-		 if (confirm("신청을 취소하시겠습니까?") == true){    
-			location.href="/board/dutchpay/applyCancel?brd_id="+p_brd_id+"&art_id="+p_art_id+"&trd_id="+p_trd_id+"&mem_id="+p_mem_id;
-		 }else{   
-		     return false;
-		 }
-		}
+		  
+		  $.ajax({
+					url:"<%=context%>/board/dutchpay/applyCancel",
+					data: {brd_id : p_brd_id,
+						   art_id : p_art_id,
+						   trd_id : p_trd_id,
+						   mem_id : p_mem_id},
+					type:'POST',
+					dataType:'text',
+					success:function(data){
+						if(confirm("신청을 취소하시겠습니까?")){
+							alert('취소되었습니다');
+							location.reload();
+						}
+					}
+		  		});
+			  }
+	
 	
 	function goJoinCancel(p_brd_id, p_art_id, p_trd_id, p_mem_id) {
-		 if (confirm("현재 참가중인 활동을 취소하시겠습니까?") == true){    
-				location.href="/board/dutchpay/joinCancel?brd_id="+p_brd_id+"&art_id="+p_art_id+"&trd_id="+p_trd_id+"&mem_id="+p_mem_id;
-		 }else{   
-		     return false;
-		 }
-		}
+		  
+		  $.ajax({
+					url:"<%=context%>/board/dutchpay/joinCancel",
+					data: {brd_id : p_brd_id,
+						   art_id : p_art_id,
+						   trd_id : p_trd_id,
+						   mem_id : p_mem_id},
+					type:'POST',
+					dataType:'text',
+					success:function(data){
+						if(confirm("현재 참가중인 활동을 취소하시겠습니까?")){
+							alert('취소되었습니다');
+							location.reload();
+						}
+					}
+		  		});
+			  }
 	
+									  
 	function goJoinAccept(p_trd_id, p_mem_id, p_brd_id, p_art_id) {
-		if (confirm("신청을 수락 하시겠습니까?") == true){    
-			location.href="/board/dutchpay/JoinAccept?trd_id="+p_trd_id+"&mem_id="+p_mem_id+"&brd_id="+p_brd_id+"&art_id="+p_art_id;
-			 }else{   
-			     return false;
-			 }
-	} 
+		  
+		  $.ajax({
+					url:"<%=context%>/board/dutchpay/JoinAccept",
+					data: {trd_id : p_trd_id,
+						   mem_id : p_mem_id,
+						   brd_id : p_brd_id,
+						   art_id : p_art_id},
+					type:'POST',
+					dataType:'text',
+					success:function(data){
+						if(confirm("신청을 수락 하시겠습니까?")){
+							alert('수락되었습니다');
+							location.reload();
+						}
+					}
+		  		});
+			  }
+	
 	
 	function goJoinDeny(p_trd_id, p_mem_id, p_brd_id, p_art_id) {
-		if (confirm("신청을 거절 하시겠습니까?") == true){    
-		location.href="/board/dutchpay/JoinDeny?trd_id="+p_trd_id+"&mem_id="+p_mem_id+"&brd_id="+p_brd_id+"&art_id="+p_art_id;
-		 }else{   
-		     return false;
-		 }
-	}
+		  
+		  $.ajax({
+					url:"<%=context%>/board/dutchpay/JoinDeny",
+					data: {trd_id : p_trd_id,
+						   mem_id : p_mem_id,
+						   brd_id : p_brd_id,
+						   art_id : p_art_id},
+					type:'POST',
+					dataType:'text',
+					success:function(data){
+						if(confirm("신청을 거절 하시겠습니까?")){
+							alert('거절되었습니다');
+							location.reload();
+						}
+					}
+		  		});
+			  }
+	
 	
 	function goReport(p_brd_id, p_art_id, p_report_id) {
 		if (confirm("해당 게시글을 신고하시겠습니까?") == true){    
@@ -128,15 +178,25 @@
 		}else{   
 		     return false;
 		 }
-	}
+	} 
 	
 	function goreplyDelete(p_brd_id, p_art_id, p_rep_id) {
-		if (confirm("댓글을 삭제하시겠습니까?") == true){    
-		location.href="/board/dutchpay/replyDelete?brd_id="+p_brd_id+"&art_id="+p_art_id+"&rep_id="+p_rep_id;
-		 }else{   
-		     return false;
-		 }
-	}
+		  
+		  $.ajax({
+					url:"<%=context%>/board/dutchpay/replyDelete",
+					data: {rep_id : p_rep_id,
+						   brd_id : p_brd_id,
+						   art_id : p_art_id},
+					type:'POST',
+					dataType:'text',
+					success:function(data){
+						if(confirm("댓글을 삭제하시겠습니까?")){
+							alert('댓글이 삭제되었습니다');
+							location.reload();
+						}
+					}
+		  		});
+			  }
 	
 	
 	<%-- function goreplyUpdate(p_brd_id, p_art_id, p_rep_id) {
@@ -167,7 +227,7 @@
 			data: {brd_id : p_brd_id,
 				   art_id : p_art_id,
 				   mem_id : p_mem_id},
-			type:'POST',
+			type:'GET',
 			dataType:'text',
 			success:function(data){
 				if(data == '1'){
@@ -185,6 +245,7 @@
 						dataType:'text',
 						success:function(data){
 							alert("찜 목록 추가되었습니다.");	
+							location.reload();
 						},
 						error:function(request,status,error){
 					        alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
@@ -209,6 +270,7 @@
 	 				dataType:'text',
 	 				success:function(data){
 	 						alert('추천되었습니다.');
+	 						location.reload();
 	 				}
 	 	  		});
 	 		  } 
@@ -223,6 +285,7 @@
 	 				dataType:'text',
 	 				success:function(data){
 	 						alert('비추천되었습니다.');
+	 						location.reload();
 	 				}
 	 	  		});
 	 		  }
@@ -238,6 +301,7 @@
 	 				dataType:'text',
 	 				success:function(data){
 	 						alert('추천되었습니다.');
+	 						location.reload();
 	 				}
 	 	  		});
 	 		  }
@@ -253,6 +317,7 @@
 	 				dataType:'text',
 	 				success:function(data){
 	 						alert('비추천되었습니다.');
+	 						location.reload();
 	 				}
 	 	  		});
 	 		  }
@@ -374,7 +439,7 @@
 									<path d="M258.9 48C141.92 46.42 46.42 141.92 48 258.9c1.56 112.19 92.91 203.54 205.1 205.1 117 1.6 212.48-93.9 210.88-210.88C462.44 140.91 371.09 49.56 258.9 48zm126.42 327.25a4 4 0 01-6.14-.32 124.27 124.27 0 00-32.35-29.59C321.37 329 289.11 320 256 320s-65.37 9-90.83 25.34a124.24 124.24 0 00-32.35 29.58 4 4 0 01-6.14.32A175.32 175.32 0 0180 259c-1.63-97.31 78.22-178.76 175.57-179S432 158.81 432 256a175.32 175.32 0 01-46.68 119.25z"/>
 									<path d="M256 144c-19.72 0-37.55 7.39-50.22 20.82s-19 32-17.57 51.93C191.11 256 221.52 288 256 288s64.83-32 67.79-71.24c1.48-19.74-4.8-38.14-17.68-51.82C293.39 151.44 275.59 144 256 144z"/>
 								</svg>
-							</button> <!--  1 -->
+							</button> 
 							<div id="login-popup" class="popup-window">
 								<button id="login-button" class="subtheme-button adv-hover" onclick="location.href = '${pageContext.request.contextPath }/login';">
 									로그인
@@ -734,6 +799,8 @@
 							<input type="hidden" id="reply_id" name="rep_id" value="${Rep.rep_id}">
 							<input type="hidden" id="reply_nickname" value="${Rep.mem_nickname}">
 							<input type="hidden" id="repReport_id"    value="${Rep.report_id}">
+							<input type="hidden"      value="${Rep.rep_good}">
+							<input type="hidden"      value="${Rep.rep_bad}">
 							<div class="reply-view display-flex flex-direction-column justify-content-flex-start align-items-stretch" style="${(Rep.rep_id != Rep.rep_parent) ? 'margin-left: 32px; background-color: rgba(var(--subtheme-rgb), 0.125);' : ''}">
 								<div class="reply-header display-flex justify-content-flex-start align-items-center">
 								<div class="user-profile-image-in-list">
@@ -751,12 +818,17 @@
 								<div class="flex-grow-1 display-flex justify-content-flex-end align-items-center">
 									<c:if test="${memberInfo != null }">
 										<button class="btns-repWrite font-weight-bolder">댓글 달기</button>
+										
 									</c:if>
 									<c:if test="${Rep.mem_id == memberInfo.mem_id || memberInfo.mem_authority > 108}">
 										<button class="btns-repUpdate font-weight-bolder">수정</button>
 										<button class="btns-repComplete font-weight-bolder" style="display: none;" onclick="rep_Update(${status.index})">완료</button>
 										<button class="btns-delete font-weight-bolder" onclick="goreplyDelete(${detail.brd_id},${detail.art_id },${Rep.rep_id })">삭제</button>
 										<button class="btns-cancel font-weight-bolder" style="display: none;">취소</button>
+									</c:if>
+									<c:if test="${memberInfo != null}">
+										<button style="color: #0054FF; font-size: 14px;" onclick="goreplyGood(${detail.brd_id}, ${detail.art_id},${Rep.rep_id})">추천 ${Rep.rep_good}</button>
+										<button style="color: #F15F5F; font-size: 14px;" onclick="goreplyBad(${detail.brd_id}, ${detail.art_id},${Rep.rep_id})">비추천 ${Rep.rep_bad}</button>
 									</c:if>
 									<div class="modal-report padding-0" style="width: 24px; height: 24px;">
 										<c:if test="${not empty memberInfo}">
