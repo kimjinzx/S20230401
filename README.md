@@ -9,8 +9,8 @@
 - 주요기능 - 신청하기, 수락/거절/취소, 찜, 현재거래(게시글)상태 제어, 추천/비추천 기능
 
 
-ShareGo 문서 (PDF)
-[file:///Users/jin/Downloads/S20230401_ShareGo_PDF%20(2).pdf]
+[ShareGo 문서 (PDF)]
+(file:///Users/jin/Downloads/S20230401_ShareGo_PDF%20(2).pdf)
 
-ShareGo 같이사요 부분 (PDF)
-*<file:///Users/jin/Downloads/S20230401_ShareGo_%EA%B9%80%EC%A7%84%ED%98%84%20%ED%8C%8C%ED%8A%B8.pdf>
+[ShareGo 같이사요 부분 (PDF)]
+(file:///Users/jin/Downloads/S20230401_ShareGo_%EA%B9%80%EC%A7%84%ED%98%84%20%ED%8C%8C%ED%8A%B8.pdf)
