@@ -10,7 +10,7 @@
 
 
 [ShareGo 문서 (PDF)]
-(file:///Users/jin/Downloads/S20230401_ShareGo_PDF%20(2).pdf)
+(#file:///Users/jin/Downloads/S20230401_ShareGo_PDF%20(2).pdf)
 
 [ShareGo 같이사요 부분 (PDF)]
 (file:///Users/jin/Downloads/S20230401_ShareGo_%EA%B9%80%EC%A7%84%ED%98%84%20%ED%8C%8C%ED%8A%B8.pdf)
