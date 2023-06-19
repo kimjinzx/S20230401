@@ -8,11 +8,11 @@
 - 개발파트 - 같이사요 게시판 
 - 주요기능 - 신청하기, 수락/거절/취소, 찜, 현재거래(게시글)상태 제어, 추천/비추천 기능
 
-
+<p>
 [ShareGo 문서 (PDF)]
 - https://drive.google.com/file/d/1ITjaKvtxTrlWWVb0cwRjFPy4IVWcRCHb/view?usp=sharing
 
-
+<br>
 [ShareGo 같이사요 부분 (PDF)]
 - https://drive.google.com/file/d/12UMpSHq8281mVbjaBy-ucigZHMD3dg1y/view?usp=sharing
 
