@@ -10,9 +10,9 @@
 
 <p>
 [ShareGo 문서 (PDF)]
-- https://drive.google.com/file/d/1ITjaKvtxTrlWWVb0cwRjFPy4IVWcRCHb/view?usp=sharing
+<br> https://drive.google.com/file/d/1ITjaKvtxTrlWWVb0cwRjFPy4IVWcRCHb/view?usp=sharing
 
 <br>
 [ShareGo 같이사요 부분 (PDF)]
-- https://drive.google.com/file/d/12UMpSHq8281mVbjaBy-ucigZHMD3dg1y/view?usp=sharing
+<br> https://drive.google.com/file/d/12UMpSHq8281mVbjaBy-ucigZHMD3dg1y/view?usp=sharing
 
