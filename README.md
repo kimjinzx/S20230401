@@ -7,6 +7,9 @@
 > &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img width="402" alt="KakaoTalk_Photo_2023-06-19-16-19-35" src="https://github.com/kimjinzx/S20230401/assets/118345975/4fed73c4-0172-4f9a-9c2f-a5687a0e85a8"> 
 - 개발파트 - 같이사요 게시판 
 - 주요기능 - 신청하기, 수락/거절/취소, 찜, 현재거래(게시글)상태 제어, 추천/비추천 기능
+- 개발진행과정 - ERD제작 과정에서 회원관리와 게시판(게시글)의 관계를 이해하여 테이블을 적절히 분리하였으며 comm(common)테이블을 따로 생성하여 불필요한 코드작업과 테이블생성을 최소화하였습니다. 그리고 특수기능이 요구되는 게시판을 위해 추가기능 테이블을 따로 생성하여 null값을 최소화하였습니다.
+  또한 개발과정에서 다중행 쿼리가 요구되는 기능들은 오라클 프로시저를 사용하여 insert,update와 null값 처리등 작업을 수행하였습니다.
+  
 
 <p>
 [ShareGo 문서 (PDF)]
