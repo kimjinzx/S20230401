@@ -39,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-public class DutchpayController {
+public class DutchpayController { 
 	private final ArticleService as;
 	private final RegionService rs;
 	
